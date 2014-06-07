@@ -133,6 +133,12 @@ INSTALLED_APPS = (
     'djangocms_admin_style',
     'django.contrib.admin',
     #Project
+    'home',
+    'adminStaff',
+    'school',
+    'college',
+    'teacher',
+    'expert',
     #Add-on
     'south',
     'dajaxice',

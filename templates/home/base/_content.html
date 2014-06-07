@@ -1,0 +1,49 @@
+{% extends "base/base.html" %}
+{% block before_css %}
+   {{ block.super }}
+   <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/home/content.css" >
+{% endblock  %}
+{%block nav_content%}
+<div class="container">
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class=""><a href="/">首页</a></li>
+        <li class=""><a href="/show/">成果展示</a></li>
+        <li class=""><a href="/analysis/school">历史数据</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">登录入口
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu home_menu" role="menu">
+            <li><a href="/adminStaff">管理员</a></li>
+            <li><a href="/school">校级管理员</a></li>
+            <li><a href="/college">院级管理员</a></li>
+            <li><a href="/expert">专家</a></li>
+            <li><a href="/teacher">教师</a></li>
+          </ul>
+        </li>
+        <li class=""><a href="/features/">平台指南</a></li>
+        <li class=""><a href="/feedback/">反馈中心</a></li>
+        <li class=""><a href="/newslist/news_cate=documents">资料下载 </a> </li>
+      </ul>
+    </div>
+  </nav>
+</div><!--end navbar-->
+{% endblock %}
+{%block content%}
+  <!--different page content-->
+  {%block before_home_content%}{%endblock%}
+  <div class="container home-content-container">
+    {%block home_content%}{%endblock%}
+  </div>
+  {%block after_home_content%}
+    <div id="footer-links">
+        {% include "home/widgets/links.html" %}
+    </div>
+  {%endblock%}
+{%endblock%}
+{% block bottom_js %}
+  {{ block.super }}
+  <script type='text/javascript' src="{{ STATIC_URL }}js/features.js"></script>
+{% endblock %}

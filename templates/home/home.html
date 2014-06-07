@@ -1,0 +1,19 @@
+{% extends "home/base/_content.html" %}
+{% block forejs %}
+{{ block.super }}
+{% endblock %}
+{% block before_home_content%}
+<div class="homepage-picture">
+  {% include "home/widgets/home_pictures.html" %}
+</div>
+{% endblock %}
+{% block home_content %}
+<div class="row-fluid news_frame">
+  <div class="span6">
+    {% include "home/widgets/announcement.html" %}
+  </div>
+  <div class="span6">
+    {% include "home/widgets/filedownload.html" %}
+  </div>
+</div>
+{% endblock %}
