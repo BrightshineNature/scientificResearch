@@ -41,7 +41,7 @@ a:hover, a:focus, a:active {
 .container{
     width:1170px;
     margin: 0 auto;
-    padding: 0 !important;
+    padding: 0;
 }
 
 .home-content-container {
