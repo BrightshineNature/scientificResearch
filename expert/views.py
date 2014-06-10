@@ -6,6 +6,6 @@ Desc: expert' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
 
-def home_view(request):
+def homeView(request):
     context={}
     return render(request,"expert/home.html",context)

@@ -11,7 +11,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
     url(
         r'^$',
-        school_views.home_view,
+        school_views.homeView,
     ),
 )
 urlpatterns += staticfiles_urlpatterns()
