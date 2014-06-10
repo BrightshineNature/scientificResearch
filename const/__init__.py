@@ -13,6 +13,7 @@ SCHOOL_USER = "school"
 COLLEGE_USER = "college"
 EXPERT_USER = "expert"
 TEACHER_USER = "teacher"
+FINANCE_USER = "finance"
 VISITOR_USER = "visitor"
 
 AUTH_CHOICES = (
@@ -21,6 +22,7 @@ AUTH_CHOICES = (
     (COLLEGE_USER, u"学院管理员"),
     (TEACHER_USER, u"指导老师"),
     (EXPERT_USER, u"专家"),
+    (FINANCE_USER, u"财务处"),
     (VISITOR_USER, u"游客"),
 )
 SCIENCE_ACTIVITY_TYPE=(
