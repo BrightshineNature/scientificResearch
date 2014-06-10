@@ -2,15 +2,15 @@
 {% load i18n %}
 {% block before_css%}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/school/content.css" >
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/finance/content.css" >
 {% endblock %}
 {% block nav_content%}
-{% include "school/widgets/features_item_navbar.html" %}
+{% include "finance/widgets/features_item_navbar.html" %}
 {% endblock %}
 {% block content %}
 <div class="container main-content-container">
   <div class="well form">
-    {%block inner_content%} {% endblock %}
+    {%block finance_content%} {% endblock %}
   </div>
 </div>
 {% endblock %}
