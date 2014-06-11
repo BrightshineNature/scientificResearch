@@ -1,0 +1,33 @@
+{% extends "teacher/base/_content.html" %}
+{%block inner_content%}
+<form method="POST",action="/teacher/financial",class="form-inline" role="form">
+	{% csrf_token%}
+	<h3> 项目经费预算信息（万元）</h3>
+	<div class="row-fluid">
+    {% if budgetinfoform.project_basicexpenses.errors or budgetinfoform.project_selfexpense.errors or  budgetinfoform.project_totalexpense.errors %}
+  	<div class="alert alert-danger">
+      <button class="close" data-dismiss="alert">×</button>
+      <p>
+      {%if budgetinfoform.project_basicexpenses.errors %} “基本科研业务费经费“  &nbsp; {% endif %}
+	  {%if budgetinfoform.project_selfexpense.errors %} “项目单位自筹经费“ &nbsp;  {% endif %}
+      {%if budgetinfoform.project_totalexpense.errors %} “总经费“  &nbsp; {% endif %}
+      字段没有填写
+      </p>
+  </div>
+  {%endif%}
+	<div class="control-group col-sm-4">
+	{{budgetinfoform.project_basicexpenses.label}}
+	{{budgetinfoform.project_basicexpenses}}
+	</div>
+	<div class="control-group col-sm-4">
+	{{budgetinfoform.project_selfexpense.label}}
+	{{budgetinfoform.project_selfexpense}}
+	</div>
+	<div class="control-group col-sm-3">
+	{{budgetinfoform.project_totalexpense.label}}
+	{{budgetinfoform.project_totalexpense}}
+	</div>
+	<button type="submit" class="btn btn-primary" style="height:26px;padding:0px 12px;margin-left:30px;">提交</button>
+  </div>
+</form>
+{% endblock %}
