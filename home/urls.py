@@ -14,4 +14,7 @@ urlpatterns = patterns('',
                            home_views.index,
                            name='homepage',
                            ),
+                       url(r'show$',
+                           home_views.show,
+                          ),
                        )
