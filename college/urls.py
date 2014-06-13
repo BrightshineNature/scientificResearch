@@ -13,5 +13,9 @@ urlpatterns = patterns('',
         r'^$',
         college_views.homeView,
     ),
+	url(
+		r'final$',
+		college_views.final_report_view,
+	),
 )
 urlpatterns += staticfiles_urlpatterns()
