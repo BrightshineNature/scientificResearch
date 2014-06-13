@@ -12,6 +12,9 @@ urlpatterns = patterns('',
     url(
         r'^$',
         teacher_views.homeView,
-    ),
+       ),(
+        r'^memberchange$',
+        teacher_views.memberChange,
+    )      
 )
 urlpatterns += staticfiles_urlpatterns()

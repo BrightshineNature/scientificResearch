@@ -13,5 +13,6 @@ urlpatterns = patterns('',
         r'^$',
         adminStaff_views.homeView,
     ),
+    (r'^news_release$',adminStaff_views.newsRelease),
 )
 urlpatterns += staticfiles_urlpatterns()
