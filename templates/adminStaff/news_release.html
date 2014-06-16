@@ -1,0 +1,60 @@
+{% extends "adminStaff/base/_content.html" %}
+{% load admin_static %}{% load url from future %}
+
+{%block inner_content%}
+<link rel="stylesheet" href="{{ STATIC_URL }}style/adminStaff/font-awesome.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="{{ STATIC_URL }}style/adminStaff/news_release.css" type="text/css" media="screen" />
+<!--<link rel="stylesheet" href="{{ STATIC_URL }}admin/css/forms.css" type="text/css" media="screen" />-->
+
+<!-- set for datetimeshortcuts.js -->
+<script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
+<script>function gettext(txt){return txt}</script>
+<script type='text/javascript' src="{{STATIC_URL}}js/news/news_toolbar.js"></script>
+<form id="news_form"  action="" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  
+  <div>
+      新闻标题：{{newsform.news_title}}
+  <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor" id="editor_toolbar">
+      {% include "news/news_toolbar.html" %}
+  </div>
+
+  <div id="editor">
+    "在此编写新闻内容..."
+  </div>
+  <label class="newsinfo">
+      <!--<label> 发布时间:</label> <input name="" maxlength="200" type="text" placeholder="发布时间" id="" class="col-lg-3 inputstyle">-->
+   发布时间: {{newsform.news_date}}
+  </label>
+  <!--<div>-->
+    <!--新闻类型: {{newsform.news_category}}-->
+  </div>
+  <label class="newsinfo">
+      新闻附件: {{newsform.news_document}}
+      
+  </label>
+  <div class="form-actions">
+    <span class="pull-right">
+      <button class="btn">取消</button>
+    </span>
+    <span class="pull-right" style="padding-right: 10px">
+    <button type="submit" class="btn btn-primary" disabled id="news_release_button">发布新闻</button>
+    </span>
+  </div>
+</form>
+<div id="newstable">
+    {% include "adminStaff/widgets/newslist.html" %}
+</div>
+<!-- ajax_csrf-->
+<script type='text/javascript' src="{{STATIC_URL}}js/newstable.js"></script>
+<script type='text/javascript' src="{{STATIC_URL}}js/news/news_release.js"></script>
+<script type='text/javascript' src="{{STATIC_URL}}js/news/jquery.hotkeys.js"></script>
+<script type='text/javascript' src="{{STATIC_URL}}js/news/bootstrap-wysiwyg.js"></script>
+<script type='text/javascript' src="{{STATIC_URL}}js/news/wysiwyg-config.js"></script>
+
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+{%endblock%}

@@ -11,5 +11,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
     url(r'^$', adminStaff_views.scheduleView,),
 
+   url(r'^news_release$',adminStaff_views.newsRelease),
 )
 urlpatterns += staticfiles_urlpatterns()

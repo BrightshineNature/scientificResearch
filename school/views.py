@@ -15,3 +15,7 @@ def scheduleView(request):
     return scheduleManage(request, userauth)
 
 
+
+def final_report_view(request):
+    context = {}
+    return render(request,"school/final.html",context)

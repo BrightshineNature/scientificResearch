@@ -8,6 +8,7 @@ from django.shortcuts import render
 from common.forms import ScheduleForm
 from common.views import scheduleManage
 
+from adminStaff.forms import NewsForm
 def scheduleView(request):
 
 
@@ -17,3 +18,8 @@ def scheduleView(request):
 
 
     return scheduleManage(request, userauth)
+def newsRelease(request):
+    context={}
+    context.update({"newsform":NewsForm})
+    return render(request,"adminStaff/news_release.html",context)
+
