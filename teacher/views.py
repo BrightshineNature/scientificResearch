@@ -15,9 +15,6 @@ def homeView(request):
     }
     return render(request,"teacher/project_info.html",context)
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
-def homeView(request):
-    context={}
-    return render(request,"teacher/home.html",context)
 def memberChange(request):
     context={}
     return render(request,"teacher/member_change.html",context)
