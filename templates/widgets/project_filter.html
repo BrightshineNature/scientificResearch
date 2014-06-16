@@ -1,0 +1,29 @@
+  <h3> 
+    项目列表
+  </h3>
+  <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/" >
+
+    {% csrf_token %}
+
+     <div class="form-group">
+       {{schedule_form.status}}
+       {{schedule_form.year}}
+       {{schedule_form.special}}
+
+    {% ifnotequal userauth.role 'college' %}
+       {{schedule_form.college}}
+    {% endifnotequal %}
+    </div>
+    <div class="form-group">
+
+       {{schedule_form.teacher_name}}
+
+   </div>
+
+       <button type="submit" class="btn btn-primary" id="filter_button">检索</button>
+       <h4>
+         符合搜索条件的项目数量为 {{pro_list.count}}.
+       </h4>
+  </form>
+
+

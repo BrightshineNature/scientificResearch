@@ -5,8 +5,15 @@ Created on 2014-06-07
 Desc: adminStaff' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
+from common.forms import ScheduleForm
+from common.views import scheduleManage
 
-def homeView(request):
+def scheduleView(request):
 
-    context={}
-    return render(request,"adminStaff/home.html",context)
+
+    userauth = {
+        'role': 'adminStaff',
+    }
+
+
+    return scheduleManage(request, userauth)

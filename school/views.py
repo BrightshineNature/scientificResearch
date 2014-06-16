@@ -5,7 +5,13 @@ Created on 2014-06-07
 Desc: school' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
+from common.forms import ScheduleForm
+from common.views import scheduleManage
+def scheduleView(request):
 
-def homeView(request):
-    context={}
-    return render(request,"school/home.html",context)
+    userauth = {
+                "role": 'school',                
+    }
+    return scheduleManage(request, userauth)
+
+

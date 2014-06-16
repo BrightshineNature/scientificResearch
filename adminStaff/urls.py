@@ -9,9 +9,7 @@ from django.views.generic.simple import direct_to_template
 from adminStaff import views as adminStaff_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
-    url(
-        r'^$',
-        adminStaff_views.homeView,
-    ),
+    url(r'^$', adminStaff_views.scheduleView,),
+
 )
 urlpatterns += staticfiles_urlpatterns()
