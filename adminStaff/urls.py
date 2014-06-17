@@ -10,16 +10,15 @@ from adminStaff import views as adminStaff_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
     url(
-        r'^$',
-        adminStaff_views.homeView,
-    ),
-    url(
-        r'^news_release$',
-        adminStaff_views.newsRelease,
-    ),
-    url(
         r'^noticeMessageSetting$',
         adminStaff_views.noticeMessageSetting,
     ),
-)
+    url(r'^$', adminStaff_views.scheduleView,),
+
+   url(r'^news_release$',adminStaff_views.newsRelease),
+   url(
+        r'^noticeMessageSetting$',
+        adminStaff_views.noticeMessageSetting,
+    ),
+ )
 urlpatterns += staticfiles_urlpatterns()

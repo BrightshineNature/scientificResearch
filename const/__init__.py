@@ -8,7 +8,7 @@ Desc: const defination
 '''
 UNDIFINED = "undifined"
 # For UserIdentity Table
-ADMINSTAFF_USER = "adminstaff"
+ADMINSTAFF_USER = "adminStaff"
 SCHOOL_USER = "school"
 COLLEGE_USER = "college"
 EXPERT_USER = "expert"

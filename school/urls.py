@@ -9,10 +9,8 @@ from django.views.generic.simple import direct_to_template
 from school import views as school_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
-    url(
-        r'^$',
-        school_views.homeView,
-    ),
+
+    url( r'^$', school_views.scheduleView,  ),
 	url(
 		r'final$',
 		school_views.final_report_view,

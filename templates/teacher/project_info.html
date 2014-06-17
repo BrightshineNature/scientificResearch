@@ -1,0 +1,63 @@
+{% extends "teacher/base/_content.html" %}
+
+{%block inner_content%}
+
+
+
+
+  <div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>项目编号</th>
+          <th >项目名称</th>          
+          <th >项目状态</th>          
+          <th >指导老师</th>         
+          <th >专题类型</th>
+
+          
+          <th  >详&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp情</th>
+
+
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td >51012014666666</td>
+          <td >testForYou</td>
+          <td >在研</td>
+          <td >huhu</td>
+          <td >文科</td>
+          <td > 
+
+            <a href="/teacher/application" class="btn btn-primary">申请表</a>
+            
+
+            <a href="/teacher/progress" class="btn btn-primary">进展报告</a>
+            <!-- <span class="label label-success"> 
+                <a href= '/media/tmp/process_file/liuzhuo.doc' >    已上传  </a>
+            </span> -->
+            <a href="/teacher/final" class="btn btn-primary">结题报告</a>
+            <a href="/teacher/task" class="btn btn-primary">任务书</a>
+            <a href="/teacher/file_upload" class="btn btn-primary">文件上传</a>
+          </td>
+
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
