@@ -141,6 +141,7 @@ INSTALLED_APPS = (
     'expert',
     'finance',
     'const',
+	'common',
     #Add-on
     'south',
     'dajaxice',

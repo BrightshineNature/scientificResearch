@@ -1,0 +1,61 @@
+{% extends "teacher/base/_content.html" %}
+{% block before_css%}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/member_change.css" >
+{% endblock %}
+{% block inner_content %}
+
+<div class="modal  fade in" id="teacher_profile_info">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <form class="well form" id="member_change_form" method="POST" action="">
+                    <div class="inrow">
+                    <div class="input-group col-lg-5">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                        <input type="text" class="form-control" placeholder="姓名">
+                    </div> 
+                     <div class="input-group col-lg-5">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                        <input type="text" class="form-control" placeholder="出生年份">
+                    </div>
+                    </div>
+                    <div class="inrow">
+                    <div class="input-group col-lg-5">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></span>
+                        <input type="text" class="form-control" placeholder="电话">
+                    </div> 
+                     <div class="input-group col-lg-5">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                        <input type="text" class="form-control" placeholder="邮箱">
+                    </div>
+                    </div>
+                    <div class="inrow">
+                    <div class="input-group col-lg-5">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></span>
+                        <input type="text" class="form-control" placeholder="职称">
+                    </div> 
+                     <div class="input-group col-lg-5">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                        <input type="text" class="form-control" placeholder="行政职务">
+                    </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+ </div>
+
+
+<button class="btn" data-toggle="modal" data-target="#teacher_profile_info">dd</button>
+
+<button class="btn btn-primary" id="add_new_member" >添加新成员</button>
+  <!-- ajax_csrf-->
+  <!--<scriptype='text/javascript' src="{{STATIC_URL}}js/ajax_csrf.js"></script>-->
+  <!-- dajax-->
+  <!--<script type='text/javascript' src="{{STATIC_URL}}js/student/member_change.js"></script>-->
+{% endblock %}
