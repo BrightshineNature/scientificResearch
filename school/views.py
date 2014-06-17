@@ -13,3 +13,6 @@ def homeView(request):
 def final_report_view(request):
     context = {}
     return render(request,"school/final.html",context)
+def progressReportView(requset):
+    context={}
+    return render(requset,"school/progress.html",context)

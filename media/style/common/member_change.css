@@ -1,6 +1,7 @@
-.inrow{
-    display:-webkit-inline-box;
+
+.row{
+    margin-bottom:20px;
 }
-.input-group{
-    margin-right:60px;
+table{
+    margin-top:30px;
 }

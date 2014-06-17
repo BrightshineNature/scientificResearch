@@ -6,11 +6,17 @@ Desc: teacher' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
+from const import PROFESSIONAL_TITLE,EXECUTIVE_POSITION
+
 def homeView(request):
     context={}
     return render(request,"teacher/home.html",context)
 def memberChange(request):
+    professional=PROFESSIONAL_TITLE
+    executive=EXECUTIVE_POSITION
     context={}
+    context['professional']=professional
+    context['executive']=executive
     return render(request,"teacher/member_change.html",context)
 
 def final_report_view(request):

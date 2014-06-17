@@ -13,6 +13,13 @@ urlpatterns = patterns('',
         r'^$',
         adminStaff_views.homeView,
     ),
-    (r'^news_release$',adminStaff_views.newsRelease),
+    url(
+        r'^news_release$',
+        adminStaff_views.newsRelease,
+    ),
+    url(
+        r'^noticeMessageSetting$',
+        adminStaff_views.noticeMessageSetting,
+    ),
 )
 urlpatterns += staticfiles_urlpatterns()

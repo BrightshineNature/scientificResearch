@@ -12,11 +12,11 @@ urlpatterns = patterns('',
     url(
         r'^$',
         teacher_views.homeView,
-       ),(
+       ),
+    url(
         r'^memberchange$',
-        teacher_views.memberChange,
-    )      
-    ),
+        teacher_views.memberChange,    
+       ),
 	url(
 		r'final$',
 		teacher_views.final_report_view,

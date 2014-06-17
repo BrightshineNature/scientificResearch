@@ -1,0 +1,83 @@
+<div class="page-header">
+    <h3>年度计划要点和调整情况</h3>
+</div>
+<blockquote>
+    <div class="control-group form-inline {% if progress.mainpoint_adjust.errors %}error{% endif %}">
+        {{final.achievement_summary}} 
+        {% if final.achievement_summary.errors %}
+        <div class="row alert alert-error school-display">
+            <button class="close" data-dismiss="alert">关闭</button>
+            {{ final.achievement_summary.errors }}
+        </div>
+        {% endif %}  
+        <textarea rows="8" name="achievement_summary" id="id_achievement_summary" placeholder="简要说明是否按计划进行，哪些研究内容根据国内外研究发展状况及项目进展情况做了必要的调整和变动，哪些研究内容未按计划进行，原因何在。" cols="100" class="fill-form"></textarea>
+    </div>
+</blockquote><!--end project content-->
+
+<br/>
+<div class="page-header">
+    <h3>研究工作主要进展和阶段性成果</h3>
+</div>
+<blockquote>
+    <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
+        {{final.achievement_summary}} 
+        {% if final.achievement_summary.errors %}
+        <div class="row alert alert-error school-display">
+            <button class="close" data-dismiss="alert">关闭</button>
+            {{ final.achievement_summary.errors }}
+        </div>
+        {% endif %}  
+        <textarea rows="8" name="achievement_summary" id="id_achievement_summary" placeholder="（本部分是进展报告的重要部分，请认真撰写）。请分层次叙述所开展的研究工作、取得的进展或碰到的问题等，给出必要的数据、图表。根据实际情况提供国内外有关研究动态的对比分析及必要的参考文献。本部分亦包括国内外合作与学术交流、研究生培养情况等。" cols="100" class="fill-form"></textarea>
+    </div>
+</blockquote><!--end project content-->
+<br/>
+
+<div class="page-header">
+    <h3>下一年度工作计划，包括国内外合作与交流计划。</h3>
+</div
+<blockquote>
+    <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
+        {{final.achievement_summary}} 
+        {% if final.achievement_summary.errors %}
+        <div class="row alert alert-error school-display">
+            <button class="close" data-dismiss="alert">关闭</button>
+            {{ final.achievement_summary.errors }}
+        </div>
+        {% endif %}  
+        <textarea rows="8" name="achievement_summary" id="id_achievement_summary" placeholder="如要求对原研究内容和主要成员作重要调整，需明确要求调整的内容，并说明理由、必要性以及对项目实施的影响。（注：为保证项目顺利进行，研究人员要求稳定，一般不作变更。如确需变更，需按照管理办法的要求提出申请，经项目管理办公室核准后方可变更。）" cols="100" class="fill-form"></textarea>
+    </div>
+</blockquote><!--end project content-->
+<br/>
+<div class="page-header">
+    <h3>当年经费使用情况与下一年度经费预算</h3>
+</div>
+<blockquote>
+    <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
+        {{final.achievement_summary}} 
+        {% if final.achievement_summary.errors %}
+        <div class="row alert alert-error school-display">
+            <button class="close" data-dismiss="alert">关闭</button>
+            {{ final.achievement_summary.errors }}
+        </div>
+        {% endif %}  
+        <textarea rows="8" name="achievement_summary" id="id_achievement_summary" placeholder="给出必要的经费使用情况的说明，逐项列出固定资产超过5万元的设备的名称、使用情况等有关说明。"  cols="100" class="fill-form"></textarea>
+    </div>
+</blockquote><!--end project content-->
+<br/>
+<div class="page-header">
+    <h3>存在的问题、建议及其他需要说明的情况</h3>
+</div>
+<blockquote>
+    <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
+        {{final.achievement_summary}} 
+        {% if final.achievement_summary.errors %}
+        <div class="row alert alert-error school-display">
+            <button class="close" data-dismiss="alert">关闭</button>
+            {{ final.achievement_summary.errors }}
+        </div>
+        {% endif %}  
+        <textarea rows="8" name="achievement_summary" id="id_achievement_summary" placeholder="说明项目执行中的问题和建议。对部分探索性强的研究，有可能未获得理想结果或甚至失败，请如实地反映，说明原因、工作状况、发展态势和建议等。", cols="100" class="fill-form"></textarea>
+    </div>
+</blockquote><!--end project content-->
+{% include "teacher/widgets/commit_button.html"%}
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/content.css"> 

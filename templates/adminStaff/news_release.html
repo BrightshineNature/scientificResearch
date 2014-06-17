@@ -10,11 +10,11 @@
 <script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
 <script>function gettext(txt){return txt}</script>
 <script type='text/javascript' src="{{STATIC_URL}}js/news/news_toolbar.js"></script>
-<form id="news_form"  action="" method="post" enctype="multipart/form-data">
+<form id="news_form"  class="form-horizontal" action="" method="post" enctype="multipart/form-data">
   {% csrf_token %}
   
   <div>
-      新闻标题：{{newsform.news_title}}
+      <label for="news_title" class="control-label">  新闻标题：</label>{{newsform.news_title}}
   <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor" id="editor_toolbar">
       {% include "news/news_toolbar.html" %}
   </div>

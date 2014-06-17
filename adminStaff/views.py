@@ -14,4 +14,6 @@ def newsRelease(request):
     context={}
     context.update({"newsform":NewsForm})
     return render(request,"adminStaff/news_release.html",context)
-
+def noticeMessageSetting(request):
+    context={}
+    return render(request,"adminStaff/notice_message_setting.html",context)
