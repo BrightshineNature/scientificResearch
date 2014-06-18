@@ -2,14 +2,19 @@
 {% load i18n %}
 {% block before_css%}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/adminStaff/content.css" >
+
+  <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/adminStaff/content.css" >
+
+  
+
+
 {% endblock %}
 {% block nav_content%}
 {% include "adminStaff/widgets/features_item_navbar.html" %}
 {% endblock %}
 {% block content %}
 <div class="container main-content-container">
-    <div class="well form">
+    <div>
       {%block inner_content%} {% endblock %}
     </div>
 </div>

@@ -252,3 +252,6 @@ table.documents td {
     color:white;
     text-decoration:underline;
 }
+input[type="text"],input[type="button"],input[type="submit"],select{
+    border-radius:0px!important;
+}

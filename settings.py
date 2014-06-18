@@ -140,6 +140,8 @@ INSTALLED_APPS = (
     'teacher',
     'expert',
     'finance',
+    'const',
+	'common',
     #Add-on
     'south',
     'dajaxice',

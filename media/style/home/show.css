@@ -1,0 +1,96 @@
+/* show search css */
+#search-tools-bar{
+    float:left;
+    margin-top:20px;
+    margin-left:15px;
+}
+#search-tools-bar input[type="text"],select{
+    margin-left:5px;
+    width:220px!important;
+}
+.search-input {
+    margin-left: 5px;
+}
+.search-input:hover,
+.search-input:focus,
+.search-input:active {
+    color: rgb(32, 183, 240);
+    text-shadow: none;
+    border-color: rgb(32, 183, 240) !important;
+}
+.search form {
+    margin-top: 5px;
+}
+.search-news {
+    height: 30px;
+    vertical-align:top;
+    background: transparent;
+    border: 1px solid rgb(32, 183, 240);
+    color: rgb(32, 183, 240);
+}
+.search-news:hover,
+.search-news:focus,
+.search-news:active {
+    color: #eee;
+    text-shadow: none;
+    background-color: rgb(32, 183, 240);
+    border-color: rgb(32, 183, 240);
+}
+/* end show search css */
+/* show contain css */
+/**** Clearfix ****/
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix {
+    zoom: 1;
+    position: relative;
+    width: 900px;
+    float: left;
+}
+.box {
+    margin: 5px;
+    padding: 5px;
+    background: transparent;
+    font-size: 11px;
+    line-height: 1.4em;
+    float: left;
+    border-radius:0px;
+}
+.box a img {
+    width: 280px;
+    height:200px;
+}
+.col1 { width: 80px;height:285px; }
+.col2 { width: 180px;height:285px; }
+.col3 { width: 280px;height:285px; }
+.col4 { width: 380px;height:285px; }
+.col5 { width: 480px;height:285px; }
+
+.col1 img { width: 80px;height:188px }
+.col2 img { width: 180px;height:188px }
+.col3 img { width: 280px;height:188px }
+.col4 img { width: 380px;height:188px }
+.col5 img { width: 480px; height:188px}
+
+.title {
+    text-align:left;
+    margin-top:5px;
+    margin-bottom:2px;
+    color:rgb(32, 183, 240);
+}
+
+p.title {
+    font-weight: 100;
+}
+.title~hr {
+    border-top: 1px solid rgb(72, 65, 231);
+    margin: 5px 0;
+}
+
+#page-nav a {
+    float: left;
+    margin: 10px 0 0 20px;
+    padding: 0 10px;
+    line-height: 30px;
+}
+/* end show contain css */

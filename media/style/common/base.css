@@ -12,6 +12,10 @@ a, h1,h2, h3 {
     color: rgb(32, 183, 240);
     font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, STHeiti, "LiHei Pro Medium", SimSun, SumHei;
 }
+table span a{
+    color: white;
+}
+
 a:hover, a:focus, a:active {
     color: black;
 }
@@ -71,4 +75,22 @@ footer p {
     margin-left: auto;
     margin-right: auto;
     font-weight: 100;
+}
+
+
+#schedule_form select
+{
+    width:150px;
+    margin-right: 5px;
+
+}
+input:
+{
+    background-color:white;
+}
+
+
+
+th,td{
+    text-align: center;
 }
