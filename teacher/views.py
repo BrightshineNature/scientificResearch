@@ -13,3 +13,7 @@ def homeView(request):
 def final_report_view(request):
     context = {}
     return render(request,"teacher/final.html",context)
+
+def settingView(request):
+    context = {}
+    return render(request, "teacher/setting.html", context)
