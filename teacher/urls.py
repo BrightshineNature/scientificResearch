@@ -23,6 +23,10 @@ urlpatterns = patterns('',
 		teacher_views.final_report_view,
 	),
     url(
+        r'commitment',
+        teacher_views.commitmentView,
+    ),
+    url(
         r'setting$',
         teacher_views.settingView,
     ),
