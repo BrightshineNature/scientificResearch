@@ -23,5 +23,9 @@ urlpatterns = patterns('',
         r'alloc',
         school_views.allocView,
     ),
+    url(
+        r'control',
+        school_views.controlView,
+    ),
 )
 urlpatterns += staticfiles_urlpatterns()

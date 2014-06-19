@@ -26,3 +26,10 @@ def progressReportView(requset):
 def allocView(request):
     context = {}
     return render(request, "school/alloc.html", context)
+
+def controlView(request):
+    context = {
+        'year_list':[2011,2012,2013,2014,],
+
+    }
+    return render(request, "school/control.html", context);
