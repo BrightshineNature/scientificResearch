@@ -28,8 +28,23 @@ def allocView(request):
     return render(request, "school/alloc.html", context)
 
 def controlView(request):
-    context = {
-        'year_list':[2011,2012,2013,2014,],
+    
 
+    special = [     
+              {
+                'year_list': [2015,],
+                'special_name': 'science',
+    },
+              {
+                'year_list': [2011,2012,2013,2014,],
+                'special_name': 'liberal',
+    },
+        
+    ]
+
+
+    
+    context = {
+        'special' :special,
     }
     return render(request, "school/control.html", context);
