@@ -1,0 +1,191 @@
+{% extends "school/base/_content.html" %}
+{% block inner_content %}
+<div class="well form-inline">
+    <b>
+    <form id="subject_insitute_form" method="POST" action="/adminStaff/subject_alloc/"><!-- begin category form-->
+	{% csrf_token %}
+	<select class="form-control">
+		<option>学院1</opetion>
+		<option>学院2</opetion>
+	</select>
+  <input type="submit" class="btn btn-primary" id="filter_button" value="按照学院进行筛选"/>
+  </form><!--end category form -->
+  
+<hr/>
+  <div class="tab-content">
+  <div class="tab-pane fade active in" id="review-page">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#unalloced-section" data-toggle="tab" onclick="remove_project_check();">未指派</a>
+      </li>
+      <li>
+        <a href="#alloced-section" data-toggle="tab" onclick="remove_project_check();">已指派</a>
+      </li>
+
+    </ul><!--end ul title-->
+
+    <div class="tab-content">
+      <div class="tab-pane fade active in" id="unalloced-section">
+				<table class="table table-condensed" id="unalloced_subject_table">
+					<thead>
+						<tr>
+						  <th>选择</th>
+							<th>项目编号</th>
+						  <th>发布题目名称</th>
+						  <th>所属学院</th>
+						  <th>所属分类</th>
+						  <th>题目状态</th>
+						  <th>操作</th>
+						</tr>
+					</thead>
+						<tbody id="unalloced_subject_table_body">
+
+							<tr id="tr_{{subject.project_id}}">
+							  <td><label class="checkbox">
+                  <input type="checkbox" name="checkbox_project"">
+                    </label>
+                </td>
+								<td>51012014666666</td>
+							  <td>abcdefg</td>
+							  <td>学院1</td>
+							  <td>文科</td>
+							  <td>已通过</td>
+							  <td><a data-toggle="modal" href="#alloc_choice" id="allocid_{{subject.project_id}}" onclick="single_storage('{{subject.project_id}}');">指派专家</a></td>
+							</tr>
+						
+							<tr id="tr_{{subject.project_id}}">
+							  <td><label class="checkbox">
+                  <input type="checkbox" name="checkbox_project"">
+                    </label>
+                </td>
+								<td>51012014666667</td>
+							  <td>爱丽丝</td>
+							  <td>学院2</td>
+							  <td>农科</td>
+							  <td>未通过</td>
+							  <td><a data-toggle="modal" href="#alloc_choice" id="allocid_{{subject.project_id}}" onclick="single_storage('{{subject.project_id}}');">指派专家</a></td>
+							</tr>
+					</tbody>
+      </table>
+      <a data-toggle="modal" href="#alloc_choice" onclick="bulk_storage();"><button class="btn btn-primary">批量指派</button></a>
+    </div><!--end content section-->
+
+      <div class="tab-pane fade " id="alloced-section">
+				<table class="table table-condensed" id="alloced_subject_table">
+					<thead>
+						<tr>
+						  <th>选择</th>
+							<th>项目编号</th>
+							<th>发布题目名称</th>
+							<th>所属学院</th>
+							<th>所属分类</th>
+							<th>题目状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="alloced_subject_table_body">
+							<tr id="tr_{{subject.project_id}}">
+							  <td><label class="checkbox">
+                  <input type="checkbox" name="checkbox_project"">
+                    </label>
+                </td>
+								<td>51012014666668</td>
+							  <td>环太平洋</td>
+							  <td>学院3</td>
+							  <td>理科</td>
+							  <td>已通过</td>
+							  <td><a data-toggle="modal" href="#query_or_cancel" id="allocid_{{subject.project_id}}" onclick="single_storage('{{subject.project_id}}');">查询或取消指派</a></td>
+							</tr>
+						
+							<tr id="tr_{{subject.project_id}}">
+							  <td><label class="checkbox">
+                  <input type="checkbox" name="checkbox_project"">
+                    </label>
+                </td>
+								<td>51012014666610</td>
+							  <td>国王的新衣</td>
+							  <td>学院4</td>
+							  <td>工科</td>
+							  <td>未通过</td>
+							  <td><a data-toggle="modal" href="#query_or_cancel" id="allocid_{{subject.project_id}}" onclick="single_storage('{{subject.project_id}}');">查询或取消指派</a></td>
+							</tr>
+					</tbody>
+      </table>
+      <a data-toggle="modal" onclick="bulk_cancel();"><button class="btn btn-primary">批量取消</button></a>
+      </div>
+    </div><!--end tab content-->
+  </div><!--end tab pane-->
+  <hr/>
+
+
+
+  <div id="expert_list_div">
+		<table class="table" id="table_expert_list">
+    <thead>
+        <tr>
+            <th>专家姓名</th>
+            <th>已分配数量</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+            <td>张三</td>
+            <td>2</td>
+            </tr>
+            <tr>
+            <td>李四</td>
+            <td>2</td>
+            </tr>
+    </tbody>
+</table>
+  </div>
+
+	<div class="modal fade" id="alloc_choice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+		    <div class="modal-header">
+		      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		      <h3 class="modal-title">选择指派评委</h3>
+		    </div>
+		    <div class="modal-body">
+			    <label class="checkbox">
+						<input type="checkbox" name="checkbox_expert" value="{{ expert.userid }}">
+							张三
+					</label>
+					<br/>
+					<label class="checkbox">
+						<input type="checkbox" name="checkbox_expert" value="{{ expert.userid }}">
+							李四
+					</label>
+		    </div>
+		    <div class="modal-footer">
+		      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+		      <button type="button" class="btn btn-primary">保存</button>
+		    </div>
+		  </div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+ 
+	<div class="modal fade" id="query_or_cancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+		    <div class="modal-header">
+		      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		      <h3 class="modal-title">已指派评委列表</h3>
+		    </div>
+		    <div class="modal-body">
+							张三
+					<br/>
+							李四
+		    <div class="modal-footer">
+		      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+		      <button type="button" class="btn btn-primary">取消指派</button>
+		    </div>
+		  </div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+
+
+{% endblock %}

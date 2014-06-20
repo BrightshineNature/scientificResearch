@@ -22,3 +22,7 @@ def final_report_view(request):
 def progressReportView(requset):
     context={}
     return render(requset,"school/progress.html",context)
+
+def allocView(request):
+    context = {}
+    return render(request, "school/alloc.html", context)
