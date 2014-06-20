@@ -22,6 +22,10 @@ def memberChange(request):
     context['executive']=executive
     return render(request,"teacher/member_change.html",context)
 
+def commitmentView(request):
+    context = {}
+    return render(request, "teacher/commitment.html", context)
+
 def final_report_view(request):
     context = {}
     return render(request,"teacher/final.html",context)
