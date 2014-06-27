@@ -22,3 +22,29 @@ def final_report_view(request):
 def progressReportView(requset):
     context={}
     return render(requset,"school/progress.html",context)
+
+def allocView(request):
+    context = {}
+    return render(request, "school/alloc.html", context)
+
+def controlView(request):
+    
+
+    special = [     
+              {
+                'year_list': [2015,],
+                'special_name': 'science',
+    },
+              {
+                'year_list': [2011,2012,2013,2014,],
+                'special_name': 'liberal',
+    },
+        
+    ]
+
+
+    
+    context = {
+        'special' :special,
+    }
+    return render(request, "school/control.html", context);

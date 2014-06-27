@@ -1,0 +1,43 @@
+{% extends "school/base/_content.html" %}
+
+{%block inner_content%}
+<form id="project_control_form" class="bs-docs-example">
+  {% csrf_token %}
+
+  <ul class="nav nav-pills" id="myTab">
+
+    {%for item in special %}
+      <li class= {%ifequal forloop.counter 1%}"active"{%endifequal%}><a href="#{{item.special_name}}" data-toggle="tab">
+        {{item.special_name}}</a></li>  
+    {%endfor%}
+    
+
+  </ul>
+
+  <div class="tab-content">
+
+    {%for item in special %}
+
+
+    <div class="tab-pane   {%ifequal forloop.counter 1%} active {%endifequal%}" id
+    =
+    '{{item.special_name}}'>
+
+      {%include "school/widgets/control.html"%}
+    </div>
+    {%endfor%}    
+
+  </div>
+
+  <script>
+    $(function () {
+      $('#myTab a:first').tab('show')
+    })
+  </script>
+
+  
+</form>
+
+<!-- <script type='text/javascript' src="{{STATIC_URL}}js/adminstaff/project_control.js"></script> -->
+
+ {%endblock%}

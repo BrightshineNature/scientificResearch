@@ -14,3 +14,6 @@ def index(request):
 def show(request):
     context={}
     return render(request,"home/show.html",context)
+def show_project(request, project_id = ""):
+    context={}
+    return render(request,"home/show_project.html",context)

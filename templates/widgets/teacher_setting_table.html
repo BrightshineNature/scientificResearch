@@ -1,42 +1,65 @@
-<form class="well form" method="POST" action="">
-      {% csrf_token %}
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/member_change.css" >
 
-        <div class="input-group col-xs-2">
-            <span class="input-group-addon">姓名</span>
-            <input type="text" class="form-control"></input>
+<form class="well form" id="member_change_form" method="POST" action="">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                <input type="text" class="form-control" placeholder="姓名">
+            </div> 
         </div>
-        <div class="input-group col-xs-2">
-            <span class="input-group-addon">性别</span>
-            <input type="text" class="form-control"></input>
+				<div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                <input type="text" class="form-control" placeholder="性别">
+            </div>
         </div>
-        <div class="input-group col-xs-2">
-            <span class="input-group-addon">出生年月</span>
-            <input type="text" class="form-control"></input>
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                <input type="text" class="form-control" placeholder="出生年份">
+            </div>
         </div>
-        <div class="input-group col-xs-2">
-            <span class="input-group-addon">支持对象</span>
-            <input type="text" class="form-control"></input>
-        </div>
-        <div class="input-group col-xs-2">
-            <span class="input-group-addon">学位</span>
-            <input type="text" class="form-control"></input>
-        </div>
-        <div class="input-group col-xs-2">
-            <span class="input-group-addon">职称</span>
-            <input type="text" class="form-control"></input>
-        </div>
-        <div class="input-group col-xs-2">
-            <span class="input-group-addon">行政职务</span>
-            <input type="text" class="form-control"></input>
-        </div>
-        <div class="input-group col-xs-2">
-            <span class="input-group-addon">所在研究基地类型</span>
-            <input type="text" class="form-control"></input>
-        </div>
-        <div class="input-group col-xs-2">
-            <span class="input-group-addon">所在研究基地名称</span>
-            <input type="text" class="form-control"></input>
-        </div>
-        <button type="submit" class="btn btn-primary">保存</button>
     </div>
- </form>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                <input type="text" class="form-control" placeholder="支持对象">
+            </div> 
+        </div>
+				<div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                <input type="text" class="form-control"  placeholder="学位">
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                <input type="text" class="form-control"  placeholder="职称">
+            </div>
+        </div>
+    </div>
+        <div class="row">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                <input type="text" class="form-control" placeholder="行政职务">
+            </div> 
+        </div>
+				<div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                <input type="text" class="form-control"  placeholder="所在研究基地类型">
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                <input type="text" class="form-control"  placeholder="所在研究基地名称">
+            </div>
+        </div>
+    </div>
+		<button type="submit" class="btn btn-primary">提交</button>
+</form>

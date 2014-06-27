@@ -1,0 +1,32 @@
+<div class="page-header">
+      <h3>研究内容和目标</h3>
+    </div>
+    <blockquote>
+      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
+        {{final.achievement_summary}} 
+        {% if final.achievement_summary.errors %}
+        <div class="row alert alert-error school-display">
+          <button class="close" data-dismiss="alert">关闭</button>
+          {{ final.achievement_summary.errors }}
+        </div>
+		{% endif %}  
+		<textarea rows="20" name="achievement_summary" id="id_achievement_summary" placeholder="限定1000字以内，另外，学科交叉前沿科研专题数学+X项目、软件+X项目要求说明合作双方研究任务分工情况以及资助经费额度分配情况。" cols="100" class="fill-form"></textarea>
+	  </div>
+    </blockquote><!--end project content-->
+    
+    <br/>
+	<div class="page-header">
+      <h3>年度研究计划及预期研究结果</h3>
+    </div>
+    <blockquote>
+      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
+        {{final.achievement_summary}} 
+        {% if final.achievement_summary.errors %}
+        <div class="row alert alert-error school-display">
+          <button class="close" data-dismiss="alert">关闭</button>
+          {{ final.achievement_summary.errors }}
+        </div>
+		{% endif %}  
+		<textarea rows="15" name="achievement_summary" id="id_achievement_summary" cols="100" class="fill-form" placeholder="限定800字以内"></textarea>
+	  </div>
+  	</blockquote><!--end project content-->
