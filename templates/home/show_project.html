@@ -1,0 +1,12 @@
+{% extends 'home/base/_content.html' %}
+{% block before_css %}
+   {{ block.super }}
+   <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/home/show.css" >
+   {% endblock  %}
+   {% block home_content %}
+   {% endblock %}
+{% block bottom_js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{STATIC_URL}}/js/infinitescroll/jquery.infinitescroll.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}/js/show/ajax_get_page.js"></script>
+{% endblock %}
