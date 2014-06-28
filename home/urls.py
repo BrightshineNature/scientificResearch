@@ -17,4 +17,7 @@ urlpatterns = patterns('',
                        url(r'show$',
                            home_views.show,
                           ),
-                       )
+                       url(r'^(?P<project_id>.{36})$',
+                           home_views.show_project,
+                          ),
+                     )
