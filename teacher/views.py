@@ -29,6 +29,9 @@ def commitmentView(request):
 def final_report_view(request):
     context = {}
     return render(request,"teacher/final.html",context)
+def progressReportView(request):
+    context = {}
+    return render(request,"teacher/progress.html",context)
 
 def settingView(request):
     form = SettingForm()
