@@ -20,7 +20,7 @@ urlpatterns = patterns('',
 	
     url(
 		r'final$',
-		teacher_views.final_report_view,
+		teacher_views.finalReportView,
 	),
     url(
         r'commitment',
@@ -32,7 +32,7 @@ urlpatterns = patterns('',
     ),
 	url(
 		r'financial$',
-		teacher_views.financial_view,
+		teacher_views.financialView,
 	),
 				   
 )

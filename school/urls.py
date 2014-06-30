@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url( r'^$', school_views.scheduleView,  ),
 	url(
 		r'final$',
-		school_views.final_report_view,
+		school_views.finalReportView,
 	),
     url(
         r'progress',
@@ -26,6 +26,14 @@ urlpatterns = patterns('',
     url(
         r'control',
         school_views.controlView,
+    ),
+    url(
+        r'financial$',
+        school_views.financialView,
+    ),
+    url(
+        r'financialinfo$',
+        school_views.financialInfoView,
     ),
 )
 urlpatterns += staticfiles_urlpatterns()

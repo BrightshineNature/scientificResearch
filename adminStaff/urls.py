@@ -20,5 +20,13 @@ urlpatterns = patterns('',
         r'^noticeMessageSetting$',
         adminStaff_views.noticeMessageSetting,
     ),
+    url(
+        r'financial$',
+        adminStaff_views.financialView,
+    ),
+    url(
+        r'financialinfo$',
+        adminStaff_views.financialInfoView,
+    ),
  )
 urlpatterns += staticfiles_urlpatterns()
