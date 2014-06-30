@@ -1,0 +1,14 @@
+<div class="well form">
+    <h3> 
+    项目列表
+    </h3>
+    <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/financial" >
+
+    {% csrf_token %}
+    {% include "widgets/searchform.html" %}
+
+    </form>
+    {%include "widgets/projectlist_financial_info.html" %}
+
+
+</div>

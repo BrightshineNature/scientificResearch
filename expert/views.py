@@ -10,6 +10,6 @@ def homeView(request):
     context={}
     return render(request,"expert/home.html",context)
 
-def final_report_view(request):
+def finalReportView(request):
     context = {}
     return render(request,"expert/final.html",context)
