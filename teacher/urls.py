@@ -15,12 +15,11 @@ urlpatterns = patterns('',
        ),
     url(
         r'^memberchange$',
-        teacher_views.memberChange,    
+        teacher_views.memberChange,
        ),
-	
     url(
-		r'final$',
-		teacher_views.finalReportView,
+        r'final$',
+        teacher_views.finalReportView,
 	),
     url(
         r'commitment',
@@ -30,13 +29,13 @@ urlpatterns = patterns('',
         r'setting$',
         teacher_views.settingView,
     ),
-	url(
-		r'financial$',
-		teacher_views.financialView,
-	),
-    (
+    url(
+        r'financial$',
+        teacher_views.financialView,
+    ),
+    url(
         r'progress$',
         teacher_views.progressReportView,
-    )				   
+    )
 )
 urlpatterns += staticfiles_urlpatterns()
