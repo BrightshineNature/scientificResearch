@@ -8,14 +8,23 @@ textarea.fill-form{
 	padding-bottom:20px;
 	padding-left:10px;
 }
-#budgetinfoformbutton{
-	height:26px;
-	padding:0px 12px;
+
+select.budgetformselect{
+    width: 140px !important;
 }
-.budgetform select{
-	height:26px;
-	width:150px;
-	margin-right:20px;
+
+input.budgetform{
+    width: 150px !important;
+}
+
+label.budgetform{
+    width: 180px !important;
+    text-align: right;    
+}
+
+label.budgetform-small{
+    width: 100px !important;
+    text-align: right;    
 }
 /* show search css */
 #search-tools-bar{
