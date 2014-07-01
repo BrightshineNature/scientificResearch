@@ -1,0 +1,135 @@
+{% extends "teacher/base/_content.html" %}
+{% block inner_content%}
+<link rel="stylesheet" href="{{ STATIC_URL }}style/teacher/fileupload.css" type="text/css" media="screen" />
+<!--File list view-->
+<div class="page-header">
+    <h3>历史文件列表</h3>
+</div>
+<table class="table table-hover table-striped" >      
+    <thead>
+        <tr>
+            <td>名称</td>
+            <td>类型</td>
+            <td>大小</td>
+            <td>上传时间</td>
+        </tr>
+    </thead>
+    <tbody>
+        <!--{%for item in files%}-->
+        <!--<tr>-->
+            <!--<td>{{item.name}}</td>-->
+            <!--<td>{{item.file_type}}</td>-->
+            <!--<td>{{item.file_size}}</td>-->
+            <!--<td>{{item.uploadtime}}</td>-->
+            <!--</tr>-->
+        <!--{%endfor%}-->
+        <tr>
+            <td>共产党宣言</td>
+            <td>结题报告</td>
+            <td>100kb</td>
+            <td>2014-5-5</td>
+        </tr>
+        <tr>
+            <td>马克思主义</td>
+            <td>进展报告</td>
+            <td>100kb</td>
+            <td>2014-5-5</td>
+        </tr>
+    </tbody>
+</table><!--end history list table-->
+
+<br/>
+{%if not readonly %}
+<div class="page-header">
+    <h3>文件上传操作</h3>
+</div>
+<!--File upload operator-->
+
+<div class="row" > 
+    <div class="col-lg-4">
+        <div class="student_file_upload" >
+            <form method="POST"  action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <span class="label label-info col-lg-12"><h4>申请表上传</h4></span>
+                <p class="tip">上传的文件请命名为<strong>“申请表”</strong></p>
+                <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="text/csv/doc/pdf/jpg/png"/ >
+                <button type="submit" class="btn btn-success upload_button"  rel="fileupload_operation">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    <span>上传</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class=" student_file_upload" >
+            <form method="POST"  action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <span class="label label-info col-lg-12"><h4>进展报告上传</h4></span>
+                <p class="tip">上传的文件请命名为<strong>“进展报告”</strong></p>
+                <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="text/csv/doc/pdf/jpg/png"/ >
+                <button type="submit" class="btn btn-success upload_button"  rel="fileupload_operation">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    <span>上传</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class=" student_file_upload" >
+            <form method="POST"  action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <span class="label label-info col-lg-12"><h4>结题报告上传</h4></span>
+                <p class="tip">上传的文件请命名为<strong>“结题报告”</strong></p>
+                <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="text/csv/doc/pdf/jpg/png"/ >
+                <button type="submit" class="btn btn-success upload_button"  rel="fileupload_operation">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    <span>上传</span>
+                </button>
+            </form>
+        </div>
+    </div>
+ <div class="col-lg-4">
+        <div class=" student_file_upload" >
+            <form method="POST"  action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <span class="label label-info col-lg-12"><h4>任务书上传</h4></span>
+                <p class="tip">上传的文件请命名为<strong>“任务书”</strong></p>
+                <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="text/csv/doc/pdf/jpg/png"/ >
+                <button type="submit" class="btn btn-success upload_button"  rel="fileupload_operation">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    <span>上传</span>
+                </button>
+            </form>
+        </div>
+    </div>
+ <div class="col-lg-4">
+        <div class=" student_file_upload" >
+            <form method="POST"  action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <span class="label label-info col-lg-12"><h4>其他文件上传</h4></span>
+                <p class="tip">上传的文件不能命名为<strong>其他五个入口的名称</strong></p>
+                <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="text/csv/doc/pdf/jpg/png"/ >
+                <button type="submit" class="btn btn-success upload_button"  rel="fileupload_operation">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    <span>上传</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--Files Upload Tips-->
+<br/>
+<div class="alert alert-success" id="filesupload-tips" >
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <h3><strong>文件上传提示!</strong></h3>
+    <br/>
+    <ul>
+        <li>上传的最大文件大小为 <strong> 50 MB</strong> </li>
+        <li>只有文件格式为 <strong> (PDF,JPG,PNG,DOC) </strong>的文件才被允许上传.</li>
+        <li>添加文件后请<strong>不要刷新页面</strong>，否则不能进行删除文件操作。</li>
+    </ul>
+</div>
+{%endif%}
+{%endblock%}
