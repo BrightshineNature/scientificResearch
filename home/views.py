@@ -14,6 +14,12 @@ def index(request):
 def show(request):
     context={}
     return render(request,"home/show.html",context)
-def show_project(request, project_id = ""):
+def showProject(request, project_id = ""):
     context={}
     return render(request,"home/show_project.html",context)
+def newsListByCate(request, news_cate):
+    context={}
+    context["news_cate"] = news_cate
+    context['%s_active' % news_cate] = 'active'
+    return render(request, 'home/newsContentByCate.html', \
+                  context)

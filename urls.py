@@ -28,9 +28,13 @@ urlpatterns = patterns('',
     # This must be placed before (r'^admin/(.*)', admin.site.root), as that gobals up everything
     url(r'^admin/jsi18n/$', 'django.views.i18n.javascript_catalog'),
     url(
-        r'^',
+        r'^$',
         include('home.urls'),
         name="home"
+    ),
+    url(
+        r'^home/',
+        include('home.urls'),
     ),
     url(
         r'^admin/',

@@ -1,0 +1,25 @@
+{% extends 'home/base/_content.html' %}
+{% block before_css %}
+   {{ block.super }}
+   <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/home/newsContent.css" >
+{% endblock  %}
+{% block before_home_content%}
+   {% include "widgets/news/newsNav.html"%}
+{% endblock %}
+{% block home_content %}
+   <div class="news-body">
+     <div class="news-list">
+       <div class="search">
+         <form action="#"  class="form-inline" method="get">
+           <div class="form-group">
+             <input id="news-search-input" class="search-input form-control" type="text" size="16" alt="Search.">
+           </div>
+           <div class="form-group">
+             <input id="search-news" class="search-news" type="button" value="Go!" alt="Go." title="Go." cate="{{news_cate.category}}">
+           </div>
+         </form>
+       </div>
+       {% include "widgets/news/_newsList.html" %}
+     </div> <!-- news-list -->
+   </div> <!-- news-main -->
+{% endblock %}
