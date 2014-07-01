@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     ),
 	url(
 		r'final$',
-		expert_views.final_report_view,
+		expert_views.finalReportView,
 	),
 )
 urlpatterns += staticfiles_urlpatterns()

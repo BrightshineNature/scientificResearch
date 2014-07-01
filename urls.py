@@ -57,6 +57,10 @@ urlpatterns = patterns('',
         r'^expert/',
         include('expert.urls'),
     ),
+    url(
+        r'^finance/',
+        include('finance.urls'),
+    ),
 )
 
 urlpatterns += patterns('', url(r'tinymce/', include('tinymce.urls')),)

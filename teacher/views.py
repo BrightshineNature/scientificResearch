@@ -5,7 +5,6 @@ Created on 2014-06-07
 Desc: teacher' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from const import PROFESSIONAL_TITLE,EXECUTIVE_POSITION
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.views import scheduleManage
@@ -26,7 +25,7 @@ def commitmentView(request):
     context = {}
     return render(request, "teacher/commitment.html", context)
 
-def final_report_view(request):
+def finalReportView(request):
     context = {}
     return render(request,"teacher/final.html",context)
 def progressReportView(request):
@@ -39,7 +38,7 @@ def settingView(request):
     form = SettingForm()
     context = {"form": form}
     return render(request, "teacher/setting.html", context)
-def financial_view(request):
+def financialView(request):
     if request.method == "POST":
         budgetinfoform = ProjectBudgetInformationForm(request.POST)
         budgetannuform = ProjectBudgetAnnualForm(request.POST)
