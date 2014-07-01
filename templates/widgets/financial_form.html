@@ -27,6 +27,7 @@
 </div>
 </form>
 <BR>
+<hr>
 <form method="POST" action="#" class="form-inline budgetform" id="annualbudgetform">
 {% csrf_token%}
 <h3> 项目年度预算情况（万元）</h3>
@@ -54,6 +55,9 @@
 <button type="submit" class="btn btn-primary" id="budgetinfoformbutton" >添加年度预算</button>
 </div>
 <br>
+<hr>
+<span class="label label-success">年末结转金额(万元)：20000</span>
+<span class="label label-success">年末结转金额(万元)：10000</span>
 <table class="table">
     <thead>
       <tr>
@@ -80,4 +84,3 @@
       </tr>
     </tbody>
   </table>
-<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/teacher/content.css" >
