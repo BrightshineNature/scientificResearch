@@ -31,7 +31,9 @@ def finalReportView(request):
 def progressReportView(request):
     context = {}
     return render(request,"teacher/progress.html",context)
-
+def fileView(request):
+    data={};
+    return render(request,"teacher/file_upload.html",data);
 def settingView(request):
     form = SettingForm()
     context = {"form": form}

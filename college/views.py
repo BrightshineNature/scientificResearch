@@ -19,7 +19,7 @@ def scheduleView(request):
 
 def financialView(request):
     userauth = {
-                "role": 'school',                
+                "role": 'college',                
     }
     return financialManage(request, userauth)
 
@@ -31,8 +31,8 @@ def financialInfoView(request):
         'budgetinfoform':budgetinfoform,
         'budgetannuform':budgetannuform,
     }
-    return render(request,"school/project_financial_info.html",context)
+    return render(request,"college/project_financial_info.html",context)
 
 def finalReportView(request):
     context = {}
-    return render(request,"school/final.html",context)
+    return render(request,"college/final.html",context)

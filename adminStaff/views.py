@@ -57,7 +57,7 @@ def noticeMessageSetting(request):
 
 def financialView(request):
     userauth = {
-                "role": 'school',                
+                "role": 'adminStaff',                
     }
     return financialManage(request, userauth)
 
@@ -69,4 +69,4 @@ def financialInfoView(request):
         'budgetinfoform':budgetinfoform,
         'budgetannuform':budgetannuform,
     }
-    return render(request,"school/project_financial_info.html",context)
+    return render(request,"adminStaff/project_financial_info.html",context)

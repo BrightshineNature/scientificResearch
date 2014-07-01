@@ -13,5 +13,13 @@ urlpatterns = patterns('',
         r'^$',
         finance_views.homeView,
     ),
+    url(
+        r'financial$',
+        finance_views.financialView,
+    ),
+    url(
+        r'financialinfo$',
+        finance_views.financialInfoView,
+    ),
 )
 urlpatterns += staticfiles_urlpatterns()

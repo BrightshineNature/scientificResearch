@@ -10,10 +10,10 @@ from college import views as college_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
     url(r'^$', college_views.scheduleView, ),
-	url(
-		r'final$',
-		college_views.finalReportView,
-	),
+    url(
+        r'final$',
+        college_views.finalReportView,
+    ),
     url(
         r'financial$',
         college_views.financialView,
