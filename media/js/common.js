@@ -19,3 +19,25 @@ $('[rel="isover"]').click(function(){
   var pid = $(this).attr("pid");
   Dajaxice.school.isover_control(isover_control_callback,{"pid":pid});
 });
+
+
+
+function save_special_name(){
+  // alert($('#major_name_form').serialize(true))
+  Dajaxice.adminStaff.SaveSpecialName(SaveSpecialName_callback,{'form':$('#special_form').serialize(true)});
+};
+function SaveSpecialName_callback(data){
+    if(data.status == "1")
+    {
+        $("#info_majorname").html(data.table);
+        alert(data.message)
+    }
+    else if(data.status == "2")
+    {
+        alert(data.message)
+    }
+    else 
+    {
+        alert(data.message)
+    }
+}
