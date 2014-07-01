@@ -1,0 +1,192 @@
+{% extends "adminStaff/base/_content.html" %}
+
+{%block inner_content%}
+
+
+<div class="well">
+
+    <ul class="nav nav-pills" id="myTab">
+        <li class="active"><a href="#school">专题更改</a></li>
+        <li><a href="#major">专业分配</a></li>
+    </ul>
+ 
+    <div class="tab-content">
+        <div class="tab-pane fade active in" id="school">
+            <p> </p>
+            <form class="form-inline" id="school_name_form">
+
+                <div class = "form-group">
+                    <label class="control-label" for="name">专题:</label>
+                </div>
+
+                <div class = "form-group">
+                    {{special_form.name}}
+                </div>
+
+                <div class = "form-group">
+                    <span class="btn btn-primary" id="school_name" onclick="save_school_name();" >保存专题名称</span> 
+                </div>
+            </form> 
+
+            <p></p>
+
+            <div class="btn btn-primary" title="运行选中的动作" onclick="delete_school_name()">
+                  删除所选专题 
+              </div>  
+              <p></p>
+
+              <div id="info_schoolname">
+                <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                          <th scope="col" class="action-checkbox-column">  
+                              <div class="text"><span><input type="checkbox" id="action-toggle"></span></div>
+                          </th>
+                          <th scope="col"> <div class="text"><span>专业列表</span></div> </th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+
+                      {%for element in special_dict %}
+                      <tr class="success">
+                          <td class="action-checkbox">
+                              <input type="checkbox" class="action-select" value= "{{element.id }}" name="_selected_action">
+                          </td>
+                          <th> {{element}} </th>
+                      </tr>
+                      {%endfor%}
+
+                    </tbody>
+                </table>
+
+              </div>
+
+        </div>
+
+
+
+        <div class="tab-pane fade" id="major">
+
+              
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>用户名称</th>
+                      
+                      <th>已分配专题</th>
+                      <th>重新分配</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr>
+                      <td>test_user</td>
+                      <td>理科</td>
+                      
+
+                      <td>
+
+                        <a data-toggle="modal" id="overstatus_1" onclick="get_subject_id('1')" href="#overstatus_choice"   pid="1" class="btn btn-primary">
+                          分配
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="modal fade" style="display: none;" id="overstatus_choice">
+                <div class="modal-dialog">
+
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <a class="close" data-dismiss="modal">×</a>
+                        <h3>重新分配</h3>
+                    </div>
+
+                    <div class="modal-body">
+
+
+
+                      <tr class="success">
+                          <td class="action-checkbox">
+                              <input type="checkbox" class="action-select" value= "{{element.id }}" name="_selected_action"
+                              checked = "true">
+                          </td>
+                          <th> 理科 </th>
+                          <td class="action-checkbox">
+                              <input type="checkbox" class="action-select" value= "{{element.id }}" name="_selected_action"
+                              >
+                          </td>
+                          <th> 文科 </th>
+                      </tr>
+
+
+
+                    </div>
+
+
+
+
+                    <div class="modal-footer">
+                    <a class="btn" data-dismiss="modal">关闭</a>
+                    <a class="btn btn-primary" data-dismiss="modal" onclick="project_overstatus();">保存更新</a>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
+
+
+            <script type="text/javascript" src="{{STATIC_URL}}js/common.js"></script>
+
+
+            <!-- ajax_csrf-->
+            <script type='text/javascript' src="{{STATIC_URL}}js/ajax_csrf.js"></script>
+
+
+
+
+                  
+
+
+              
+
+        </div>  
+
+    </div>  
+
+
+    <script>
+      $('#myTab a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    })
+
+      $(function () {
+        $('#myTab a:first').tab('show');
+      })
+    </script>
+</div>
+
+
+
+
+      
+<script type='text/javascript' src="{{ STATIC_URL }}js/adminstaff/modify_adminStaff.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

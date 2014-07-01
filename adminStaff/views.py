@@ -9,7 +9,34 @@ from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
-from adminStaff.forms import NewsForm
+from adminStaff.forms import NewsForm, SpecialForm
+
+def specialView(request):
+
+
+    userauth = {
+        'role': 'adminStaff',
+    }
+    special_form = SpecialForm()
+
+    if request.method == "POST":
+        special_form = SpecialForm(request.POST)
+
+
+    special_dict = {
+        "文科",
+        "理科",
+
+    }
+
+    context = {'special_form' : special_form,
+                'special_dict': special_dict,
+    }
+    
+
+    return render(request, "adminStaff/special.html", context)
+
+
 def scheduleView(request):
 
 
@@ -19,6 +46,7 @@ def scheduleView(request):
 
 
     return scheduleManage(request, userauth)
+
 def newsRelease(request):
     context={}
     context.update({"newsform":NewsForm})

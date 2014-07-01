@@ -25,6 +25,10 @@ urlpatterns = patterns('',
         adminStaff_views.financialView,
     ),
     url(
+        r'special$',
+        adminStaff_views.specialView,
+    ),
+    url(
         r'financialinfo$',
         adminStaff_views.financialInfoView,
     ),

@@ -17,3 +17,6 @@ class NewsForm(forms.Form):
         #choice_list.append((obj.id, obj.get_category_display()))
     #news_category = forms.ChoiceField(choices=choice_list)
 
+class SpecialForm(forms.Form):
+    name = forms.CharField(max_length=200, required=True,
+                                 widget=forms.TextInput(attrs={'class':'form-control','id':"special",'placeholder':u""}),)
