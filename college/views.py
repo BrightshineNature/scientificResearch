@@ -8,9 +8,10 @@ from django.shortcuts import render
 from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
+
+
+from college.forms import TeacherDispatchForm
 def scheduleView(request):
-
-
     userauth = {
                 "role": 'college',
                 }
@@ -35,4 +36,11 @@ def financialInfoView(request):
 
 def finalReportView(request):
     context = {}
-    return render(request,"college/final.html",context)
+    return render(request,"school/final.html",context)
+
+def dispatchView(request):
+    teacher_form = TeacherDispatchForm()
+    context = {
+        "teacher_form": teacher_form,
+    }
+    return render(request, "college/dispatch.html", context)

@@ -37,6 +37,7 @@ def specialView(request):
     return render(request, "adminStaff/special.html", context)
 
 
+from adminStaff.forms import NewsForm, SchoolDispatchForm, CollegeDispatchForm, ExpertDispatchForm
 def scheduleView(request):
 
 
@@ -55,6 +56,15 @@ def noticeMessageSetting(request):
     context={}
     return render(request,"adminStaff/notice_message_setting.html",context)
 
+def dispatchView(request):
+    school_form = SchoolDispatchForm()
+    college_form = CollegeDispatchForm()
+    expert_form = ExpertDispatchForm()
+    context = {"school_form": school_form, 
+               "college_form": college_form, 
+               "expert_form": expert_form, 
+    }
+    return render(request, "adminStaff/dispatch.html", context)
 def financialView(request):
     userauth = {
                 "role": 'adminStaff',                
