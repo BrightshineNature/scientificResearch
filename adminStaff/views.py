@@ -11,6 +11,11 @@ from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
 from adminStaff.forms import NewsForm, SpecialForm
 
+def appView(request):
+
+    context = {}
+    return render(request, "adminStaff/application.html", context)
+
 def specialView(request):
 
 

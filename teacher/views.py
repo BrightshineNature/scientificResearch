@@ -8,6 +8,14 @@ from django.shortcuts import render
 from const import PROFESSIONAL_TITLE,EXECUTIVE_POSITION
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.views import scheduleManage
+
+def appView(request):
+
+    context = {
+
+    }
+    return render(request,"teacher/application.html",context)
+    
 def homeView(request):
     context = {
 

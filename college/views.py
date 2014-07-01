@@ -11,6 +11,9 @@ from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
 
 from college.forms import TeacherDispatchForm
+def appView(request):
+    context = {}
+    return render(request, "college/application.html", context)
 def scheduleView(request):
     userauth = {
                 "role": 'college',

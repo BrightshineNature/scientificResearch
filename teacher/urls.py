@@ -18,6 +18,10 @@ urlpatterns = patterns('',
         teacher_views.memberChange,
        ),
     url(
+        r'^application$',
+        teacher_views.appView,
+       ),
+    url(
         r'final$',
         teacher_views.finalReportView,
 	),
