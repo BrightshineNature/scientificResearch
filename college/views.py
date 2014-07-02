@@ -6,7 +6,9 @@ Desc: college' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
 from common.forms import ScheduleForm
-from common.views import scheduleManage
+from common.views import scheduleManage, financialManage
+from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
+
 
 from college.forms import TeacherDispatchForm
 def scheduleView(request):
@@ -16,8 +18,23 @@ def scheduleView(request):
 
     return scheduleManage(request, userauth)
 
+def financialView(request):
+    userauth = {
+                "role": 'college',                
+    }
+    return financialManage(request, userauth)
 
-def final_report_view(request):
+
+def financialInfoView(request):
+    budgetinfoform = ProjectBudgetInformationForm()
+    budgetannuform = ProjectBudgetAnnualForm()    
+    context = {
+        'budgetinfoform':budgetinfoform,
+        'budgetannuform':budgetannuform,
+    }
+    return render(request,"college/project_financial_info.html",context)
+
+def finalReportView(request):
     context = {}
     return render(request,"school/final.html",context)
 
@@ -26,5 +43,4 @@ def dispatchView(request):
     context = {
         "teacher_form": teacher_form,
     }
-
     return render(request, "college/dispatch.html", context)

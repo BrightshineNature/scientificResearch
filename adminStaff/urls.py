@@ -24,5 +24,9 @@ urlpatterns = patterns('',
         r'^dispatch$',
         adminStaff_views.dispatchView,
     ),
+    url(
+        r'financialinfo$',
+        adminStaff_views.financialInfoView,
+    ),
  )
 urlpatterns += staticfiles_urlpatterns()

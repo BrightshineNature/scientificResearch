@@ -4,6 +4,18 @@ from django.shortcuts import render
 from common.forms import ScheduleForm, ScheduleBaseForm
 def scheduleManage(request, userauth):
 
+    context = schedule_form_data(request, userauth)
+
+    return render(request, userauth['role'] + '/schedule.html', context)
+
+def financialManage(request, userauth):
+    
+    context = schedule_form_data(request, userauth)
+
+    return render(request, userauth['role'] + '/financial.html', context)
+
+def schedule_form_data(request , userauth):
+
     if userauth['role'] == 'college':
         schedule_form = ScheduleBaseForm()
     else :
@@ -33,6 +45,5 @@ def scheduleManage(request, userauth):
                'userauth': userauth,
     }
 
+    return context
 
-
-    return render(request, userauth['role'] + '/schedule.html', context)

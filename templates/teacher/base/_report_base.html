@@ -1,0 +1,33 @@
+{% extends "teacher/base/_content.html" %}
+{%block inner_content%}
+<div class="row" id="report_base_div">
+  <div class="col-lg-2 bg-info">
+    <div  style=" text-align:center;">
+      <h4><a href="">申请表</a></h4>
+    </div><!--end alert-->
+  </div><!--end left span-->
+
+  <div class="col-lg-2 bg-success">
+    <div style=" text-align:center;">
+      <h4><a href="{% url teacher.views.progressReportView %}">进展报告</a></h4>
+    </div><!--end alert-->
+  </div><!--end left span-->
+  <div class="col-lg-2 bg-info">
+    <div  style="text-align:center;">
+      <h4><a href="{% url teacher.views.finalReportView %}">结题报告</a></h4>
+    </div><!--end alert-->
+  </div><!--mid right span-->
+  <div class="col-lg-2 bg-success">
+    <div style="text-align:center;">
+      <h4><a href="{% url teacher.views.commitmentView %}">任务书</a></h4>
+    </div><!--end alert-->
+  </div><!--mid right span-->
+  <div class="col-lg-2 bg-info">
+    <div  style=" text-align:center;">
+      <h4><a href="{% url teacher.views.fileView %}">成果上传</a></h4>
+    </div><!--end alert-->
+  </div><!--end right span-->
+</div><!--end row-->
+{%block report-content%}
+{%endblock%}
+{%endblock%}

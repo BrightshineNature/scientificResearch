@@ -1,0 +1,81 @@
+{% if has_data %}
+
+  <div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>项目编号</th>
+          <th>项目名称</th>          
+          <th>项目状态</th>          
+          <th>指导老师</th>         
+		  <th>专题类型</th>
+		  <th>基本科研业务费经费</th>
+		  <th>项目单位自筹经费</th>
+		  <th>总经费</th>
+          <th>是否结题</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>51012014666666</td>
+          <td><a href="/{{userauth.role}}/financialinfo">testForYou</a></td>
+          <td>在研</td>
+          <td>huhu</td>
+          <td>文科</td>
+		  <td>20000</td>
+		  <td>10000</td>
+          <td>30000</td>
+          <td>
+            <a data-toggle="modal" id="overstatus_1" onclick="get_subject_id('1')" href="#overstatus_choice"   pid="1" class="btn btn-primary">
+              已结题
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  目前没有正在进行的项目
+{% endif %}
+  <div class="modal fade" style="display: none;" id="overstatus_choice">
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <a class="close" data-dismiss="modal">×</a>
+            <h3>选择项目结题状态</h3>
+        </div>
+
+        <div class="modal-body">
+
+
+
+          <select name="project_overstatus" id="id_project_overstatus" 
+          class="btn btn-default col-lg-3">
+          <option value="-1" selected="selected">结题状态</option>
+          <option value="yes">已结题</option>
+          <option value="no">未结题</option>        
+          </select>
+        </div>
+
+
+
+
+        <div class="modal-footer">
+        <a class="btn" data-dismiss="modal">关闭</a>
+        <a class="btn btn-primary" data-dismiss="modal" onclick="project_overstatus();">保存更新</a>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+<script type="text/javascript" src="{{STATIC_URL}}js/common.js"></script>
+
+
+<!-- ajax_csrf-->
+<script type='text/javascript' src="{{STATIC_URL}}js/ajax_csrf.js"></script>

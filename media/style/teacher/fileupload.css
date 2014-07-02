@@ -1,0 +1,22 @@
+div.student_file_upload{
+    margin-right:0px!important;
+    margin-left:0px!important;
+    margin-top:10px;
+    margin-bottom: 10px;
+    border: solid #3a87ad 1px;
+    padding:0px;
+
+}
+.file{
+    margin-left:10px;
+    margin-bottom:20px;
+    display:inline!important;
+    width:250px;
+}
+.upload_button{
+    margin-left:15px;
+    margin-bottom:20px;
+}
+.tip{
+    margin-left:10px;
+}

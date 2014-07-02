@@ -4,4 +4,16 @@ textarea.fill-form{
   margin-right: 5px;
 }
 
-
+.budgetform{
+	padding-bottom:20px;
+	padding-left:10px;
+}
+#budgetinfoformbutton{
+	height:26px;
+	padding:0px 12px;
+}
+.budgetform select{
+	height:26px;
+	width:150px;
+	margin-right:20px;
+}

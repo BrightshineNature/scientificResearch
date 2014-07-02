@@ -6,7 +6,8 @@ Desc: adminStaff' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
 from common.forms import ScheduleForm
-from common.views import scheduleManage
+from common.views import scheduleManage, financialManage
+from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
 from adminStaff.forms import NewsForm, SchoolDispatchForm, CollegeDispatchForm, ExpertDispatchForm
 def scheduleView(request):
@@ -35,3 +36,18 @@ def dispatchView(request):
                "expert_form": expert_form, 
     }
     return render(request, "adminStaff/dispatch.html", context)
+def financialView(request):
+    userauth = {
+                "role": 'adminStaff',                
+    }
+    return financialManage(request, userauth)
+
+
+def financialInfoView(request):
+    budgetinfoform = ProjectBudgetInformationForm()
+    budgetannuform = ProjectBudgetAnnualForm()    
+    context = {
+        'budgetinfoform':budgetinfoform,
+        'budgetannuform':budgetannuform,
+    }
+    return render(request,"adminStaff/project_financial_info.html",context)
