@@ -4,6 +4,7 @@
 {%block inner_content%}
 <link rel="stylesheet" href="{{ STATIC_URL }}style/adminStaff/font-awesome.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="{{ STATIC_URL }}style/adminStaff/news_release.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="{{ STATIC_URL }}bootstrap-datepicker/css/bootstrap-datetimepicker.css" type="text/css" media="screen" />
 <!--<link rel="stylesheet" href="{{ STATIC_URL }}admin/css/forms.css" type="text/css" media="screen" />-->
 
 <!-- set for datetimeshortcuts.js -->
@@ -12,10 +13,12 @@
 <script type='text/javascript' src="{{STATIC_URL}}js/news/news_toolbar.js"></script>
 <form id="news_form"  class="form-horizontal" action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <div>
-        <label class="newsinfo" for="news_title" >  新闻标题：</label>
-        {{newsform.news_title}}
+    <div class="form-group newsinfo">
+        <label class="col-lg-2 control-label" for="news_title" >  新闻标题：</label>
+        <div class="col-lg-6">
+            {{newsform.news_title}}
         </div>
+    </div>
     <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor" id="editor_toolbar">
         {% include "news/news_toolbar.html" %}
     </div>
@@ -23,17 +26,21 @@
     <div id="editor">
         "在此编写新闻内容..."
     </div>
-    <label class="newsinfo">
-        <!--<label> 发布时间:</label> <input name="" maxlength="200" type="text" placeholder="发布时间" id="" class="col-lg-3 inputstyle">-->
-        发布时间: {{newsform.news_date}}
-    </label>
-    <!--<div>-->
-        <!--新闻类型: {{newsform.news_category}}-->
+    <div class="form-group newsinfo">
+        <label class=" col-lg-2 control-label">发布时间：</label>
+        <div class="col-lg-6">
+            <div class="input-group date form-date" data-date="" data-date-format="yyyy-mm-dd">
+                {{newsform.news_date}}
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+        </div>
     </div>
-    <label class="newsinfo">
-        新闻附件: {{newsform.news_document}}
-
-    </label>
+    <div class="form-group newsinfo">
+        <label class="col-lg-2 control-label">新闻附件：</label>
+        <div class="col-lg-6">
+            {{newsform.news_document}}
+        </div>
+    </div>
     <div class="form-actions">
         <span class="pull-right">
             <button class="btn">取消</button>
@@ -47,6 +54,7 @@
     {% include "adminStaff/widgets/newslist.html" %}
 </div>
 <!-- ajax_csrf-->
+<script type='text/javascript' src="{{STATIC_URL}}bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}js/newstable.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}js/news/news_release.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}js/news/jquery.hotkeys.js"></script>
@@ -56,6 +64,4 @@
 <script type="text/javascript" src="/admin/jsi18n/"></script>
 <script type="text/javascript" src="/static/admin/js/core.js"></script>
 <script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
-<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
-<script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
 {%endblock%}

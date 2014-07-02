@@ -46,3 +46,12 @@ function news_delete_callback(data){
       $("p#delete-message").text(data.message);
   }
 }
+$(".form-date").datetimepicker({
+    weekStart:1,
+    todayBtn: 1,
+    autoclose: 1,
+    todayHighlight:1,
+    startView:2,
+    forceParse:0,
+    minView:2
+});
