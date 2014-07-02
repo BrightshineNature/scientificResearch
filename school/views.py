@@ -8,6 +8,10 @@ from django.shortcuts import render
 from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
+
+def appView(request):
+    context = {}
+    return render(request,"school/application.html",context)
 def scheduleView(request):
 
     userauth = {

@@ -14,6 +14,7 @@ urlpatterns = patterns('',
         adminStaff_views.noticeMessageSetting,
     ),
    url(r'^$', adminStaff_views.scheduleView,),
+   url(r'^application$', adminStaff_views.appView,),
 
    url(r'^news_release$',adminStaff_views.newsRelease),
    url(

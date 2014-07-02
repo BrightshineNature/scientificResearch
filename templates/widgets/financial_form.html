@@ -1,4 +1,5 @@
 <form method="POST" action="/teacher/financial" class="form-inline budgetform" id="budgetinfoform" role="form">
+    {% csrf_token%}
     <h3> 项目经费预算信息（万元）</h3>
     {% if budgetinfoform.project_basicexpenses.errors or budgetinfoform.project_selfexpense.errors or  budgetinfoform.project_totalexpense.errors %}
     <div class="alert alert-danger">

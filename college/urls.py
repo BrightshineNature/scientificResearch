@@ -16,6 +16,11 @@ urlpatterns = patterns('',
     ),
 
     url(
+        r'application$',
+        college_views.appView,
+    ),
+
+    url(
         r'final$',
         college_views.finalReportView,
     ),
