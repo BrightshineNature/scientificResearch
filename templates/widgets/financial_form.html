@@ -1,63 +1,93 @@
-<h3> 项目经费预算信息（万元）</h3>
-<div class="row-fluid">
-{% if budgetinfoform.project_basicexpenses.errors or budgetinfoform.project_selfexpense.errors or  budgetinfoform.project_totalexpense.errors %}
-<div class="alert alert-danger">
-  <button class="close" data-dismiss="alert">×</button>
-  <p>
-  {%if budgetinfoform.project_basicexpenses.errors %} “基本科研业务费经费“  &nbsp; {% endif %}
-  {%if budgetinfoform.project_selfexpense.errors %} “项目单位自筹经费“ &nbsp;  {% endif %}
-  {%if budgetinfoform.project_totalexpense.errors %} “总经费“  &nbsp; {% endif %}
-  字段没有填写
-  </p>
-</div>
-{%endif%}
-<div class="control-group col-sm-4">
-{{budgetinfoform.project_basicexpenses.label}}
-{{budgetinfoform.project_basicexpenses}}
-</div>
-<div class="control-group col-sm-4">
-{{budgetinfoform.project_selfexpense.label}}
-{{budgetinfoform.project_selfexpense}}
-</div>
-<div class="control-group col-sm-3">
-{{budgetinfoform.project_totalexpense.label}}
-{{budgetinfoform.project_totalexpense}}
-</div>
-<button type="submit" class="btn btn-primary" id="budgetinfoformbutton" >提交</button>
-</div>
+<form method="POST" action="/teacher/financial" class="form-inline budgetform" id="budgetinfoform" role="form">
+    {% csrf_token%}
+    <h3> 项目经费预算信息（万元）</h3>
+    {% if budgetinfoform.project_basicexpenses.errors or budgetinfoform.project_selfexpense.errors or  budgetinfoform.project_totalexpense.errors %}
+    <div class="alert alert-danger">
+      <button class="close" data-dismiss="alert">×</button>
+      <p>
+      {%if budgetinfoform.project_basicexpenses.errors %} “基本科研业务费经费“  &nbsp; {% endif %}
+      {%if budgetinfoform.project_selfexpense.errors %} “项目单位自筹经费“ &nbsp;  {% endif %}
+      {%if budgetinfoform.project_totalexpense.errors %} “总经费“  &nbsp; {% endif %}
+      字段没有填写
+      </p>
+    </div>
+    {%endif%}
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-5 budgetform control-label">基本科研业务费经费</label>
+    <div class="col-sm-2">
+          {{budgetinfoform.project_basicexpenses}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-5 budgetform control-label">项目单位自筹经费</label>
+    <div class="col-sm-2">
+          {{budgetinfoform.project_selfexpense}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-5 control-label budgetform-small">总经费</label>
+    <div class="col-sm-2">
+          {{budgetinfoform.project_totalexpense}}
+    </div>
+  </div>
+<!--           {{budgetinfoform.project_basicexpenses.label}}
+          {{budgetinfoform.project_basicexpenses}}
+
+          {{budgetinfoform.project_selfexpense.label}}
+          {{budgetinfoform.project_selfexpense}}
+
+          {{budgetinfoform.project_totalexpense.label}}
+          {{budgetinfoform.project_totalexpense}} -->
+
+    <button type="submit" class="btn btn-primary" id="budgetinfoformbutton" >提交</button>
+
 </form>
 <BR>
 <hr>
 <form method="POST" action="#" class="form-inline budgetform" id="annualbudgetform">
-{% csrf_token%}
-<h3> 项目年度预算情况（万元）</h3>
-<div class="row-fluid">
-{% if budgetannuform.project_budgetfunds.errors or  budgetannuform.project_previousfunds.errors %}
-<div class="alert alert-danger">
-    <button class="close" data-dismiss="alert">×</button>
-    <p>
-    {%if budgetannuform.project_budgetfunds.errors %} “预算安排经费“  &nbsp; {% endif %}
-    {%if budgetannuform.project_previousfunds.errors %} “项目以前年度结转经费“ &nbsp;  {% endif %}
-    字段没有填写
-    </p>
-</div>
-{%endif%}
-{{budgetannuform.year_list.label}}    
-{{budgetannuform.year_list}}
-<div class="control-group col-sm-4">
-{{budgetannuform.project_budgetfunds.label}}
-{{budgetannuform.project_budgetfunds}}
-</div>
-<div class="control-group col-sm-4">
-{{budgetannuform.project_previousfunds.label}}
-{{budgetannuform.project_previousfunds}}
-</div>
-<button type="submit" class="btn btn-primary" id="budgetinfoformbutton" >添加年度预算</button>
-</div>
+    {% csrf_token%}
+    <h3> 项目年度预算情况（万元）</h3>
+    {% if budgetannuform.project_budgetfunds.errors or  budgetannuform.project_previousfunds.errors %}
+    <div class="alert alert-danger">
+        <button class="close" data-dismiss="alert">×</button>
+        <p>
+        {%if budgetannuform.project_budgetfunds.errors %} “预算安排经费“  &nbsp; {% endif %}
+        {%if budgetannuform.project_previousfunds.errors %} “项目以前年度结转经费“ &nbsp;  {% endif %}
+        字段没有填写
+        </p>
+    </div>
+    {%endif%}
+    <div class="form-group">
+      <label for="inputEmail3" class="col-sm-5 budgetform control-label">项目以前年度结转经费</label>
+      <div class="col-sm-2">
+            {{budgetannuform.project_budgetfunds}}
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail3" class="col-sm-5 budgetform control-label">预算安排经费</label>
+      <div class="col-sm-2">
+            {{budgetannuform.project_previousfunds}}
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail3" class="col-sm-5 control-label budgetform-small">预算年份</label>
+      <div class="col-sm-2">
+            {{budgetannuform.year_list}}
+      </div>
+    </div>
+
+<!--     {{budgetannuform.year_list.label}}    
+    {{budgetannuform.year_list}}
+    {{budgetannuform.project_budgetfunds.label}}
+    {{budgetannuform.project_budgetfunds}}
+    {{budgetannuform.project_previousfunds.label}}
+    {{budgetannuform.project_previousfunds}} -->
+    <button type="submit" class="btn btn-primary" id="budgetinfoformbutton" >添加年度预算</button>
+</form>
 <br>
 <hr>
-<span class="label label-success">年末结转金额(万元)：20000</span>
-<span class="label label-success">年末结转金额(万元)：10000</span>
+<span class="label label-success">年末结转金额(万元)：200</span>
+<span class="label label-success">年末结转金额(万元)：100</span>
 <br>
 <hr>
 <table class="table">

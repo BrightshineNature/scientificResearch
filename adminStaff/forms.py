@@ -16,4 +16,37 @@ class NewsForm(forms.Form):
     #for obj in news_cate_list:
         #choice_list.append((obj.id, obj.get_category_display()))
     #news_category = forms.ChoiceField(choices=choice_list)
+class SchoolDispatchForm(forms.Form):
+    password = forms.CharField(max_length=20, required=False,
+                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"默认密码：邮箱名字",'id':'password'}
+                                                                      ),
+                                                                      )
+    email = forms.EmailField(required=True,
+                                     widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}
+                                                                           ))
+    person_firstname = forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))
 
+class SpecialForm(forms.Form):
+    name = forms.CharField(max_length=200, required=True,
+                                 widget=forms.TextInput(attrs={'class':'form-control','id':"special",'placeholder':u""}),)
+class CollegeDispatchForm(forms.Form):
+    COLLEGE_LIST = ((0, "college0"), (1, "college1"), )
+    password = forms.CharField(max_length=20, required=False,
+                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"默认密码：邮箱名字",'id':'password'}
+                                                                      ),
+                                                                      )
+    email = forms.EmailField(required=True,
+                                     widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}
+                                                                           ))
+    college = forms.ChoiceField(required=True,choices=COLLEGE_LIST,widget=forms.Select(attrs={'class':'form-control'}))
+    person_firstname = forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))
+
+class ExpertDispatchForm(forms.Form):
+    password = forms.CharField(max_length=20, required=False,
+                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"默认密码：邮箱名字",'id':'password'}
+                                                                      ),
+                                                                      )
+    email = forms.EmailField(required=True,
+                                     widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}
+                                                                           ))
+    person_firstname = forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))

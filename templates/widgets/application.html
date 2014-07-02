@@ -1,0 +1,27 @@
+
+
+<form method="post"  enctype="multipart/form-data" id="form_application" action= "/adminStaff/application" >
+    {% csrf_token %}
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#project_review" data-toggle="tab"><strong>信息预览</strong></a></li>
+        {%include "widgets/application_tab.html"%}
+      </ul>
+      
+      <div class="tab-content">
+        {% include "widgets/project_review.html" %}
+        {% include "widgets/project_infoform.html" %}
+        {% include "widgets/teacher_enterprise.html" %}
+        <!--Application Infomation-->
+        {% include "widgets/project_brief.html" %}
+        <!--Application Infomation-->
+       {% include "widgets/project_plan.html" %} 
+        <!--Comments info-->
+        {#   {% include "widgets/comments_info.html" %} #}
+      </div>
+    </div>
+    <!--submit button-->
+    {% include "widgets/commit_button.html" %}
+
+
+</form>

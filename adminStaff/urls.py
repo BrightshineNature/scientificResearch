@@ -13,7 +13,8 @@ urlpatterns = patterns('',
         r'^noticeMessageSetting$',
         adminStaff_views.noticeMessageSetting,
     ),
-    url(r'^$', adminStaff_views.scheduleView,),
+   url(r'^$', adminStaff_views.scheduleView,),
+   url(r'^application$', adminStaff_views.appView,),
 
    url(r'^news_release$',adminStaff_views.newsRelease),
    url(
@@ -21,8 +22,12 @@ urlpatterns = patterns('',
         adminStaff_views.noticeMessageSetting,
     ),
     url(
-        r'financial$',
-        adminStaff_views.financialView,
+        r'^dispatch$',
+        adminStaff_views.dispatchView,
+    ),
+    url(
+        r'special$',
+        adminStaff_views.specialView,
     ),
     url(
         r'financialinfo$',

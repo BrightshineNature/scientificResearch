@@ -1,0 +1,45 @@
+<form class="well form" id="expert_email_send_form" method="POST" action="">
+    {% csrf_token %}
+        <div class="row">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                {{expert_form.email}}
+            </div> 
+        </div>
+				<div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                {{ expert_form.password }}
+            </div>
+        </div>
+            <div class="col-lg-2">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                {{ expert_form.person_firstname }}
+            </div>
+        </div>
+    <span class=" pull-right"><input type="button" class="btn btn-primary" id="email_to_expert" value="给评委专家发送邮件"/></span>
+ </div>
+ </form>
+<table class="well table">
+    <thead>
+      <tr>
+        <td><strong>已发送用户邮箱</strong></td>
+        <td><strong>负责人</strong></td>
+        <td><strong>用户状态</strong></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>a@b.com</td>
+        <td>克林顿</td>
+        <td><button class="btn btn-success">已经激活</button></td>
+      </tr>
+      <tr>
+        <td>c@d.com</td>
+        <td>布什</td>
+        <td><button class="btn btn-warning">已发送，尚未激活</button></td>
+      </tr>
+    </tbody>
+</table>

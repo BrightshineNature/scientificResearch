@@ -16,6 +16,10 @@ urlpatterns = patterns('',
 		school_views.finalReportView,
 	),
     url(
+        r'application$',
+        school_views.appView,
+    ),
+    url(
         r'progress',
         school_views.progressReportView,
     ),

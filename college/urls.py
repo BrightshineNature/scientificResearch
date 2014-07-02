@@ -11,6 +11,16 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
     url(r'^$', college_views.scheduleView, ),
     url(
+        r'dispatch$',
+        college_views.dispatchView,
+    ),
+
+    url(
+        r'application$',
+        college_views.appView,
+    ),
+
+    url(
         r'final$',
         college_views.finalReportView,
     ),
