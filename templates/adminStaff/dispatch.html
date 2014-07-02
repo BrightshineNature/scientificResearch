@@ -1,0 +1,32 @@
+{% extends "adminStaff/base/_content.html" %}
+
+{% block inner_content %}
+<div class="tab-content">
+  <div class="tab-pane fade active in" id="review-page">
+    <ul class="nav nav-pills">
+      <li class="active">
+        <a href="#school-section" data-toggle="tab">校级管理员</a>
+      </li>
+      <li>
+        <a href="#college-section" data-toggle="tab">院级管理员</a>
+      </li>
+			<li>
+        <a href="#expert-section" data-toggle="tab">评委专家</a>
+      </li>
+    </ul><!--end ul title-->
+
+    <div class="tab-content">
+      <div class="tab-pane fade active in" id="school-section">
+				{% include "widgets/school_dispatch_form.html" %}
+    </div><!--end content section-->
+
+    <div class="tab-pane fade " id="college-section">
+			{% include "widgets/college_dispatch_form.html" %}
+    </div>
+
+		<div class="tab-pane fade " id="expert-section">
+			{% include "widgets/expert_dispatch_form.html" %}
+    </div>
+  </div><!--end tab content-->
+</div><!--end tab pane-->
+{% endblock %}
