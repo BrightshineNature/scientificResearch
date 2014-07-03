@@ -33,5 +33,9 @@ urlpatterns = patterns('',
         r'financialinfo$',
         adminStaff_views.financialInfoView,
     ),
+    url(
+        r'financial$',
+        adminStaff_views.financialView,
+    ),
  )
 urlpatterns += staticfiles_urlpatterns()
