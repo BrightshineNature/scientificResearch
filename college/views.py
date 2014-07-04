@@ -40,7 +40,9 @@ def financialInfoView(request):
 def finalReportView(request):
     context = {}
     return render(request,"school/final.html",context)
-
+def researchConcludingView(request):
+    context={}
+    return render(request,"college/research_concluding_view.html",context)
 def dispatchView(request):
     teacher_form = TeacherDispatchForm()
     context = {
