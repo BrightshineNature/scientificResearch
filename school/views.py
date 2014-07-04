@@ -47,6 +47,11 @@ def allocView(request):
     context = {}
     return render(request, "school/alloc.html", context)
 
+def finalAllocView(request):
+    context = {}
+    return render(request, "school/final_alloc.html", context)
+
+
 def controlView(request):
     
 
