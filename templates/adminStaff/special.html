@@ -6,8 +6,8 @@
 <div class="well">
 
     <ul class="nav nav-pills" id="myTab">
-        <li class="active"><a href="#school">专题更改</a></li>
-        <li><a href="#major">专业分配</a></li>
+        <li class="active"><a href="#school" data-toggle="tab">专题更改</a></li>
+        <li><a href="#major" data-toggle="tab">专业分配</a></li>
     </ul>
  
     <div class="tab-content">
@@ -160,16 +160,7 @@
     </div>  
 
 
-    <script>
-      $('#myTab a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-    })
 
-      $(function () {
-        $('#myTab a:first').tab('show');
-      })
-    </script>
 </div>
 
 

@@ -1,0 +1,21 @@
+$("#not_pass_reason").hide();
+$("#review_select").css("color","gray");
+$("#review_select").change(function(){
+    if($(this).val()=="-1")
+    {
+        $(this).css("color","gray");
+    }
+    else
+    {
+        $(this).css("color","black");
+    }
+    if($(this).val()=="0")
+    {
+        $("#not_pass_reason").show(500);
+    }
+    else
+    {
+        $("#not_pass_reason").hide(500);
+    }
+
+});

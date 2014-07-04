@@ -1,3 +1,119 @@
 {% extends "expert/base/_content.html" %}
 {%block inner_content%}
+<div class="container">
+  <div class="page-header">
+    <h3>
+      本年度评审列表
+    </h3> 
+  </div><!--end page header-->
+  <div class="alert alert-info">
+	  <a class="close" data-dismiss="alert">×</a>
+	  <strong>尊敬的评委老师，请根据您的评审等级进入相关管理界面审阅作品，谢谢。</strong>
+	</div>
+  <div class="tab-content">
+  <div class="tab-pane fade active in" id="review-page">
+    <ul class="nav nav-pills">
+      <li class="active">
+        <a href="#school-section" data-toggle="tab">初审管理界面</a>
+      </li>
+      <li>
+        <a href="#adminStaff-section" data-toggle="tab">终审管理界面</a>
+      </li>
+
+    </ul><!--end ul title-->
+
+    <div class="tab-content">
+      <div class="tab-pane fade active in" id="school-section">
+        <table class="table table-hover">     
+        <thead>
+          <tr>
+            <th>项目编号</th>
+            <th>名称</th>
+            <th>项目类型</th>
+            <th>学院</th>
+            <th>评审状态</th>
+            <th>评分</th>
+            <th>详情</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>20141234567890123</td>
+            <td>变形金刚4</td>
+            <td></td>
+            <td>学院1</td>
+            <td>
+                未审核
+            </td>
+            <td></td>
+            <td>
+              <span><a href="review" class='btn btn-primary'>审阅</a></span>
+            </td>
+          </tr>
+          <tr>
+            <td>20141234567890124</td>
+            <td>喜剧之王</td>
+            <td></td>
+            <td>学院2</td>
+            <td>
+                已审核
+            </td>
+            <td></td>
+            <td>
+              <span><a href="review" class='btn btn-primary'>审阅</a></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div><!--end content section-->
+
+      <div class="tab-pane fade " id="adminStaff-section">
+        <table class="table table-hover">     
+    <thead>
+      <tr>
+        <th>项目编号</th>
+        <th>名称</th>
+        <th>项目类型</th>
+        <th>学院</th>
+        <th>评审状态</th>
+        <th>评分</th>
+        <th>详情</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>20141234567890125</td>
+        <td>这个杀手有点冷</td>
+        <td></td>
+        <td>学院1</td>
+        <td>
+            未审核
+        </td>
+        <td></td>
+        <td>
+          <span><a href="final_review" class='btn btn-primary'>审阅</a></span>
+        </td>
+      </tr>
+      <tr>
+        <td>20141234567890126</td>
+        <td>哈利波特</td>
+        <td></td>
+        <td>学院2</td>
+        <td>
+            已审核
+        </td>
+        <td></td>
+        <td>
+          <span><a href="final_review" class='btn btn-primary'>审阅</a></span>
+        </td>
+      </tr>
+    </tbody>
+  </table><!--end current_list table-->
+      </div>
+
+    </div><!--end tab content-->
+  </div><!--end tab pane-->
+</div><!--end tab content-->
+
+</div><!--end current list content-->
 {% endblock %}

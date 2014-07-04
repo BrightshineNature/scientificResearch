@@ -10,19 +10,28 @@ class ScheduleBaseForm(forms.Form):
 
 
     status = forms.ChoiceField(choices=status_choices, 
-        widget=forms.Select(attrs={'class':'form-control col-lg-3',}),
+        widget=forms.Select(attrs={
+            'class':'form-control', 
+            
+            }),
         )
 
     year_choices = (('-1', u"立项年度"), ('0', '2013'), ('1', '2014'),)
     year = forms.ChoiceField(choices =  year_choices,
-        widget=forms.Select(attrs={'class':'form-control col-lg-3'  ,}),)
+        widget=forms.Select(attrs={
+            'class':'form-control' ,
+            
+            }),)
 
 
     
 
     special_choices = (('-1', '专题类型'), ('0', '理科'), ('1', '文科'))
     special = forms.ChoiceField(choices= special_choices,
-        widget=forms.Select(attrs={'class':'form-control col-lg-3',}),)
+        widget=forms.Select(attrs={
+            'class':'form-control ',
+            
+            }),)
 
 
 
@@ -38,7 +47,10 @@ class ScheduleBaseForm(forms.Form):
 class ScheduleForm(ScheduleBaseForm):
     college_choices = (('-1', '学院'), ('0', '计算机'), ('1', '管经'))
     college = forms.ChoiceField(choices = college_choices,
-        widget=forms.Select(attrs={'class':'form-control col-lg-3',}),)
+        widget=forms.Select(attrs={
+            'class':'form-control',
+            
+            }),)
     
 
 
