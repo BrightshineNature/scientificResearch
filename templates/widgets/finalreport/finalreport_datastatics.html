@@ -1,0 +1,71 @@
+<div class="datastatics">
+    <div class="modal  fade in" id="datastatics_profile_info">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modal_title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+					<form class="form" id="datastatics_change_form" method="POST" action="">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                    <select  class="form-control search-input" id="statics_type" name="statics_type">
+                                        <option selected="true" value="-1">类别</option>
+                                        {% for item in  statics_type %}
+                                        <option value="{{ item.0}}">
+                                        {{ item.1 }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div> 
+							</div>
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                    <select  class="form-control search-input" id="statics_grade_type" name="statics_grade_type">
+                                        <option selected="true" value="-1">级别</option>
+                                        {% for item in  statics_grade_type %}
+                                        <option value="{{ item.0}}">
+                                        {{ item.1 }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                    <input type="text" class="form-control" name="statics_num" placeholder="数量">
+                                </div> 
+                            </div>
+						</div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel_change">关闭</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" id="datastatics_save_change">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary pull-right" style="margin-right:25px;" id="add_new_datastatics" >添加新数据</button>
+    <br>
+    <table class="table datastatics_change_table" id="datastatics_change_table">
+        <thead>
+            <tr>
+                <td><strong>类别</strong></td>
+                <td><strong>级别</strong></td>
+				<td><strong>数量</strong></td>
+			</tr>
+        </thead>
+        <tbody>
+        </tbody>        
+    </table>
+<script type='text/javascript' src="{{STATIC_URL}}js/finalreport/datastatics_change.js"></script>
+</div>

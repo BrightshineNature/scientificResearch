@@ -45,6 +45,9 @@ urlpatterns = patterns('',
         r'file_upload$',
         teacher_views.fileView,
     ),
-
+    url(
+        r'finalinfo$',
+        teacher_views.finalInfoView,
+    ),
 )
 urlpatterns += staticfiles_urlpatterns()
