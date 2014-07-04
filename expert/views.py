@@ -13,3 +13,7 @@ def homeView(request):
 def finalReportView(request):
     context = {}
     return render(request,"expert/final.html",context)
+
+def applicationView(request):
+    context = {}
+    return render(request, "expert/application.html", context)
