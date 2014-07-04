@@ -46,9 +46,18 @@ def progressReportView(requset):
 def allocView(request):
     context = {}
     return render(request, "school/alloc.html", context)
+<<<<<<< HEAD
 def researchConcludingView(request):
     context={}
     return render(request,"school/research_concluding.html",context)
+=======
+
+def finalAllocView(request):
+    context = {}
+    return render(request, "school/final_alloc.html", context)
+
+
+>>>>>>> d25fad52a195592b6a6b1240a6cc5728a93e5c48
 def controlView(request):
     
 
