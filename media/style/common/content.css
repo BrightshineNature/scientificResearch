@@ -66,3 +66,8 @@ label.budgetform-small{
 }
 /* end show search css */
 /* show contain css */
+
+select.final_report_form{
+    margin-left: 0px;
+    width: 230px !important;
+}

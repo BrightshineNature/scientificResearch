@@ -1,82 +1,22 @@
-	<div class="page-header">
-      <h3>项目摘要及关键词</h3>
-    </div>
-    <blockquote>
-      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
-        <div class="row alert alert-error school-display">
-          <button class="close" data-dismiss="alert">关闭</button>
-          {{ final.achievement_summary.errors }}
+<div class="report-content-container">
+	<ul class="nav nav-pills" id="myTab">
+        <li class="active"><a href="#content" data-toggle="tab">报告正文</a></li>
+        <li><a href="#achivement" data-toggle="tab" >研究成果目录</a></li>
+        <li><a href="#datastatics" data-toggle="tab">数据统计表</a></li>
+    </ul>
+    <hr>
+    <div class="tab-content">
+        <div class="tab-pane fade active in" id="content">
+            {% include "widgets/finalreport/finalreport_content.html"%}
         </div>
-		{% endif %}  
-		<textarea rows="8" name="achievement_summary" id="id_achievement_summary" placeholder="项目摘要限500字，关键词不超过5个" cols="100" class="fill-form"></textarea>
-	  </div>
-    </blockquote><!--end project content-->
-    
-    <br/>
-	<div class="page-header">
-      <h3>研究计划要点及执行情况概述</h3>
-    </div>
-    <blockquote>
-      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
-        <div class="row alert alert-error school-display">
-          <button class="close" data-dismiss="alert">关闭</button>
-          {{ final.achievement_summary.errors }}
+		<div class="tab-pane fade" id="achivement">
+            {% include "widgets/finalreport/finalreport_achivement.html"%}		  
         </div>
-		{% endif %}  
-		<textarea rows="8" name="achievement_summary" id="id_achievement_summary" cols="100" class="fill-form"></textarea>
-	  </div>
-  	</blockquote><!--end project content-->
-    <br/>
-	<div class="page-header">
-      <h3>研究工作主要进展和所取得的成果</h3>
-    </div>
-    <blockquote>
-      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
-        <div class="row alert alert-error school-display">
-          <button class="close" data-dismiss="alert">关闭</button>
-          {{ final.achievement_summary.errors }}
-        </div>
-		{% endif %}  
-		<textarea rows="8" name="achievement_summary" id="id_achievement_summary" cols="100" class="fill-form"></textarea>
-	  </div>
- 	</blockquote><!--end project content-->
-    <br/>
-	<div class="page-header">
-      <h3>国内外学术合作交流与人才培养情况</h3>
-    </div>
-    <blockquote>
-      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
-        <div class="row alert alert-error school-display">
-          <button class="close" data-dismiss="alert">关闭</button>
-          {{ final.achievement_summary.errors }}
-        </div>
-		{% endif %}  
-		<textarea rows="8" name="achievement_summary" id="id_achievement_summary" placeholder="如无，可以不写"  cols="100" class="fill-form"></textarea>
-	  </div>
-  	</blockquote><!--end project content-->
-    <br/>
-	<div class="page-header">
-      <h3>存在的问题、建议及其他需要说明的情况</h3>
-    </div>
-    <blockquote>
-      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
-        <div class="row alert alert-error school-display">
-          <button class="close" data-dismiss="alert">关闭</button>
-          {{ final.achievement_summary.errors }}
-        </div>
-		{% endif %}  
-		<textarea rows="8" name="achievement_summary" id="id_achievement_summary" cols="100" class="fill-form"></textarea>
-	  </div>
-  	</blockquote><!--end project content-->
-	{% include "teacher/widgets/commit_button.html"%}
-  <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/content.css" >
+        <div class="tab-pane fade" id="datastatics">
+			{% include "widgets/finalreport/finalreport_datastatics.html"%}
+		</div>
+	</div>
+</div>
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/content.css" >
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/member_change.css" >
+

@@ -1,9 +1,8 @@
-
 <div>
     <ul class="nav nav-pills">
-        <li class="active"><a href="#not_pass" data-toggle="tab">未通过<span class="badge">1</span></a>
+        <li class="active"><a href="#not_pass" data-toggle="tab">未结题<span class="badge">1</span></a>
         </li>
-        <li><a href="#pass" data-toggle="tab">已通过</a>
+        <li><a href="#pass" data-toggle="tab">已结题</a>
         </li>
     </ul>
 
@@ -12,48 +11,50 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>申请代码</th>
+                        <th>项目编号</th>
                         <th>项目名称</th>          
-                        <th>项目申请人</th>          
+                        <th>项目负责人</th>          
                         <th>学院</th>         
-                        <th>申请年度</th>          
-                        <th>提交日期</th>
-                        <th>专题类型</th>          
+                        <th>立项年度</th>   
+                        <th>专题类型</th>
+                        <th>项目状态</th>
                         <th>附件</th>
-                        <th>评审</th>
+                        <th>结题</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr>
                         <td>51012014666666 </td>
-                        <td>ss自然基金</td>
-                        <td>沈ss潋</td>
+                        <td>胡俊自然基金</td>
+                        <td>沈潋</td>
                         <td>创新实验学院</td>
                         <td> 2014</td>
-                        <td>201s-7-1 </td>
-                        <td>哲s</td>
+                        <td>哲学</td>
+                        <td>未结题</td>
                         <td>
-                            <a href="#"><span class="label label-success"> 申请书 </span></a>
+                            <span class="label label-danger">结题书</span>
+                            <span class="label label-danger">任务书</span>
+                            <span class="label label-danger">进展报告</span>
                         </td>
                         <td>
-                            <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">评审 </button>
+ <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">结题评定</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="tab fade" id="pass">
-            <table class="table table-hover">
+ <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>申请代码</th>
+                        <th>项目编号</th>
                         <th>项目名称</th>          
-                        <th>项目申请人</th>          
+                        <th>项目负责人</th>          
                         <th>学院</th>         
-                        <th>申请年度</th>          
-                        <th>提交日期</th>
-                        <th>专题类型</th>          
+                        <th>立项年度</th>   
+                        <th>专题类型</th>
+                        <th>项目状态</th>
                         <th>附件</th>
                     </tr>
                 </thead>
@@ -65,10 +66,12 @@
                         <td>沈潋</td>
                         <td>创新实验学院</td>
                         <td> 2014</td>
-                        <td>2014-7-1 </td>
                         <td>哲学</td>
+                        <td>未结题</td>
                         <td>
-                            <span class="label label-danger"> 申请书 </span>
+                            <span class="label label-danger">结题书</span>
+                            <span class="label label-danger">任务书</span>
+                            <span class="label label-danger">进展报告</span>
                         </td>
                     </tr>
                 </tbody>
@@ -89,7 +92,7 @@
                 <div class="modal-body">
                     <form class="well">
                         <div class="form-group">
-                            <label for="review_select">评审结果</label>
+                            <label for="review_select">结题评定</label>
                             <select id="review_select" class="form-control" >
                                 <option value="-1" selected="selected">请评审</option>
                                 <option value="1">通过</option>
@@ -117,9 +120,3 @@
     </div>
 </div>
 <script type="text/javascript" src="{{STATIC_URL}}js/project_info.js"></script>
-
-<script type="text/javascript" src="{{STATIC_URL}}js/common.js"></script>
-
-
-<!-- ajax_csrf-->
-<script type='text/javascript' src="{{STATIC_URL}}js/ajax_csrf.js"></script>

@@ -24,8 +24,12 @@ urlpatterns = patterns('',
         school_views.progressReportView,
     ),
     url(
-        r'alloc',
+        r'^alloc',
         school_views.allocView,
+    ),
+    url(
+        r'^finalalloc',
+        school_views.finalAllocView,
     ),
     url(
         r'control',
@@ -39,5 +43,9 @@ urlpatterns = patterns('',
         r'financialinfo$',
         school_views.financialInfoView,
     ),
+    url(
+        r'researchconcluding$',
+        school_views.researchConcludingView,
+    )
 )
 urlpatterns += staticfiles_urlpatterns()
