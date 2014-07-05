@@ -8,10 +8,17 @@ from django.shortcuts import render
 from const import PROFESSIONAL_TITLE,EXECUTIVE_POSITION
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.views import scheduleManage
+from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 
 def appView(request):
 
+    project_info_form = ProjectInfoForm()
+    basis_content_form = BasisContentForm()
+    base_condition_form = BaseConditionForm()
     context = {
+        'project_info_form': project_info_form,
+        'basis_content_form':basis_content_form,
+        'base_condition_form':base_condition_form,
 
     }
     return render(request,"teacher/application.html",context)
