@@ -9,20 +9,21 @@ from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
-from adminStaff.forms import NewsForm, SpecialForm
+from adminStaff.forms import NewsForm, SpecialForm, CollegeForm
 
 def appView(request):
 
     context = {}
     return render(request, "adminStaff/application.html", context)
 
-def specialView(request):
+def allocManageView(request):
 
 
     userauth = {
         'role': 'adminStaff',
     }
     special_form = SpecialForm()
+    college_form = CollegeForm()
 
     if request.method == "POST":
         special_form = SpecialForm(request.POST)
@@ -33,13 +34,19 @@ def specialView(request):
         "理科",
 
     }
+    college_dict = {
+        "计算机",
+        "物理",
+    }
 
     context = {'special_form' : special_form,
                 'special_dict': special_dict,
+                'college_form': college_form, 
+                'college_dict': college_dict,
     }
     
 
-    return render(request, "adminStaff/special.html", context)
+    return render(request, "adminStaff/alloc_manage.html", context)
 
 
 from adminStaff.forms import NewsForm, SchoolDispatchForm, CollegeDispatchForm, ExpertDispatchForm
