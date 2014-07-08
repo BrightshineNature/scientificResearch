@@ -19,6 +19,23 @@
     </tbody>
     <tfoot><tr><th><strong>合计</strong></th><th></th><th></th></tr></thead>
   </table>
+<form class="well">
+  <div class="form-group">
+    <label for="review_select">评审结果</label>
+    <select id="review_select" class="form-control" >
+      <option value="-1" selected="selected">请评审</option>
+      <option value="1">通过</option>
+      <option value="0">不通过</option>
+    </select>
+  </div>
+  <div class="form-group" id="not_pass_reason">
+    <label class="add-on" for="review_reason">不通过原因</label>
+    <textarea class="form-control" id="review_reason" rows="10" name="message_content"></textarea>
+  </div>
+  <center>
+    <button class="btn btn-large btn-block btn-success" style="width:40%;" type="submit">信息填写无误后，提交报告</button>
+  </center>
+</form>
 </div>
 <script type='text/javascript' src="{{STATIC_URL}}js/edittable/mindmup-editabletable.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}js/edittable/numeric-input-example.js"></script>
