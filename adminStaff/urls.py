@@ -26,8 +26,8 @@ urlpatterns = patterns('',
         adminStaff_views.dispatchView,
     ),
     url(
-        r'special$',
-        adminStaff_views.specialView,
+        r'alloc_manage$',
+        adminStaff_views.allocManageView,
     ),
     url(
         r'financialinfo$',

@@ -29,6 +29,10 @@ class SchoolDispatchForm(forms.Form):
 class SpecialForm(forms.Form):
     name = forms.CharField(max_length=200, required=True,
                                  widget=forms.TextInput(attrs={'class':'form-control','id':"special",'placeholder':u""}),)
+
+class CollegeForm(forms.Form):
+    name = forms.CharField(max_length=200, required=True,
+                                 widget=forms.TextInput(attrs={'class':'form-control','id':"college",'placeholder':u""}),)    
 class CollegeDispatchForm(forms.Form):
     COLLEGE_LIST = ((0, "college0"), (1, "college1"), )
     password = forms.CharField(max_length=20, required=False,

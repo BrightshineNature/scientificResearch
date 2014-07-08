@@ -1,31 +1,67 @@
-   <!--Project Basic Infomation-->
-    <!--Basic Infomation-->
-    
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/member_change.css" >
 
-    <div class="tab-pane " id="project_infoform">
-
-            <br> </br>
-            <div class="form-inline row" id="school_name_form">
-
-                <div class="form-group  col-md-4">
-                    <label class="control-label" for="name"><i class="glyphicon glyphicon-book"></i>参赛题目</label>
-                    <input name="name" maxlength="200" type="text" placeholder="" id="special" class="form-control">
-                </div>
-
-
-
-                <div class="form-group .col-md-4 .col-md-offset-4">
-                    <label class="control-label" for="name"><i class="glyphicon glyphicon-th-large"></i>团队成员</label>
-                    <input name="name" maxlength="200" type="text" placeholder="" id="special" class="form-control">
-                </div>
+<p> </p>
+<form class="well form" id="project_info_form" method="POST" action="">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                {{project_info_form.project_name}}
+            </div> 
+        </div>
+                <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                {{ project_info_form.science_type }}
             </div>
-          <br> </br>
-           
-
-
+        </div>
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                {{ project_info_form.trade_code }}
+            </div>
+        </div>
     </div>
 
 
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                {{ project_info_form.subject_name }}
+            </div> 
+        </div>
+                <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                {{ project_info_form.subject_code }}
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                {{ project_info_form.start_time }}
+            </div>
+        </div>
+    </div>
 
-       
-          
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                {{ project_info_form.end_time }}
+            </div> 
+        </div>
+
+        <div class="col-lg-3">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+                {{ project_info_form.project_tpye }}
+            </div>
+        </div>
+
+
+
+    </div>
+</form>

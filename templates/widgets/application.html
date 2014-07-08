@@ -1,23 +1,57 @@
 
 
-<form method="post"  enctype="multipart/form-data" id="form_application" action= "/adminStaff/application" >
+<form method="post"  enctype="multipart/form-data" id="form_application" action= "/{{userauth.role}}/application" >
     {% csrf_token %}
-    <div class="tabbable">
+    <div class="table">
+
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#project_review" data-toggle="tab"><strong>信息预览</strong></a></li>
-        {%include "widgets/application_tab.html"%}
+
+        <li class="active"><a href="#project_infoform" data-toggle="tab"><strong>项目信息</strong></a></li>
+          
+        <li><a href="#project_member" data-toggle="tab"><strong>项目成员</strong></a></li>
+          
+        <li><a href="#fund_application" data-toggle="tab"><strong>经费申请表</strong></a></li>
+          
+        <li><a href="#basis_content" data-toggle="tab"><strong>立项依据与研究内容</strong></a></li>
+          
+        <li><a href="#base_condition" data-toggle="tab"><strong>研究基础与工作条件</strong></a></li>
+        
+          
+
       </ul>
       
       <div class="tab-content">
-        {% include "widgets/project_review.html" %}
-        {% include "widgets/project_infoform.html" %}
-        {% include "widgets/teacher_enterprise.html" %}
-        <!--Application Infomation-->
-        {% include "widgets/project_brief.html" %}
-        <!--Application Infomation-->
-       {% include "widgets/project_plan.html" %} 
-        <!--Comments info-->
-        {#   {% include "widgets/comments_info.html" %} #}
+
+        <div class="tab-pane active" id="project_infoform"> 
+          {% include "widgets/project_infoform.html" %}
+        </div>
+
+        <div class="tab-pane" id="project_member">
+          {%include "widgets/member_change.html"%}
+        </div>
+
+        <div class="tab-pane" id="fund_application">
+
+        
+
+        </div>
+
+        <div class="tab-pane" id="basis_content">
+
+        {% include "widgets/basis_content.html"%}
+
+        </div>
+
+        <div class="tab-pane" id="base_condition">
+
+          {% include "widgets/base_condition.html"%}
+          
+        </div>
+
+
       </div>
+
+
+
     </div>
 </form>
