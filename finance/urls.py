@@ -11,7 +11,19 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
     url(
         r'^$',
-        finance_views.homeView,
+        finance_views.applicationProjectView,
+    ),
+    url(
+        r'concludingProject$',
+        finance_views.concludingProjectView,
+    ),
+    url(
+        r'financeBudget$',
+        finance_views.financeBudgetView,
+    ),
+    url(
+        r'financeAuditing$',
+        finance_views.financeAuditingView,
     ),
     url(
         r'financial$',

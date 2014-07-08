@@ -1,122 +1,116 @@
 <div>
-    <ul class="nav nav-pills">
-        <li class="active"><a href="#not_pass" data-toggle="tab">未结题<span class="badge">1</span></a>
-        </li>
-        <li><a href="#pass" data-toggle="tab">已结题</a>
-        </li>
-    </ul>
+  <ul class="nav nav-pills">
+    <li class="active"><a href="#not_pass" data-toggle="tab">未结题<span class="badge">1</span></a>
+    </li>
+    <li><a href="#pass" data-toggle="tab">已结题</a>
+    </li>
+  </ul>
 
-    <div class="tab-content">
-        <div class="tab-pane fade in active" id="not_pass">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>项目编号</th>
-                        <th>项目名称</th>          
-                        <th>项目负责人</th>          
-                        <th>学院</th>         
-                        <th>立项年度</th>   
-                        <th>专题类型</th>
-                        <th>项目状态</th>
-                        <th>附件</th>
-                        <th>结题</th>
-                    </tr>
-                </thead>
+  <div class="tab-content">
+    <div class="tab-pane fade in active" id="not_pass">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>项目编号</th>
+            <th>项目名称</th>          
+            <th>项目负责人</th>          
+            <th>学院</th>         
+            <th>立项年度</th>   
+            <th>专题类型</th>
+            <th>项目状态</th>
+            <th>附件</th>
+            <th>结题</th>
+          </tr>
+        </thead>
 
-                <tbody>
-                    <tr>
-                        <td>51012014666666 </td>
-                        <td>胡俊自然基金</td>
-                        <td>沈潋</td>
-                        <td>创新实验学院</td>
-                        <td> 2014</td>
-                        <td>哲学</td>
-                        <td>未结题</td>
-                        <td>
-                            <span class="label label-danger">结题书</span>
-                            <span class="label label-danger">任务书</span>
-                            <span class="label label-danger">进展报告</span>
-                        </td>
-                        <td>
- <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">结题评定</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="tab fade" id="pass">
- <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>项目编号</th>
-                        <th>项目名称</th>          
-                        <th>项目负责人</th>          
-                        <th>学院</th>         
-                        <th>立项年度</th>   
-                        <th>专题类型</th>
-                        <th>项目状态</th>
-                        <th>附件</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>51012014666666 </td>
-                        <td>胡俊自然基金</td>
-                        <td>沈潋</td>
-                        <td>创新实验学院</td>
-                        <td> 2014</td>
-                        <td>哲学</td>
-                        <td>未结题</td>
-                        <td>
-                            <span class="label label-danger">结题书</span>
-                            <span class="label label-danger">任务书</span>
-                            <span class="label label-danger">进展报告</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <tbody>
+          <tr>
+            <td>51012014666666 </td>
+            <td>胡俊自然基金</td>
+            <td>沈潋</td>
+            <td>创新实验学院</td>
+            <td> 2014</td>
+            <td>哲学</td>
+            <td>未结题</td>
+            <td>
+              <span class="label label-danger">结题书</span>
+              <span class="label label-danger">任务书</span>
+              <span class="label label-danger">进展报告</span>
+            </td>
+            <td>
+              <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">结题评定</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <div class="tab fade" id="pass">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>项目编号</th>
+            <th>项目名称</th>          
+            <th>项目负责人</th>          
+            <th>学院</th>         
+            <th>立项年度</th>   
+            <th>专题类型</th>
+            <th>项目状态</th>
+            <th>附件</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>51012014666666 </td>
+            <td>胡俊自然基金</td>
+            <td>沈潋</td>
+            <td>创新实验学院</td>
+            <td> 2014</td>
+            <td>哲学</td>
+            <td>未结题</td>
+            <td>
+              <span class="label label-danger">结题书</span>
+              <span class="label label-danger">任务书</span>
+              <span class="label label-danger">进展报告</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
 
-    <div class="modal fade"  id="review_modal">
-        <div class="modal-dialog">
+  <div class="modal fade"  id="review_modal">
+    <div class="modal-dialog">
 
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">×</a>
-                    <h3>评审</h3>
-                </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <a class="close" data-dismiss="modal">×</a>
+          <h3>评审</h3>
+        </div>
 
-                <div class="modal-body">
-                    <form class="well">
-                        <div class="form-group">
-                            <label for="review_select">结题评定</label>
-                            <select id="review_select" class="form-control" >
-                                <option value="-1" selected="selected">请评审</option>
-                                <option value="1">通过</option>
-                                <option value="0">不通过</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="not_pass_reason">
-                            <label class="add-on" for="review_reason">不通过原因</label>
-                            <textarea class="form-control" id="review_reason" rows="10" name="message_content"></textarea>
-                        </div>
-                    </form>
-                </div>
-
-
-
-
-                <div class="modal-footer">
-                    <a class="btn" data-dismiss="modal">关闭</a>
-                    <a class="btn btn-primary" data-dismiss="modal">确定</a>
-                </div>
+        <div class="modal-body">
+          <form class="well">
+            <div class="form-group">
+              <label for="review_select">结题评定</label>
+              <select id="review_select" class="form-control" >
+                <option value="-1" selected="selected">请评审</option>
+                <option value="1">通过</option>
+                <option value="0">不通过</option>
+              </select>
             </div>
-
-
+            <div class="form-group" id="not_pass_reason">
+              <label class="add-on" for="review_reason">不通过原因</label>
+              <textarea class="form-control" id="review_reason" rows="10" name="message_content"></textarea>
+            </div>
+          </form>
         </div>
+        <div class="modal-footer">
+          <a class="btn" data-dismiss="modal">关闭</a>
+          <a class="btn btn-primary" data-dismiss="modal">确定</a>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 <script type="text/javascript" src="{{STATIC_URL}}js/project_info.js"></script>

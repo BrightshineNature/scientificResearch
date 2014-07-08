@@ -1,0 +1,69 @@
+{% extends "finance/base/_content.html" %}
+{%block inner_content %}
+<ul class="nav nav-pills">
+  <li class="active"><a href="#not_pass" data-toggle="tab">未通过<span class="badge">1</span></a>
+  </li>
+  <li><a href="#pass" data-toggle="tab">已通过</a>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade in active" id="not_pass">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>申请代码</th>
+          <th>项目名称</th>
+          <th>项目申请人</th>
+          <th>学院</th>
+          <th>申请年度</th>
+          <th>提交日期</th>
+          <th>专题类型</th>
+          <th>经费预算</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>51012014666666 </td>
+          <td>ss自然基金</td>
+          <td>沈ss潋</td>
+          <td>创新实验学院</td>
+          <td> 2014</td>
+          <td>201s-7-1 </td>
+          <td>哲s</td>
+          <td>
+            <a href="/finance/financeBudget"class="btn btn-primary btn-sm">审阅</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab fade" id="pass">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>申请代码</th>
+          <th>项目名称</th>
+          <th>项目申请人</th>
+          <th>学院</th>
+          <th>申请年度</th>
+          <th>提交日期</th>
+          <th>专题类型</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>51012014666666 </td>
+          <td>胡俊自然基金</td>
+          <td>沈潋</td>
+          <td>创新实验学院</td>
+          <td> 2014</td>
+          <td>2014-7-1 </td>
+          <td>哲学</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
