@@ -53,6 +53,9 @@ def researchConcludingView(request):
 def finalAllocView(request):
     context = {}
     return render(request, "school/final_alloc.html", context)
+def noticeMessageSettingView(request):
+    context = {}
+    return render(request, "school/notice.html", context)
 
 def controlView(request):
     
