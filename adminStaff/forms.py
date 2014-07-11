@@ -1,8 +1,7 @@
 # coding: UTF-8
 from datetime import *
 from django import  forms
-#from const import NEWS_MAX_LENGTH
-#from const.models import NewsCategory
+from django.forms import ModelForm
 from django.contrib.admin import widgets
 from adminStaff.models import TemplateNoticeMessage
 class NewsForm(forms.Form):
@@ -55,7 +54,7 @@ class ExpertDispatchForm(forms.Form):
                                      widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}
                                                                            ))
     person_firstname = forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))
-class TemplateNoticeMessageForm(forms.Form):
+class TemplateNoticeMessageForm(ModelForm):
     class Meta:
         model=TemplateNoticeMessage
         fields=('title','message')

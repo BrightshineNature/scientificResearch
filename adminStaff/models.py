@@ -4,12 +4,11 @@ from backend.utility import make_uuid
 
 from django.db import models
 # Create your models here.
-<<<<<<< HEAD
+
 class TemplateNoticeMessage(models.Model):
     title = models.CharField(blank=False,max_length=30)
     message = models.TextField(blank=False)
 
-=======
 class ProjectSingle(models.Model):
     """
     Every single projects, include basic infomation, it is the base table.
@@ -79,4 +78,3 @@ class ProjectSingle(models.Model):
 
     # def __unicode__(self):
     #     return self.title
->>>>>>> 281e44e7c9a87b58c0b7041d11748448abf72d68
