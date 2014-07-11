@@ -9,7 +9,7 @@ from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
-from adminStaff.forms import NewsForm, SpecialForm, CollegeForm
+from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm
 
 def appView(request):
 
@@ -65,7 +65,10 @@ def newsRelease(request):
     context.update({"newsform":NewsForm})
     return render(request,"adminStaff/news_release.html",context)
 def noticeMessageSetting(request):
-    context={}
+    template_notice_message_form = TemplateNoticeMessageForm()
+    context={
+        "template_notice_message_form":template_notice_message_form
+    }
     return render(request,"adminStaff/notice_message_setting.html",context)
 
 def dispatchView(request):

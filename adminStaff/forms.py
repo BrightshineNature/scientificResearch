@@ -4,6 +4,7 @@ from django import  forms
 #from const import NEWS_MAX_LENGTH
 #from const.models import NewsCategory
 from django.contrib.admin import widgets
+from adminStaff.models import TemplateNoticeMessage
 class NewsForm(forms.Form):
     NEWS_MAX_LENGTH=500
     news_title = forms.CharField(max_length=200, required=True,
@@ -54,3 +55,12 @@ class ExpertDispatchForm(forms.Form):
                                      widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}
                                                                            ))
     person_firstname = forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))
+class TemplateNoticeMessageForm(forms.Form):
+    class Meta:
+        model=TemplateNoticeMessage
+        fields=('title','message')
+        widgets = {
+            'title': forms.TextInput(attrs={'class':'form-control'}),
+            'message': forms.Textarea(attrs={'class':'form-control','row':10}),
+        }
+        
