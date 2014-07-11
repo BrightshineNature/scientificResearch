@@ -5,7 +5,7 @@ Created on 2014-06-07
 Desc: teacher' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from const import PROFESSIONAL_TITLE,EXECUTIVE_POSITION,ACHIVEMENT_TYPE,STATICS_TYPE,STATICS_PRIZE_TYPE
+from const import PROFESSIONAL_TITLE_CHOICES,EXECUTIVE_POSITION_CHOICES,ACHIVEMENT_TYPE,STATICS_TYPE,STATICS_PRIZE_TYPE
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.views import scheduleManage
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
@@ -29,8 +29,8 @@ def homeView(request):
     }
     return render(request,"teacher/project_info.html",context)
 def memberChange(request):
-    professional=PROFESSIONAL_TITLE
-    executive=EXECUTIVE_POSITION
+    professional=PROFESSIONAL_TITLE_CHOICES
+    executive=EXECUTIVE_POSITION_CHOICES
     context={}
     context['professional']=professional
     context['executive']=executive
