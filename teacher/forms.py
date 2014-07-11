@@ -23,12 +23,11 @@ class ProjectBudgetAnnualForm(forms.Form):
 
 class SettingForm(forms.Form):
     name = forms.CharField(required = True, label = "姓名", widget = forms.TextInput(attrs={"class":'form-control', "placeholder": "姓名", }))
-    sex = forms.ChoiceField(choices = SEX, required = True, label = "性别", widget = forms.Select(attrs={'class':'form-control search-input', }))
+    sex = forms.ChoiceField(choices = SEX_CHOICES, required = True, label = "性别", widget = forms.Select(attrs={'class':'form-control search-input', }))
     birth = forms.CharField(required = True, label = "出生年月", widget = forms.TextInput(attrs = {"class": "form-control", "placeholder": "出生年月 yyyy-MM"}))
     base_name = forms.CharField(required = True, label = "姓名", widget = forms.TextInput(attrs={"class":'form-control', "placeholder": "所在研究基地名称", }))
-    target_type = forms.ChoiceField(choices = PROJECT_IDENTITY, required = True, label = "支持对象", widget = forms.Select(attrs={'class':'form-control search-input', }))
-    degree = forms.ChoiceField(choices = DEGREE, required = True, label = "学位", widget = forms.Select(attrs={'class':'form-control search-input', }))
-    title = forms.ChoiceField(choices = PROFESSIONAL_TITLE, required = True, label = "职称", widget = forms.Select(attrs={'class':'form-control search-input', }))
-    base_type = forms.ChoiceField(choices = RESEARCH_BASES_TYPE, required = True, label = "所在研究基地名称", widget = forms.Select(attrs={'class':'form-control search-input', }))
-    position = forms.ChoiceField(choices = EXECUTIVE_POSITION, required = True, label = "行政职务", widget = forms.Select(attrs={'class':'form-control search-input', }))
-   
+    target_type = forms.ChoiceField(choices = PROJECT_IDENTITY_CHOICES, required = True, label = "支持对象", widget = forms.Select(attrs={'class':'form-control search-input', }))
+    degree = forms.ChoiceField(choices = DEGREE_CHOICES, required = True, label = "学位", widget = forms.Select(attrs={'class':'form-control search-input', }))
+    title = forms.ChoiceField(choices = PROFESSIONAL_TITLE_CHOICES, required = True, label = "职称", widget = forms.Select(attrs={'class':'form-control search-input', }))
+    base_type = forms.ChoiceField(choices = RESEARCH_BASES_TYPE_CHOICES, required = True, label = "所在研究基地名称", widget = forms.Select(attrs={'class':'form-control search-input', }))
+    position = forms.ChoiceField(choices = EXECUTIVE_POSITION_CHOICES, required = True, label = "行政职务", widget = forms.Select(attrs={'class':'form-control search-input', }))
