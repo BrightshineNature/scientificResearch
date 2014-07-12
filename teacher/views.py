@@ -6,7 +6,7 @@ Desc: teacher' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
-from const import PROFESSIONAL_TITLE,EXECUTIVE_POSITION,ACHIVEMENT_TYPE,STATICS_TYPE,STATICS_PRIZE_TYPE
+from const import * 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.views import scheduleManage,finalReportViewWork
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm

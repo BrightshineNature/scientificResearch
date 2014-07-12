@@ -3,7 +3,7 @@
 from django import forms
 from const import *
 class ScheduleBaseForm(forms.Form):
-    status_choices = list(PROJECT_STATUS)
+    status_choices = list(PROJECT_STATUS_CHOICES)
 
 
     status_choices = tuple( [(-1, u"结题状态")] + status_choices)
@@ -61,7 +61,7 @@ class ProjectInfoForm(forms.Form):
             'class':'form-control ',            
             'id':'name',
             'placeholder':u"项目名称"}), )
-    science_type_choices = (("-1", "科技活动类型"),) + SCIENCE_ACTIVITY_TYPE
+    science_type_choices = (("-1", "科技活动类型"),) + SCIENCE_ACTIVITY_TYPE_CHOICES
     science_type = forms.ChoiceField(choices= science_type_choices,
         widget=forms.Select(attrs={
             'class':'form-control', 
