@@ -13,7 +13,6 @@ class ProjectBudgetInformationForm(forms.Form):
 class ProjectBudgetAnnualForm(forms.Form):
 	YEAR_CHOICE = []
 	currentyear = datetime.datetime.now().year
-	print currentyear
 	for i in range(currentyear-2,currentyear+3):
 		YEAR_CHOICE.append((i,i))	
 	year_list = forms.ChoiceField(choices = YEAR_CHOICE,
@@ -23,6 +22,7 @@ class ProjectBudgetAnnualForm(forms.Form):
 
 class SettingForm(forms.Form):
     name = forms.CharField(required = True, label = "姓名", widget = forms.TextInput(attrs={"class":'form-control', "placeholder": "姓名", }))
+    card = forms.CharField(required = True, label = "身份证号", widget = forms.TextInput(attrs={"class":'form-control', "placeholder": "身份证号", }))
     sex = forms.ChoiceField(choices = SEX, required = True, label = "性别", widget = forms.Select(attrs={'class':'form-control search-input', }))
     birth = forms.CharField(required = True, label = "出生年月", widget = forms.TextInput(attrs = {"class": "form-control", "placeholder": "出生年月 yyyy-MM"}))
     base_name = forms.CharField(required = True, label = "姓名", widget = forms.TextInput(attrs={"class":'form-control', "placeholder": "所在研究基地名称", }))
