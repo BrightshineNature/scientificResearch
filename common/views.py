@@ -58,6 +58,11 @@ def finalReportViewWork(request,redirect=False):
     statics_grade_type = STATICS_PRIZE_TYPE
 
     final = FinalSubmit.objects.all()[0]
+    achivement_list = ProjectAchivement.objects.filter(finalsubmit_id = final.content_id)
+    projachivementform  = ProjectAchivementForm()
+
+    for temp in achivement_list:
+        loginfo(p=temp.achivementtype,label="achivementtype")
 
     if request.method == "POST":
         final_form = FinalReportForm(request.POST, instance=final)
@@ -70,12 +75,15 @@ def finalReportViewWork(request,redirect=False):
     else:
         final_form = FinalReportForm(instance=final)
 
+
     context = {
-        'achivement_type':achivement_type,
+        'projachivementform':projachivementform,
         'statics_type':statics_type,
         'statics_grade_type':statics_grade_type,
         'final': final_form,
+        'finalreportid':final.content_id,
         'redirect':redirect,
+        'achivement_list':achivement_list,
 
     }
     return context

@@ -2,7 +2,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from teacher.models import FinalSubmit
+from teacher.models import *
 import datetime
 
 from const import *
@@ -65,8 +65,27 @@ class FinalReportForm(ModelForm):
                                                        'class': "fill-form"}),
                    }
 
-#    def get_absolute_url(self):
-#        return reverse('student.views.final_report_view', args=(str(self.instance.project_id),))
+class ProjectAchivementForm(forms.Form):
+    """
+        ProjectAchivementForm
+    """
+
+    achivementtitle = forms.CharField(
+                                required=True,
+                                widget=forms.TextInput(attrs={"class":'form-control', "placeholder": "成果或论文名称", }),)
+    mainmember = forms.CharField(
+                                required=True,
+                                widget=forms.TextInput(attrs={"class":'form-control', "placeholder": "主要完成者", }),)
+    introduction = forms.CharField(
+                                required=True,
+                                widget=forms.TextInput(attrs={"class":'form-control', "placeholder": "成果说明", }),)
+    remarks = forms.CharField(
+                                required=True,
+                                widget=forms.TextInput(attrs={"class":'form-control', "placeholder": "标注状况", }),)
+    achivementtype = forms.ChoiceField(choices = ACHIVEMENT_TYPE,
+                            required=True,
+                            widget=forms.Select(attrs={'class':'form-control search-input final_report_form','placeholder':"成果类型"}),)
+
 
 
 

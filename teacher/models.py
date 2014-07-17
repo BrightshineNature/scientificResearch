@@ -5,27 +5,11 @@ import uuid
 from django.db import models
 
 from backend.utility import make_uuid
+from const.models import *
+from adminStaff.models import *
 
 # Create your models here.
 
-
-class ProjectSingle(models.Model):
-    """
-    Every single projects, include basic infomation, it is the base table.
-    """
-    project_id = models.CharField(max_length=50, primary_key=True,
-                                  default=make_uuid,
-                                  verbose_name=u"题目唯一ID")
-
-    title = models.CharField(max_length=400, blank=False,
-                             verbose_name=u"参赛题目")
-
-    class Meta:
-        verbose_name = "参赛项目"
-        verbose_name_plural = "参赛项目"
-
-    def __unicode__(self):
-        return self.title
 
 
 class FinalSubmit(models.Model):
@@ -59,4 +43,34 @@ class FinalSubmit(models.Model):
 
     def __unicode__(self):
         return self.project_id.title
+
+class ProjectAchivement(models.Model):
+    """
+    inheribit table, which use ProjectSingle to show final-submit content
+    """
+    content_id = models.CharField(max_length=50,
+                                  primary_key=True, default=lambda: str(uuid.uuid4()),
+                                  verbose_name="研究成果唯一ID")
+    finalsubmit_id = models.ForeignKey(FinalSubmit)
+
+    achivementtype = models.ForeignKey(AchivementTypeDict)
+
+    achivementtitle = models.CharField(max_length=100, blank=False, null=True,
+                                           verbose_name="成果或论文名称")
+
+    mainmember = models.CharField(max_length=500, blank=False, null=True,
+                                           verbose_name="主要完成者")
+    introduction = models.CharField(max_length=500, blank=False, null=True,
+                                           verbose_name="成果说明")
+    remarks = models.CharField(max_length=500, blank=True, null=True,
+                                           verbose_name="标注状况")
+
+
+
+    class Meta:
+        verbose_name = "研究成果"
+        verbose_name_plural = "研究成果"
+
+    def __unicode__(self):
+        return self.achivementtitle
 
