@@ -3,13 +3,11 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
 from common.forms import ScheduleForm, ScheduleBaseForm
-def scheduleManage(request, userauth,param):
 from const import *
 from teacher.forms import *
 from teacher.models import *
 from backend.logging import logger, loginfo
-def scheduleManage(request, userauth):
-
+def scheduleManage(request, userauth,param):
     context = schedule_form_data(request, userauth, param)
 
     return render(request, userauth['role'] + '/schedule.html', context)
