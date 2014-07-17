@@ -70,4 +70,5 @@ label.budgetform-small{
 select.final_report_form{
     margin-left: 0px;
     width: 230px !important;
+	outline: rgb(91, 157, 217) auto 5px;
 }

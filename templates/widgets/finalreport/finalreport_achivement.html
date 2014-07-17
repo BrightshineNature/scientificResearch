@@ -13,13 +13,13 @@
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                    <input type="text" class="form-control" name="achivementtitle" placeholder="成果或论文名称">
+                                    {{projachivementform.achivementtitle}}
                                 </div> 
                             </div>
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
-                                    <input type="text" class="form-control" name="mainmember"  placeholder="主要完成者">
+                                    {{projachivementform.mainmember}}
                                 </div>
                             </div>
                         </div>
@@ -28,13 +28,13 @@
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></span>
-                                    <input type="text" class="form-control"  name="introduction" placeholder="成果说明">
+                                    {{projachivementform.introduction}}
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                                    <input type="text" class="form-control" name="remarks" placeholder="标注状况">
+                                    {{projachivementform.remarks}}
                                 </div>
                             </div>
                         </div>
@@ -42,45 +42,10 @@
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                    <select  class="form-control search-input final_report_form" name="achivementtype">
-                                        <option selected="true" value="-1">成果类型</option>
-                                        {% for item in  achivement_type %}
-                                        <option value="{{ item.0}}">
-                                        {{ item.1 }}
-                                        </option>
-                                        {% endfor %}
-                                    </select>
+                                    {{projachivementform.achivementtype}}
                                 </div> 
                             </div>
                         </div>
-<!--                         <div class="row">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                    <select  class="form-control search-input" name="teacher_professional">
-                                        <option selected="true" value="-1">职称</option>
-                                        {% for item in professional %}
-                                        <option value="{{ item.0}}">
-                                        {{ item.1 }}
-                                        </option>
-                                        {% endfor %}
-                                    </select>
-                                </div> 
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                    <select  class="form-control search-input" name="teacher_duty">
-                                        <option selected="true" value="-1">行政职务</option>
-                                        {%for item in executive%}
-                                        <option value="{{item.0}}">
-                                        {{item.1}}
-                                        </option>
-                                        {%endfor%}
-                                    </select>
-                                </div>
-                            </div>
-                        </div> -->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -92,20 +57,6 @@
     </div>
     <button class="btn btn-primary pull-right" style="margin-right:25px;" id="add_new_achivement" >添加新成果</button>
     <br>
-    <table class="table" id="achivement_change_table">
-        <thead>
-            <tr>
-                <td><strong>成果类型</strong></td>
-                <td><strong>成果或论文名称</strong></td>
-                <td><strong>主要完成者</strong></td>
-                <td><strong>成果说明</strong></td>
-                <td><strong>标注状况</strong></td>
-                <td><strong>修改</strong></td>
-                <td><strong>删除</strong></td>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>        
-    </table>
+    {% include 'widgets/finalreport/final_achivement_table.html' %}
 <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/achivement_change.js"></script>
 </div>

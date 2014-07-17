@@ -10,7 +10,8 @@ from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
 from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm
-
+from adminStaff.models import TemplateNoticeMessage
+from const import NOTICE_CHOICE
 def appView(request):
 
     context = {}
@@ -57,17 +58,33 @@ def scheduleView(request):
         'role': 'adminStaff',
     }
 
-
-    return scheduleManage(request, userauth)
+    
+    return scheduleManage(request, userauth,{})
 
 def newsRelease(request):
     context={}
     context.update({"newsform":NewsForm})
     return render(request,"adminStaff/news_release.html",context)
 def noticeMessageSetting(request):
+    notice_choice=NOTICE_CHOICE
+    template_notice_message=TemplateNoticeMessage.objects.all()
     template_notice_message_form = TemplateNoticeMessageForm()
+    template_notice_message_group=[]
+    cnt=1
+    for item in template_notice_message:
+        nv={
+            "id":item.id,
+            "iid":cnt,
+            "title":item.title,
+            "message":item.message,
+        }
+        cnt+=1
+        template_notice_message_group.append(nv)
+
     context={
-        "template_notice_message_form":template_notice_message_form
+        "template_notice_message_form":template_notice_message_form,
+        "notice_choice":notice_choice,
+        "template_notice_message_group":template_notice_message_group,
     }
     return render(request,"adminStaff/notice_message_setting.html",context)
 

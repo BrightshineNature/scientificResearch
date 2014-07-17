@@ -1,0 +1,30 @@
+   <table class="table" id="achivement_change_table" value = {{finalreportid}}>
+        <thead>
+            <tr>
+                <th ><strong>成果类型</strong></th>
+                <th ><strong>成果或论文名称</strong></th>
+                <th ><strong>主要完成者</strong></th>
+                <th ><strong>成果说明</strong></th>
+                <th ><strong>标注状况</strong></th>
+                <th><strong>修改</strong></th>
+                <th><strong>删除</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for achivement in achivement_list %}
+            <tr value={{achivement.content_id}}>
+                <td value={{achivement.achivementtype.achivementtype}}>{{achivement.achivementtype}}</td>
+                <td>{{achivement.achivementtitle}}</td>
+                <td>{{achivement.mainmember}}</td>
+                <td>{{achivement.introduction}}</td>
+                <td>{{achivement.remarks}}</td>
+                <td>
+                    <button class="btn btn-success">修改</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger">删除</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>        
+    </table>

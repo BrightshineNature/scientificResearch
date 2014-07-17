@@ -10,10 +10,7 @@ from const.models import *
 RegisterClass = (
     AchivementTypeDict,
     StaticsTypeDict,
-    StaticsPrizeTypeDict,
-    StaticsPaperTypeDict,
-    StaticsPatentTypeDict,
-    StaticsScholarTypeDict,
+    StaticsDataTypeDict,
 )
 
 for temp in RegisterClass:

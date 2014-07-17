@@ -16,11 +16,11 @@
                         </div>
                         <div class="controls">
                             <select id="select_role"  class="form-control " name="message_role">
-                                <option>请选择</option>
-                                <option value="1">专家</option>
-                                <option value="2">学院</option>
-                                <option value="4">教师</option>
-                                <option value="5">全部</option>
+                                {% if notice_choice%}
+                                {%for item in notice_choice%}
+                                <option value={{item.0}}>{{item.1}}</option>
+                                {%endfor%}
+                                {% endif%}
                             </select>
                         </div>
                     </div>
@@ -40,7 +40,53 @@
                 <span><a class="btn btn-primary" data-toggle="modal" data-target="#notice_profile_info" id="add_new_notice" 
                         >添加新模版消息</a></span>
                 <span id="template_notice_error_message"></span>
-                {% include "adminStaff/widgets/notice_message_table.html" %}
+                <div class="modal  fade"  id="notice_profile_info">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <h3>修改提示信息模版:</h3>
+                            </div>
+                            <div class="modal-body">
+                                <form class="well form" id="template_notice_info_form" method="POST" action="">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label class="add-on">标题</label>
+                                        {{template_notice_message_form.title}}    
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="add-on">内容</label>
+                                        {{ template_notice_message_form.message}}
+                                    </div>
+                                </form><!--end school_email_send_form-->
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn" data-dismiss="modal" onclick="cancel_change();">关闭</a>
+                                <a class="btn btn-primary" data-dismiss="modal" 
+                                    id="add_or_update_notice">保存更新</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal  fade"  id="notice_delete_info">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            </div>
+                            <div class="modal-body">
+                                <h2 class="text-error">确定删除此条信息模版吗？</h2>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn" data-dismiss="modal" onclick="cancel_change();">取消</a>
+                                <a class="btn btn-primary" data-dismiss="modal" id="delete_notice">确定</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="template_notice_table">
+                    {% include "widgets/template_notice_table.html" %}
+                </div>
             </div>
         </div>
     </fieldset>
