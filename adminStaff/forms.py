@@ -27,8 +27,10 @@ class SchoolDispatchForm(forms.Form):
     person_firstname = forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))
 
 class SpecialForm(forms.Form):
-    name = forms.CharField(max_length=200, required=True,
-                                 widget=forms.TextInput(attrs={'class':'form-control','id':"special",'placeholder':u""}),)
+    name = forms.CharField(
+      label='Your name',
+      max_length=200, required=True,
+                                 widget=forms.TextInput(attrs={'class':'form-control','id':"special_name",'placeholder':u""}),)
 
 class CollegeForm(forms.Form):
     name = forms.CharField(max_length=200, required=True,

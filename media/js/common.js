@@ -22,22 +22,20 @@ $('[rel="isover"]').click(function(){
 
 
 
-function save_special_name(){
+function saveSpecialName(){
   // alert($('#major_name_form').serialize(true))
-  Dajaxice.adminStaff.SaveSpecialName(SaveSpecialName_callback,{'form':$('#special_form').serialize(true)});
+   // alert("SBSB")
+  Dajaxice.adminStaff.saveSpecialName(saveSpecialNameCallback, {'form':$('#special_form').serialize(false)  } );
 };
-function SaveSpecialName_callback(data){
+function saveSpecialNameCallback(data){
+
     if(data.status == "1")
     {
-        $("#info_majorname").html(data.table);
-        alert(data.message)
-    }
-    else if(data.status == "2")
-    {
-        alert(data.message)
+      // alert("OK")
     }
     else 
     {
-        alert(data.message)
+      alert("error ")
     }
+
 }

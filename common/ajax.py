@@ -37,7 +37,6 @@ def change_project_overstatus(request, project_id, changed_overstatus):
     choices = dict(OVER_STATUS_CHOICES)
 
 
-    print "ssbsbsbsbsbsb"
 
     res = choices[changed_overstatus]    
     return simplejson.dumps({'status':'1', 'res':res})

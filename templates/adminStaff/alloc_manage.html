@@ -7,7 +7,7 @@
 
     <ul class="nav nav-pills" id="myTab">
         <li class="active"><a href="#special_modify" data-toggle="tab">专题更改</a></li>
-        <li><a href="#special_alloc" data-toggle="tab">专业分配</a></li>
+        <li><a href="#special_alloc" data-toggle="tab">专题分配</a></li>
 
         <li><a href="#college_modify" data-toggle="tab">学院更改</a></li>
         <li><a href="#college_alloc" data-toggle="tab">学院分配</a></li>
@@ -16,18 +16,21 @@
     <div class="tab-content">
         <div class="tab-pane fade active in" id="special_modify">
             <p> </p>
-            <form class="form-inline" id="school_name_form">
+
+            <form class="form-inline" id="special_form">
 
                 <div class = "form-group">
-                    <label class="control-label" for="name">专题:</label>
+                    <label class="control-label" for="special_name">专题:</label>
                 </div>
-
                 <div class = "form-group">
                     {{special_form.name}}
                 </div>
 
                 <div class = "form-group">
-                    <span class="btn btn-primary" id="school_name" onclick="save_school_name();" >保存专题名称</span> 
+                    <span class="btn btn-primary" id="special_button" 
+                    onclick="saveSpecialName();"
+                    >保存专题名称
+                    </span> 
                 </div>
             </form> 
 
@@ -324,8 +327,8 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/common.js"></script>
 
 
-            <!-- ajax_csrf-->
-            <script type='text/javascript' src="{{STATIC_URL}}js/ajax_csrf.js"></script>
+<!-- ajax_csrf-->
+<script type='text/javascript' src="{{STATIC_URL}}js/ajax_csrf.js"></script>
 
 
 
