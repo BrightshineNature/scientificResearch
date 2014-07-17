@@ -5,9 +5,10 @@ Created on 2014-06-07
 Desc: teacher' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from const import PROFESSIONAL_TITLE_CHOICES,EXECUTIVE_POSITION_CHOICES,ACHIVEMENT_TYPE,STATICS_TYPE,STATICS_PRIZE_TYPE
+from django.http import HttpResponseRedirect,HttpResponse
+from const import * 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
-from common.views import scheduleManage
+from common.views import scheduleManage,finalReportViewWork
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 
 def appView(request):
@@ -29,8 +30,8 @@ def homeView(request):
     }
     return render(request,"teacher/project_info.html",context)
 def memberChange(request):
-    professional=PROFESSIONAL_TITLE_CHOICES
-    executive=EXECUTIVE_POSITION_CHOICES
+    professional=PROFESSIONAL_TITLE
+    executive=EXECUTIVE_POSITION
     context={}
     context['professional']=professional
     context['executive']=executive
@@ -41,14 +42,10 @@ def commitmentView(request):
     return render(request, "teacher/commitment.html", context)
 
 def finalReportView(request):
-    achivement_type = ACHIVEMENT_TYPE
-    statics_type = STATICS_TYPE
-    statics_grade_type = STATICS_PRIZE_TYPE
-    context = {
-        'achivement_type':achivement_type,
-        'statics_type':statics_type,
-        'statics_grade_type':statics_grade_type,
-    }
+
+    context = finalReportViewWork(request)
+    if context['redirect']:
+		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/final.html",context)
 
 def progressReportView(request):

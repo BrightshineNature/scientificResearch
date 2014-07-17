@@ -1,8 +1,14 @@
 # coding: UTF-8
 
 from django.shortcuts import render
+from django.http import HttpResponseRedirect,HttpResponse
 from common.forms import ScheduleForm, ScheduleBaseForm
 def scheduleManage(request, userauth,param):
+from const import *
+from teacher.forms import *
+from teacher.models import *
+from backend.logging import logger, loginfo
+def scheduleManage(request, userauth):
 
     context = schedule_form_data(request, userauth, param)
 
@@ -49,3 +55,30 @@ def schedule_form_data(request , userauth, param):
 
     return context
 
+def finalReportViewWork(request,redirect=False):
+    achivement_type = ACHIVEMENT_TYPE
+    statics_type = STATICS_TYPE
+    statics_grade_type = STATICS_PRIZE_TYPE
+
+    final = FinalSubmit.objects.all()[0]
+
+    if request.method == "POST":
+        final_form = FinalReportForm(request.POST, instance=final)
+        if final_form.is_valid():
+            final_form.save()
+            redirect = True
+        else:
+            logger.info("Final Form Valid Failed"+"**"*10)
+            logger.info(final_form.errors)
+    else:
+        final_form = FinalReportForm(instance=final)
+
+    context = {
+        'achivement_type':achivement_type,
+        'statics_type':statics_type,
+        'statics_grade_type':statics_grade_type,
+        'final': final_form,
+        'redirect':redirect,
+
+    }
+    return context

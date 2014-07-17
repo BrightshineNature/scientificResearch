@@ -5,4 +5,14 @@ Created on 2013-3-27
 @author: tianwei
 '''
 
-from django.contrib import admin
+from django.contrib import admin 
+
+from teacher.models import *
+
+RegisterClass = (
+	ProjectSingle,
+	FinalSubmit,
+)
+
+for temp in RegisterClass:
+    admin.site.register(temp)

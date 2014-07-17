@@ -107,3 +107,14 @@ th,td{
 .datastatics_change_table{
     width: 700px;
 }
+
+div.finalerror-lg{
+	width: 95%;
+}
+
+div.finalerror-sm{
+	width: 30%;
+	margin-left:5px;
+	height:45px;
+}
+
