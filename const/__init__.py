@@ -26,6 +26,13 @@ AUTH_CHOICES = (
     (VISITOR_USER, u"游客"),
 )
 #Science Activity Type
+NOTICE_CHOICE=(
+    ('0',"全部"),
+    ('1',"专家"),
+    ('2',"学院"),
+    ('3',"教师"),
+)
+
 SCIENCE_ACTIVITY_TYPE_CHOICES=(
     ('0',u"基础研究"),
     ('1',u"应用研究"),

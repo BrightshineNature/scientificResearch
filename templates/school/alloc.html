@@ -5,8 +5,8 @@
     <form id="subject_insitute_form" method="POST" action="/adminStaff/subject_alloc/"><!-- begin category form-->
 	{% csrf_token %}
 	<select class="form-control">
-		<option>学院1</opetion>
-		<option>学院2</opetion>
+		<option>学院1</option>
+		<option>学院2</option>
 	</select>
   <input type="submit" class="btn btn-primary" id="filter_button" value="按照学院进行筛选"/>
   </form><!--end category form -->
@@ -67,7 +67,7 @@
 							</tr>
 					</tbody>
       </table>
-      <a data-toggle="modal" href="#alloc_choice" onclick="bulk_storage();"><button class="btn btn-primary">批量指派</button></a>
+      <a data-toggle="modal" href="#alloc_choice"><button class="btn btn-primary">批量指派</button></a>
     </div><!--end content section-->
 
       <div class="tab-pane fade " id="alloced-section">

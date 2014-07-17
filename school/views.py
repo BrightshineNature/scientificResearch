@@ -8,16 +8,24 @@ from django.shortcuts import render
 from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
+from teacher.forms import SettingForm
+from adminStaff.models import ProjectSingle
+from backend.logging import loginfo
 
 def appView(request):
     context = {}
     return render(request,"school/application.html",context)
 def scheduleView(request):
-
+    not_pass_apply_project_group=ProjectSingle.objects.filter(project_status=0)
+    pass_apply_project_group=ProjectSingle.objects.filter(project_status__gt=0)
+    param={
+        "not_pass_apply_project_group":not_pass_apply_project_group,
+        "pass_apply_project_group":pass_apply_project_group,
+    }
     userauth = {
                 "role": 'school',                
     }
-    return scheduleManage(request, userauth)
+    return scheduleManage(request, userauth,param)
 
 
 def financialView(request):
@@ -47,7 +55,9 @@ def allocView(request):
     context = {}
     return render(request, "school/alloc.html", context)
 def researchConcludingView(request):
-    context={}
+    context={
+        "school":True
+    }
     return render(request,"school/research_concluding.html",context)
 
 def finalAllocView(request):
@@ -78,3 +88,8 @@ def controlView(request):
         'special' :special,
     }
     return render(request, "school/control.html", context);
+
+def infoModifyView(request):
+    form = SettingForm()
+    context = {"form": form,}
+    return render(request, "school/teacher_info_modify.html", context)

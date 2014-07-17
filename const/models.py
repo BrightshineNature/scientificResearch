@@ -1,4 +1,5 @@
 # coding: UTF-8
+from django.contrib.auth.models import User
 from django.db import models
 from const import *
 
@@ -128,4 +129,23 @@ class StaticsDataTypeDict(models.Model):
 	def __unicode__(self):
 		return self.get_staticsdatatype_display()
 
+
+        def __unicode__(self):
+                return self.get_staticsScholarType_display()
+class UserIdentity(models.Model):
+    """
+    Login User identity: AdminStaff, AdminSystem, Expert, SchoolTeam, visitor,
+    Teacher, Student
+    """
+    identity = models.CharField(max_length=50, blank=False, unique=True,
+                                choices=AUTH_CHOICES, default=VISITOR_USER,
+                                verbose_name="身份级别")
+    auth_groups = models.ManyToManyField(User, related_name="identities")
+
+    class Meta:
+        verbose_name = "登录权限"
+        verbose_name_plural = "登录权限"
+
+    def __unicode__(self):
+        return self.get_identity_display()
 
