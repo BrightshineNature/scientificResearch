@@ -19,7 +19,7 @@ def scheduleView(request):
                 "role": 'college',
                 }
 
-    return scheduleManage(request, userauth)
+    return scheduleManage(request, userauth,{})
 
 def financialView(request):
     userauth = {

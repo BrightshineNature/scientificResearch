@@ -6,3 +6,6 @@ Created on 2013-3-27
 '''
 
 from django.contrib import admin
+from adminStaff.models import ProjectSingle
+
+admin.site.register(ProjectSingle)

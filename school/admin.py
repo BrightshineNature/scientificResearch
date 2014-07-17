@@ -6,3 +6,7 @@ Created on 2013-3-27
 '''
 
 from django.contrib import admin
+from school.models import SchoolProfile
+
+admin.site.register(SchoolProfile)
+
