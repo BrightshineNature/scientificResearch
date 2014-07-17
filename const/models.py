@@ -111,27 +111,24 @@ class AchivementTypeDict(models.Model):
         return self.get_achivementtype_display()
 
 class StaticsTypeDict(models.Model):
-	staticstype = models.CharField(blank=True,null=True,max_length=100,choices=STATICS_TYPE,unique=True,verbose_name=u"统计数据类型")
+	staticstype = models.CharField(blank=True,null=True,max_length=100,choices=STATICS_TYPE,unique=True,verbose_name=u"统计数据类别")
 	class Meta:
-		verbose_name = "统计数据类型列表"
-		verbose_name_plural = "统计数据类型列表"
+		verbose_name = "统计数据类别列表"
+		verbose_name_plural = "统计数据类别列表"
 	
 	def __unicode__(self):
 		return self.get_staticstype_display()
 
 class StaticsDataTypeDict(models.Model):
-	staticsdatatype = models.CharField(blank=True,null=True,max_length=100,choices=STATICS_DATA_TYPE,unique=True,verbose_name=u"统计具体内容类型")
-	staticstype = ForeignKey(StaticsTypeDict)
+    staticsdatatype = models.CharField(blank=True,null=True,max_length=100,choices=STATICS_DATA_TYPE,unique=True,verbose_name=u"统计内容类型")
+    staticstype = models.ForeignKey(StaticsTypeDict)
     class Meta:
-		verbose_name = "统计具体内容类型列表"
-		verbose_name_plural = "统计具体内容类型列表"
-	
-	def __unicode__(self):
-		return self.get_staticsdatatype_display()
+        verbose_name = "统计内容类型列表"
+        verbose_name_plural = "统计内容类型列表"
 
+    def __unicode__(self):            
+        return self.get_staticsdatatype_display()
 
-        def __unicode__(self):
-                return self.get_staticsScholarType_display()
 class UserIdentity(models.Model):
     """
     Login User identity: AdminStaff, AdminSystem, Expert, SchoolTeam, visitor,

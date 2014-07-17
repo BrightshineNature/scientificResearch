@@ -10,7 +10,6 @@ from django.contrib import admin
 from teacher.models import *
 
 RegisterClass = (
-	ProjectSingle,
 	FinalSubmit,
 	ProjectAchivement,
 )
