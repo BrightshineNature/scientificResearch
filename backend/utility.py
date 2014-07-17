@@ -8,9 +8,11 @@ Desc: some tool code snniper
 '''
 import os
 import uuid
+
 from settings import STATIC_URL, MEDIA_URL
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # from const.__init__ import PAGE_ELEMENTS, School_Code
+
 from backend.logging import logger, loginfo
 def search_tuple(src, target):
     """
@@ -35,6 +37,7 @@ def convert2media_url(raw_url):
     """
     return raw_url
     #return STATIC_URL + raw_url[raw_url.find(MEDIA_URL)+len(MEDIA_URL):]
+
 
 # def getContext(contentList, page=1, name="context", add_index = 1, page_elems=PAGE_ELEMENTS):
 #     """
@@ -71,10 +74,12 @@ def convert2media_url(raw_url):
 #             }
 
 
+
 def make_uuid():
     """
     make uuid
     """
     return str(uuid.uuid4())
+
 
 

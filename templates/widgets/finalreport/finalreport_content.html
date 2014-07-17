@@ -1,17 +1,49 @@
-    <div class="page-header">
-        <h3>项目摘要及关键词</h3>
+<form method="POST" action="/teacher/final" class="form-inline" id="finalsubmitform" role="form">
+	{% csrf_token %}
+    {% if final.project_keyword.errors or final.project_summary.errors  or  final.project_plan.errors %}
+    <div class="alert alert-danger finalerror-lg">
+      <button class="close" data-dismiss="alert">×</button>
+	  <p>
+	  “报告正文”标签下的
+      {%if final.project_keyword.errors %} “关键字“  &nbsp; {% endif %}
+      {%if final.project_summary.errors %} “项目摘要“ &nbsp;  {% endif %}
+	  {%if final.project_plan.errors %} “研究计划要点及执行情况概述“  &nbsp; {% endif %}
+      {%if final.project_progress.errors %} “研究工作主要进展和所取得的成果“  &nbsp; {% endif %}
+      {%if final.academic_exchange.errors %} “国内外学术合作交流与人才培养情况“  &nbsp; {% endif %}
+      {%if final.existing_problems.errors %} “存在的问题、建议及其他需要说明的情况“  &nbsp; {% endif %}
+      字段没有填写
+      </p>
+    </div>
+    {%endif%}
+	<div class="page-header">
+        <h3>关键词</h3>
     </div>
     <blockquote>
-      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
-        <div class="row alert alert-error school-display">
-          <button class="close" data-dismiss="alert">关闭</button>
-          {{ final.achievement_summary.errors }}
-        </div>
-    {% endif %}  
-    <textarea rows="8" name="achievement_summary" id="id_achievement_summary" placeholder="项目摘要限500字，关键词不超过5个" cols="100" class="fill-form"></textarea>
+      <div class="control-group form-inline">
+		  {{final.project_keyword}}
+		  {% if final.project_keyword.errors  %}
+		  <div class="row alert alert-danger finalerror-sm">
+      		<button class="close" data-dismiss="alert">×</button>
+			{{final.project_keyword.errors}}
+		  </div>
+		  {% endif %}
+      </div>
+    </blockquote><!--end project content-->
+
+    <br/>
+    <div class="page-header">
+        <h3>项目摘要</h3>
     </div>
+    <blockquote>
+      <div class="control-group form-inline {% if final.project_summary.errors %}error{% endif %}">
+		  {{final.project_summary}}
+		  {% if final.project_summary.errors  %}
+		  <div class="row alert alert-danger finalerror-sm">
+      		<button class="close" data-dismiss="alert">×</button>
+			{{final.project_summary.errors}}
+		  </div>
+		  {% endif %}
+      </div>
     </blockquote><!--end project content-->
 
     <br/>
@@ -19,15 +51,14 @@
       <h3>研究计划要点及执行情况概述</h3>
     </div>
     <blockquote>
-      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
-        <div class="row alert alert-error school-display">
-          <button class="close" data-dismiss="alert">关闭</button>
-          {{ final.achievement_summary.errors }}
-        </div>
-        {% endif %}  
-        <textarea rows="8" name="achievement_summary" id="id_achievement_summary" cols="100" class="fill-form"></textarea>
+      <div class="control-group form-inline {% if final.project_plan.errors %}error{% endif %}">
+		  {{final.project_plan}}
+		  {% if final.project_plan.errors  %}
+		  <div class="row alert alert-danger finalerror-sm">
+      		<button class="close" data-dismiss="alert">×</button>
+			{{final.project_plan.errors}}
+		  </div>
+		  {% endif %}
       </div>
     </blockquote><!--end project content-->
     <br/>
@@ -35,15 +66,14 @@
       <h3>研究工作主要进展和所取得的成果</h3>
     </div>
     <blockquote>
-      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
-        <div class="row alert alert-error school-display">
-          <button class="close" data-dismiss="alert">关闭</button>
-          {{ final.achievement_summary.errors }}
-        </div>
-        {% endif %}  
-        <textarea rows="8" name="achievement_summary" id="id_achievement_summary" cols="100" class="fill-form"></textarea>
+      <div class="control-group form-inline {% if final.project_progress.errors %}error{% endif %}">
+		  {{final.project_progress}}
+		  {% if final.project_progress.errors  %}
+		  <div class="row alert alert-danger finalerror-sm">
+      		<button class="close" data-dismiss="alert">×</button>
+			{{final.project_progress.errors}}
+		  </div>
+		  {% endif %}
       </div>
     </blockquote><!--end project content-->
     <br/>
@@ -51,15 +81,14 @@
       <h3>国内外学术合作交流与人才培养情况</h3>
     </div>
     <blockquote>
-      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
-        <div class="row alert alert-error school-display">
-          <button class="close" data-dismiss="alert">关闭</button>
-          {{ final.achievement_summary.errors }}
-        </div>
-        {% endif %}  
-        <textarea rows="8" name="achievement_summary" id="id_achievement_summary" placeholder="如无，可以不写"  cols="100" class="fill-form"></textarea>
+      <div class="control-group form-inline {% if final.academic_exchange.errors %}error{% endif %}">
+		  {{final.academic_exchange}}
+		  {% if final.academic_exchange.errors  %}
+		  <div class="row alert alert-danger finalerror-sm">
+      		<button class="close" data-dismiss="alert">×</button>
+			{{final.academic_exchange.errors}}
+		  </div>
+		  {% endif %}
       </div>
     </blockquote><!--end project content-->
     <br/>
@@ -67,15 +96,15 @@
       <h3>存在的问题、建议及其他需要说明的情况</h3>
     </div>
     <blockquote>
-      <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
-        <div class="row alert alert-error school-display">
-          <button class="close" data-dismiss="alert">关闭</button>
-          {{ final.achievement_summary.errors }}
-        </div>
-        {% endif %}  
-        <textarea rows="8" name="achievement_summary" id="id_achievement_summary" cols="100" class="fill-form"></textarea>
+      <div class="control-group form-inline {% if final.existing_problems.errors %}error{% endif %}">
+		  {{final.existing_problems}}
+		  {% if final.existing_problems.errors  %}
+		  <div class="row alert alert-danger finalerror-sm">
+      		<button class="close" data-dismiss="alert">×</button>
+			{{final.existing_problems.errors}}
+		  </div>
+		  {% endif %}
       </div>
     </blockquote><!--end project content-->
-    {% include "teacher/widgets/commit_button.html"%}
+	{% include "teacher/widgets/commit_button.html"%}
+</form>
