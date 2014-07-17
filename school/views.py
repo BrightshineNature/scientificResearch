@@ -8,6 +8,7 @@ from django.shortcuts import render
 from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
+from teacher.forms import SettingForm
 from adminStaff.models import ProjectSingle
 from backend.logging import loginfo
 
@@ -87,3 +88,8 @@ def controlView(request):
         'special' :special,
     }
     return render(request, "school/control.html", context);
+
+def infoModifyView(request):
+    form = SettingForm()
+    context = {"form": form,}
+    return render(request, "school/teacher_info_modify.html", context)
