@@ -1,8 +1,9 @@
 # coding: UTF-8
 import uuid
 from backend.utility import make_uuid
-from users.models import TeacherProfile
-from school.models import SchoolProfile
+from users.models import TeacherProfile,SchoolProfile
+from const.models import ProjectStatus
+from const import *
 from django.db import models
 import datetime
 # Create your models here.
@@ -10,6 +11,8 @@ import datetime
 class TemplateNoticeMessage(models.Model):
     title = models.CharField(blank=False,max_length=30)
     message = models.TextField(blank=False)
+class Special(models.Model):
+      name = models.CharField(blank=False,max_length=30)
 
 class ProjectSingle(models.Model):
     """
@@ -29,48 +32,21 @@ class ProjectSingle(models.Model):
     school = models.ForeignKey(SchoolProfile, blank=False, null=False, verbose_name=u"所属学院")
 
     teacher = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"项目申请人")
-    
-    project_status=models.IntegerField(null=False,default=0,verbose_name=u"项目状态")
+
+    project_status=models.ForeignKey(ProjectStatus,blank=False,default=PROJECT_STATUS_APPLY,verbose_name=u"项目状态")
     # expert = models.ManyToManyField(ExpertProfile, through='Re_Project_Expert')
 
-    #project_category = models.ForeignKey(ProjectCategory, verbose_name=u"专题类型", blank=True, null=True, default=None)
-    # project_grade = models.ForeignKey(ProjectGrade, verbose_name=u"项目级别",
-    #                                   blank=True, null=True, default=None)
-    # project_status = models.ForeignKey(ProjectStatus, verbose_name=u"项目状态",
-    #                                    blank=True, null=True,
-    #                                    default=None)
+    project_special = models.ForeignKey(Special, verbose_name=u"专题类型", blank=True, null=True, default=None)
     application_year = models.IntegerField(blank=False, null=False, max_length=4,default=lambda: datetime.datetime.today().year,verbose_name=u"申请年份")
     approval_year=models.IntegerField(blank=True, null=True, max_length=4,verbose_name=u"立项年份")
     submit_date=models.DateField(blank=True,null=True,verbose_name=u"提交日期")
-    # recommend = models.BooleanField(null=False, default=False,
-    #                                 verbose_name=u"推荐")
-    # is_past = models.BooleanField(null=False, default=False,
-    #                               verbose_name=u"往届项目")
-    # try:
-    #     default_status = OverStatus.objects.get(status=OVER_STATUS_NOTOVER)
-    # except:
-    #     default_status = 1
-    # over_status = models.ForeignKey(OverStatus, verbose_name=u"结束状态",
-    #                                 blank=True, null=True,
-    #                                    default=default_status)
     file_application = models.BooleanField(null=False, default=False,verbose_name=u"申报书")
     file_task = models.BooleanField(null=False, default=False,verbose_name=u"任务书")
     file_interimchecklist = models.BooleanField(null=False, default=False,verbose_name=u"进展报告")
     file_summary = models.BooleanField(null=False, default=False,verbose_name=u"结题书")
-    application_submit= models.BooleanField(null=False, default=False,verbose_name=u"申请提交")
-    summary_submit = models.BooleanField(null=False, default=False,verbose_name=u"结题提交")
-    # # is_applicationover = models.BooleanField(null=False, default=False,
-    # #                               verbose_name=u"申请结束判断")
-    # funds_total   = models.FloatField(blank=False, verbose_name=u"经费总额",
-    #                                 default=0)
-    # funds_remain  = models.FloatField(blank=False, verbose_name=u"经费余额",
-    #                                 default=0)
-    # project_code = models.CharField(blank=False, null=True, max_length=14, verbose_name=u"项目申报编号")
-    # project_unique_code = models.CharField(blank=True, null=True, default='',
-    #                                        max_length=14, verbose_name=u"项目编号")
-    # class Meta:
-    #     verbose_name = "参赛项目"
-    #     verbose_name_plural = "参赛项目"
+    class Meta:
+        verbose_name = "参赛项目"
+        verbose_name_plural = "参赛项目"
 
     def __unicode__(self):
         return self.title
