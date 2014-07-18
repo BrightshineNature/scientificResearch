@@ -76,4 +76,6 @@ class ProjectSingle(models.Model):
         return self.title
 
 class Special(models.Model):
-      name = models.CharField(blank=False,max_length=30)
+    name = models.CharField(blank=False,max_length=30)
+    def __unicode__(self):
+        return self.name
