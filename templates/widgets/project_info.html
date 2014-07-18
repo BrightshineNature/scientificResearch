@@ -25,14 +25,16 @@
                 </thead>
 
                 <tbody>
+{% if not_pass_apply_project_group %}
+                        {% for item in not_pass_apply_project_group%}
                     <tr>
-                        <td>51012014666666 </td>
-                        <td>ss自然基金</td>
-                        <td>沈ss潋</td>
-                        <td>创新实验学院</td>
-                        <td> 2014</td>
+                        <td>{{item.project_application_code}}</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.teacher}}</td>
+                        <td>{{item.school}}</td>
+                        <td> {{item.year}}</td>
                         <td>201s-7-1 </td>
-                        <td>哲s</td>
+                        <td></td>
                         <td>
                             <a href="#"><span class="label label-success"> 申请书 </span></a>
                         </td>
@@ -40,6 +42,8 @@
                             <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">评审 </button>
                         </td>
                     </tr>
+                    {% endfor%}
+                    {% endif%}
                 </tbody>
             </table>
         </div>

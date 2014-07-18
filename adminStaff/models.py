@@ -1,8 +1,10 @@
 # coding: UTF-8
 import uuid
 from backend.utility import make_uuid
-
+from users.models import TeacherProfile
+from school.models import SchoolProfile
 from django.db import models
+import datetime
 # Create your models here.
 
 class TemplateNoticeMessage(models.Model):
@@ -24,10 +26,11 @@ class ProjectSingle(models.Model):
     title = models.CharField(max_length=400, blank=False,
                              verbose_name=u"参赛题目")
 
-    # school = models.ForeignKey(SchoolProfile, blank=False, null=False, verbose_name=u"所属学院")
+    school = models.ForeignKey(SchoolProfile, blank=False, null=False, verbose_name=u"所属学院")
 
-    # student = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"教师")
-
+    teacher = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"项目申请人")
+    
+    project_status=models.IntegerField(null=False,default=0,verbose_name=u"项目状态")
     # expert = models.ManyToManyField(ExpertProfile, through='Re_Project_Expert')
 
     # project_category = models.ForeignKey(ProjectCategory, verbose_name=u"项目类型",
@@ -37,9 +40,7 @@ class ProjectSingle(models.Model):
     # project_status = models.ForeignKey(ProjectStatus, verbose_name=u"项目状态",
     #                                    blank=True, null=True,
     #                                    default=None)
-    # year = models.IntegerField(blank=False, null=False, max_length=4,
-    #                            default=lambda: datetime.datetime.today().year,
-    #                            verbose_name=u"参加年份")
+    year = models.IntegerField(blank=False, null=False, max_length=4,default=lambda: datetime.datetime.today().year,verbose_name=u"申请年份")
     # recommend = models.BooleanField(null=False, default=False,
     #                                 verbose_name=u"推荐")
     # is_past = models.BooleanField(null=False, default=False,
@@ -76,5 +77,5 @@ class ProjectSingle(models.Model):
     #     verbose_name = "参赛项目"
     #     verbose_name_plural = "参赛项目"
 
-    # def __unicode__(self):
-    #     return self.title
+    def __unicode__(self):
+        return self.title

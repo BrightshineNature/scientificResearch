@@ -1,7 +1,7 @@
 # coding: UTF-8
 from django.db import models
 from django.contrib.auth.models import User
-
+from const.models import UserIdentity
 from const import ADMINSTAFF_USER,SCHOOL_USER,COLLEGE_USER,TEACHER_USER,EXPERT_USER,FINANCE_USER,VISITOR_USER
 
 class AdminStaffProfile(models.Model):
