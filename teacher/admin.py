@@ -12,6 +12,7 @@ from teacher.models import *
 RegisterClass = (
 	FinalSubmit,
 	ProjectAchivement,
+    ProjectStatistics,
 )
 
 for temp in RegisterClass:

@@ -20,7 +20,7 @@ class ProjectStatus(models.Model):
     """
     Project Status:
     """
-    status = models.CharField(max_length=30, blank=False, unique=True,
+    status = models.IntegerField(blank=False, unique=True,
                               choices=PROJECT_STATUS_CHOICES,
                                verbose_name="项目状态")
     class Meta:
@@ -28,6 +28,7 @@ class ProjectStatus(models.Model):
         verbose_name_plural = "项目状态"
     def __unicode__(self):
         return self.get_status_display()
+
 class Sex(models.Model):
     """
     Sex:
@@ -102,7 +103,7 @@ class ResearchBaseType(models.Model):
         return self.get_category_display()
 
 class AchivementTypeDict(models.Model):
-    achivementtype = models.CharField(blank=True,null=True,max_length=100,default="0",choices=ACHIVEMENT_TYPE,unique=True,verbose_name=u"成果类型")
+    achivementtype = models.CharField(blank=True,max_length=100,default="0",choices=ACHIVEMENT_TYPE,unique=True,verbose_name=u"成果类型")
     class Meta:
         verbose_name = "成果类型列表"
         verbose_name_plural = "成果类型列表"
@@ -111,7 +112,7 @@ class AchivementTypeDict(models.Model):
         return self.get_achivementtype_display()
 
 class StaticsTypeDict(models.Model):
-	staticstype = models.CharField(blank=True,null=True,max_length=100,choices=STATICS_TYPE,unique=True,verbose_name=u"统计数据类别")
+	staticstype = models.CharField(blank=True,max_length=100,choices=STATICS_TYPE,unique=True,verbose_name=u"统计数据类别")
 	class Meta:
 		verbose_name = "统计数据类别列表"
 		verbose_name_plural = "统计数据类别列表"
@@ -121,10 +122,10 @@ class StaticsTypeDict(models.Model):
 
 class StaticsDataTypeDict(models.Model):
     staticsdatatype = models.CharField(blank=True,null=True,max_length=100,choices=STATICS_DATA_TYPE,unique=True,verbose_name=u"统计内容类型")
-    staticstype = models.ForeignKey(StaticsTypeDict)
+    staticstype = models.ForeignKey(StaticsTypeDict,blank=False, null=False, verbose_name=u"统计数据级别")
     class Meta:
-        verbose_name = "统计内容类型列表"
-        verbose_name_plural = "统计内容类型列表"
+        verbose_name = "统计数据级别列表"
+        verbose_name_plural = "统计数据级别列表"
 
     def __unicode__(self):            
         return self.get_staticsdatatype_display()

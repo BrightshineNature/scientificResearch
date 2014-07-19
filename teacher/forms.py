@@ -87,6 +87,20 @@ class ProjectAchivementForm(forms.Form):
                             widget=forms.Select(attrs={'class':'form-control search-input final_report_form','placeholder':"成果类型"}),)
 
 
+class ProjectDatastaticsForm(forms.Form):
+    """
+        ProjectDatastaticsForm
+    """
+    staticstype = forms.ChoiceField(choices = STATICS_TYPE,
+                            required=True,
+                            widget=forms.Select(attrs={'class':'form-control search-input final_report_form','placeholder':"类别"}),)
+    staticsdatatype = forms.ChoiceField(choices = STATICS_DATA_TYPE,
+                        required=True,
+                        widget=forms.Select(attrs={'class':'form-control search-input final_report_form','placeholder':"级别"}),)
+    statics_num = forms.CharField(
+                                required=True,
+                                widget=forms.TextInput(attrs={"class":'form-control', "placeholder": "数量", }),)
+
 
 
 
