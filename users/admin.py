@@ -1,6 +1,9 @@
 
 from django.contrib import admin
-from users.models import TeacherProfile
+from users.models import *
 
-admin.site.register(TeacherProfile)
+RegisterClass = (SchoolProfile,
+                 ExpertProfile,
+                 AdminStaffProfile,
+                 )
 

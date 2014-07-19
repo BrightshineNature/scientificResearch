@@ -9,7 +9,7 @@ from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
 from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm
-from adminStaff.models import TemplateNoticeMessage
+from adminStaff.models import TemplateNoticeMessage, Special
 from const import NOTICE_CHOICE
 def appView(request):
 
@@ -22,6 +22,7 @@ def allocManageView(request):
     userauth = {
         'role': 'adminStaff',
     }
+
     special_form = SpecialForm()
     college_form = CollegeForm()
 
@@ -29,20 +30,19 @@ def allocManageView(request):
         special_form = SpecialForm(request.POST)
 
 
-    special_dict = {
-        "文科",
-        "理科",
+    special_list = Special.objects.all()    
 
-    }
-    college_dict = {
+    college_list = {
         "计算机",
         "物理",
     }
 
-    context = {'special_form' : special_form,
-                'special_dict': special_dict,
+    
+    
+    context = { 'special_form' : special_form,
+                'special_list': special_list,
                 'college_form': college_form, 
-                'college_dict': college_dict,
+                'college_list': college_list,
     }
     
 

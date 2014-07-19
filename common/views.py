@@ -95,11 +95,13 @@ def get_search_data(schedule_form):
 def finalReportViewWork(request,redirect=False):
     achivement_type = ACHIVEMENT_TYPE
     statics_type = STATICS_TYPE
-    statics_grade_type = STATICS_PRIZE_TYPE
+    statics_grade_type = STATICS_DATA_TYPE
 
     final = FinalSubmit.objects.all()[0]
     achivement_list = ProjectAchivement.objects.filter(finalsubmit_id = final.content_id)
+    datastatics_list = ProjectStatistics.objects.filter(finalsubmit_id = final.content_id)
     projachivementform  = ProjectAchivementForm()
+    projdatastaticsform = ProjectDatastaticsForm()
 
     for temp in achivement_list:
         loginfo(p=temp.achivementtype,label="achivementtype")
@@ -118,12 +120,14 @@ def finalReportViewWork(request,redirect=False):
 
     context = {
         'projachivementform':projachivementform,
+        'projdatastaticsform':projdatastaticsform,
         'statics_type':statics_type,
         'statics_grade_type':statics_grade_type,
         'final': final_form,
         'finalreportid':final.content_id,
         'redirect':redirect,
         'achivement_list':achivement_list,
+        'datastatics_list':datastatics_list,
 
     }
     return context

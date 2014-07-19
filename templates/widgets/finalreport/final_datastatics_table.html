@@ -1,0 +1,26 @@
+   <table class="table" id="datastatics_change_table" value = {{finalreportid}}>
+        <thead>
+            <tr>
+                <th ><strong>类别</strong></th>
+                <th ><strong>级别</strong></th>
+                <th ><strong>数量</strong></th>
+                <th><strong>修改</strong></th>
+                <th><strong>删除</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for datastatics in datastatics_list %}
+            <tr value={{datastatics.content_id}}>
+                <td value={{datastatics.staticstype.staticstype}}>{{datastatics.staticstype}}</td>
+                <td value={{datastatics.staticsdatatype.staticsdatatype}}>{{datastatics.staticsdatatype}}</td>
+                <td>{{datastatics.statics_num}}</td>
+                <td>
+                    <button class="btn btn-success">修改</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger">删除</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>        
+    </table>

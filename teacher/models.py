@@ -74,3 +74,26 @@ class ProjectAchivement(models.Model):
     def __unicode__(self):
         return self.achivementtitle
 
+class ProjectStatistics(models.Model):
+    """
+    inheribit table, which use ProjectSingle to show final-submit content
+    """
+    content_id = models.CharField(max_length=50,
+                                  primary_key=True, default=lambda: str(uuid.uuid4()),
+                                  verbose_name="统计数据唯一ID")
+    finalsubmit_id = models.ForeignKey(FinalSubmit)
+
+    staticstype = models.ForeignKey(StaticsTypeDict,blank=False, null=False, verbose_name=u"统计数据类别")
+
+    staticsdatatype = models.ForeignKey(StaticsDataTypeDict,blank=False, null=False, verbose_name=u"统计数据级别")
+
+    statics_num = models.CharField(max_length=100, blank=False, null=True,
+                                           verbose_name="数量")
+
+    class Meta:
+        verbose_name = "统计数据"
+        verbose_name_plural = "统计数据"
+
+    def __unicode__(self):
+        return self.staticsdatatype.__unicode__() + "(" +self.staticstype.__unicode__() + ")"
+
