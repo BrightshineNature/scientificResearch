@@ -5,7 +5,6 @@ Created on 2014-06-07
 Desc: adminStaff' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
