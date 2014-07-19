@@ -11,6 +11,7 @@ RegisterClass = (
     AchivementTypeDict,
     StaticsTypeDict,
     StaticsDataTypeDict,
+    UserIdentity,
 )
 
 for temp in RegisterClass:
