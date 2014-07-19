@@ -8,9 +8,16 @@ from teacher.forms import *
 from teacher.models import *
 from backend.logging import logger, loginfo
 from adminStaff.models import ProjectSingle
+from django.db.models import Q
 def getParam(pro_list, userauth):
-    not_pass_apply_project_group=[item for item in pro_list if item.project_status==0]
-    pass_apply_project_group=[item for item in pro_list if item.project_status!=0]
+    not_pass_apply_project_group=pro_list.filter(project_status__id=1)
+    pass_apply_project_group=pro_list.filter(project_status__id__gt=1)
+    #for item in pro_list:
+        #loginfo(item.project_status)
+    #count=0;
+    #not_pass_apply_project_group=[]
+    #pass_apply_project_group=[]
+    count=not_pass_apply_project_group.count()+pass_apply_project_group.count()
     param={
         "not_pass_apply_project_group":not_pass_apply_project_group,
         "pass_apply_project_group":pass_apply_project_group,
@@ -39,7 +46,7 @@ def schedule_form_data(request , userauth):
     if request.method == 'POST':
         
         schedule_form = ScheduleBaseForm(request.POST)
-        pro_list=oet_search_data(schedule_form)
+        pro_list=get_search_data(schedule_form)
     else:
         pro_list=ProjectSingle.objects.all()
     param=getParam(pro_list,userauth)
@@ -55,7 +62,7 @@ def get_search_data(schedule_form):
      if schedule_form.is_valid():
             status=schedule_form.cleaned_data['status']
             application_year= schedule_form.cleaned_data['application_year']
-            approval_year=schedule_form.cleaned_data['special']
+            approval_year=schedule_form.cleaned_data['approval_year']
             special=schedule_form.cleaned_data['special']
             college=schedule_form.cleaned_data['college']
             other_search=schedule_form.cleaned_data['other_search']
@@ -66,21 +73,22 @@ def get_search_data(schedule_form):
             if approval_year=="-1":
                 approval_year=''
             if special=="-1":
-                special==''
+                special=''
             if college=="-1":
-                college==''
+                college=''
             q1=(status and Q(status=status)) or None
             q2=(application_year and Q(application_year=application_year)) or None
             q3=(approval_year and Q(approval_year=approval_year)) or None
-            q4=(special and Q(special=special)) or None
-            q5=(special and Q(college=college)) or None
+            q4=(special and Q(project_special=special)) or None
+            q5=(college and Q(school=college)) or None
             if other_search:
-                sqlstr='%'+other_search+'%'
+                sqlstr=other_search
+                loginfo(sqlstr)
                 q6_1=Q(project_id__contains=sqlstr)
                 q6_2=Q(project_application_code__contains=sqlstr)
                 q6_3=Q(title__contains=sqlstr)
-                q6_4=Q(teacher__contains=sqlstr)
-                q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3,q6_4])
+                #q6_4=Q(teacher__contains=sqlstr)
+                q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3])
             else:
                 q6=None
             qset=filter(lambda x:x!=None,[q1,q2,q3,q4,q5,q6])
@@ -95,13 +103,11 @@ def get_search_data(schedule_form):
 def finalReportViewWork(request,redirect=False):
     achivement_type = ACHIVEMENT_TYPE
     statics_type = STATICS_TYPE
-    statics_grade_type = STATICS_DATA_TYPE
+    statics_grade_type = STATICS_PRIZE_TYPE
 
     final = FinalSubmit.objects.all()[0]
     achivement_list = ProjectAchivement.objects.filter(finalsubmit_id = final.content_id)
-    datastatics_list = ProjectStatistics.objects.filter(finalsubmit_id = final.content_id)
     projachivementform  = ProjectAchivementForm()
-    projdatastaticsform = ProjectDatastaticsForm()
 
     for temp in achivement_list:
         loginfo(p=temp.achivementtype,label="achivementtype")
@@ -120,14 +126,12 @@ def finalReportViewWork(request,redirect=False):
 
     context = {
         'projachivementform':projachivementform,
-        'projdatastaticsform':projdatastaticsform,
         'statics_type':statics_type,
         'statics_grade_type':statics_grade_type,
         'final': final_form,
         'finalreportid':final.content_id,
         'redirect':redirect,
         'achivement_list':achivement_list,
-        'datastatics_list':datastatics_list,
 
     }
     return context
