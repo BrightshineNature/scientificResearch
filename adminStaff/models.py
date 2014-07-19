@@ -10,7 +10,7 @@ import datetime
 
 class Special(models.Model):
 
-    school_user = models.ForeignKey(SchoolProfile, blank=True, null=False, verbose_name=u"专题管理员")    
+    school_user = models.ForeignKey(SchoolProfile, blank=True, null=False, verbose_name=u"专题管理员")
     name = models.CharField(blank=False,max_length=30)
     def __unicode__(self):
         return self.name
@@ -38,7 +38,11 @@ class ProjectSingle(models.Model):
 
     teacher = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"项目申请人")
 
-    project_status=models.ForeignKey(ProjectStatus,blank=False,default=PROJECT_STATUS_APPLY,verbose_name=u"项目状态")
+    try:
+        default_status = ProjectStatus.objects.get(status=PROJECT_STATUS_APPLY)
+    except:
+        default_status = 1
+    project_status=models.ForeignKey(ProjectStatus,blank=False,default=default_status,verbose_name=u"项目状态")
     # expert = models.ManyToManyField(ExpertProfile, through='Re_Project_Expert')
 
     project_special = models.ForeignKey(Special, verbose_name=u"专题类型", blank=True, null=True, default=None)
@@ -55,4 +59,3 @@ class ProjectSingle(models.Model):
 
     def __unicode__(self):
         return self.title
-
