@@ -9,9 +9,9 @@ import datetime
 # Create your models here.
 
 class Special(models.Model):
-
-    school_user = models.ForeignKey(SchoolProfile, blank=True, null=False, verbose_name=u"专题管理员")    
+   
     name = models.CharField(blank=False,max_length=30)
+    school_user = models.ForeignKey(SchoolProfile, blank=True, null=True, verbose_name=u"专题管理员") 
     def __unicode__(self):
         return self.name
 

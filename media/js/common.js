@@ -1,30 +1,4 @@
-var glo_project_id;
-
-function get_subject_id(project_id){
-
-  glo_project_id = project_id;
-}
-
-
-function project_overstatus(){
-  var overstatus = $('#overstatus_choice').find("option:selected").val();
-  Dajaxice.common.change_project_overstatus(change_overstatus_callback,{'project_id':glo_project_id,"changed_overstatus":overstatus});
-}
-function change_overstatus_callback(data){
-  
-  var target = "#overstatus_" + glo_project_id;
-  $(target).html(data.res);
-}
-$('[rel="isover"]').click(function(){
-  var pid = $(this).attr("pid");
-  Dajaxice.school.isover_control(isover_control_callback,{"pid":pid});
-});
-
-
-
-function saveSpecialName(){
-  // alert($('#major_name_form').serialize(true))
-   // alert("SBSB")
+function saveSpecialName(){  
   Dajaxice.adminStaff.saveSpecialName(saveSpecialNameCallback, {'form':$('#special_form').serialize(false)  } );
 };
 function saveSpecialNameCallback(data){
@@ -33,11 +7,6 @@ function saveSpecialNameCallback(data){
     {
       location.reload() 
     }
-    // else 
-    // {
-    //   alert("error ")
-    // }
-
 }
 
 function deleteSpecialName() {
@@ -52,11 +21,10 @@ function deleteSpecialName() {
 }
 
 function deleteSpecialNameCallback(data) {
-  if(data.status == 1)
+  if(data.status == '1')
   {
     location.reload() 
   }
-
 }
 
 
