@@ -5,27 +5,20 @@ Created on 2014-06-07
 Desc: school' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from common.forms import ScheduleForm
-from common.views import scheduleManage, financialManage
+from common.views import scheduleManage, financialManage,researchConcludingManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from teacher.forms import SettingForm
-from adminStaff.models import ProjectSingle
-from backend.logging import loginfo
 
 def appView(request):
     context = {}
     return render(request,"school/application.html",context)
 def scheduleView(request):
-    not_pass_apply_project_group=ProjectSingle.objects.filter(project_status=0)
-    pass_apply_project_group=ProjectSingle.objects.filter(project_status__gt=0)
-    param={
-        "not_pass_apply_project_group":not_pass_apply_project_group,
-        "pass_apply_project_group":pass_apply_project_group,
-    }
+
     userauth = {
-                "role": 'school',                
+                "role": "school",
+                "status":"application"
     }
-    return scheduleManage(request, userauth,param)
+    return scheduleManage(request, userauth)
 
 
 def financialView(request):
@@ -55,10 +48,11 @@ def allocView(request):
     context = {}
     return render(request, "school/alloc.html", context)
 def researchConcludingView(request):
-    context={
-        "school":True
+    userauth={
+        "role":"school",
+        "status":"research_concluding",
     }
-    return render(request,"school/research_concluding.html",context)
+    return researchConcludingManage(request,userauth)
 
 def finalAllocView(request):
     context = {}

@@ -2,48 +2,47 @@
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
-from common.forms import ScheduleForm, ScheduleBaseForm
+from common.forms import  ScheduleBaseForm
 from const import *
 from teacher.forms import *
 from teacher.models import *
 from backend.logging import logger, loginfo
-def scheduleManage(request, userauth,param):
-    context = schedule_form_data(request, userauth, param)
+from adminStaff.models import ProjectSingle
+def getParam(pro_list, userauth):
+    not_pass_apply_project_group=[item for item in pro_list if item.project_status==0]
+    pass_apply_project_group=[item for item in pro_list if item.project_status!=0]
+    param={
+        "not_pass_apply_project_group":not_pass_apply_project_group,
+        "pass_apply_project_group":pass_apply_project_group,
+        "total_count":count,
+    }
+    return param
 
+def scheduleManage(request, userauth):
+    context = schedule_form_data(request, userauth)
     return render(request, userauth['role'] + '/schedule.html', context)
-
+def researchConcludingManage(request , userauth):
+    context = schedule_form_data(request , userauth)
+    return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financialManage(request, userauth):
     
     context = schedule_form_data(request, userauth)
 
     return render(request, userauth['role'] + '/financial.html', context)
 
-def schedule_form_data(request , userauth, param):
+def schedule_form_data(request , userauth):
 
-    if userauth['role'] == 'college':
-        schedule_form = ScheduleBaseForm()
-    else :
-        schedule_form = ScheduleForm()
+    schedule_form = ScheduleBaseForm()
+    
     
     has_data = False
     if request.method == 'POST':
-        if userauth['role'] == 'college':
-            schedule_form = ScheduleBaseForm(request.POST)
-        else :
-            schedule_form = ScheduleForm(request.POST)
-
-        if schedule_form.is_valid():
-            print schedule_form.cleaned_data['status']
-            print schedule_form.cleaned_data['year']
-            print schedule_form.cleaned_data['special']
-            if userauth['role'] != 'college':
-                print schedule_form.cleaned_data['college']
-            print schedule_form.cleaned_data['teacher_name']
-            has_data = True
-
-
-
-    
+        
+        schedule_form = ScheduleBaseForm(request.POST)
+        pro_list=oet_search_data(schedule_form)
+    else:
+        pro_list=ProjectSingle.objects.all()
+    param=getParam(pro_list,userauth)
     context ={ 'schedule_form':schedule_form,
                'has_data': has_data,
                'userauth': userauth,
@@ -52,6 +51,46 @@ def schedule_form_data(request , userauth, param):
     context.update(param)
 
     return context
+def get_search_data(schedule_form):
+     if schedule_form.is_valid():
+            status=schedule_form.cleaned_data['status']
+            application_year= schedule_form.cleaned_data['application_year']
+            approval_year=schedule_form.cleaned_data['special']
+            special=schedule_form.cleaned_data['special']
+            college=schedule_form.cleaned_data['college']
+            other_search=schedule_form.cleaned_data['other_search']
+            if status=="-1":
+                status=''
+            if application_year=="-1":
+                application_year=''
+            if approval_year=="-1":
+                approval_year=''
+            if special=="-1":
+                special==''
+            if college=="-1":
+                college==''
+            q1=(status and Q(status=status)) or None
+            q2=(application_year and Q(application_year=application_year)) or None
+            q3=(approval_year and Q(approval_year=approval_year)) or None
+            q4=(special and Q(special=special)) or None
+            q5=(special and Q(college=college)) or None
+            if other_search:
+                sqlstr='%'+other_search+'%'
+                q6_1=Q(project_id__contains=sqlstr)
+                q6_2=Q(project_application_code__contains=sqlstr)
+                q6_3=Q(title__contains=sqlstr)
+                q6_4=Q(teacher__contains=sqlstr)
+                q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3,q6_4])
+            else:
+                q6=None
+            qset=filter(lambda x:x!=None,[q1,q2,q3,q4,q5,q6])
+            if qset:
+                qset=reduce(lambda x,y: x&y ,qset)
+                pro_list=ProjectSingle.objects.filter(qset)
+            else:
+                pro_list=ProjectSingle.objects.all()
+            return pro_list
+
 
 def finalReportViewWork(request,redirect=False):
     achivement_type = ACHIVEMENT_TYPE

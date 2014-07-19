@@ -1,7 +1,7 @@
 
 <div>
     <ul class="nav nav-pills">
-        <li class="active"><a href="#not_pass" data-toggle="tab">未通过<span class="badge">1</span></a>
+        <li class="active"><a href="#not_pass" data-toggle="tab">未通过<span class="badge">{{not_pass_apply_project_group.count}}</span></a>
         </li>
         <li><a href="#pass" data-toggle="tab">已通过</a>
         </li>
@@ -32,11 +32,15 @@
                         <td>{{item.title}}</td>
                         <td>{{item.teacher}}</td>
                         <td>{{item.school}}</td>
-                        <td> {{item.year}}</td>
+                        <td> {{item.application_year}}</td>
                         <td>201s-7-1 </td>
                         <td></td>
                         <td>
-                            <a href="#"><span class="label label-success"> 申请书 </span></a>
+                            {% if item.file_application%}
+                            <a href="#"><span class="label label-success"> 申报书 </span></a>
+                            {% else%}
+                            <a href="#"><span class="label label-danger"> 申报书 </span></a>
+                            {% endif%}
                         </td>
                         <td>
                             <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">评审 </button>
@@ -63,18 +67,22 @@
                 </thead>
 
                 <tbody>
+{% if pass_apply_project_group %}
+                        {% for item in pass_apply_project_group%}
                     <tr>
-                        <td>51012014666666 </td>
-                        <td>胡俊自然基金</td>
-                        <td>沈潋</td>
-                        <td>创新实验学院</td>
-                        <td> 2014</td>
-                        <td>2014-7-1 </td>
-                        <td>哲学</td>
+                        <td>{{item.project_application_code}}</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.teacher}}</td>
+                        <td>{{item.school}}</td> 
+                        <td> {{item.year}}</td>
+                        <td>201s-7-1 </td>
+                        <td></td>
                         <td>
-                            <span class="label label-danger"> 申请书 </span>
+                            <a href="#"><span class="label label-warning"> 申报书 </span></a>
                         </td>
                     </tr>
+                    {% endfor%}
+                    {% endif%}
                 </tbody>
             </table>
         </div>
