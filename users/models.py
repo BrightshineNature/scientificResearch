@@ -10,6 +10,7 @@ from django.contrib.sites.models import get_current_site,Site
 from backend.logging import logger
 from django.db import models
 from django.contrib.auth.models import User
+from teacher.models import TeacherInfoSetting
 from const.models import UserIdentity
 from django.contrib.sites.models import get_current_site,Site
 from const import ADMINSTAFF_USER,SCHOOL_USER,COLLEGE_USER,TEACHER_USER,EXPERT_USER,FINANCE_USER,VISITOR_USER
@@ -213,6 +214,8 @@ class RegistrationManager(models.Manager):
         elif Identity == TEACHER_USER:
             teacherProfileObj = TeacherProfile(userid = new_user)
             teacherProfileObj.save()
+            teacherInfoSettingObj = TeacherInfoSetting(teacher= teacherProfileObj)
+            teacherInfoSettingObj.save()
         elif Identity == EXPERT_USER:
             expertProfileObj = ExpertProfile(userid = new_user)
             expertProfileObj.save()
