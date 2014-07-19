@@ -2,14 +2,12 @@
 
 import uuid
 
+from const import *
 from django.db import models
-
 from backend.utility import make_uuid
-from const.models import *
-from adminStaff.models import *
-
-# Create your models here.
-
+from adminStaff.models import ProjectSingle
+from const.models import  AchivementTypeDict,StaticsTypeDict,StaticsDataTypeDict
+from users.models import TeacherProfile
 
 
 class FinalSubmit(models.Model):
@@ -66,7 +64,6 @@ class ProjectAchivement(models.Model):
                                            verbose_name="标注状况")
 
 
-
     class Meta:
         verbose_name = "研究成果"
         verbose_name_plural = "研究成果"
@@ -86,7 +83,7 @@ class TeacherInfoSetting(models.Model):
     title = models.CharField(max_length=100, blank=False, null=True, choices=PROFESSIONAL_TITLE_CHOICES, verbose_name="职称")
     base_type = models.CharField(max_length=100, blank=False, null=True, choices=EXECUTIVE_POSITION_CHOICES, verbose_name="所在研究基地类型")
     position = models.CharField(max_length=100, blank=False, null=True, choices=RESEARCH_BASES_TYPE_CHOICES, verbose_name="行政职务")
-	
+    
     class Meta:
         verbose_name = "注册信息"
         verbose_name_plural = "注册信息"

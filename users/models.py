@@ -10,7 +10,6 @@ from django.contrib.sites.models import get_current_site,Site
 from backend.logging import logger
 from django.db import models
 from django.contrib.auth.models import User
-from teacher.models import TeacherInfoSetting
 from const.models import UserIdentity
 from django.contrib.sites.models import get_current_site,Site
 from const import ADMINSTAFF_USER,SCHOOL_USER,COLLEGE_USER,TEACHER_USER,EXPERT_USER,FINANCE_USER,VISITOR_USER
@@ -102,7 +101,7 @@ class ExpertProfile(models.Model):
     def save(self, *args, **kwargs):
         super(ExpertProfile, self).save()
         auth, created = UserIdentity.objects.get_or_create(identity=EXPERT_USER)
-        self.userid.identities.add(auth)2
+        self.userid.identities.add(auth)
 
 class TeacherProfile(models.Model):
     userid = models.ForeignKey(User, unique=True,

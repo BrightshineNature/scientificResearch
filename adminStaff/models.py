@@ -3,14 +3,13 @@ import uuid
 from backend.utility import make_uuid
 from users.models import TeacherProfile,SchoolProfile, ExpertProfile
 from const.models import ProjectStatus
-from const import *
 from django.db import models
 import datetime
 # Create your models here.
 
 class Special(models.Model):
     name = models.CharField(blank=False,max_length=30)
-    school_user = models.ForeignKey(SchoolProfile, blank=True, null=True, verbose_name=u"专题管理员") 
+    school_user = models.ForeignKey(SchoolProfile, blank=True, null=True, verbose_name=u"专题管理员")
     def __unicode__(self):
         return self.name
 
@@ -63,7 +62,7 @@ class ProjectSingle(models.Model):
 class Re_Project_Expert(models.Model):
     project = models.ForeignKey(ProjectSingle)
     expert = models.ForeignKey(ExpertProfile)
-    
+
     class Meta:
         unique_together = (("project", "expert", ))
         verbose_name = "项目审核分配"
