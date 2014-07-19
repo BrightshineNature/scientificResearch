@@ -1,7 +1,7 @@
 # coding: UTF-8
 import uuid
 from backend.utility import make_uuid
-from users.models import TeacherProfile,SchoolProfile
+from users.models import TeacherProfile,SchoolProfile, ExpertProfile
 from const.models import ProjectStatus
 from const import *
 from django.db import models
@@ -36,6 +36,7 @@ class ProjectSingle(models.Model):
     school = models.ForeignKey(SchoolProfile, blank=False, null=False, verbose_name=u"所属学院")
 
     teacher = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"项目申请人")
+    # expert = models.ManyToManyField(ExpertProfile, through = "Re_Project_Expert")
 
     try:
         default_status = ProjectStatus.objects.get(status=PROJECT_STATUS_APPLY)
@@ -58,3 +59,12 @@ class ProjectSingle(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class Re_Project_Expert(models.Model):
+    project = models.ForeignKey(ProjectSingle)
+    expert = models.ForeignKey(ExpertProfile)
+    
+    class Meta:
+        unique_together = (("project", "expert", ))
+        verbose_name = "项目审核分配"
+        verbose_name_plural = "项目审核分配"

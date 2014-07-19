@@ -50,7 +50,7 @@ class FinanceProfile(models.Model):
 class SchoolProfile(models.Model):
     """
     User Profile Extend
-    The Administrator can modified them in admin.page
+    The Administrator can modify them in admin.page
     """
     userid = models.ForeignKey(User, unique=True,
                                verbose_name="权限对应ID")
