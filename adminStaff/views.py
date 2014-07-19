@@ -38,7 +38,9 @@ def allocManageView(request):
         "物理",
     }
 
-    context = {'special_form' : special_form,
+    
+    
+    context = { 'special_form' : special_form,
                 'special_list': special_list,
                 'college_form': college_form, 
                 'college_list': college_list,

@@ -8,11 +8,16 @@ from django.db import models
 import datetime
 # Create your models here.
 
+class Special(models.Model):
+
+    
+    name = models.CharField(blank=False,max_length=30)
+    def __unicode__(self):
+        return self.name
+
 class TemplateNoticeMessage(models.Model):
     title = models.CharField(blank=False,max_length=30)
     message = models.TextField(blank=False)
-class Special(models.Model):
-      name = models.CharField(blank=False,max_length=30)
 
 class ProjectSingle(models.Model):
     """
@@ -51,7 +56,3 @@ class ProjectSingle(models.Model):
     def __unicode__(self):
         return self.title
 
-class Special(models.Model):
-    name = models.CharField(blank=False,max_length=30)
-    def __unicode__(self):
-        return self.name
