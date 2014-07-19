@@ -83,12 +83,11 @@ def get_search_data(schedule_form):
             q5=(college and Q(school=college)) or None
             if other_search:
                 sqlstr=other_search
-                loginfo(sqlstr)
-                q6_1=Q(project_id__contains=sqlstr)
+                q6_1=Q(project_code__contains=sqlstr)
                 q6_2=Q(project_application_code__contains=sqlstr)
                 q6_3=Q(title__contains=sqlstr)
-                #q6_4=Q(teacher__contains=sqlstr)
-                q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3])
+                q6_4=Q(teacher__teacherinfosetting__name__contains=sqlstr)
+                q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3,q6_4])
             else:
                 q6=None
             qset=filter(lambda x:x!=None,[q1,q2,q3,q4,q5,q6])
