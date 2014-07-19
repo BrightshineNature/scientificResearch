@@ -101,7 +101,7 @@ class ExpertProfile(models.Model):
     def save(self, *args, **kwargs):
         super(ExpertProfile, self).save()
         auth, created = UserIdentity.objects.get_or_create(identity=EXPERT_USER)
-        self.userid.identities.add(auth)
+        self.userid.identities.add(auth)2
 
 class TeacherProfile(models.Model):
     userid = models.ForeignKey(User, unique=True,
@@ -203,6 +203,19 @@ class RegistrationManager(models.Manager):
             new_authority.save()
         except:
             pass
+
+        if Identity == SCHOOL_USER:
+            schoolProfileObj = SchoolProfile(userid = new_user)
+            schoolProfileObj.save()
+        elif Identity == COLLEGE_USER:
+            collegeProfileObj = CollegeProfile(userid = new_user)
+            collegeProfileObj.save()
+        elif Identity == TEACHER_USER:
+            teacherProfileObj = TeacherProfile(userid = new_user)
+            teacherProfileObj.save()
+        elif Identity == EXPERT_USER:
+            expertProfileObj = ExpertProfile(userid = new_user)
+            expertProfileObj.save()
         if profile_callback is not None:
             profile_callback(user=new_user)
         return new_user,send_mail_flag
