@@ -12,6 +12,7 @@ RegisterClass = (
     StaticsTypeDict,
     StaticsDataTypeDict,
     UserIdentity,
+    ProjectStatus,
 )
 
 for temp in RegisterClass:
