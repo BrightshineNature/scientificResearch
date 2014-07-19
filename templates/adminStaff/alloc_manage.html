@@ -14,6 +14,7 @@
     </ul>
  
     <div class="tab-content">
+
         <div class="tab-pane fade active in" id="special_modify">
             <p> </p>
 
@@ -36,39 +37,69 @@
 
             <p></p>
 
-            <div class="btn btn-primary" title="运行选中的动作" onclick="delete_school_name()">
+            <div class="btn btn-primary" title="运行选中的动作" onclick="deleteSpecialName()">
                   删除所选专题 
-              </div>  
-              <p></p>
+            </div>  
 
-              <div id="info_schoolname">
-                <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                          <th scope="col" class="action-checkbox-column">  
-                              <div class="text"><span><input type="checkbox" id="action-toggle"></span></div>
-                          </th>
-                          <th scope="col"> <div class="text"><span>专业列表</span></div> </th>
-                      </tr>
-                    </thead>
+            <p></p>
 
-                    <tbody>
+            <div id="info_schoolname">
+              <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                        <th scope="col" class="action-checkbox-column">  
 
-                      {%for element in special_dict %}
-                      <tr class="success">
-                          <td class="action-checkbox">
-                              <input type="checkbox" class="action-select" value= "{{element.id }}" name="_selected_action">
-                          </td>
-                          <th> {{element}} </th>
-                      </tr>
-                      {%endfor%}
+                            <div class="text">
+                              
+                                <input type="checkbox" id="all_special_checkbox"
+                                onclick = "selectAll()"
+                                >                       
+                              
+                            </div>
 
-                    </tbody>
-                </table>
+                        </th>
+                        <th scope="col"> <div class="text"><span>专业列表</span></div> </th>
+                    </tr>
+                  </thead>
 
-              </div>
+                  <tbody>
+
+                    {%for element in special_list %}
+                    <tr class="success">
+                        <td class="action-checkbox">
+                            <input type="checkbox" 
+                            class="action-select" 
+                            value= "{{element.id}}"
+                            id = "special_checkbox" >
+                        </td>
+                        <th> {{element}} </th>
+                    </tr>
+                    {%endfor%}
+
+                  </tbody>
+              </table>
+
+            </div>
 
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -87,10 +118,7 @@
                     <tr>
                       <td>test_user</td>
                       <td>理科</td>
-                      
-
                       <td>
-
                         <a data-toggle="modal" id="overstatus_1" onclick="get_subject_id('1')" href="#special_modal"   pid="1" class="btn btn-primary">
                           分配
                         </a>
@@ -114,7 +142,7 @@
 
                     
 
-                    {%for element in special_dict%}
+                    {%for element in special_list%}
                     <td class="action-checkbox">
 
                         <input type="checkbox" class="action-select" value= "ss" name="_selected_action"
@@ -183,7 +211,7 @@
 
                     <tbody>
 
-                      {%for element in college_dict %}
+                      {%for element in college_list %}
                       <tr class="success">
                           <td class="action-checkbox">
                               <input type="checkbox" class="action-select" value= "{{element.id }}" name="_selected_action">
@@ -241,7 +269,7 @@
               <div class="modal-body">
                 <tr class="success">
 
-                    {%for element in college_dict%}
+                    {%for element in college_list%}
                     <td class="action-checkbox">
                         <input type="checkbox" class="action-select" value= "{{element.id }}" name="_selected_action"
 
