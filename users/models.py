@@ -71,7 +71,6 @@ class SchoolProfile(models.Model):
 class ExpertProfile(models.Model):
     userid = models.ForeignKey(User, unique=True,
                                verbose_name="权限对应ID")
-    # school = models.ForeignKey(SchoolDict, unique=True, verbose_name="学校名称")
     class Meta:
         verbose_name = "评审专家"
         verbose_name_plural = "评审专家"
@@ -167,8 +166,7 @@ class RegistrationManager(models.Manager):
                                         'expiration_days':settings.ACCOUNT_ACTIVATION_DAYS,
                                         'site':site_domain,
                                         'username':username,
-                                        'password':password}
-                                      )
+                                        'password':password})
                 logger.error(message)
                 #此处加监控标志
                 send_mail_flag = send_mail(subject,
