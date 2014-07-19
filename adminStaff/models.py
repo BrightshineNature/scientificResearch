@@ -37,6 +37,7 @@ class ProjectSingle(models.Model):
     school = models.ForeignKey(SchoolProfile, blank=False, null=False, verbose_name=u"所属学院")
 
     teacher = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"项目申请人")
+    # expert = models.ManyToManyField(ExpertProfile, through = "Re_Project_Expert")
 
     project_status=models.ForeignKey(ProjectStatus,blank=False,default=PROJECT_STATUS_APPLY,verbose_name=u"项目状态")
     # expert = models.ManyToManyField(ExpertProfile, through='Re_Project_Expert')
