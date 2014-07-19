@@ -5,12 +5,12 @@ Created on 2014-06-07
 Desc: adminStaff' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
 from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm
 from adminStaff.models import TemplateNoticeMessage, Special
+from users.models import SchoolProfile
 from const import NOTICE_CHOICE
 def appView(request):
 
@@ -30,16 +30,38 @@ def allocManageView(request):
     if request.method == "POST":
         special_form = SpecialForm(request.POST)
 
-
+    school_user = SchoolProfile.objects.all()
     special_list = Special.objects.all()    
+    dic = {}
+    for i in school_user:
+        dic[i] = []
+    
+    for i in special_list:
+        if i.school_user != None:
+            dic[i.school_user].append(i.name)
+    special_user = []
+    for k, v in dic.iteritems():
+        special_user.append((k, v))
+
+    print"*(*("
+    print special_user
+
+    print "**** school user"
+    print school_user[0]
+
+    
+
 
     college_list = {
         "计算机",
         "物理",
     }
 
+    print "$$"
+    print special_list[0].name
+    print special_list[0].school_user
     
-    
+
     context = { 'special_form' : special_form,
                 'special_list': special_list,
                 'college_form': college_form, 
@@ -59,7 +81,7 @@ def scheduleView(request):
     }
 
     
-    return scheduleManage(request, userauth,{})
+    return scheduleManage(request, userauth)
 
 def newsRelease(request):
     context={}

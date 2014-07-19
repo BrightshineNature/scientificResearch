@@ -2,6 +2,7 @@
 
 from django import forms
 from const import *
+from common.utils import get_application_year_choice,get_approval_year_choice
 class ScheduleBaseForm(forms.Form):
     status_choices = list(PROJECT_STATUS_CHOICES)
 
@@ -9,15 +10,21 @@ class ScheduleBaseForm(forms.Form):
     status_choices = tuple( [(-1, u"结题状态")] + status_choices)
 
 
-    status = forms.ChoiceField(choices=status_choices, 
+    status =forms. ChoiceField(choices=status_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control', 
             
             }),
         )
-
-    year_choices = (('-1', u"立项年度"), ('0', '2013'), ('1', '2014'),)
-    year = forms.ChoiceField(choices =  year_choices,
+    
+    application_year_choices = get_application_year_choice()
+    application_year = forms.ChoiceField(choices =  application_year_choices,required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control' ,
+            
+            }),)
+    approval_year_choices = get_approval_year_choice()
+    approval_year = forms.ChoiceField(choices =  approval_year_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control' ,
             
@@ -27,31 +34,29 @@ class ScheduleBaseForm(forms.Form):
     
 
     special_choices = (('-1', '专题类型'), ('0', '理科'), ('1', '文科'))
-    special = forms.ChoiceField(choices= special_choices,
+    special = forms.ChoiceField(choices= special_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control ',
             
             }),)
 
+    college_choices = (('-1', '学院'), ('0', '计算机'), ('1', '管经'))
+    college = forms.ChoiceField(choices = college_choices,required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control',
+            
+            }),)
 
-
-    teacher_name = forms.CharField(
+    other_search= forms.CharField(
         max_length = 20,
         required=False,
         widget=forms.TextInput(
             attrs={
             'class':'form-control ',
             'id':'name',
-            'placeholder':u"输入需要筛选的老师名字"}), )
+            'placeholder':u"输入其他检索关键字"}), )
 
-class ScheduleForm(ScheduleBaseForm):
-    college_choices = (('-1', '学院'), ('0', '计算机'), ('1', '管经'))
-    college = forms.ChoiceField(choices = college_choices,
-        widget=forms.Select(attrs={
-            'class':'form-control',
-            
-            }),)
-    
+
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
         max_length = 20,

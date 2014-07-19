@@ -5,7 +5,6 @@ Created on 2014-06-07
 Desc: college' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
@@ -16,10 +15,11 @@ def appView(request):
     return render(request, "college/application.html", context)
 def scheduleView(request):
     userauth = {
-                "role": 'college',
+            "role": 'college',
+            "status":"application"  
                 }
 
-    return scheduleManage(request, userauth,{})
+    return scheduleManage(request, userauth)
 
 def financialView(request):
     userauth = {

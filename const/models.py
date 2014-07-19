@@ -20,7 +20,7 @@ class ProjectStatus(models.Model):
     """
     Project Status:
     """
-    status = models.CharField(max_length=30, blank=False, unique=True,
+    status = models.IntegerField(blank=False, unique=True,
                               choices=PROJECT_STATUS_CHOICES,
                                verbose_name="项目状态")
     class Meta:
@@ -28,6 +28,7 @@ class ProjectStatus(models.Model):
         verbose_name_plural = "项目状态"
     def __unicode__(self):
         return self.get_status_display()
+
 class Sex(models.Model):
     """
     Sex:

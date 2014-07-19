@@ -132,45 +132,46 @@
           <div class="modal-dialog">
 
             <div class="modal-content">
+
               <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
                   <h3>重新分配</h3>
               </div>
 
               <div class="modal-body">
-                <tr class="success">
+                <ul class="list-group">
 
-                    
+                  {%for element in special_list%} 
 
-                    {%for element in special_list%}
-                    <td class="action-checkbox">
+                  <li class="list-group-item">                         
+                    <input type="checkbox" class="action-select"> 
+                    {{element}}
+                    {%ifequal element.school_user None%}
+                    <span class="label label-danger"> 未分配</span>                    
+                    {%else%}
+                    <span class="label label-success"> 已分配</span>
+                    {%endifequal%}
+                  </li>
 
-                        <input type="checkbox" class="action-select" value= "ss" name="_selected_action"
+                  {%endfor%}
 
-                        {%ifequal forloop.counter 1%}
-                        checked= "true"
-                        {%else%}
-                        {%endifequal%}
-
-
-
-
-                        >
-                    </td>
-
-                    <th>{{element}}</th>
-                    {%endfor%}
-
-                    
-                </tr>
+                </ul>                
               </div>
+
               <div class="modal-footer">
-              <a class="btn" data-dismiss="modal">关闭</a>
-              <a class="btn btn-primary" data-dismiss="modal" onclick="project_overstatus();">保存更新</a>
+                <a class="btn" data-dismiss="modal">关闭</a>
+                <a class="btn btn-primary" data-dismiss="modal" onclick="">保存更新</a>
               </div>
             </div>
           </div>
         </div>
+
+
+
+
+
+
+
 
 
 
