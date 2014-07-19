@@ -36,7 +36,7 @@ class ProjectSingle(models.Model):
     school = models.ForeignKey(SchoolProfile, blank=False, null=False, verbose_name=u"所属学院")
 
     teacher = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"项目申请人")
-    expert = ManyToManyField(ExpertProfile, through = "Re_Project_Expert")
+    # expert = models.ManyToManyField(ExpertProfile, through = "Re_Project_Expert")
 
     try:
         default_status = ProjectStatus.objects.get(status=PROJECT_STATUS_APPLY)
