@@ -56,8 +56,8 @@ class SchoolProfile(models.Model):
                                verbose_name="权限对应ID")
 
     class Meta:
-        verbose_name = "学院秘书"
-        verbose_name_plural = "学院秘书"
+        verbose_name = "专题管理员"
+        verbose_name_plural = "专题管理员"
 
     def __unicode__(self):
         return '%s' % (self.userid)
@@ -65,6 +65,26 @@ class SchoolProfile(models.Model):
     def save(self, *args, **kwargs):
         super(SchoolProfile, self).save()
         auth, created = UserIdentity.objects.get_or_create(identity=SCHOOL_USER)
+        self.userid.identities.add(auth)
+
+class CollegeProfile(models.Model):
+    """
+    User Profile Extend
+    The Administrator can modified them in admin.page
+    """
+    userid = models.ForeignKey(User, unique=True,
+                               verbose_name="权限对应ID")
+
+    class Meta:
+        verbose_name = "学院秘书"
+        verbose_name_plural = "学院秘书"
+
+    def __unicode__(self):
+        return '%s' % (self.userid)
+
+    def save(self, *args, **kwargs):
+        super(CollegeProfile, self).save()
+        auth, created = UserIdentity.objects.get_or_create(identity=COLLEGE_USER)
         self.userid.identities.add(auth)
 
 
