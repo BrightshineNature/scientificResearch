@@ -56,8 +56,8 @@ class SchoolProfile(models.Model):
                                verbose_name="权限对应ID")
 
     class Meta:
-        verbose_name = "学院秘书"
-        verbose_name_plural = "学院秘书"
+        verbose_name = "专题管理员"
+        verbose_name_plural = "专题管理员"
 
     def __unicode__(self):
         return '%s' % (self.userid)
@@ -67,11 +67,30 @@ class SchoolProfile(models.Model):
         auth, created = UserIdentity.objects.get_or_create(identity=SCHOOL_USER)
         self.userid.identities.add(auth)
 
+class CollegeProfile(models.Model):
+    """
+    User Profile Extend
+    The Administrator can modified them in admin.page
+    """
+    userid = models.ForeignKey(User, unique=True,
+                               verbose_name="权限对应ID")
+
+    class Meta:
+        verbose_name = "学院秘书"
+        verbose_name_plural = "学院秘书"
+
+    def __unicode__(self):
+        return '%s' % (self.userid)
+
+    def save(self, *args, **kwargs):
+        super(CollegeProfile, self).save()
+        auth, created = UserIdentity.objects.get_or_create(identity=COLLEGE_USER)
+        self.userid.identities.add(auth)
+
 
 class ExpertProfile(models.Model):
     userid = models.ForeignKey(User, unique=True,
                                verbose_name="权限对应ID")
-    # school = models.ForeignKey(SchoolDict, unique=True, verbose_name="学校名称")
     class Meta:
         verbose_name = "评审专家"
         verbose_name_plural = "评审专家"
@@ -167,8 +186,7 @@ class RegistrationManager(models.Manager):
                                         'expiration_days':settings.ACCOUNT_ACTIVATION_DAYS,
                                         'site':site_domain,
                                         'username':username,
-                                        'password':password}
-                                      )
+                                        'password':password})
                 logger.error(message)
                 #此处加监控标志
                 send_mail_flag = send_mail(subject,
