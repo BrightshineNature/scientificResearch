@@ -1,7 +1,7 @@
 # coding: UTF-8
 import uuid
 from backend.utility import make_uuid
-from users.models import TeacherProfile,SchoolProfile,ExpertProfile
+from users.models import TeacherProfile,SchoolProfile,ExpertProfile, CollegeProfile
 from const.models import ProjectStatus
 from const import PROJECT_STATUS_APPLY
 from django.db import models
@@ -9,10 +9,17 @@ import datetime
 
 class Special(models.Model):
 
-    school_user = models.ForeignKey(SchoolProfile, blank=True, null=False, verbose_name=u"专题管理员")
+    school_user = models.ForeignKey(SchoolProfile, blank=True, null=True, verbose_name=u"专题管理员")
     name = models.CharField(blank=False,max_length=30)
     def __unicode__(self):
         return self.name
+        
+class College(models.Model):
+    college_user = models.ForeignKey(CollegeProfile, blank=True, null=True, verbose_name=u"学院管理员")
+    name = models.CharField(blank=False,max_length=30)
+    def __unicode__(self):
+        return self.name
+
 
 class TemplateNoticeMessage(models.Model):
     title = models.CharField(blank=False,max_length=30)
