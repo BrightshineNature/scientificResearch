@@ -3,7 +3,7 @@ from datetime import *
 from django import  forms
 from django.forms import ModelForm
 from django.contrib.admin import widgets
-from adminStaff.models import TemplateNoticeMessage
+from adminStaff.models import TemplateNoticeMessage,College
 class NewsForm(forms.Form):
     NEWS_MAX_LENGTH=500
     news_title = forms.CharField(max_length=200, required=True,
@@ -28,10 +28,10 @@ class DispatchForm(forms.Form):
 
 class DispatchAddCollegeForm(DispatchForm):
     COLLEGE_CHOICE_list = []
-    # college_list = SchoolDict.objects.all()
-    # for obj in college_list:
-    #     COLLEGE_CHOICE_list.append((obj.id, obj.schoolName))
-    # COLLEGE_CHOICE = tuple(COLLEGE_CHOICE_list)
+    college_list = College.objects.all()
+    for obj in college_list:
+        COLLEGE_CHOICE_list.append((obj.id, obj.schoolName))
+    COLLEGE_CHOICE = tuple(COLLEGE_CHOICE_list)
     college = forms.ChoiceField(required=True,choices=COLLEGE_CHOICE)
 class SpecialForm(forms.Form):
     name = forms.CharField(
