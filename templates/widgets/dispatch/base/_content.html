@@ -1,0 +1,31 @@
+<form class="well form" id={%block form_id%}{%endblock%} method="POST" action="">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-2">
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+        {{dispatch_form.username}}
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+        {{dispatch_form.username}}
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+        {{ dispatch_form.password }}
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+        {{ dispatch_form.person_firstname }}
+      </div>
+    </div>
+    <span class=" pull-right">{% block sendButton%}{% endblock%}</span>
+  </div>
+</form>
+{%include "widgets/dispatch/user_table.html" %}

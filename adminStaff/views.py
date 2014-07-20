@@ -7,8 +7,7 @@ Desc: adminStaff' view, includes home(manage), review report view
 from django.shortcuts import render
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
-
-from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm
+from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm,DispatchForm
 from adminStaff.models import TemplateNoticeMessage, Special
 from users.models import SchoolProfile
 from const import NOTICE_CHOICE
@@ -60,19 +59,14 @@ def allocManageView(request):
     print "$$"
     print special_list[0].name
     print special_list[0].school_user
-    
 
     context = { 'special_form' : special_form,
                 'special_list': special_list,
                 'college_form': college_form, 
                 'college_list': college_list,
     }
-    
 
     return render(request, "adminStaff/alloc_manage.html", context)
-
-
-from adminStaff.forms import NewsForm, SchoolDispatchForm, CollegeDispatchForm, ExpertDispatchForm
 def scheduleView(request):
 
 
@@ -111,12 +105,9 @@ def noticeMessageSetting(request):
     return render(request,"adminStaff/notice_message_setting.html",context)
 
 def dispatchView(request):
-    school_form = SchoolDispatchForm()
-    college_form = CollegeDispatchForm()
-    expert_form = ExpertDispatchForm()
-    context = {"school_form": school_form, 
-               "college_form": college_form, 
-               "expert_form": expert_form, 
+    dispatch_form = DispatchForm()
+    context = {
+               "dispatch_form":dispatch_form,
     }
     return render(request, "adminStaff/dispatch.html", context)
 def financialView(request):

@@ -1,0 +1,12 @@
+{% extends "widgets/dispatch/base/_content.html"%}
+
+{%block form_id%}
+"expert_email_send_form"
+{%endblock%}
+
+{%block sendButton%}
+<input type="button" class="btn btn-primary" id="email_to_expert"  value="给专家秘书发送邮件"/>
+{%endblock%}
+{%block user_list%}
+{% regroup expert_users by username as users%}
+{%endblock %}
