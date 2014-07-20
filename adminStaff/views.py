@@ -5,7 +5,6 @@ Created on 2014-06-07
 Desc: adminStaff' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from common.forms import ScheduleForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
@@ -38,8 +37,11 @@ def allocManageView(request):
         "物理",
     }
 
+    print "$$"
+    print special_list[0].name
+    print special_list[0].school_user
     
-    
+
     context = { 'special_form' : special_form,
                 'special_list': special_list,
                 'college_form': college_form, 
