@@ -1,32 +1,40 @@
 <form class="well form" id={%block form_id%}{%endblock%} method="POST" action="">
   {% csrf_token %}
   <div class="row">
-    <div class="col-lg-2">
+    <div class="col-lg-3">
       <div class="input-group">
         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-        {{dispatch_form.username}}
+        {{dispatchAddCollege_form.username}}
       </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-3">
       <div class="input-group">
         <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-        {{dispatch_form.email}}
+        {{dispatchAddCollege_form.email}}
       </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-3">
       <div class="input-group">
         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-        {{ dispatch_form.password }}
+        {{ dispatchAddCollege_form.password }}
       </div>
     </div>
-    <div class="col-lg-2">
+    <span class="pull-right">{% block sendButton%}{% endblock%}</span>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-lg-3">
       <div class="input-group">
         <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
-        {{ dispatch_form.person_firstname }}
+        {{ dispatchAddCollege_form.college }}
       </div>
     </div>
-    <span class=" pull-right">{% block sendButton%}{% endblock%}</span>
+    <div class="col-lg-3">
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+        {{ dispatchAddCollege_form.person_firstname }}
+      </div>
+    </div>
   </div>
 </form>
-{%block users-table%}
-{%endblock%}
+{%include "widgets/dispatch/user_addcollege_table.html" %}

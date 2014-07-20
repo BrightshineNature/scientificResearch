@@ -7,6 +7,6 @@
 {%block sendButton%}
 <input type="button" class="btn btn-primary" id="email_to_college"  value="给学院秘书发送邮件"/>
 {%endblock%}
-{%block user_list%}
-{% regroup college_users by username as users%}
+{%block users-table%}
+{%include "widgets/dispatch/college_user_table.html" %}
 {%endblock %}

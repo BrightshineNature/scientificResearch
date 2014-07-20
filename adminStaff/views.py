@@ -7,10 +7,12 @@ Desc: adminStaff' view, includes home(manage), review report view
 from django.shortcuts import render
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
-from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm,DispatchForm
+from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
 from adminStaff.models import TemplateNoticeMessage, Special
-from users.models import SchoolProfile
+from users.models import SchoolProfile,CollegeProfile,ExpertProfile
 from const import NOTICE_CHOICE
+from backend.logging import loginfo
+
 def appView(request):
 
     context = {}
@@ -106,13 +108,23 @@ def noticeMessageSetting(request):
 
 def dispatchView(request):
     dispatch_form = DispatchForm()
+    dispatchAddCollege_form=DispatchAddCollegeForm()
+    college_users = CollegeProfile.objects.all()
+    expert_users = ExpertProfile.objects.all()
+    school_users = SchoolProfile.objects.all()
+    loginfo(college_users.count())
+    loginfo(school_users.count())
     context = {
                "dispatch_form":dispatch_form,
+               "dispatchAddCollege_form":dispatchAddCollege_form,
+               "college_users":college_users,
+               "school_users":school_users,
+               "users":expert_users,
     }
     return render(request, "adminStaff/dispatch.html", context)
 def financialView(request):
     userauth = {
-                "role": 'adminStaff',                
+                "role": 'adminStaff', 
     }
     return financialManage(request, userauth)
 

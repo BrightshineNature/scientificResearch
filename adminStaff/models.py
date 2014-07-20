@@ -13,7 +13,6 @@ class Special(models.Model):
     name = models.CharField(blank=False,max_length=30)
     def __unicode__(self):
         return self.name
-        
 class College(models.Model):
     college_user = models.ForeignKey(CollegeProfile, blank=True, null=True, verbose_name=u"学院管理员")
     name = models.CharField(blank=False,max_length=30)
