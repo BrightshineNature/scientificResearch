@@ -31,22 +31,20 @@ def allocManageView(request):
 
     school_user = SchoolProfile.objects.all()
     special_list = Special.objects.all()    
-    dic = {}
+
+
+    special_user_info = {}
     for i in school_user:
-        dic[i] = []
+        special_user_info[i] = []  
+
+    for i in special_list:        
+        print i.school_user
+
+        # if i.school_user:
+            # special_user_info[i.school_user].append(i.name)
     
-    for i in special_list:
-        if i.school_user != None:
-            dic[i.school_user].append(i.name)
-    special_user = []
-    for k, v in dic.iteritems():
-        special_user.append((k, v))
 
-    print"*(*("
-    print special_user
 
-    print "**** school user"
-    print school_user[0]
 
     
 
@@ -59,9 +57,11 @@ def allocManageView(request):
     print "$$"
     print special_list[0].name
     print special_list[0].school_user
+    
 
     context = { 'special_form' : special_form,
                 'special_list': special_list,
+                'special_user_info': special_user_info, 
                 'college_form': college_form, 
                 'college_list': college_list,
     }
