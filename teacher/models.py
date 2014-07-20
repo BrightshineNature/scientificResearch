@@ -74,3 +74,21 @@ class ProjectAchivement(models.Model):
     def __unicode__(self):
         return self.achivementtitle
 
+class TeacherInfoSetting(models.Model):
+    teacher = models.OneToOneField(TeacherProfile)
+    name = models.CharField(max_length=100, blank=False, null=True, verbose_name="姓名")
+    card = models.CharField(max_length=100, blank=False, null=True, verbose_name="身份证号码")
+    sex  = models.CharField(max_length=100, blank=False, null=True, choices=SEX_CHOICES, verbose_name="性别")
+    birth = models.CharField(max_length=100, blank=False, null=True, verbose_name="出生年月")
+    base_name = models.CharField(max_length=100, blank=False, null=True, verbose_name="所在研究基地名称")
+    target_type = models.CharField(max_length=100, blank=False, null=True, choices=PROJECT_IDENTITY_CHOICES, verbose_name="支持对象")
+    degree = models.CharField(max_length=100, blank=False, null=True, choices=DEGREE_CHOICES, verbose_name="学位")
+    title = models.CharField(max_length=100, blank=False, null=True, choices=PROFESSIONAL_TITLE_CHOICES, verbose_name="职称")
+    base_type = models.CharField(max_length=100, blank=False, null=True, choices=EXECUTIVE_POSITION_CHOICES, verbose_name="所在研究基地类型")
+    position = models.CharField(max_length=100, blank=False, null=True, choices=RESEARCH_BASES_TYPE_CHOICES, verbose_name="行政职务")
+	
+    class Meta:
+        verbose_name = "注册信息"
+        verbose_name_plural = "注册信息"
+    def __unicode__(self):
+        return self.name
