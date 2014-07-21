@@ -88,3 +88,150 @@ def get_qset(userauth):
             default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     return (pending,default,search)
+
+
+def set_status(project,status):
+    project.project_status=status
+def status_confirm(project, confirm):
+    if project.project_status.status==PROJECT_STATUS_APPLY:
+        if confirm==APPLICATION_WEB_CONFIRM:
+            if project.file_application==True:
+                set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
+        elif confirm==APPLICATION_SUBMIT_CONFIRM:
+            pass
+        else:
+            return False
+
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_WEB_OVER:
+        if confirm==APPLICATION_SUBMIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_COMMIT_OVER:
+        if confirm==APPLICATION_COLLEGE_COMFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
+        if confirm==APPLICATION_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_SCHOOL_OVER:
+        if confirm==APPLICATION_EXPERT_SUBJECT_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
+        if confirm==APPROVAL_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPROVAL)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPROVAL:
+        if confirm==TASK_BUDGET_CONFIRM:
+            if project.file_task==True:
+                set_status(project,PROJECT_STATUS_TASK_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_TASK_BUDGET_OVER)
+        elif confirm==TASK_SUBMIT_CONFIRM:
+            pass
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_TASK_BUDGET_OVER:
+        if confirm==TASK_SUBMIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_COMMIT_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_TASK_COMMIT_OVER:
+        if confirm==TASK_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_SCHOOL_OVER)
+        elif confirm==TASK_FINANCE_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
+    elif project.project_status.status==PROJECT_STATUS_TASK_SCHOOL_OVER:
+        if confirm==TASK_FINANCE_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
+        if confirm==TASK_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_TASK_OVER:
+        if confirm==PROGRESS_SUBMIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_PROGRESS_COMMIT_OVER:
+        if confirm==PROGRESS_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_PROGRESS_SCHOOL_OVER:
+        if confirm==FINAL_WEB_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
+        elif confirm==FINAL_SUBMIT_CONFIRM:
+            pass
+        elif confirm==FINAL_AUDIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_AUDIT_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_WEB_OVER:
+        if confirm==FINAL_SUBMIT_CONFIRM:
+            pass
+        elif confirm==FINAL_AUDIT_CONFIRM:
+            if project.file_summary==True:
+                set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_FINAL_MADA_OVER)
+        else :
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_AUDIT_OVER:
+        if confirm==FINAL_SUBMIT_CONFIRM:
+            pass
+        elif confirm==FINAL_WEB_CONFIRM:
+            if project.file_summary==True:
+                set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_FINAL_MADA_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_MADA_OVER:
+        if confirm==FINAL_SUBMIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+        else :
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
+        if confirm==FINAL_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_SCHOOL_OVER)
+        elif confirm==FINAL_FINANCE_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_FINANCE_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_SCHOOL_OVER:
+        if confirm==FINAL_FINANCE_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
+        if confirm==FINAL_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_OVER:
+        if confirm==FINAL_EXPERT_SUBJECT_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
+        if confirm==PROJECT_OVER_CONFIRM:
+            set_status(project,PROJECT_STATUS_OVER)
+        else:
+            return Fals
+    else:
+        return False
+    return True
+
+        
