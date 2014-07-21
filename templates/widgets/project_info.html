@@ -1,9 +1,9 @@
 
 <div>
     <ul class="nav nav-pills">
-        <li class="active"><a href="#not_pass" data-toggle="tab">未通过<span class="badge">{{not_pass_apply_project_group.count}}</span></a>
+        <li class="active"><a href="#not_pass" data-toggle="tab">待处理<span class="badge">{{not_pass_apply_project_group.count}}</span></a>
         </li>
-        <li><a href="#pass" data-toggle="tab">已通过</a>
+        <li><a href="#pass" data-toggle="tab">已处理</a>
         </li>
     </ul>
 
@@ -25,8 +25,8 @@
                 </thead>
 
                 <tbody>
-{% if not_pass_apply_project_group %}
-                        {% for item in not_pass_apply_project_group%}
+                    {% if not_pass_apply_project_group %}
+                    {% for item in not_pass_apply_project_group%}
                     <tr>
                         <td>{{item.project_application_code}}</td>
                         <td>{{item.title}}</td>
@@ -52,6 +52,9 @@
             </table>
         </div>
         <div class="tab fade" id="pass">
+            <h4>
+                符合搜索条件的项目数量为 {{pass_apply_project_group.count}}.
+            </h4>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -67,8 +70,8 @@
                 </thead>
 
                 <tbody>
-{% if pass_apply_project_group %}
-                        {% for item in pass_apply_project_group%}
+                    {% if pass_apply_project_group %}
+                    {% for item in pass_apply_project_group%}
                     <tr>
                         <td>{{item.project_application_code}}</td>
                         <td>{{item.title}}</td>

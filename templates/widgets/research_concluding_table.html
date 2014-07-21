@@ -1,4 +1,5 @@
 <div>
+    {% ifequal userauth.role 'school'%}
     <ul class="nav nav-pills">
         <li class="active"><a href="#not_pass" data-toggle="tab">未结题<span class="badge">1</span></a>
         </li>
@@ -6,7 +7,9 @@
         </li>
     </ul>
 
+    {%endifequal%}
     <div class="tab-content">
+        {% ifequal userauth.role 'school'%}
         <div class="tab-pane fade in active" id="not_pass">
             <table class="table table-hover">
                 <thead>
@@ -19,36 +22,44 @@
                         <th>专题类型</th>
                         <th>项目状态</th>
                         <th>附件</th>
-                        {% if school%}
-                        <th>结题</th>
-                        {% endif%}
+                        {% ifequal userauth.role 'school'%}
+                        <th>评审</th>
+                        {% endifequal%}
                     </tr>
                 </thead>
 
                 <tbody>
+                    {% if not_pass_apply_project_group%}
+                    {% for item in not_pass_apply_project_group%}
                     <tr>
-                        <td>51012014666666 </td>
-                        <td>胡俊自然基金</td>
-                        <td>沈潋</td>
-                        <td>创新实验学院</td>
-                        <td> 2014</td>
-                        <td>哲学</td>
-                        <td>未结题</td>
+                        <td>{{item.project_code}}</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.teacher.teacherinfosetting.name}}</td>
+                        <td>{{item.school}}</td>
+                        <td> {{item.approval_year}}</td>
+                        <td>{{item.specail}}</td>
+                        <td>{{item.project_status}}</td>
                         <td>
                             <span class="label label-danger">任务书</span>
                             <span class="label label-danger">进展报告</span>
                             <span class="label label-danger">结题书</span>
                         </td>
-                        {% if school%}
+                        {% ifequal userauth.role 'school'%}
                         <td>
-                            <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">结题评定</button>
+                            <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">评定</button>
                         </td>
-                        {% endif%}
+                        {% endifequal%}
                     </tr>
+                    {% endfor%}
+                    {% endif%}
                 </tbody>
             </table>
         </div>
+        {% endifequal%}
         <div class="tab fade" id="pass">
+            <h4>
+                符合搜索条件的项目数量为 {{pass_apply_project_group.count}}.
+            </h4>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -64,20 +75,24 @@
                 </thead>
 
                 <tbody>
+                    {% if pass_apply_project_group%}
+                    {% for item in pass_apply_project_group%}
                     <tr>
-                        <td>51012014666666 </td>
-                        <td>胡俊自然基金</td>
-                        <td>沈潋</td>
-                        <td>创新实验学院</td>
-                        <td> 2014</td>
-                        <td>哲学</td>
-                        <td>未结题</td>
+                        <td>{{item.project_code}}</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.teacher.teacherinfosetting.name}}</td>
+                        <td>{{item.school}}</td>
+                        <td> {{item.approval_year}}</td>
+                        <td>{{item.specail}}</td>
+                        <td>{{item.project_status}}</td>
                         <td>
-                            <span class="label label-danger">结题书</span>
                             <span class="label label-danger">任务书</span>
                             <span class="label label-danger">进展报告</span>
+                            <span class="label label-danger">结题书</span>
                         </td>
                     </tr>
+                    {% endfor%}
+                    {% endif%}
                 </tbody>
             </table>
         </div>

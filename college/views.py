@@ -5,7 +5,7 @@ Created on 2014-06-07
 Desc: college' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from common.views import scheduleManage, financialManage
+from common.views import scheduleManage, financialManage,researchConcludingManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
 
@@ -41,8 +41,11 @@ def finalReportView(request):
     context = {}
     return render(request,"college/final.html",context)
 def researchConcludingView(request):
-    context={}
-    return render(request,"college/research_concluding_view.html",context)
+    userauth={
+        'role':'college',
+        'status':'research_concluding',
+    }
+    return researchConcludingManage(request,userauth)
 def dispatchView(request):
     teacher_form = TeacherDispatchForm()
     context = {
