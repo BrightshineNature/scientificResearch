@@ -1,33 +1,37 @@
 {% extends "adminStaff/base/_content.html" %}
 
 {% block inner_content %}
-<div class="tab-content">
+<div class="tab-content" id="dispatch-div">
   <div class="tab-pane fade active in" id="review-page">
     <ul class="nav nav-pills">
       <li class="active">
-        <a href="#school-section" data-toggle="tab">校级管理员</a>
+        <a href="#school-section" data-toggle="tab">专题管理员</a>
       </li>
       <li>
-        <a href="#college-section" data-toggle="tab">院级管理员</a>
+        <a href="#college-section" data-toggle="tab">学院秘书</a>
       </li>
-			<li>
-        <a href="#expert-section" data-toggle="tab">评委专家</a>
+      <li>
+        <a href="#expert-section" data-toggle="tab">评审专家</a>
       </li>
     </ul><!--end ul title-->
 
     <div class="tab-content">
       <div class="tab-pane fade active in" id="school-section">
-				{% include "widgets/school_dispatch_form.html" %}
-    </div><!--end content section-->
+	{% include "widgets/dispatch/school_dispatch_form.html" %}
+      </div><!--end content section-->
 
-    <div class="tab-pane fade " id="college-section">
-			{% include "widgets/college_dispatch_form.html" %}
-    </div>
+      <div class="tab-pane fade " id="college-section">
+	{% include "widgets/dispatch/college_dispatch_form.html" %}
+      </div>
 
-		<div class="tab-pane fade " id="expert-section">
-			{% include "widgets/expert_dispatch_form.html" %}
-    </div>
-  </div><!--end tab content-->
-</div><!--end tab pane-->
+      <div class="tab-pane fade " id="expert-section">
+	{% include "widgets/dispatch/expert_dispatch_form.html" %}
+      </div>
+    </div><!--end tab content-->
+  </div><!--end tab pane-->
 </div>
-{% endblock %}
+{%endblock %}
+{%block bottom_js %}
+{{ block.super }}
+<script type='text/javascript' src="{{STATIC_URL}}js/common/dispatch.js"></script>
+{%endblock%}

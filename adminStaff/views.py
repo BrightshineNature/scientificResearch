@@ -7,11 +7,12 @@ Desc: adminStaff' view, includes home(manage), review report view
 from django.shortcuts import render
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
-
-from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm
+from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
 from adminStaff.models import TemplateNoticeMessage, Special
-from users.models import SchoolProfile
+from users.models import SchoolProfile,CollegeProfile,ExpertProfile
 from const import NOTICE_CHOICE
+from backend.logging import loginfo
+
 def appView(request):
 
     context = {}
@@ -32,22 +33,20 @@ def allocManageView(request):
 
     school_user = SchoolProfile.objects.all()
     special_list = Special.objects.all()    
-    dic = {}
+
+
+    special_user_info = {}
     for i in school_user:
-        dic[i] = []
+        special_user_info[i] = []  
+
+    for i in special_list:        
+        print i.school_user
+
+        # if i.school_user:
+            # special_user_info[i.school_user].append(i.name)
     
-    for i in special_list:
-        if i.school_user != None:
-            dic[i.school_user].append(i.name)
-    special_user = []
-    for k, v in dic.iteritems():
-        special_user.append((k, v))
 
-    print"*(*("
-    print special_user
 
-    print "**** school user"
-    print school_user[0]
 
     
 
@@ -64,15 +63,12 @@ def allocManageView(request):
 
     context = { 'special_form' : special_form,
                 'special_list': special_list,
+                'special_user_info': special_user_info, 
                 'college_form': college_form, 
                 'college_list': college_list,
     }
-    
 
     return render(request, "adminStaff/alloc_manage.html", context)
-
-
-from adminStaff.forms import NewsForm, SchoolDispatchForm, CollegeDispatchForm, ExpertDispatchForm
 def scheduleView(request):
 
 
@@ -111,17 +107,24 @@ def noticeMessageSetting(request):
     return render(request,"adminStaff/notice_message_setting.html",context)
 
 def dispatchView(request):
-    school_form = SchoolDispatchForm()
-    college_form = CollegeDispatchForm()
-    expert_form = ExpertDispatchForm()
-    context = {"school_form": school_form, 
-               "college_form": college_form, 
-               "expert_form": expert_form, 
+    dispatch_form = DispatchForm()
+    dispatchAddCollege_form=DispatchAddCollegeForm()
+    college_users = CollegeProfile.objects.all()
+    expert_users = ExpertProfile.objects.all()
+    school_users = SchoolProfile.objects.all()
+    loginfo(college_users.count())
+    loginfo(school_users.count())
+    context = {
+               "dispatch_form":dispatch_form,
+               "dispatchAddCollege_form":dispatchAddCollege_form,
+               "college_users":college_users,
+               "school_users":school_users,
+               "users":expert_users,
     }
     return render(request, "adminStaff/dispatch.html", context)
 def financialView(request):
     userauth = {
-                "role": 'adminStaff',                
+                "role": 'adminStaff', 
     }
     return financialManage(request, userauth)
 
