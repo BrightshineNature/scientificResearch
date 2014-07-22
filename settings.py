@@ -120,6 +120,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.csrf',
     'django.contrib.messages.context_processors.messages',
+    'context.application_settings',
+    'context.userauth_settings',
 )
 
 INSTALLED_APPS = (

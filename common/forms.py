@@ -2,15 +2,20 @@
 
 from django import forms
 from const import *
-from common.utils import get_application_year_choice,get_approval_year_choice
+from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice
 class ScheduleBaseForm(forms.Form):
-    status_choices = list(PROJECT_STATUS_CHOICES)
-
-
-    status_choices = tuple( [(-1, u"结题状态")] + status_choices)
-
-
+    status_choices = get_status_choice()
+    application_status_choice =get_application_status_choice()
+    status_choices = tuple( [(-1, u"项目状态")] + status_choices)
+    application_status_choices=get_application_status_choice()
+    application_status_choices=tuple([(-1,u"项目状态")]+application_status_choices)
     status =forms. ChoiceField(choices=status_choices,required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control', 
+            
+            }),
+        )
+    application_status =forms. ChoiceField(choices=application_status_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control', 
             

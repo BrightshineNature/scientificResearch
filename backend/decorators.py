@@ -27,10 +27,7 @@ from django.contrib.auth.decorators import login_required
 
 from const import *
 from const.models import *
-from adminStaff.models import *
 from backend.logging import loginfo
-from school.utility import get_current_year
-from school.models import *
 
 
 def check_auth(user=None, authority=None):
@@ -60,161 +57,161 @@ def check_auth(user=None, authority=None):
     return False
 
 
-class authority_required(object):
-    """
-    This decorator will check whether the user is adminstaff
-    """
-    def __init__(self, *args):
-        self.auth = args
+# class authority_required(object):
+#     """
+#     This decorator will check whether the user is adminstaff
+#     """
+#     def __init__(self, *args):
+#         self.auth = args
 
-    def check_auth_op(self, request):
-        """
-        check auth, only pass is the whole pass,
-        self.auth is a tuple
-        """
-        for item in self.auth:
-            is_passed = check_auth(user=request.user, authority=item)
-            if is_passed:
-                return True
+#     def check_auth_op(self, request):
+#         """
+#         check auth, only pass is the whole pass,
+#         self.auth is a tuple
+#         """
+#         for item in self.auth:
+#             is_passed = check_auth(user=request.user, authority=item)
+#             if is_passed:
+#                 return True
 
-        return False
+#         return False
 
-    def __call__(self, method):
-        def wrappered_method(request, *args, **kwargs):
-            is_passed = self.check_auth_op(request)
-            loginfo(p=is_passed, label="authority_required decorator")
-            if is_passed:
-                response = method(request, *args, **kwargs)
-                return response
-            else:
-                # TODO: add a custom 403 page
-                return HttpResponseRedirect(reverse('backend.errorviews.error403'))
-        return wrappered_method
-
-
-class only_user_required(object):
-    """
-    This decorator will deal with project varify, when the logined user
-    can control this project, he can continue.
-    """
-    def __init__(self, method):
-        self.method = method
-
-    def check_auth_op(self, pid, request):
-        if pid is None:
-            return False
-
-        #ISSUE: we should check get operation!
-        try:
-            project = ProjectSingle.objects.get(project_id=pid)
-        except ProjectSingle.DoesNotExist, err:
-            loginfo(p=err,
-                    label="only_user_required -> get projectsingle")
-            project = None
-            return False
-
-        if request.user.is_superuser or \
-           request.user.id == project.adminuser.id or\
-           request.user.id == project.student.user.id:
-            return True
-        else:
-            return False
-
-    def __call__(self, request, *args, **kwargs):
-        loginfo(p=kwargs, label="only_user_required args")
-        pid = kwargs.get("pid", None)
-        is_passed = self.check_auth_op(pid, request)
-        loginfo(p=is_passed, label="only_user_required decorator")
-        if is_passed:
-            response = self.method(request, *args, **kwargs)
-            return response
-        else:
-            return HttpResponseRedirect(reverse('school.views.home_view'))
+#     def __call__(self, method):
+#         def wrappered_method(request, *args, **kwargs):
+#             is_passed = self.check_auth_op(request)
+#             loginfo(p=is_passed, label="authority_required decorator")
+#             if is_passed:
+#                 response = method(request, *args, **kwargs)
+#                 return response
+#             else:
+#                 # TODO: add a custom 403 page
+#                 return HttpResponseRedirect(reverse('backend.errorviews.error403'))
+#         return wrappered_method
 
 
-class time_controller(object):
-    """
-    This decorator will deal with time control, time the following:
-        pre_start --> pre_end --> pre_start_review --> pre_end_review
-        final_start --> final_end --> final_start_review --> final_end_review
-    """
-    def __init__(self, phase):
-        self.phase = phase
+# class only_user_required(object):
+#     """
+#     This decorator will deal with project varify, when the logined user
+#     can control this project, he can continue.
+#     """
+#     def __init__(self, method):
+#         self.method = method
 
-    def get_established_time(self):
-        """
-        Get estabilshed time from database
-        """
-        control = ProjectControl.objects.all()
-        loginfo(p=control, label="get_established_time")
-        if len(control) == 0:
-            return None
-        else:
-            return control[0]
+#     def check_auth_op(self, pid, request):
+#         if pid is None:
+#             return False
 
-    def check_year(self, pid):
-        """
-        Check year
-        """
-        #If the pid is None, it mains there is no pid imports;
-        if pid is None:
-            return True
+#         #ISSUE: we should check get operation!
+#         try:
+#             project = ProjectSingle.objects.get(project_id=pid)
+#         except ProjectSingle.DoesNotExist, err:
+#             loginfo(p=err,
+#                     label="only_user_required -> get projectsingle")
+#             project = None
+#             return False
 
-        project = get_object_or_404(ProjectSingle, project_id=pid)
+#         if request.user.is_superuser or \
+#            request.user.id == project.adminuser.id or\
+#            request.user.id == project.student.user.id:
+#             return True
+#         else:
+#             return False
 
-        #If the project year is not this year, it also means you cannot edit it
-        if project.year != get_current_year():
-            return False
+#     def __call__(self, request, *args, **kwargs):
+#         loginfo(p=kwargs, label="only_user_required args")
+#         pid = kwargs.get("pid", None)
+#         is_passed = self.check_auth_op(pid, request)
+#         loginfo(p=is_passed, label="only_user_required decorator")
+#         if is_passed:
+#             response = self.method(request, *args, **kwargs)
+#             return response
+#         else:
+#             return HttpResponseRedirect(reverse('school.views.home_view'))
 
 
-    def check_day(self, pid=None):
-        """
-        return True or False
-        The return value represents the project whether in the established time
-        control!
-            True: you can edit it!
-            False: you cannot edit it!
-        """
-        # check database table
-        control = self.get_established_time()
-        #If the database doesn't set anything, it means no time limits.
-        if control is None:
-            loginfo(p="database check is None", label="time_controller checkday")
-            return True
+# class time_controller(object):
+#     """
+#     This decorator will deal with time control, time the following:
+#         pre_start --> pre_end --> pre_start_review --> pre_end_review
+#         final_start --> final_end --> final_start_review --> final_end_review
+#     """
+#     def __init__(self, phase):
+#         self.phase = phase
 
-        # check year
-        if self.check_year(pid) is False:
-            return False
+#     def get_established_time(self):
+#         """
+#         Get estabilshed time from database
+#         """
+#         control = ProjectControl.objects.all()
+#         loginfo(p=control, label="get_established_time")
+#         if len(control) == 0:
+#             return None
+#         else:
+#             return control[0]
 
-        # check day
-        today = datetime.date.today()
+#     def check_year(self, pid):
+#         """
+#         Check year
+#         """
+#         #If the pid is None, it mains there is no pid imports;
+#         if pid is None:
+#             return True
 
-        if self.phase == STATUS_PRESUBMIT:
-            is_passed = True if today >= control.pre_start_day and today <= control.pre_end_day else False
-        elif self.phase == STATUS_PREREVIEW:
-            is_passed = True if today >= control.pre_start_review_day and today <= control.pre_end_review_day else False
-        elif self.phase == STATUS_ONGOING:
-            is_passed = True if today >= control.pre_end_review_day and today <= control.final_start_day else False
-        elif self.phase == STATUS_FINSUBMIT:
-            is_passed = True if today >= control.final_start_day and today <= control.final_end_day else False
-        elif self.phase == STATUS_FINREVIEW:
-            is_passed = True if today >= control.final_start_review_day and today <= control.final_end_review_day else False
-        elif self.phase == STATUS_FIRST:
-            is_passed = True
-        else:
-            is_passed = False
+#         project = get_object_or_404(ProjectSingle, project_id=pid)
 
-        return is_passed
+#         #If the project year is not this year, it also means you cannot edit it
+#         if project.year != get_current_year():
+#             return False
 
-    def __call__(self, method):
-        def wrappered_method(request, *args, **kwargs):
-            #check time control
-            pid = kwargs.get("pid", None)
-            is_expired = not self.check_day(pid)
-            loginfo(p=is_expired, label="time_controller decorator, is_expired")
 
-            #Here, we should use history view strategy to replace forbidden
-            kwargs["is_expired"] = is_expired
-            response = method(request, *args, **kwargs)
-            return response
-        return wrappered_method
+#     def check_day(self, pid=None):
+#         """
+#         return True or False
+#         The return value represents the project whether in the established time
+#         control!
+#             True: you can edit it!
+#             False: you cannot edit it!
+#         """
+#         # check database table
+#         control = self.get_established_time()
+#         #If the database doesn't set anything, it means no time limits.
+#         if control is None:
+#             loginfo(p="database check is None", label="time_controller checkday")
+#             return True
+
+#         # check year
+#         if self.check_year(pid) is False:
+#             return False
+
+#         # check day
+#         today = datetime.date.today()
+
+#         if self.phase == STATUS_PRESUBMIT:
+#             is_passed = True if today >= control.pre_start_day and today <= control.pre_end_day else False
+#         elif self.phase == STATUS_PREREVIEW:
+#             is_passed = True if today >= control.pre_start_review_day and today <= control.pre_end_review_day else False
+#         elif self.phase == STATUS_ONGOING:
+#             is_passed = True if today >= control.pre_end_review_day and today <= control.final_start_day else False
+#         elif self.phase == STATUS_FINSUBMIT:
+#             is_passed = True if today >= control.final_start_day and today <= control.final_end_day else False
+#         elif self.phase == STATUS_FINREVIEW:
+#             is_passed = True if today >= control.final_start_review_day and today <= control.final_end_review_day else False
+#         elif self.phase == STATUS_FIRST:
+#             is_passed = True
+#         else:
+#             is_passed = False
+
+#         return is_passed
+
+#     def __call__(self, method):
+#         def wrappered_method(request, *args, **kwargs):
+#             #check time control
+#             pid = kwargs.get("pid", None)
+#             is_expired = not self.check_day(pid)
+#             loginfo(p=is_expired, label="time_controller decorator, is_expired")
+
+#             #Here, we should use history view strategy to replace forbidden
+#             kwargs["is_expired"] = is_expired
+#             response = method(request, *args, **kwargs)
+#             return response
+#         return wrappered_method

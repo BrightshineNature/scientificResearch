@@ -6,13 +6,11 @@ Created on 2013-3-27
 '''
 
 from django.contrib import admin
-from adminStaff.models import ProjectSingle,Special,College
+from adminStaff.models import ProjectSingle
 
 
 RegisterClass = (
     ProjectSingle,
-    Special,
-    College,
 )
 
 for temp in RegisterClass:
