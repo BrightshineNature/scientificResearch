@@ -78,10 +78,24 @@ class CollegeProfile(models.Model):
         auth, created = UserIdentity.objects.get_or_create(identity=COLLEGE_USER)
         self.userid.identities.add(auth)
 
+class Special(models.Model):
+
+    school_user = models.ForeignKey(SchoolProfile, blank=True, null=True, verbose_name=u"专题管理员")
+    name = models.CharField(blank=False,max_length=30)
+    def __unicode__(self):
+        return self.name
+class College(models.Model):
+    college_user = models.ForeignKey(CollegeProfile, blank=True, null=True, verbose_name=u"学院管理员")
+    name = models.CharField(blank=False,max_length=30)
+    def __unicode__(self):
+        return self.name
+
 
 class ExpertProfile(models.Model):
     userid = models.ForeignKey(User, unique=True,
                                verbose_name="权限对应ID")
+    college = models.ForeignKey(College,
+                               verbose_name="所属学院")
     class Meta:
         verbose_name = "评审专家"
         verbose_name_plural = "评审专家"
@@ -97,7 +111,8 @@ class ExpertProfile(models.Model):
 class TeacherProfile(models.Model):
     userid = models.ForeignKey(User, unique=True,
                                verbose_name="权限对应ID")
-    # school = models.ForeignKey(SchoolDict, unique=True, verbose_name="学校名称")
+    college = models.ForeignKey(College,
+                               verbose_name="所属学院")
     class Meta:
         verbose_name = "教师"
         verbose_name_plural = "教师"

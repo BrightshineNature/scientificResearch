@@ -7,9 +7,9 @@ from dajaxice.utils import deserialize_form
 from django.utils import simplejson
 from django.template.loader import render_to_string
 
+from users.models import Special
 from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm
 from django import  forms
-from adminStaff.models import Special
 from adminStaff.forms import TemplateNoticeMessageForm
 from django.utils import simplejson
 from django.template.loader import render_to_string

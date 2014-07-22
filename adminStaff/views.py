@@ -8,8 +8,8 @@ from django.shortcuts import render
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
-from adminStaff.models import TemplateNoticeMessage, Special
-from users.models import SchoolProfile,CollegeProfile,ExpertProfile
+from adminStaff.models import TemplateNoticeMessage
+from users.models import SchoolProfile,CollegeProfile,ExpertProfile,Special
 from const import NOTICE_CHOICE
 from backend.logging import loginfo
 
@@ -50,8 +50,8 @@ def allocManageView(request):
     }
 
     print "$$"
-    print special_list[0].name
-    print special_list[0].school_user
+    # print special_list[0].name
+    # print special_list[0].school_user
 
     context = { 'special_form' : special_form,
                 'special_list': special_list,
@@ -66,6 +66,7 @@ def scheduleView(request):
 
     userauth = {
         'role': 'adminStaff',
+        'status':'application'
     }
     return scheduleManage(request, userauth)
 
