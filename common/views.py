@@ -1,22 +1,23 @@
 # coding: UTF-8
-
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
 from common.forms import  ScheduleBaseForm
+from common.utils import get_query_status,get_qset,get_query_application_status
 from const import *
 from teacher.forms import *
 from teacher.models import *
 from backend.logging import logger, loginfo
 from adminStaff.models import ProjectSingle
 from django.db.models import Q
-def getParam(pro_list, userauth):
-    not_pass_apply_project_group=pro_list.filter(project_status__id=1)
-    pass_apply_project_group=pro_list.filter(project_status__id__gt=1)
-    #for item in pro_list:
-        #loginfo(item.project_status)
-    #count=0;
-    #not_pass_apply_project_group=[]
-    #pass_apply_project_group=[]
+
+    
+def getParam(pro_list, userauth,flag):
+    (pending_q,default_q,search_q)=get_qset(userauth)
+    not_pass_apply_project_group=pro_list.filter(pending_q)
+    if flag:
+        pass_apply_project_group=pro_list.filter(default_q)
+    else:
+        pass_apply_project_group=pro_list.filter(search_q)
     count=not_pass_apply_project_group.count()+pass_apply_project_group.count()
     param={
         "not_pass_apply_project_group":not_pass_apply_project_group,
@@ -43,9 +44,11 @@ def schedule_form_data(request , userauth):
     if request.method == 'POST':
         schedule_form = ScheduleBaseForm(request.POST)
         pro_list=get_search_data(schedule_form)
+        default=False
     else:
         pro_list=ProjectSingle.objects.all()
-    param=getParam(pro_list,userauth)
+        default=True
+    param=getParam(pro_list,userauth,default)
     context ={ 'schedule_form':schedule_form,
                'has_data': has_data,
                'userauth': userauth,
@@ -56,14 +59,21 @@ def schedule_form_data(request , userauth):
     return context
 def get_search_data(schedule_form):
      if schedule_form.is_valid():
+            application_status=schedule_form.cleaned_data['application_status']
             status=schedule_form.cleaned_data['status']
             application_year= schedule_form.cleaned_data['application_year']
             approval_year=schedule_form.cleaned_data['approval_year']
             special=schedule_form.cleaned_data['special']
             college=schedule_form.cleaned_data['college']
             other_search=schedule_form.cleaned_data['other_search']
+            if application_status=="-1":
+                application_status=''
+            elif application_status:
+                (application_first_status,application_last_status)=get_query_application_status(application_status)
             if status=="-1":
                 status=''
+            elif status:
+                (first_status,last_status)=get_query_status(status)
             if application_year=="-1":
                 application_year=''
             if approval_year=="-1":
@@ -72,7 +82,8 @@ def get_search_data(schedule_form):
                 special=''
             if college=="-1":
                 college=''
-            q1=(status and Q(status=status)) or None
+            q0=(application_status and Q(project_status__status__gte=application_first_status,project_status__status__lte=application_last_status)) or None
+            q1=(status and Q(project_status__status__gte=first_status,project_status__lte=last_status)) or None
             q2=(application_year and Q(application_year=application_year)) or None
             q3=(approval_year and Q(approval_year=approval_year)) or None
             q4=(special and Q(project_special=special)) or None
@@ -86,7 +97,7 @@ def get_search_data(schedule_form):
                 q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3,q6_4])
             else:
                 q6=None
-            qset=filter(lambda x:x!=None,[q1,q2,q3,q4,q5,q6])
+            qset=filter(lambda x:x!=None,[q0,q1,q2,q3,q4,q5,q6])
             if qset:
                 qset=reduce(lambda x,y: x&y ,qset)
                 pro_list=ProjectSingle.objects.filter(qset)

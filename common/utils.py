@@ -1,7 +1,8 @@
 # coding: UTF-8
-
 from adminStaff.models import ProjectSingle
-
+from backend.logging import loginfo
+from django.db.models import Q
+from const import *
 
 def get_application_year_choice():
     project_group=ProjectSingle.objects.all()
@@ -24,3 +25,213 @@ def get_approval_year_choice():
     for y in year_has:
         year.append((y,y))
     return tuple(year)
+def get_status_choice():
+    status_choice=[
+        (PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT,u"申请书阶段"),
+        (PROJECT_STATUS_TASK_OVER,u"任务书阶段"),
+        (PROJECT_STATUS_PROGRESS_SCHOOL_OVER,u"进展报告阶段"),
+        (PROJECT_STATUS_FINAL_EXPERT_SUBJECT,u"结题书阶段"),
+        (PROJECT_STATUS_OVER,u"结题")
+    ]
+    return status_choice
+def get_application_status_choice():
+    application_status_choice=[
+        (PROJECT_STATUS_APPLICATION_COMMIT_OVER,u"待审核"),
+        (PROJECT_STATUS_APPLICATION_COLLEGE_OVER,u"院级审核完成"),
+        (PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT,u"专题审核完成"),
+    ]
+    return application_status_choice
+def get_query_status(status):
+    status=int(status)
+    if status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
+        return (0,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+    elif status==PROJECT_STATUS_TASK_OVER:
+        return (PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT+1,status)
+    elif status==PROJECT_STATUS_PROGRESS_SCHOOL_OVER:
+        return (PROJECT_STATUS_TASK_OVER+1,status)
+    elif status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
+        return (PROJECT_STATUS_PROGRESS_SCHOOL_OVER+1,status)
+    else:
+        return (status,status)
+def get_query_application_status(status):
+    status=int(status)
+    if status==PROJECT_STATUS_APPLICATION_COMMIT_OVER:
+        return (0,status)
+    elif status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
+        return (status,status)
+    else:
+        return (PROJECT_STATUS_APPLICATION_SCHOOL_OVER,status)
+
+def create_QE(status):
+    return Q(project_status__status=status)
+def create_Q(start,end):
+
+    return Q(project_status__status__gte=start,project_status__status__lte=end)
+
+def get_qset(userauth):
+    if userauth['role']=="school" :
+        if userauth['status']=="application":
+            pending=create_QE(PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
+            default=create_QE(PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+            search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+        else:
+            pending=create_QE(PROJECT_STATUS_TASK_COMMIT_OVER)|create_QE(PROJECT_STATUS_PROGRESS_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_COMMIT_OVER)
+            default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
+            search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
+    else:
+        if userauth['status']=="application":
+            pending=create_QE(PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+            default=create_QE(PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
+            search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+        else:
+            pending=Q()
+            default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
+            search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
+    return (pending,default,search)
+
+
+def set_status(project,status):
+    project.project_status=status
+def status_confirm(project, confirm):
+    if project.project_status.status==PROJECT_STATUS_APPLY:
+        if confirm==APPLICATION_WEB_CONFIRM:
+            if project.file_application==True:
+                set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
+        elif confirm==APPLICATION_SUBMIT_CONFIRM:
+            pass
+        else:
+            return False
+
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_WEB_OVER:
+        if confirm==APPLICATION_SUBMIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_COMMIT_OVER:
+        if confirm==APPLICATION_COLLEGE_COMFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
+        if confirm==APPLICATION_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_SCHOOL_OVER:
+        if confirm==APPLICATION_EXPERT_SUBJECT_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
+        if confirm==APPROVAL_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPROVAL)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPROVAL:
+        if confirm==TASK_BUDGET_CONFIRM:
+            if project.file_task==True:
+                set_status(project,PROJECT_STATUS_TASK_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_TASK_BUDGET_OVER)
+        elif confirm==TASK_SUBMIT_CONFIRM:
+            pass
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_TASK_BUDGET_OVER:
+        if confirm==TASK_SUBMIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_COMMIT_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_TASK_COMMIT_OVER:
+        if confirm==TASK_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_SCHOOL_OVER)
+        elif confirm==TASK_FINANCE_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
+    elif project.project_status.status==PROJECT_STATUS_TASK_SCHOOL_OVER:
+        if confirm==TASK_FINANCE_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
+        if confirm==TASK_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_TASK_OVER:
+        if confirm==PROGRESS_SUBMIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_PROGRESS_COMMIT_OVER:
+        if confirm==PROGRESS_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_PROGRESS_SCHOOL_OVER:
+        if confirm==FINAL_WEB_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
+        elif confirm==FINAL_SUBMIT_CONFIRM:
+            pass
+        elif confirm==FINAL_AUDIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_AUDIT_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_WEB_OVER:
+        if confirm==FINAL_SUBMIT_CONFIRM:
+            pass
+        elif confirm==FINAL_AUDIT_CONFIRM:
+            if project.file_summary==True:
+                set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_FINAL_MADA_OVER)
+        else :
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_AUDIT_OVER:
+        if confirm==FINAL_SUBMIT_CONFIRM:
+            pass
+        elif confirm==FINAL_WEB_CONFIRM:
+            if project.file_summary==True:
+                set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_FINAL_MADA_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_MADA_OVER:
+        if confirm==FINAL_SUBMIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+        else :
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
+        if confirm==FINAL_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_SCHOOL_OVER)
+        elif confirm==FINAL_FINANCE_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_FINANCE_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_SCHOOL_OVER:
+        if confirm==FINAL_FINANCE_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
+        if confirm==FINAL_SCHOOL_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_OVER:
+        if confirm==FINAL_EXPERT_SUBJECT_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
+        if confirm==PROJECT_OVER_CONFIRM:
+            set_status(project,PROJECT_STATUS_OVER)
+        else:
+            return Fals
+    else:
+        return False
+    return True
+
+        

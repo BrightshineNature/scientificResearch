@@ -31,18 +31,17 @@ class SettingForm(ModelForm):
         model = TeacherInfoSetting
         exclude = ("teacher", )
         widgets = {"name": forms.TextInput(attrs={"class":'form-control', "placeholder": "姓名", }),
-                   "sex": forms.Select(attrs={'class':'form-control search-input', }),
+                   "sex": forms.Select(attrs={'class':'form-control', }),
                    "card": forms.TextInput(attrs={"class":'form-control', "placeholder": "身份证号", }),
                    "birth": forms.TextInput(attrs = {"class": "form-control", "placeholder": "出生年月 yyyy-MM"}),
                    "base_name": forms.TextInput(attrs={"class":'form-control', "placeholder": "所在研究基地名称", }),
-                   "target_type": forms.Select(attrs={'class':'form-control search-input', }),
-                   "degree": forms.Select(attrs={'class':'form-control search-input', }),
-                   "title": forms.Select(attrs={'class':'form-control search-input', }),
-                   "base_type": forms.Select(attrs={'class':'form-control search-input', }),
-                   "position": forms.Select(attrs={'class':'form-control search-input', }),
+                   "target_type": forms.Select(attrs={'class':'form-control', }),
+                   "degree": forms.Select(attrs={'class':'form-control', }),
+                   "title": forms.Select(attrs={'class':'form-control', }),
+                   "base_type": forms.Select(attrs={'class':'form-control', }),
+                   "position": forms.Select(attrs={'class':'form-control', }),
                   }
   
-
 class FinalReportForm(ModelForm):
     """
         Final Form
