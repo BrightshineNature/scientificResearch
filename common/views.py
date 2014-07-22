@@ -32,7 +32,6 @@ def researchConcludingManage(request , userauth):
     context = schedule_form_data(request , userauth)
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financialManage(request, userauth):
-    
     context = schedule_form_data(request, userauth)
 
     return render(request, userauth['role'] + '/financial.html', context)
@@ -40,11 +39,8 @@ def financialManage(request, userauth):
 def schedule_form_data(request , userauth):
 
     schedule_form = ScheduleBaseForm()
-    
-    
     has_data = False
     if request.method == 'POST':
-        
         schedule_form = ScheduleBaseForm(request.POST)
         pro_list=get_search_data(schedule_form)
     else:

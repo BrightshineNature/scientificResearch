@@ -44,13 +44,6 @@ def allocManageView(request):
 
         # if i.school_user:
             # special_user_info[i.school_user].append(i.name)
-    
-
-
-
-    
-
-
     college_list = {
         "计算机",
         "物理",
@@ -59,7 +52,6 @@ def allocManageView(request):
     print "$$"
     print special_list[0].name
     print special_list[0].school_user
-    
 
     context = { 'special_form' : special_form,
                 'special_list': special_list,
@@ -75,8 +67,6 @@ def scheduleView(request):
     userauth = {
         'role': 'adminStaff',
     }
-
-    
     return scheduleManage(request, userauth)
 
 def newsRelease(request):
