@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'const',
     'common',
     'users',
+    'registration',
     #Add-on
     'south',
     'dajaxice',

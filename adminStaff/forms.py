@@ -3,7 +3,7 @@ from datetime import *
 from django import  forms
 from django.forms import ModelForm
 from django.contrib.admin import widgets
-from adminStaff.models import TemplateNoticeMessage
+from adminStaff.models import TemplateNoticeMessage,College
 class NewsForm(forms.Form):
     NEWS_MAX_LENGTH=500
     news_title = forms.CharField(max_length=200, required=True,
@@ -16,16 +16,23 @@ class NewsForm(forms.Form):
     #for obj in news_cate_list:
         #choice_list.append((obj.id, obj.get_category_display()))
     #news_category = forms.ChoiceField(choices=choice_list)
-class SchoolDispatchForm(forms.Form):
+class DispatchForm(forms.Form):
+    username = forms.CharField(max_length=20, required=True,
+                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"用户名",'id':'password'}))
     password = forms.CharField(max_length=20, required=False,
-                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"默认密码：邮箱名字",'id':'password'}
-                                                                      ),
-                                                                      )
+                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"默认密码：用户名",'id':'password'}))
     email = forms.EmailField(required=True,
-                                     widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}
-                                                                           ))
-    person_firstname = forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))
+                                     widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}))
+    person_firstname = forms.CharField(required=True,
+                                       widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))
 
+class DispatchAddCollegeForm(DispatchForm):
+    COLLEGE_CHOICE_list = []
+    college_list = College.objects.all()
+    for obj in college_list:
+        COLLEGE_CHOICE_list.append((obj.id, obj.name))
+    COLLEGE_CHOICE = tuple(COLLEGE_CHOICE_list)
+    college = forms.ChoiceField(required=True,choices=COLLEGE_CHOICE,widget=forms.Select(attrs={'class':'form-control'}))
 class SpecialForm(forms.Form):
     name = forms.CharField(
       label='Your name',
@@ -35,27 +42,6 @@ class SpecialForm(forms.Form):
 class CollegeForm(forms.Form):
     name = forms.CharField(max_length=200, required=True,
                                  widget=forms.TextInput(attrs={'class':'form-control','id':"college",'placeholder':u""}),)    
-class CollegeDispatchForm(forms.Form):
-    COLLEGE_LIST = ((0, "college0"), (1, "college1"), )
-    password = forms.CharField(max_length=20, required=False,
-                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"默认密码：邮箱名字",'id':'password'}
-                                                                      ),
-                                                                      )
-    email = forms.EmailField(required=True,
-                                     widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}
-                                                                           ))
-    college = forms.ChoiceField(required=True,choices=COLLEGE_LIST,widget=forms.Select(attrs={'class':'form-control'}))
-    person_firstname = forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))
-
-class ExpertDispatchForm(forms.Form):
-    password = forms.CharField(max_length=20, required=False,
-                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"默认密码：邮箱名字",'id':'password'}
-                                                                      ),
-                                                                      )
-    email = forms.EmailField(required=True,
-                                     widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}
-                                                                           ))
-    person_firstname = forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))
 class TemplateNoticeMessageForm(ModelForm):
     class Meta:
         model=TemplateNoticeMessage
