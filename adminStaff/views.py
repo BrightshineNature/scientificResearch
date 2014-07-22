@@ -39,11 +39,11 @@ def allocManageView(request):
     for i in school_user:
         special_user_info[i] = []  
 
-    for i in special_list:        
+    for i in special_list:
         print i.school_user
 
-        # if i.school_user:
-            # special_user_info[i.school_user].append(i.name)
+        if i.school_user:
+            special_user_info[i.school_user].append(i.name)
     
 
 
@@ -56,9 +56,9 @@ def allocManageView(request):
         "物理",
     }
 
-    print "$$"
-    print special_list[0].name
-    print special_list[0].school_user
+    # print "$$"
+    # print special_list[0].name
+    # print special_list[0].school_user
     
 
     context = { 'special_form' : special_form,

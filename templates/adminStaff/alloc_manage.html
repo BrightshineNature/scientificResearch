@@ -8,7 +8,6 @@
     <ul class="nav nav-pills" id="myTab">
         <li class="active"><a href="#special_modify" data-toggle="tab">专题更改</a></li>
         <li><a href="#special_alloc" data-toggle="tab">专题分配</a></li>
-
         <li><a href="#college_modify" data-toggle="tab">学院更改</a></li>
         <li><a href="#college_alloc" data-toggle="tab">学院分配</a></li>
     </ul>
@@ -48,17 +47,9 @@
                   <thead>
                     <tr>
                         <th scope="col" class="action-checkbox-column">  
-
-                            <div class="text">
-                              
-                                <input type="checkbox" id="all_special_checkbox"
-                                onclick = "selectAll()"
-                                >                       
-                              
-                            </div>
-
+                          <input type="checkbox" id="all_special_checkbox" onclick = "selectAll()">
                         </th>
-                        <th scope="col"> <div class="text"><span>专业列表</span></div> </th>
+                        <th scope="col"> <span>专业列表</span> </th>
                     </tr>
                   </thead>
 
@@ -70,6 +61,7 @@
                             <input type="checkbox" 
                             class="action-select" 
                             value= "{{element.id}}"
+                            name="{{element}}"
                             id = "special_checkbox" >
                         </td>
                         <th> {{element}} </th>
@@ -82,25 +74,6 @@
             </div>
 
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         <div class="tab-pane fade" id="special_alloc">
@@ -117,10 +90,10 @@
             <tbody>
               {%for user, alloc in special_user_info.iteritems %}
               <tr>
-                <td> {{user}} </td>
-                <td> {%for i in alloc%}  {{i}}  {%endfor%}  </td>
+                <td>{{user}}</td>
+                <td>{%for i in alloc%}{%ifequal forloop.counter 1%}{%else%},{%endifequal%}{{i}}{%endfor%}</td>
                 <td>
-                  <a data-toggle="modal" id="" onclick="getSpecial" href="#special_modal"   pid="1" class="btn btn-primary"> 分配 </a>
+                  <a data-toggle="modal" id="user_special_alloc"  href="#special_modal"  pid="{{forloop.counter}}" class="btn btn-primary"> 分配 </a>
                 </td>
               </tr>
               {%endfor%}
@@ -146,13 +119,16 @@
                   {%for element in special_list%} 
 
                   <li class="list-group-item">                         
-                    <input type="checkbox" class="action-select"> 
-                    {{element}}
-                    {%ifequal element.school_user None%}
-                    <span class="label label-danger"> 未分配</span>                    
-                    {%else%}
-                    <span class="label label-success"> 已分配</span>
-                    {%endifequal%}
+                    <input type="checkbox" class="action-select" id="special_alloc_checkbox"
+                    name="{{element.name}}">{{element.name}}</input>
+                    <span>
+                      {%ifequal element.school_user None%}
+                      <span class="label label-danger"> 未分配</span>                    
+                      {%else%}
+                      <span class="label label-success"> 已分配</span>
+                      {%endifequal%}
+                    </span>
+
                   </li>
 
                   {%endfor%}
@@ -162,11 +138,58 @@
 
               <div class="modal-footer">
                 <a class="btn" data-dismiss="modal">关闭</a>
-                <a class="btn btn-primary" data-dismiss="modal" onclick="">保存更新</a>
+                <a class="btn btn-primary" data-dismiss="modal" id="save_special_alloc">保存更新</a>
               </div>
+
             </div>
           </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -353,9 +376,9 @@
 
 
       
-<script type='text/javascript' src="{{ STATIC_URL }}js/adminstaff/modify_adminStaff.js"></script>
+<!-- <script type='text/javascript' src="{{ STATIC_URL }}js/adminstaff/modify_adminStaff.js"></script> -->
 
-<script type="text/javascript" src="{{STATIC_URL}}js/common.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/common/alloc_manage.js"></script>
 
 
 <!-- ajax_csrf-->
