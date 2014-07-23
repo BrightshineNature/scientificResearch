@@ -1,0 +1,35 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+        <th scope="col" class="action-checkbox-column">  
+          <input type="checkbox" id="all_object_checkbox">
+        </th>
+        <th scope="col">专业列表</th>
+        <th>是否被分配 </th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    {%for element in objects_list %}
+    <tr class="success">
+        <td class="action-checkbox">
+            <input type="checkbox" 
+            class="action-select" 
+            value= "{{element.id}}"
+            name="{{element.name}}"
+            id = "object_checkbox" >
+        </td>
+        <td>{{element.name}}</td>
+        <td> 
+          {%ifequal element.user None%}
+          <span class="label label-danger"> 未分配</span>                    
+          {%else%}
+          <span class="label label-success"> 已分配</span>
+          {%endifequal%}
+        <td>
+    </tr>
+    {%endfor%}
+
+  </tbody>
+</table>

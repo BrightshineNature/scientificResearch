@@ -8,6 +8,8 @@ from django.shortcuts import render
 from common.views import scheduleManage, financialManage,researchConcludingManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from teacher.forms import SettingForm
+from adminStaff.models import ProjectSingle, Re_Project_Expert
+from users.models import ExpertProfile
 
 def appView(request):
     context = {}
@@ -45,8 +47,16 @@ def progressReportView(requset):
     return render(requset,"school/progress.html",context)
 
 def allocView(request):
-    context = {}
+    project_list = ProjectSingle.objects.all()
+    expert_list = ExpertProfile.objects.all()
+    
+    for expert in expert_list:
+        expert.alloc_num = Re_Project_Expert.objects.filter(expert = expert).count()
+    context = {"project_list": project_list,
+               "expert_list": expert_list,
+    }
     return render(request, "school/alloc.html", context)
+
 def researchConcludingView(request):
     userauth={
         "role":"school",

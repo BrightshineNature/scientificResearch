@@ -42,7 +42,19 @@ def deleteSpecialName(request, checked):
     else:
         return simplejson.dumps({'status':'0'})
 
+@dajaxice_register
+def allocSpecial(request, user, alloced):
+    
+    user = SchoolProfile.objects.filter(userid__username = user)
 
+    all_spe = Special.objects.all()
+    for spe in all_spe:
+        if alloced.count(spe.name):
+            spe.school_user = user[0]
+        elif spe.school_user == user[0]:
+            spe.school_user = None
+        spe.save()
+    return simplejson.dumps({'status':'1'})
 
 @dajaxice_register
 def TemplateNoticeChange(request,template_form,mod):
