@@ -56,16 +56,6 @@ def allocManageView(request):
         "物理",
     }
 
-<<<<<<< HEAD
-    # print "$$"
-    # print special_list[0].name
-    # print special_list[0].school_user
-    
-=======
-    print "$$"
-    # print special_list[0].name
-    # print special_list[0].school_user
->>>>>>> ff3e6a6cbb6547e6e90f309bd10276bd199ef591
 
     context = { 'special_form' : special_form,
                 'special_list': special_list,
