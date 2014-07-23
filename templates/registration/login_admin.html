@@ -1,0 +1,4 @@
+{% extends "registration/widgets/baseback.html" %}
+{%block form-action%}
+"{% url auth_adminlogin %}?next={%url auth_login_redirect "adminUser" %}"
+{%endblock%}

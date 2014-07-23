@@ -15,6 +15,7 @@ from django.template import RequestContext
 
 from registration.models import RegistrationProfile
 from backend.decorators import check_auth
+from backend.logging import loginfo
 from const import *
 
 
@@ -38,22 +39,27 @@ def active(request, activation_key,
                                },
                               context_instance=context)
 
-def login_redirect(request):
+def login_redirect(request,identity):
     """
     When the user login, it will decide to jump the according page, in other
     words, school user will be imported /school/ page, if the user have many
     authorities, the system will jump randomly
     """
     #TODO: I will use reverse function to redirect, like school and expert
-    if check_auth(request.user, SCHOOL_USER):
-        return HttpResponseRedirect(reverse('school.views.home_view'))
-    elif check_auth(request.user, EXPERT_USER):
-        return HttpResponseRedirect(reverse('expert.views.home_view'))
-    elif check_auth(request.user, ADMINSTAFF_USER):
-        return HttpResponseRedirect('/adminStaff/')
-    elif check_auth(request.user, STUDENT_USER):
-        return HttpResponseRedirect('/student/')
-    elif check_auth(request.user, TEACHER_USER):
-        return HttpResponseRedirect('/teacher/')
+    loginfo(idenity)
+    if identity == "adminUser":
+        if check_auth(request.user,ADMINSTAFF_USER):
+            identity = ADMINSTAFF_USER
+        elif check_auth(request.user,FINANCE_USER):
+            identity = FINANCE_USER
+        elif check_auth(request.user,SCHOOL_USER):
+            identity = SCHOOL_USER
+        else:
+            return HttpResponseRedirect('/')
+    elif check_auth(request.user,identity):
+        pass
     else:
         return HttpResponseRedirect('/')
+    redirect_url = '/'+identity+'/'
+    loginfo(redirect_url)
+    return HttpResponseRedirect(reverse(redirect_url))

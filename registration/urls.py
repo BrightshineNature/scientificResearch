@@ -9,7 +9,6 @@ from django.views.generic.simple import direct_to_template
 from django.contrib.auth import views as auth_views
 
 from registration.views import active,login_redirect
-
 urlpatterns = patterns('',
           url(r'^active/(?P<activation_key>\w+)/$',active,name='registration_avtive'),
           url(r'^login/$',auth_views.login,{'template_name':'registration/login.html'},name='auth_login'),
@@ -22,4 +21,9 @@ urlpatterns = patterns('',
           url(r'^password/reset/complete/$',auth_views.password_reset_complete,name='auth_password_reset_complete'),
           url(r'^password/reset/done/$',auth_views.password_reset_done,name='auth_password_reset_done'),
           url(r'^redirect/$', login_redirect, name="auth_login_redirect"),
+          url(r'^adminlogin/$',auth_views.login,{'template_name':'registration/login_admin.html'},name='auth_adminlogin'),
+          url(r'^collegelogin/$',auth_views.login,{'template_name':'registration/login_college.html'},name='auth_collegelogin'),
+          url(r'^expertlogin/$',auth_views.login,{'template_name':'registration/login_expert.html'},name='auth_expertlogin'),
+          url(r'^teacherlogin/$',auth_views.login,{'template_name':'registration/login_teacher.html'},name='auth_teacherlogin'),
+          url(r'^loginredirect/(?P<identity>)/$', login_redirect, name="auth_login_redirect"),
         )

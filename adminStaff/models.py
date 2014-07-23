@@ -26,7 +26,8 @@ class ProjectSingle(models.Model):
 
     title = models.CharField(max_length=400, blank=False,
                              verbose_name=u"参赛题目")
-
+    comment = models.CharField(max_length=400, blank=True,
+                             verbose_name=u"评审意见")
     teacher = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"项目申请人")
     # expert = models.ManyToManyField(ExpertProfile, through = "Re_Project_Expert")
 
@@ -55,7 +56,7 @@ class ProjectSingle(models.Model):
 class Re_Project_Expert(models.Model):
     project = models.ForeignKey(ProjectSingle)
     expert = models.ForeignKey(ExpertProfile)
-
+    is_first_round = models.BooleanField(blank=False, default=False)
     class Meta:
         unique_together = (("project", "expert", ))
         verbose_name = "项目审核分配"

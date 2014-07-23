@@ -44,12 +44,6 @@ def allocManageView(request):
 
         if i.school_user:
             special_user_info[i.school_user].append(i.name)
-    
-
-
-
-    
-
 
     college_list = {
         "计算机",
