@@ -1,9 +1,9 @@
 <div>
     {% ifequal userauth.role 'school'%}
     <ul class="nav nav-pills">
-        <li class="active"><a href="#not_pass" data-toggle="tab">未结题<span class="badge">1</span></a>
+        <li class="active"><a href="#not_pass" data-toggle="tab">未处理<span class="badge">1</span></a>
         </li>
-        <li><a href="#pass" data-toggle="tab">已结题</a>
+        <li><a href="#pass" data-toggle="tab">已处理</a>
         </li>
     </ul>
 
@@ -40,96 +40,124 @@
                         <td>{{item.specail}}</td>
                         <td>{{item.project_status}}</td>
                         <td>
+                            {%if item.file_task%}
+                            <span class="label label-success">任务书</span>
+                            {%else%}
                             <span class="label label-danger">任务书</span>
+
+                            {%endif%}
+                            {%if item.file_interimchecklist%}
+                            <span class="label label-success">进展报告</span>
+                            {%else%}
+
                             <span class="label label-danger">进展报告</span>
-                            <span class="label label-danger">结题书</span>
-                        </td>
-                        {% ifequal userauth.role 'school'%}
-                        <td>
-                            <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">评定</button>
-                        </td>
-                        {% endifequal%}
-                    </tr>
-                    {% endfor%}
-                    {% endif%}
-                </tbody>
-            </table>
-        </div>
-        {% endifequal%}
-        <div class="tab fade" id="pass">
-            <h4>
-                符合搜索条件的项目数量为 {{pass_apply_project_group.count}}.
-            </h4>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>项目编号</th>
-                        <th>项目名称</th>          
-                        <th>项目负责人</th>          
-                        <th>学院</th>         
-                        <th>立项年度</th>   
-                        <th>专题类型</th>
-                        <th>项目状态</th>
-                        <th>附件</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% if pass_apply_project_group%}
-                    {% for item in pass_apply_project_group%}
-                    <tr>
-                        <td>{{item.project_code}}</td>
-                        <td>{{item.title}}</td>
-                        <td>{{item.teacher.teacherinfosetting.name}}</td>
-                        <td>{{item.school}}</td>
-                        <td> {{item.approval_year}}</td>
-                        <td>{{item.specail}}</td>
-                        <td>{{item.project_status}}</td>
-                        <td>
-                            <span class="label label-danger">任务书</span>
-                            <span class="label label-danger">进展报告</span>
-                            <span class="label label-danger">结题书</span>
-                        </td>
-                    </tr>
-                    {% endfor%}
-                    {% endif%}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-
-    <div class="modal fade"  id="review_modal">
-        <div class="modal-dialog">
-
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">×</a>
-                    <h3>评审</h3>
+                            {%endif%}
+                            {% if item.file_summary%}
+                            <span class="label label-success">结题书<span>
+                                    {%else%}
+                                    <span class="label label-danger">结题书</span>
+                                    {%endif%}
+                                </td>
+                                {% ifequal userauth.role 'school'%}
+                                <td>
+                                    <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">评定</button>
+                                </td>
+                                {% endifequal%}
+                            </tr>
+                            {% endfor%}
+                            {% endif%}
+                        </tbody>
+                    </table>
                 </div>
+                {% endifequal%}
+                <div class="tab fade" id="pass">
+                    <h4>
+                        符合搜索条件的项目数量为 {{pass_apply_project_group.count}}.
+                    </h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>项目编号</th>
+                                <th>项目名称</th>          
+                                <th>项目负责人</th>          
+                                <th>学院</th>         
+                                <th>立项年度</th>   
+                                <th>专题类型</th>
+                                <th>项目状态</th>
+                                <th>附件</th>
+                            </tr>
+                        </thead>
 
-                <div class="modal-body">
-                    <form class="well">
-                        <div class="form-group">
-                            <label for="review_select">结题评定</label>
-                            <select id="review_select" class="form-control" >
-                                <option value="-1" selected="selected">请评审</option>
-                                <option value="1">通过</option>
-                                <option value="0">不通过</option>
-                            </select>
+                        <tbody>
+                            {% if pass_apply_project_group%}
+                            {% for item in pass_apply_project_group%}
+                            <tr>
+                                <td>{{item.project_code}}</td>
+                                <td>{{item.title}}</td>
+                                <td>{{item.teacher.teacherinfosetting.name}}</td>
+                                <td>{{item.school}}</td>
+                                <td> {{item.approval_year}}</td>
+                                <td>{{item.specail}}</td>
+                                <td>{{item.project_status}}</td>
+                                <td>
+                                    {%if item.file_task%}
+                                    <span class="label label-success">任务书</span>
+                                    {%else%}
+                                    <span class="label label-danger">任务书</span>
+
+                                    {%endif%}
+                                    {%if item.file_interimchecklist%}
+                                    <span class="label label-success">进展报告</span>
+                                    {%else%}
+
+                                    <span class="label label-danger">进展报告</span>
+                                    {%endif%}
+                                    {% if item.file_summary%}
+                                    <span class="label label-success">结题书<span>
+                                            {%else%}
+                                            <span class="label label-danger">结题书</span>
+                                            {%endif%}
+                                        </td>
+                                    </tr>
+                                    {% endfor%}
+                                    {% endif%}
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="form-group" id="not_pass_reason">
-                            <label class="add-on" for="review_reason">不通过原因</label>
-                            <textarea class="form-control" id="review_reason" rows="10" name="message_content"></textarea>
+                    </div>
+
+
+                    <div class="modal fade"  id="review_modal">
+                        <div class="modal-dialog">
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <a class="close" data-dismiss="modal">×</a>
+                                    <h3>评审</h3>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form class="well">
+                                        <div class="form-group">
+                                            <label for="review_select">结题评定</label>
+                                            <select id="review_select" class="form-control" >
+                                                <option value="-1" selected="selected">请评审</option>
+                                                <option value="1">通过</option>
+                                                <option value="0">不通过</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" id="not_pass_reason">
+                                            <label class="add-on" for="review_reason">不通过原因</label>
+                                            <textarea class="form-control" id="review_reason" rows="10" name="message_content"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn" data-dismiss="modal">关闭</a>
+                                    <a class="btn btn-primary" data-dismiss="modal">确定</a>
+                                </div>
+                            </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <a class="btn" data-dismiss="modal">关闭</a>
-                    <a class="btn btn-primary" data-dismiss="modal">确定</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script type="text/javascript" src="{{STATIC_URL}}js/project_info.js"></script>
+                <script type="text/javascript" src="{{STATIC_URL}}js/project_info.js"></script>
