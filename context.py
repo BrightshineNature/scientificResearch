@@ -9,6 +9,7 @@
 from django.conf import settings
 from backend.decorators import check_auth
 from users.models import Special,ExpertProfile,TeacherProfile,SchoolProfile,CollegeProfile,AdminStaffProfile,FinanceProfile
+from backend.logging import loginfo
 from const import *
 
 all_required = ('WEB_TITLE',)

@@ -29,7 +29,38 @@
         </div>
 
         <div class="tab-pane" id="fund_application">
-          {%include "widgets/financial_budget.html"%}
+          <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/editTable.css" >
+<div class="hero-unit">
+  <table id="mainTable" class="table table-striped">
+    <thead><tr><th>科目</th><th>申请经费</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1.设备费</strong></td><td>200</td><td>0</td></tr>
+      <tr><td>&nbsp;&nbsp;&nbsp;(1)设备购置费</td><td>240</td><td>1</td></tr>
+      <tr><td>&nbsp;&nbsp;&nbsp;(2)试制改造费</td><td>240</td><td>1</td></tr>
+      <tr><td>&nbsp;&nbsp;&nbsp;(3)设备改造与租凭费</td><td>240</td><td>1</td></tr>
+      <tr><td><strong>2.材料费</strong></<td>100</td><td>200</td><td>0</td></tr>
+      <tr><td><strong>3.测试化验加工费</strong></<td>100</td><td>200</td><td>0</td></tr>
+      <tr><td><strong>4.燃料动力费</strong></td><td>200</td><td>0</td></tr>
+      <tr><td><strong>5.差旅费</strong></td><td>200</td><td>0</td></tr>
+      <tr><td><strong>6.会议费</strong></td><td>200</td><td>0</td></tr>
+      <tr><td><strong>7.国际合作与交流费</strong></td><td>200</td><td>0</td></tr>
+      <tr><td><strong>8.出版/文献费</strong></td><td>200</td><td>0</td></tr>
+      <tr><td><strong>9.劳务费</strong></td><td>200</td><td>0</td></tr>
+      <tr><td><strong>10.专家咨询费</strong></td><td>200</td><td>0</td></tr>
+    </tbody>
+    <tfoot><tr><th><strong>合计</strong></th><th></th><th></th></tr></thead>
+  </table>
+
+</div>
+<script type='text/javascript' src="{{STATIC_URL}}js/edittable/mindmup-editabletable.js"></script>
+<script type='text/javascript' src="{{STATIC_URL}}js/edittable/numeric-input-example.js"></script>
+<script>
+  $('#mainTable').editableTableWidget({editor: $('<textarea>')});
+  <!-- $('#mainTable').editableTableWidget().numericInputExample().find('td:first').focus(); -->
+  <!-- $('#textAreaEditor').editableTableWidget({editor: $('<textarea>')}); -->
+  window.prettyPrint && prettyPrint();
+</script>
+
         </div>
 
         <div class="tab-pane" id="basis_content">
@@ -40,8 +71,7 @@
 
         <div class="tab-pane" id="base_condition">
 
-          {% include "widgets/base_condition.html"%}
-          
+          {% include "widgets/base_condition.html"%} 
         </div>
 
 
