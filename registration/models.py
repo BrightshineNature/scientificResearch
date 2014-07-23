@@ -1,6 +1,6 @@
 # coding: UTF-8
 from django.db import models
-import re,sha,random,uuid
+import re,sha,random,uuid,datetime
 from django.db import transaction
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -11,7 +11,7 @@ from django.contrib.sites.models import get_current_site,Site
 from backend.logging import logger
 from django.contrib.auth.models import User
 from const.models import UserIdentity
-from users.models import TeacherProfile,SchoolProfile,CollegeProfile,ExpertProfile
+from users.models import TeacherProfile,SchoolProfile,CollegeProfile,ExpertProfile,College
 from teacher.models import TeacherInfoSetting
 from const import ADMINSTAFF_USER,SCHOOL_USER,COLLEGE_USER,TEACHER_USER,EXPERT_USER,FINANCE_USER,VISITOR_USER
 SHA1_RE = re.compile('^[a-f0-9]{40}$')      #Activation Key
@@ -47,8 +47,8 @@ class RegistrationManager(models.Manager):
         return False
     @transaction.commit_on_success
     def create_inactive_user(self,request,
-                             username,person_firstname,password,email,
-                             Identity,send_email=True, profile_callback=None, **kwargs):
+                             username,password,email,
+                             Identity,person_firstname,send_email=True, profile_callback=None, **kwargs):
         """
         Create a new, inactive ``User``, generates a
         ``RegistrationProfile`` and email its activation key to the
@@ -114,7 +114,8 @@ class RegistrationManager(models.Manager):
             teacherInfoSettingObj = TeacherInfoSetting(teacher= teacherProfileObj)
             teacherInfoSettingObj.save()
         elif Identity == EXPERT_USER:
-            expertProfileObj = ExpertProfile(userid = new_user)
+            collegeObj = College.objects.get(id=kwargs["college"]);
+            expertProfileObj = ExpertProfile(userid = new_user,college=collegeObj)
             expertProfileObj.save()
         if profile_callback is not None:
             profile_callback(user=new_user)

@@ -18,9 +18,9 @@ class NewsForm(forms.Form):
     #news_category = forms.ChoiceField(choices=choice_list)
 class DispatchForm(forms.Form):
     username = forms.CharField(max_length=20, required=True,
-                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"用户名",'id':'password'}))
+                                           widget=forms.TextInput(attrs={'class':'form-control','id':"username",'placeholder':u"用户名",'id':'username'}))
     password = forms.CharField(max_length=20, required=False,
-                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"默认密码：用户名",'id':'password'}))
+                                           widget=forms.TextInput(attrs={'class':'form-control','id':"password",'placeholder':u"默认密码：用户名",'id':'password'}))
     email = forms.EmailField(required=True,
                                      widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}))
     person_firstname = forms.CharField(required=True,
