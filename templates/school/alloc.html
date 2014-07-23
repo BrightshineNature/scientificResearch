@@ -2,12 +2,9 @@
 {% block inner_content %}
 <div class="well form-inline">
     <b>
-    <form id="subject_insitute_form" method="POST" action="/adminStaff/subject_alloc/"><!-- begin category form-->
+    <form id="subject_insitute_form" method="POST" action="/school/alloc/"><!-- begin category form-->
 	{% csrf_token %}
-	<select class="form-control">
-		<option>学院1</option>
-		<option>学院2</option>
-	</select>
+    {{ college_form.colleges}}
   <input type="submit" class="btn btn-primary" id="filter_button" value="按照学院进行筛选"/>
   </form><!--end category form -->
   
@@ -48,7 +45,7 @@
                               </td>
 							  <td>{{ project.project_code }}</td>
 							  <td>{{ project.title }}</td>
-							  <td>学院1</td>
+							  <td>{{ project.teacher.college }}</td>
 							  <td>{{ project.project_special }}</td>
 							  <td>已通过</td>
 							  <td><a data-toggle="modal" href="#alloc_choice">指派专家</a></td>
@@ -83,10 +80,10 @@
                               </td>
 							  <td>{{ project.project_code }}</td>
 							  <td>{{ project.title }}</td>
-							  <td>学院1</td>
+							  <td>{{ project.teacher.college }}</td>
 							  <td>{{ project.project_special }}</td>
 							  <td>已通过</td>
-							  <td><a data-toggle="modal" href="#alloc_choice">指派专家</a></td>
+							  <td><a data-toggle="modal" href="#query_or_cancel">查询或取消指派</a></td>
 							</tr>
 
                             {% endfor %}
@@ -106,6 +103,7 @@
     <thead>
         <tr>
             <th>专家姓名</th>
+            <th>所属学院</th>
             <th>已分配数量</th>
         </tr>
     </thead>
@@ -113,6 +111,7 @@
         {% for expert in expert_list %}
             <tr>
             <td>{{ expert }}</td>
+            <td>{{ expert.college }}</td>
             <td>{{ expert.alloc_num }}</td>
             </tr>
         {% endfor %}
