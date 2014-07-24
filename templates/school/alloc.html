@@ -4,8 +4,9 @@
     <b>
     <form id="subject_insitute_form" method="POST" action="/school/alloc/"><!-- begin category form-->
 	{% csrf_token %}
-    {{ college_form.colleges}}
-  <input type="submit" class="btn btn-primary" id="filter_button" value="按照学院进行筛选"/>
+    {{ form.specials }}
+    {{ form.colleges}}
+  <input type="submit" class="btn btn-primary" id="filter_button" value="筛选"/>
   <div class="alert alert-success" style="margin-top:20px">
     <a class="close" data-dismiss="alert">x</a>
     <h4 class="alert-heading">系统提示！</h4>
