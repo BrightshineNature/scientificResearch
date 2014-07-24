@@ -25,5 +25,5 @@ urlpatterns = patterns('',
           url(r'^collegelogin/$',auth_views.login,{'template_name':'registration/login_college.html'},name='auth_collegelogin'),
           url(r'^expertlogin/$',auth_views.login,{'template_name':'registration/login_expert.html'},name='auth_expertlogin'),
           url(r'^teacherlogin/$',auth_views.login,{'template_name':'registration/login_teacher.html'},name='auth_teacherlogin'),
-          url(r'^loginredirect/(?P<identity>)/$', login_redirect, name="auth_login_redirect"),
+        url(r'^loginredirect/(?P<identity>\w+)/$', login_redirect, name="auth_login_redirect"),
         )
