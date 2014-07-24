@@ -3,6 +3,7 @@ from adminStaff.models import ProjectSingle
 from backend.logging import loginfo
 from django.db.models import Q
 from const import *
+from const.models import ProjectStatus
 
 def get_application_year_choice():
     project_group=ProjectSingle.objects.all()
@@ -27,15 +28,16 @@ def get_approval_year_choice():
     return tuple(year)
 def get_status_choice():
     status_choice=[
-        (PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT,u"申请书阶段"),
-        (PROJECT_STATUS_TASK_OVER,u"任务书阶段"),
-        (PROJECT_STATUS_PROGRESS_SCHOOL_OVER,u"进展报告阶段"),
-        (PROJECT_STATUS_FINAL_EXPERT_SUBJECT,u"结题书阶段"),
+        (PROJECT_STATUS_TASK_SCHOOL_OVER,u"任务书审核阶段"),
+        (PROJECT_STATUS_PROGRESS_SCHOOL_OVER,u"进展报告审核阶段"),
+        (PROJECT_STATUS_FINAL_REVIEW_OVER,u"结题书审核阶段"),
         (PROJECT_STATUS_OVER,u"结题")
     ]
     return status_choice
 def get_application_status_choice():
     application_status_choice=[
+        (PROJECT_STATUS_APPLY,u"网上申请未提交"),
+        (PROJECT_STATUS_APPLICATION_WEB_OVER,u"申报书未提交"),
         (PROJECT_STATUS_APPLICATION_COMMIT_OVER,u"待审核"),
         (PROJECT_STATUS_APPLICATION_COLLEGE_OVER,u"院级审核完成"),
         (PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT,u"专题审核完成"),
@@ -43,20 +45,22 @@ def get_application_status_choice():
     return application_status_choice
 def get_query_status(status):
     status=int(status)
-    if status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
-        return (0,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
-    elif status==PROJECT_STATUS_TASK_OVER:
-        return (PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT+1,status)
+    if status==PROJECT_STATUS_TASK_SCHOOL_OVER:
+        return (PROJECT_STATUS_APPROVAL,status)
     elif status==PROJECT_STATUS_PROGRESS_SCHOOL_OVER:
-        return (PROJECT_STATUS_TASK_OVER+1,status)
-    elif status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
-        return (PROJECT_STATUS_PROGRESS_SCHOOL_OVER+1,status)
+        return (PROJECT_STATUS_TASK_SCHOOL_OVER,status)
+    elif status==PROJECT_STATUS_FINAL_REVIEW_OVER:
+        return (PROJECT_STATUS_PROGRESS_SCHOOL_OVER,status)
     else:
         return (status,status)
 def get_query_application_status(status):
     status=int(status)
-    if status==PROJECT_STATUS_APPLICATION_COMMIT_OVER:
+    if status==PROJECT_STATUS_APPLY:
+        return (status,status)
+    elif status==PROJECT_STATUS_APPLICATION_WEB_OVER:
         return (0,status)
+    elif status==PROJECT_STATUS_APPLICATION_COMMIT_OVER:
+        return (status,status)
     elif status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
         return (status,status)
     else:
@@ -91,7 +95,8 @@ def get_qset(userauth):
 
 
 def set_status(project,status):
-    project.project_status=status
+    project.project_status=ProjectStatus.objects.get(status=status)
+    project.save()
 def status_confirm(project, confirm):
     if project.project_status.status==PROJECT_STATUS_APPLY:
         if confirm==APPLICATION_WEB_CONFIRM:
@@ -125,6 +130,11 @@ def status_confirm(project, confirm):
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
+        if confirm==APPLICATION_REVIEW_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_REVIEW_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_REVIEW_OVER:
         if confirm==APPROVAL_CONFIRM:
             set_status(project,PROJECT_STATUS_APPROVAL)
         else:
@@ -145,21 +155,17 @@ def status_confirm(project, confirm):
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_TASK_COMMIT_OVER:
-        if confirm==TASK_SCHOOL_CONFIRM:
-            set_status(project,PROJECT_STATUS_TASK_SCHOOL_OVER)
-        elif confirm==TASK_FINANCE_CONFIRM:
-            set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
-    elif project.project_status.status==PROJECT_STATUS_TASK_SCHOOL_OVER:
         if confirm==TASK_FINANCE_CONFIRM:
-            set_status(project,PROJECT_STATUS_TASK_OVER)
+            set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
         if confirm==TASK_SCHOOL_CONFIRM:
-            set_status(project,PROJECT_STATUS_TASK_OVER)
+            set_status(project,PROJECT_STATUS_SCHOOL_OVER)
         else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_TASK_OVER:
+            return False        
+    
+    elif project.project_status.status==PROJECT_STATUS_SCHOOL_OVER:
         if confirm==PROGRESS_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
         else:
@@ -171,65 +177,44 @@ def status_confirm(project, confirm):
             return False
     elif project.project_status.status==PROJECT_STATUS_PROGRESS_SCHOOL_OVER:
         if confirm==FINAL_WEB_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
+            if project.file_summary==TRUE:
+                set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
         elif confirm==FINAL_SUBMIT_CONFIRM:
             pass
-        elif confirm==FINAL_AUDIT_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_AUDIT_OVER)
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_WEB_OVER:
         if confirm==FINAL_SUBMIT_CONFIRM:
-            pass
-        elif confirm==FINAL_AUDIT_CONFIRM:
-            if project.file_summary==True:
                 set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
-            else:
-                set_status(project,PROJECT_STATUS_FINAL_MADA_OVER)
-        else :
-            return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_AUDIT_OVER:
-        if confirm==FINAL_SUBMIT_CONFIRM:
-            pass
-        elif confirm==FINAL_WEB_CONFIRM:
-            if project.file_summary==True:
-                set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
-            else:
-                set_status(project,PROJECT_STATUS_FINAL_MADA_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_MADA_OVER:
-        if confirm==FINAL_SUBMIT_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
         else :
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
-        if confirm==FINAL_SCHOOL_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_SCHOOL_OVER)
-        elif confirm==FINAL_FINANCE_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_FINANCE_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_SCHOOL_OVER:
         if confirm==FINAL_FINANCE_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_OVER)
+            set_status(project,PROJECT_STATUS_FINAL_FINANCE_OVER)
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
         if confirm==FINAL_SCHOOL_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_OVER)
+            set_status(project,PROJECT_STATUS_FINAL_SCHOOL_OVER)
         else:
             return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_OVER:
+    elif project.project_status.status==PROJECT_STATUS_FINAL_SCHOOL_OVER:
         if confirm==FINAL_EXPERT_SUBJECT_CONFIRM:
             set_status(project,PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
         if confirm==PROJECT_OVER_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_REVIEW_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_REVIEW_OVER:
+        if confirm==PROJECT_OVER_CONFIRM:
             set_status(project,PROJECT_STATUS_OVER)
         else:
-            return Fals
+            return False
     else:
         return False
     return True

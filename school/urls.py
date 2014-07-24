@@ -11,6 +11,10 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
 
     url( r'^$', school_views.scheduleView,  ),
+    url(
+        r'^(?P<pid>.{36})/(?P<pass_p>.{1})$',
+        school_views.judgeProjectView,
+    ),
 	url(
 		r'final$',
 		school_views.finalReportView,

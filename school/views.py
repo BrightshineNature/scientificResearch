@@ -13,6 +13,8 @@ from teacher.forms import SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
 from users.models import ExpertProfile
 from school.forms import CollegeForm
+from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
+from backend.logging import loginfo
 
 def appView(request):
     context = {}
@@ -25,6 +27,12 @@ def scheduleView(request):
     }
     return scheduleManage(request, userauth)
 
+def judgeProjectView(request,pid,pass_p):
+    project=ProjectSingle.objects.get(pk=pid)
+    if pass_p=="1":
+        status_confirm(project,APPLICATION_SCHOOL_CONFIRM)
+
+    return scheduleView(request)
 
 def financialView(request):
     userauth = {

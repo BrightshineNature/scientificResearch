@@ -62,6 +62,21 @@ class ScheduleBaseForm(forms.Form):
             'placeholder':u"输入其他检索关键字"}), )
 
 
+class ProjectJudgeForm(forms.Form):
+    result_choices=(("-1","请审核"),("1","通过"),("0","不通过"))
+    judgeresult =forms.ChoiceField(choices=result_choices,required=True,
+        widget=forms.Select(attrs={
+            'class':'form-control', 
+            
+            }),
+        )
+    application_choice=(("0","网上申请不合格"),("1","申报书不合格"))
+    application=forms.MultipleChoiceField(choices=application_choice,required=False,
+                                          widget=forms.CheckboxSelectMultiple())
+   
+
+    reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
+
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
         max_length = 20,

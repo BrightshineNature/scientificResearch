@@ -69,8 +69,12 @@
                         </tbody>
                     </table>
                 </div>
-                {% endifequal%}
+                
                 <div class="tab fade" id="pass">
+                    {%else%}
+                    <div class="tab" id="pass">
+                    {%endifequal%}
+
                     <h4>
                         符合搜索条件的项目数量为 {{pass_apply_project_group.count}}.
                     </h4>
