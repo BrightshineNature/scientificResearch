@@ -6,6 +6,13 @@
 	{% csrf_token %}
     {{ college_form.colleges}}
   <input type="submit" class="btn btn-primary" id="filter_button" value="按照学院进行筛选"/>
+  <div class="alert alert-success" style="margin-top:20px">
+    <a class="close" data-dismiss="alert">x</a>
+    <h4 class="alert-heading">系统提示！</h4>
+    <p>
+        指派专家时，请按照学院筛选后，进入指定学院进行指派工作。
+    </p>
+  </div>
   </form><!--end category form -->
   
 <hr/>
@@ -23,80 +30,19 @@
 
     <div class="tab-content">
       <div class="tab-pane fade active in" id="unalloced-section">
-				<table class="table table-condensed" id="unalloced_subject_table">
-					<thead>
-						<tr>
-						  <th>选择</th>
-						  <th>项目编号</th>
-						  <th>发布题目名称</th>
-						  <th>所属学院</th>
-						  <th>所属分类</th>
-						  <th>题目状态</th>
-						  <th>操作</th>
-						</tr>
-					</thead>
-						<tbody id="unalloced_subject_table_body">
-                            
-                            {% for project in project_list %}
-                            <tr>
-							  <td><label class="checkbox">
-                                 <input type="checkbox" name="checkbox_project">
-                                 </label>
-                              </td>
-							  <td>{{ project.project_code }}</td>
-							  <td>{{ project.title }}</td>
-							  <td>{{ project.teacher.college }}</td>
-							  <td>{{ project.project_special }}</td>
-							  <td>已通过</td>
-							  <td><a data-toggle="modal" href="#alloc_choice">指派专家</a></td>
-							</tr>
-
-                            {% endfor %}
-					    </tbody>
-                </table>
+				{% include "school/widgets/unalloc_project_table.html" %}
       <a data-toggle="modal" href="#alloc_choice"><button class="btn btn-primary">批量指派</button></a>
     </div><!--end content section-->
 
       <div class="tab-pane fade " id="alloced-section">
-            <table class="table table-condensed" id="alloced_subject_table">
-					<thead>
-						<tr>
-						  <th>选择</th>
-						  <th>项目编号</th>
-						  <th>发布题目名称</th>
-						  <th>所属学院</th>
-						  <th>所属分类</th>
-						  <th>题目状态</th>
-						  <th>操作</th>
-						</tr>
-					</thead>
-						<tbody id="alloced_subject_table_body">
-                            
-                            {% for project in project_list %}
-                            <tr>
-							  <td><label class="checkbox">
-                                 <input type="checkbox" name="checkbox_project">
-                                 </label>
-                              </td>
-							  <td>{{ project.project_code }}</td>
-							  <td>{{ project.title }}</td>
-							  <td>{{ project.teacher.college }}</td>
-							  <td>{{ project.project_special }}</td>
-							  <td>已通过</td>
-							  <td><a data-toggle="modal" href="#query_or_cancel">查询或取消指派</a></td>
-							</tr>
-
-                            {% endfor %}
-					    </tbody>
-                </table>
-
+        {% include "school/widgets/alloc_project_table.html" %}
       <a data-toggle="modal"><button class="btn btn-primary">批量取消</button></a>
       </div>
     </div><!--end tab content-->
   </div><!--end tab pane-->
   <hr/>
 
-
+    
 
   <div id="expert_list_div">
 		<table class="table" id="table_expert_list">
@@ -164,6 +110,6 @@
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
-
 </div>
+<script type="text/javascript" src="{{STATIC_URL}}js/school/alloc.js"></script>
 {% endblock %}
