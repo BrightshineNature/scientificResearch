@@ -5,6 +5,8 @@ Created on 2014-06-07
 Desc: school' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
+from django.db.models import Q
+
 from common.views import scheduleManage, financialManage,researchConcludingManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from teacher.forms import SettingForm
@@ -52,8 +54,6 @@ def allocView(request):
         project_list = ProjectSingle.objects.all()
         expert_list = ExpertProfile.objects.all()
     
-        for expert in expert_list:
-            expert.alloc_num = Re_Project_Expert.objects.filter(expert = expert).count()
         college_form = CollegeForm()
     else:
         college_form = CollegeForm(request.POST)
@@ -65,6 +65,10 @@ def allocView(request):
             else:
                 project_list = ProjectSingle.objects.filter(teacher__college = college)
                 expert_list = ExpertProfile.objects.filter(college = college)
+
+    for expert in expert_list:
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
+    
     context = {"project_list": project_list,
                "expert_list": expert_list,
                "college_form": college_form,
