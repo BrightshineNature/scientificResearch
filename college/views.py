@@ -5,9 +5,10 @@ Created on 2014-06-07
 Desc: college' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
+from users.models import TeacherProfile
 from common.views import scheduleManage, financialManage,researchConcludingManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
-
+from adminStaff.forms import DispatchAddCollegeForm
 
 from college.forms import TeacherDispatchForm
 def appView(request):
@@ -47,6 +48,18 @@ def researchConcludingView(request):
     }
     return researchConcludingManage(request,userauth)
 def dispatchView(request):
+    dispatchAddCollege_form=DispatchAddCollegeForm()
+    teacher_users = TeacherProfile.objects.all()
+    context = {
+               "dispatchAddCollege_form":dispatchAddCollege_form,
+               "users":teacher_users,
+    }
+    return render(request, "college/dispatch.html", context)
+def financialView(request):
+    userauth = {
+                "role": 'adminStaff', 
+    }
+    return financialManage(request, userauth)
     teacher_form = TeacherDispatchForm()
     context = {
         "teacher_form": teacher_form,

@@ -1,5 +1,9 @@
 {% extends "college/base/_content.html" %}
 
 {% block inner_content %}
-    {% include "widgets/teacher_dispatch_form.html" %}
+    {% include "widgets/dispatch/teacher_dispatch_form.html" %}
 {% endblock %}
+{%block bottom_js %}
+{{ block.super }}
+<script type='text/javascript' src="{{STATIC_URL}}js/common/dispatch.js"></script>
+{%endblock%}
