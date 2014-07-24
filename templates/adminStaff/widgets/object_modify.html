@@ -1,0 +1,27 @@
+
+    <p> </p>
+    <form class="form-inline" id="special_form">
+        <div class = "form-group">
+        <label class="control-label" for="{{instance.name}}_name">{{instance.object_chinese_name}}:</label>
+        </div>
+        <div class = "form-group">
+        {{instance.object_form.name}}
+        </div>
+
+        <div class = "form-group">
+        <span class="btn btn-primary" id="saveObjectName">保存{{instance.object_chinese_name}}名称</span> 
+        </div>
+    </form> 
+
+    <p></p>
+
+    <div class="btn btn-primary" id="deleteObjectName">
+    删除所选{{instance.object_chinese_name}}
+    </div>  
+
+    <p></p>
+
+    <div id="">
+        {%include "adminStaff/widgets/objects_table.html" %}
+    </div>
+

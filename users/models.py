@@ -82,11 +82,17 @@ class Special(models.Model):
 
     school_user = models.ForeignKey(SchoolProfile, blank=True, null=True, verbose_name=u"专题管理员")
     name = models.CharField(blank=False,max_length=30)
+    class Meta:
+        verbose_name = "专题"
+        verbose_name_plural = "专题"
     def __unicode__(self):
         return self.name
 class College(models.Model):
     college_user = models.ForeignKey(CollegeProfile, blank=True, null=True, verbose_name=u"学院管理员")
     name = models.CharField(blank=False,max_length=30)
+    class Meta:
+        verbose_name = "学院"
+        verbose_name_plural = "学院"
     def __unicode__(self):
         return self.name
 
