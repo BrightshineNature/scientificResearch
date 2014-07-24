@@ -3,6 +3,21 @@ from django.contrib.auth.models import User
 from django.db import models
 from const import *
 
+class NewsCategory(models.Model):
+    """
+    """
+    category = models.CharField(blank=False, null=False, unique=True, max_length=20,
+                                choices=NEWS_CATEGORY_CHOICES, \
+                                default=NEWS_CATEGORY_ANNOUNCEMENT ,
+                                verbose_name=u"新闻类型")
+    class Meta:
+        verbose_name = "新闻类型"
+        verbose_name_plural = "新闻类型"
+
+    def __unicode__(self):
+        return self.get_category_display()
+
+
 class ScienceActivityType(models.Model):
     """
     Science Activity Type:

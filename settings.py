@@ -137,15 +137,15 @@ INSTALLED_APPS = (
     #Project
     'home',
     'adminStaff',
+    'const',
+    'users',
+    'registration',
     'school',
     'college',
     'teacher',
     'expert',
     'finance',
-    'const',
     'common',
-    'users',
-    'registration',
     #Add-on
     'south',
     'dajaxice',
