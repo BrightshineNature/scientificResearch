@@ -77,9 +77,6 @@ def allocManageView(request):
         },
     ]
 
-    # print "$$"
-    # print special_list[0].name
-    # print special_list[0].school_user
     
 
     context = { 

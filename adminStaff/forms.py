@@ -3,7 +3,9 @@ from datetime import *
 from django import  forms
 from django.forms import ModelForm
 from django.contrib.admin import widgets
-from adminStaff.models import TemplateNoticeMessage,College
+from const.models import NewsCategory
+from adminStaff.models import TemplateNoticeMessage
+from users.models import College
 class NewsForm(forms.Form):
     NEWS_MAX_LENGTH=500
     news_title = forms.CharField(max_length=200, required=True,
@@ -11,16 +13,17 @@ class NewsForm(forms.Form):
     news_content = forms.CharField(max_length=NEWS_MAX_LENGTH, required=True)
     news_date = forms.DateField(required=True,widget=forms.DateInput(attrs={'class':'form-control'}))
     news_document = forms.FileField(label='select', help_text='文件上传', required=False,widget=forms.FileInput(attrs={'class':'form-control'}))
-    #news_cate_list = NewsCategory.objects.all()
-    #choice_list = []
-    #for obj in news_cate_list:
-        #choice_list.append((obj.id, obj.get_category_display()))
-    #news_category = forms.ChoiceField(choices=choice_list)
+    news_cate_list = NewsCategory.objects.all()
+    choice_list = []
+    for obj in news_cate_list:
+        choice_list.append((obj.id, obj.get_category_display()))
+    news_category = forms.ChoiceField(choices=choice_list)
+
 class DispatchForm(forms.Form):
     username = forms.CharField(max_length=20, required=True,
-                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"用户名",'id':'password'}))
+                                           widget=forms.TextInput(attrs={'class':'form-control','id':"username",'placeholder':u"用户名",'id':'username'}))
     password = forms.CharField(max_length=20, required=False,
-                                           widget=forms.TextInput(attrs={'class':'form-control','id':"student_password",'placeholder':u"默认密码：用户名",'id':'password'}))
+                                           widget=forms.TextInput(attrs={'class':'form-control','id':"password",'placeholder':u"默认密码：用户名",'id':'password'}))
     email = forms.EmailField(required=True,
                                      widget=forms.TextInput(attrs={'class':'form-control','id':"mailbox",'placeholder':u"邮箱",'id':'email'}))
     person_firstname = forms.CharField(required=True,

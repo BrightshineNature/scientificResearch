@@ -1,0 +1,5 @@
+{% extends "registration/widgets/_login_base.html" %}
+{%block form-action%}
+{% load i18n %}
+"{% url auth_collegelogin %}?next=/accounts/loginredirect/{{auth_choices.college}}/"
+{%endblock%}

@@ -35,6 +35,10 @@ urlpatterns = patterns('',
     url( 
         r'researchconcluding$',
         college_views.researchConcludingView,
-    )
+    ),
+    url(
+        r'dispatch$',
+        college_views.dispatchView,
+    ),
 )
 urlpatterns += staticfiles_urlpatterns()

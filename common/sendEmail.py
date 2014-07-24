@@ -1,18 +1,14 @@
 # coding: UTF-8
-import re,sha
 from django.contrib.auth.models import User
 from const.models import UserIdentity
-from user.models import *
-SHA1_RE = re.compile('^[a-f0-9]{40}$')      #Activation Key
-@staticmethod
-def sendemail(request,username,person_firstname,password,email,identity,send_email=True, **kwargs):
+from registration.models import RegistrationManager
+def sendemail(request,username,password,email,identity,person_firstname,send_email=True, **kwargs):
     #判断用户名是否存在存在直接返回
     if not AuthUserExist(username, identity):
-        RegistrationManager().create_inactive_user(request,username,person_firstname,password,email,identity,send_email)
+        RegistrationManager().create_inactive_user(request,username,password,email,identity,person_firstname,send_email,**kwargs)
         return True
     else:
         return False
-@staticmethod
 def AuthUserExist(username, identity):
     if User.objects.filter(username=username).count():
         user_obj = User.objects.get(username=username)

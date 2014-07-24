@@ -8,8 +8,11 @@ from django.utils import simplejson
 from django.template.loader import render_to_string
 
 from adminStaff.forms import NewsForm, ObjectForm,TemplateNoticeMessageForm
+from const import *
+from users.models import Special,ExpertProfile,TeacherProfile,SchoolProfile,CollegeProfile
+from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm
 from django import  forms
-from adminStaff.forms import TemplateNoticeMessageForm
+from adminStaff.forms import TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
 from django.utils import simplejson
 from django.template.loader import render_to_string
 from dajaxice.utils import deserialize_form
@@ -90,6 +93,7 @@ def refreshObjectAlloc(request, object):
 
 
 
+from common.sendEmail import sendemail
 
 @dajaxice_register
 def saveObjectName(request, object, form):
@@ -206,23 +210,46 @@ def TemplateNoticeDelete(request,deleteID):
 
 @dajaxice_register
 def Dispatch(request,form,identity):
-    school_form = SchoolDictDispatchForm(deserialize_form(form))
-    if school_form.is_valid():
-        password = school_form.cleaned_data["school_password"]
-        email = school_form.cleaned_data["school_email"]
-        name = email
-        school_name = school_form.cleaned_data["school_name"]
-        person_name = school_form.cleaned_data["school_personname"]
+    if identity == SCHOOL_USER or identity ==COLLEGE_USER:
+        dispatchForm = DispatchForm(deserialize_form(form))
+    elif identity == EXPERT_USER or identity == TEACHER_USER:
+        dispatchForm = DispatchAddCollegeForm(deserialize_form(form))
+    else:
+        dispatchForm = DispatchForm(deserialize_form(form))
+    if dispatchForm.is_valid():
+        username = dispatchForm.cleaned_data["username"]
+        password = dispatchForm.cleaned_data["password"]
+        email = dispatchForm.cleaned_data["email"]
+        person_name = dispatchForm.cleaned_data["person_firstname"]
         if password == "":
-            password = email.split('@')[0]
-        flag = AdminStaffService.sendemail(request, name, password,email,SCHOOL_USER, school_name=school_name,person_name = person_name)
-        loginfo(flag)
+            password = username
+        if identity == SCHOOL_USER or identity ==COLLEGE_USER:
+            flag = sendemail(request, username, password,email,identity, person_name)
+        elif identity == EXPERT_USER or identity == TEACHER_USER:
+            college = dispatchForm.cleaned_data["college"]
+            loginfo(college)
+            flag = sendemail(request, username, password,email,identity, person_name,college=college)
         if flag:
             message = u"发送邮件成功"
-            table = refresh_mail_table(request)
-            return simplejson.dumps({'field':school_form.data.keys(), 'status':'1', 'message':message, 'table': table})
+            table = refresh_user_table(request,identity)
+            return simplejson.dumps({'field':dispatchForm.data.keys(), 'status':'1', 'message':message,'table':table})
         else:
-            message = u"相同邮件已经发送，中断发送"
-            return simplejson.dumps({'field':school_form.data.keys(), 'status':'1', 'message':message})
+            message = u"用户名已存在"
+            return simplejson.dumps({'field':dispatchForm.data.keys(), 'status':'1', 'message':message})
     else:
-        return simplejson.dumps({'field':school_form.data.keys(),'error_id':school_form.errors.keys(),'message':u"输入有误"})
+        return simplejson.dumps({'field':dispatchForm.data.keys(),'error_id':dispatchForm.errors.keys(),'message':u"输入有误"})
+def refresh_user_table(request,identity):
+    if identity == SCHOOL_USER:
+        school_users = SchoolProfile.objects.all()
+        return render_to_string("widgets/dispatch/school_user_table.html",
+                            {"school_users":school_users})
+    elif identity == COLLEGE_USER:
+        college_users = CollegeProfile.objects.all()
+        return render_to_string("widgets/dispatch/college_user_table.html",
+                            {"college_users":college_users})
+    elif identity == TEACHER_USER:
+         users = TeacherProfile.objects.all()
+    elif identity == EXPERT_USER:
+        users = ExpertProfile.objects.all()
+    return render_to_string("widgets/dispatch/user_addcollege_table.html",
+                            {"users":users})

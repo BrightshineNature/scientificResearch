@@ -1,7 +1,7 @@
 # coding: UTF-8
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
-from common.forms import  ScheduleBaseForm
+from common.forms import  ScheduleBaseForm,ProjectJudgeForm
 from common.utils import get_query_status,get_qset,get_query_application_status
 from const import *
 from teacher.forms import *
@@ -9,6 +9,7 @@ from teacher.models import *
 from backend.logging import logger, loginfo
 from adminStaff.models import ProjectSingle
 from django.db.models import Q
+
 
     
 def getParam(pro_list, userauth,flag):
@@ -18,6 +19,7 @@ def getParam(pro_list, userauth,flag):
         pass_apply_project_group=pro_list.filter(default_q)
     else:
         pass_apply_project_group=pro_list.filter(search_q)
+    loginfo(pass_apply_project_group.count())
     count=not_pass_apply_project_group.count()+pass_apply_project_group.count()
     param={
         "not_pass_apply_project_group":not_pass_apply_project_group,
@@ -40,6 +42,7 @@ def financialManage(request, userauth):
 def schedule_form_data(request , userauth):
 
     schedule_form = ScheduleBaseForm()
+    ProjectJudge_form=ProjectJudgeForm()
     has_data = False
     if request.method == 'POST':
         schedule_form = ScheduleBaseForm(request.POST)
@@ -52,6 +55,7 @@ def schedule_form_data(request , userauth):
     context ={ 'schedule_form':schedule_form,
                'has_data': has_data,
                'userauth': userauth,
+               'ProjectJudge_form':ProjectJudge_form,
     }
     
     context.update(param)
@@ -109,7 +113,7 @@ def get_search_data(schedule_form):
 def finalReportViewWork(request,redirect=False):
     achivement_type = ACHIVEMENT_TYPE
     statics_type = STATICS_TYPE
-    statics_grade_type = STATICS_PRIZE_TYPE
+    statics_grade_type = STATICS_TYPE
 
     final = FinalSubmit.objects.all()[0]
     achivement_list = ProjectAchivement.objects.filter(finalsubmit_id = final.content_id)

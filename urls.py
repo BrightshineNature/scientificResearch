@@ -41,6 +41,10 @@ urlpatterns = patterns('',
         include(admin.site.urls),
     ),
     url(
+        r'^accounts/',
+        include('registration.urls'),
+    ),
+    url(
         r'^adminStaff/',
         include('adminStaff.urls'),
         name="adminstaff_home"
