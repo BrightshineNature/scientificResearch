@@ -109,7 +109,9 @@ class RegistrationManager(models.Manager):
             collegeProfileObj = CollegeProfile(userid = new_user)
             collegeProfileObj.save()
         elif Identity == TEACHER_USER:
-            teacherProfileObj = TeacherProfile(userid = new_user)
+            collegeObj = College.objects.get(id=kwargs["college"]);
+            expertProfileObj = ExpertProfile(userid = new_user,college=collegeObj)
+            teacherProfileObj = TeacherProfile(userid = new_user,college=collegeObj)
             teacherProfileObj.save()
             teacherInfoSettingObj = TeacherInfoSetting(teacher= teacherProfileObj)
             teacherInfoSettingObj.save()

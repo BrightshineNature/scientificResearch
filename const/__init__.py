@@ -223,7 +223,18 @@ ACHIVEMENT_TYPE=(
 )
 
 
+PAGE_ELEMENTS = 10
 
 
+# APP: news
+# the following 4 variables are used in foreground,
+# so use some meaning words
+NEWS_CATEGORY_ANNOUNCEMENT = "announcement"
+NEWS_CATEGORY_DOCUMENTS = "documents"
+NEWS_CATEGORY_CHOICES = (
+    (NEWS_CATEGORY_ANNOUNCEMENT, u"通知公告"),
+)
+# the max length of news_content
+NEWS_MAX_LENGTH = 10000000
 
 

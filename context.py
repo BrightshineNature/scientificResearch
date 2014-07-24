@@ -89,6 +89,7 @@ def userauth_settings(request):
             loginfo(p=err, label="context TeacherProfile")
 
     context = {"userauth": userauth,
+               "auth_choices":auth_choices,
     }
     return context
 

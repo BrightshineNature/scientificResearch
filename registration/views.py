@@ -10,6 +10,7 @@ Desc: Registration and login redirect
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.auth import logout
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
@@ -46,7 +47,7 @@ def login_redirect(request,identity):
     authorities, the system will jump randomly
     """
     #TODO: I will use reverse function to redirect, like school and expert
-    loginfo(idenity)
+    loginfo(identity)
     if identity == "adminUser":
         if check_auth(request.user,ADMINSTAFF_USER):
             identity = ADMINSTAFF_USER
@@ -55,11 +56,13 @@ def login_redirect(request,identity):
         elif check_auth(request.user,SCHOOL_USER):
             identity = SCHOOL_USER
         else:
-            return HttpResponseRedirect('/')
+            logout(request)
+            return render_to_response('registration/logentry_error.html', context_instance=RequestContext(request))
     elif check_auth(request.user,identity):
         pass
     else:
-        return HttpResponseRedirect('/')
+        logout(request)
+        return render_to_response('registration/logentry_error.html', context_instance=RequestContext(request))
     redirect_url = '/'+identity+'/'
     loginfo(redirect_url)
-    return HttpResponseRedirect(reverse(redirect_url))
+    return HttpResponseRedirect(redirect_url)

@@ -1,0 +1,33 @@
+<table class="table table-condensed" id="alloced_subject_table">
+	<thead>
+		<tr>
+		  <th>选择</th>
+		  <th>项目编号</th>
+		  <th>发布题目名称</th>
+		  <th>所属学院</th>
+		  <th>所属分类</th>
+		  <th>题目状态</th>
+		  <th>操作</th>
+		</tr>
+	</thead>
+		<tbody id="alloced_subject_table_body">
+                    
+      {% for project in item_list %}
+        <tr>
+			  <td><label class="checkbox">
+                         <input type="checkbox" name="checkbox_project">
+                         </label>
+                      </td>
+			  <td>{{ project.project_code }}</td>
+			  <td>{{ project.title }}</td>
+			  <td>{{ project.teacher.college }}</td>
+			  <td>{{ project.project_special }}</td>
+			  <td>已通过</td>
+			  <td><a data-toggle="modal" href="#query_or_cancel">查询或取消指派</a></td>
+			</tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div id="alloc_paginator">
+	{% include "widgets/paginator.html" %}
+</div>

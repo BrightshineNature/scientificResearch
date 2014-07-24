@@ -1,4 +1,4 @@
 {% extends "registration/widgets/_login_base.html" %}
 {%block form-action%}
-"{% url auth_teacherlogin %}?next={%url auth_login_redirect auth_choices.teacher %}"
+"{% url auth_teacherlogin %}?next=/accounts/loginredirect/{{auth_choices.teacher}}/"
 {%endblock%}

@@ -44,7 +44,7 @@ def deleteSpecialName(request, checked):
 
 @dajaxice_register
 def allocSpecial(request, user, alloced):
-    
+
     user = SchoolProfile.objects.filter(userid__username = user)
 
     all_spe = Special.objects.all()
@@ -138,4 +138,4 @@ def refresh_user_table(request,identity):
     elif identity == EXPERT_USER:
         users = ExpertProfile.objects.all()
     return render_to_string("widgets/dispatch/user_addcollege_table.html",
-                            {"users":expert_users})
+                            {"users":users})

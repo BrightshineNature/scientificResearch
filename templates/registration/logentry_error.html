@@ -1,0 +1,15 @@
+{% extends "registration/widgets/baseback.html" %}
+
+{%block form-content%}
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
+
+<div class="container form-container">
+<h2>您选择的登录入口不对，请重新选择</h2>
+	<div class="row">
+		<div class="span3"><h3><a href="/accounts/adminlogin">管理员登录入口</a></h3></div>
+		<div class="span3"><h3><a href="/accounts/collegelogin">学院秘书登录入口</a></h3></div>
+		<div class="span3"><h3><a href="/accounts/expertlogin">专家登录入口</a></h3></div>
+		<div class="span3"><h3><a href="/accounts/teacherlogin">教师登录入口</a></h3></div>
+	</div>
+</div>
+{% endblock %}
