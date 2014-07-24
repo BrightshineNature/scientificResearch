@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from adminStaff.forms import NewsForm, ObjectForm,TemplateNoticeMessageForm
 from const import *
 from users.models import Special,ExpertProfile,TeacherProfile,SchoolProfile,CollegeProfile
-from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm
+from adminStaff.forms import NewsForm,  TemplateNoticeMessageForm
 from django import  forms
 from adminStaff.forms import TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
 from django.utils import simplejson

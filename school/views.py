@@ -12,7 +12,6 @@ from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from teacher.forms import SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
 from users.models import ExpertProfile
-from school.forms import CollegeForm
 from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
 from backend.logging import loginfo
 from school.forms import FilterForm
