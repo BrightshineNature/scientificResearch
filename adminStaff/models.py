@@ -44,7 +44,7 @@ class ProjectSingle(models.Model):
     project_special = models.ForeignKey(Special, verbose_name=u"专题类型", blank=True, null=True, default=None)
     application_year = models.IntegerField(blank=False, null=False, max_length=4,default=lambda: datetime.datetime.today().year,verbose_name=u"申请年份")
     approval_year=models.IntegerField(blank=True, null=True, max_length=4,verbose_name=u"立项年份")
-    conclude_year = models.IntegerField(blank=True, null=True, max_length=4,verbose_name=u"立项年份")
+    # conclude_year = models.IntegerField(blank=True, null=True, max_length=4,verbose_name=u"结题年份")
     submit_date=models.DateField(blank=True,null=True,verbose_name=u"提交日期")
     file_application = models.BooleanField(null=False, default=False,verbose_name=u"申报书")
     file_task = models.BooleanField(null=False, default=False,verbose_name=u"任务书")

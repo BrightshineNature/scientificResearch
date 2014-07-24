@@ -3,72 +3,57 @@
 
 
 <div class="well form">
-      <h3> 
-              项目列表
-          </h3>
+  <h3>
+    项目列表
+  </h3>
 
 
-            <form id="schedule_form" class="form-inline" role="form" method="POST" action="/school/">
-                      
-                    <div style="display:none"><input type="hidden" name="csrfmiddlewaretoken" value="WahXrvJUUTLLbV7YlG6ZjqsY9pIF1uPR"></div>
-                        
+  <form id="schedule_form" class="form-inline" role="form" method="POST" action="/school/">
 
+    <div style="display:none"><input type="hidden" name="csrfmiddlewaretoken" value="WahXrvJUUTLLbV7YlG6ZjqsY9pIF1uPR"></div>
 
+    <div class="form-inline" role="form">
 
-                    <div class="form-inline" role="form">
-                            
-                            <div class="form-group">              
-                                        <select id="id_application_status" class="form-control" name="application_status">
-                                            <option value="-1">项目状态</option>
-                                            <option value="2">待审核</option>
-                                            <option value="3">院级审核完成</option>
-                                            <option value="5">专题审核完成</option>
-                                        </select>
-                                                <select id="id_application_year" class="form-control" name="application_year">
-                                                    <option value="-1">申请年度</option>
-                                                    <option value="2014">2014</option>
-                                                </select> 
-                                                    </div>
-                                                        
+      <div class="form-group">
+        <select id="id_application_status" class="form-control" name="application_status">
+          <option value="-1">项目状态</option>
+          <option value="2">待审核</option>
+          <option value="3">院级审核完成</option>
+          <option value="5">专题审核完成</option>
+        </select>
+        <select id="id_application_year" class="form-control" name="application_year">
+          <option value="-1">申请年度</option>
+          <option value="2014">2014</option>
+        </select>
+      </div>
 
+      <div class="form-group">
+        <select id="id_special" class="form-control " name="special">
+          <option value="-1">专题类型</option>
+          <option value="0">理科</option>
+          <option value="1">文科</option>
+        </select>
+      </div>
 
-                                                        <div class="form-group">              
-                                                                    <select id="id_special" class="form-control " name="special">
-                                                                        <option value="-1">专题类型</option>
-                                                                        <option value="0">理科</option>
-                                                                        <option value="1">文科</option>
-                                                                    </select>
-                                                                        </div>
+      <div class="form-group">
+        <select id="id_college" class="form-control" name="college">
+          <option value="-1">学院</option>
+          <option value="0">计算机</option>
+          <option value="1">管经</option>
+        </select>
+      </div>
 
+      <div class="form-group">
+        <input name="other_search" maxlength="20" type="text" placeholder="输入其他检索关键字" id="name" class="form-control ">
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" id="filter_button">检索</button>
+      </div>
+    </div>
 
-                                                                            
-                                                                            <div class="form-group">              
-                                                                                        <select id="id_college" class="form-control" name="college">
-                                                                                            <option value="-1">学院</option>
-                                                                                            <option value="0">计算机</option>
-                                                                                            <option value="1">管经</option>
-                                                                                        </select>
-                                                                                            </div>
+  </form>
 
-                                                                                                
-
-                                                                                                <div class="form-group">              
-                                                                                                            <input name="other_search" maxlength="20" type="text" placeholder="输入其他检索关键字" id="name" class="form-control ">
-                                                                                                                </div>
-                                                                                                                    <div class="form-group">                    
-                                                                                                                                <button type="submit" class="btn btn-primary" id="filter_button">检索</button>
-                                                                                                                                    </div>
-                                                                                                                                </div>
-
-
-
-
-
-
-
-                                                                                                                                  </form>
-
-                                                                                                                              </div>
+</div>
 
 <ul class="nav nav-pills">
   <li class="active"><a href="#not_pass" data-toggle="tab">未通过<span class="badge">1</span></a>
