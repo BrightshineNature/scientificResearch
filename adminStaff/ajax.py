@@ -147,8 +147,9 @@ def allocObject(request, object, user, alloced):
             loginfo("error in allocObject")
 
 
-    return simplejson.dumps({'status':'1' ,
-        'object_alloc': refreshObjectAlloc(request, object)
+    return simplejson.dumps({'status':'1' , 
+        'object_alloc': refreshObjectAlloc(request, object),
+        'object_table': refreshObjectTable(request, object),
         })
 
 @dajaxice_register
