@@ -19,6 +19,7 @@ from dajaxice.utils import deserialize_form
 from adminStaff.models import TemplateNoticeMessage
 from backend.logging import loginfo
 from users.models import SchoolProfile,CollegeProfile,Special,College
+from teacher.models import TeacherInfoSetting
 
 def getObject(object):
     if object == "special":
@@ -254,3 +255,30 @@ def refresh_user_table(request,identity):
         users = ExpertProfile.objects.all()
     return render_to_string("widgets/dispatch/user_addcollege_table.html",
                             {"users":users})
+
+
+
+@dajaxice_register
+def getTeacherInfo(request, name):
+    message = ""
+    setting_list = TeacherInfoSetting.objects.filter(name = name)
+    context = {"setting_list": setting_list, }
+    html = render_to_string("adminStaff/widgets/modify_setting_table.html", context)
+    return simplejson.dumps({"message": message, "html": html, })
+
+@dajaxice_register
+def modifyTeacherInfo(request, name, card, id):
+    print "here"*100
+    message = ""
+    try:
+        if len(name) == 0 or len(card) == 0: raise
+
+        setting = TeacherInfoSetting.objects.get(id = id)
+        setting.name = name
+        setting.card = card
+        setting.save()
+        message = "ok"
+    except:
+        message = "fail"
+
+    return simplejson.dumps({"message": message, })
