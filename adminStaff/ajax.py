@@ -16,10 +16,11 @@ from adminStaff.forms import TemplateNoticeMessageForm,DispatchForm,DispatchAddC
 from django.utils import simplejson
 from django.template.loader import render_to_string
 from dajaxice.utils import deserialize_form
-from adminStaff.models import TemplateNoticeMessage
+from adminStaff.models import TemplateNoticeMessage,News
 from backend.logging import loginfo
 from users.models import SchoolProfile,CollegeProfile,Special,College
 from teacher.models import TeacherInfoSetting
+from backend.logging import logger
 
 def getObject(object):
     if object == "special":
@@ -50,8 +51,8 @@ def refreshObjectAlloc(request, object):
         user_special_info = {}
 
         for i in SchoolProfile.objects.all():
-            user_special_info[i] = []   
-        
+            user_special_info[i] = []
+
         for i in Special.objects.all():
             if i.school_user:
                 user_special_info[i.school_user].append(i.name)
@@ -64,8 +65,8 @@ def refreshObjectAlloc(request, object):
         user_college_info = {}
 
         for i in CollegeProfile.objects.all():
-            user_college_info[i] = []   
-        
+            user_college_info[i] = []
+
         for i in College.objects.all():
             if i.college_user:
                 user_college_info[i.college_user].append(i.name)
@@ -77,22 +78,6 @@ def refreshObjectAlloc(request, object):
 
     else:
         loginfo("error in refreshObjectAlloc")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 from common.sendEmail import sendemail
 
@@ -106,7 +91,7 @@ def saveObjectName(request, object, form):
     Object = getObject(object)
 
 
-    if form.is_valid():        
+    if form.is_valid():
         p = Object(name = form.cleaned_data['name'])
         print ""
         print p.name
@@ -114,26 +99,26 @@ def saveObjectName(request, object, form):
     else :
         pass
 
-    return simplejson.dumps({'status':'1' , 
+    return simplejson.dumps({'status':'1' ,
         'objects_table': refreshObjectTable(request, object)
         })
 
 @dajaxice_register
 def deleteObjectName(request, object, deleted):
 
-    
+
     Object = getObject(object)
 
     for i in deleted:
-        cnt = Object.objects.filter(name = i)        
+        cnt = Object.objects.filter(name = i)
         Object.objects.filter(name = i).delete()
-    return simplejson.dumps({'status':'1' , 
+    return simplejson.dumps({'status':'1' ,
         'objects_table': refreshObjectTable(request, object)
         })
 
 @dajaxice_register
 def allocObject(request, object, user, alloced):
-    
+
     filter_user = user
     if object == "special":
         user = SchoolProfile.objects.filter(userid__username = filter_user)[0]
@@ -162,14 +147,9 @@ def allocObject(request, object, user, alloced):
             loginfo("error in allocObject")
 
 
-    return simplejson.dumps({'status':'1' , 
+    return simplejson.dumps({'status':'1' ,
         'object_alloc': refreshObjectAlloc(request, object)
         })
-
-
-
-
-
 
 @dajaxice_register
 def TemplateNoticeChange(request,template_form,mod):
@@ -255,8 +235,6 @@ def refresh_user_table(request,identity):
     return render_to_string("widgets/dispatch/user_addcollege_table.html",
                             {"users":users})
 
-
-
 @dajaxice_register
 def getTeacherInfo(request, name):
     message = ""
@@ -281,3 +259,21 @@ def modifyTeacherInfo(request, name, card, id):
         message = "fail"
 
     return simplejson.dumps({"message": message, })
+@dajaxice_register
+def get_news_list(request, uid):
+
+    logger.info("sep delete news"+"**"*10)
+    # check mapping relation
+    try:
+        delnews=News.objects.get(id=uid)
+        logger.info(delnews.id)
+        if request.method == "POST":
+            delnews.delete()
+            return simplejson.dumps({"is_deleted": True,
+                    "message": "delete it successfully!",
+                    "uid": str(uid)})
+        else:
+            return simplejson.dumps({"is_deleted": False,
+                                     "message": "Warning! Only POST accepted!"})
+    except Exception, err:
+        logger.info(err)

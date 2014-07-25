@@ -235,6 +235,6 @@ NEWS_CATEGORY_CHOICES = (
     (NEWS_CATEGORY_ANNOUNCEMENT, u"通知公告"),
 )
 # the max length of news_content
-NEWS_MAX_LENGTH = 10000000
+NEWS_MAX_LENGTH = 100000
 
 

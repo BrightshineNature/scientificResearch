@@ -26,7 +26,6 @@ def appView(request):
 
     }
     return render(request,"teacher/application.html",context)
-    
 def homeView(request):
     context = {
 

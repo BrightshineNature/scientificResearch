@@ -68,13 +68,13 @@ class Re_Project_Expert(models.Model):
 
 class News(models.Model):
     news_title = models.CharField(verbose_name = u"标题",
-                                  blank=True, max_length=200)
-    news_content = models.TextField(verbose_name = u"新闻内容",
-                                    blank=True)
+                                  blank=False, max_length=200)
+    news_content = models.TextField(verbose_name = u"新闻内容",max_length=NEWS_MAX_LENGTH,
+                                    blank=False)
     news_date = models.DateField(verbose_name = u"发表时间",
                                  default=datetime.datetime.today,
                                  blank=True)
-    news_category = models.ForeignKey(NewsCategory, verbose_name = u"新闻类型", blank=True, null=True)
+    news_category = models.ForeignKey(NewsCategory, verbose_name = u"新闻类型", blank=False, null=True)
     news_document = models.FileField(upload_to=NEWS_DOCUMENTS_PATH, null=True, blank=True)
 
     def document_name(self):
