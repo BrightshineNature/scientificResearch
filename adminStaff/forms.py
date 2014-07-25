@@ -36,15 +36,21 @@ class DispatchAddCollegeForm(DispatchForm):
         COLLEGE_CHOICE_list.append((obj.id, obj.name))
     COLLEGE_CHOICE = tuple(COLLEGE_CHOICE_list)
     college = forms.ChoiceField(required=True,choices=COLLEGE_CHOICE,widget=forms.Select(attrs={'class':'form-control'}))
-class SpecialForm(forms.Form):
+# class SpecialForm(forms.Form):
+#     name = forms.CharField(
+#       label='Your name',
+#       max_length=200, required=True,
+#                                  widget=forms.TextInput(attrs={'class':'form-control','id':"special_name",'placeholder':u""}),)
+
+class ObjectForm(forms.Form):
     name = forms.CharField(
       label='Your name',
       max_length=200, required=True,
-                                 widget=forms.TextInput(attrs={'class':'form-control','id':"special_name",'placeholder':u""}),)
+                                 widget=forms.TextInput(attrs={'class':'form-control object_name','placeholder':u""}),)
 
-class CollegeForm(forms.Form):
-    name = forms.CharField(max_length=200, required=True,
-                                 widget=forms.TextInput(attrs={'class':'form-control','id':"college",'placeholder':u""}),)    
+# class CollegeForm(forms.Form):
+#     name = forms.CharField(max_length=200, required=True,
+#                                  widget=forms.TextInput(attrs={'class':'form-control','id':"college",'placeholder':u""}),)    
 class TemplateNoticeMessageForm(ModelForm):
     class Meta:
         model=TemplateNoticeMessage

@@ -1,42 +1,15 @@
-{% extends "school/base/_content.html" %}
+{% extends "adminStaff/base/_content.html" %}
 {% block inner_content %}
 
 <div class="well form">
     <h3>教师信息修改</h3>
 <div class="form-inline" role="form">
-<input type="text" class="form-control" placeholder="姓名"></input>
+<input type="text" class="form-control" placeholder="姓名" id="id_name_input"></input>
 <button class="btn btn-primary" id="id_button_search">检索</button>
 </div>
 </div>
 
-<div id="id_info_table" style="display:none">
-    <h4>符合搜索条件的教师数量为：1</h4>
-    
-    <table class="table table-condensed">
-        <thead>
-            <tr>
-                <th>教师姓名</th>
-                <th>身份证号码</th>
-                <th>性别</th>
-                <th>修改</th>
-            </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>张三</td>
-            <td>341002199010041037</td>
-            <td>男</td>
-            <td><button class="btn btn-primary" data-toggle="modal" href="#info_dialog">修改</button></td>
-          </tr>
-          <tr>
-            <td>李四</td>
-            <td>123456789123456789</td>
-            <td>女</td>
-            <td><button class="btn btn-primary" data-toggle="modal" href="#info_dialog">修改</button></td>
-          </tr>
-        </tbody>
-    </table>
+<div id="id_info_table">
 </div>
 
 <div class="modal fade" id="info_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -52,13 +25,13 @@
                         <div class="col-lg-5">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                        {{form.name}}
+                            <input type="text" class="form-control" id="id_input_name"/>
                             </div> 
                         </div>
                         <div class="col-lg-6">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                        {{form.card}}
+                            <input type="text" class="form-control" id="id_input_card" />
                             </div> 
                         </div>
                     </div>
@@ -66,7 +39,7 @@
 		    </div>
 		    <div class="modal-footer">
 		      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-		      <button type="button" class="btn btn-primary">修改</button>
+		      <button id="id_modify" type="button" class="btn btn-primary" data-dismiss="modal">修改</button>
 		    </div>
 		  </div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->

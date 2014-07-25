@@ -68,9 +68,9 @@ def getContext(contentList, page=1, name="context", add_index = 1, page_elems=PA
              _list[_index].list_index = _index + 1 # .__dict__.update(dict)
      return {'%s_page' % name: _page,
              '%s_list' % name: _list,
-             'index_list': index_list,
-             'contain_end': contain_end,
-             'contain_begin': contain_begin,
+             '%s_index_list'  % name: index_list,
+             '%s_contain_end' % name: contain_end,
+             '%s_contain_begin' % name: contain_begin,
              }
 
 

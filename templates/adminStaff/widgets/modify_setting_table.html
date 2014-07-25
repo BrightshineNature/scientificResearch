@@ -1,0 +1,23 @@
+<h4>符合搜索条件的教师数量为：{{ setting_list.count }}</h4>
+    
+<table class="table table-condensed">
+	<thead>
+	    <tr>
+		<th>教师姓名</th>
+		<th>身份证号码</th>
+		<th>性别</th>
+		<th>修改</th>
+	    </tr>
+	</thead>
+
+	<tbody>
+		{% for setting in setting_list %}
+	  <tr>
+	    <td>{{ setting.name }}</td>
+	    <td>{{ setting.card }}</td>
+	    <td>{{ setting.get_sex_display }}</td>
+	    <td><button id="id_modify_btn" class="btn btn-primary" data-toggle="modal" href="#info_dialog" arg1 = "{{setting.name}}" arg2="{{setting.card}}" arg3="{{setting.id}}">修改</button></td>
+	  </tr>
+		{% endfor %}
+	</tbody>
+</table>

@@ -55,9 +55,5 @@ urlpatterns = patterns('',
         r'noticeMessageSetting$',
         school_views.noticeMessageSettingView,
     ),
-    url(
-        r'infoModify$',
-        school_views.infoModifyView,
-    ),
 )
 urlpatterns += staticfiles_urlpatterns()

@@ -12,6 +12,7 @@ from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from teacher.forms import SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
 from users.models import ExpertProfile
+from users.models import ExpertProfile, SchoolProfile
 from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
 from backend.logging import loginfo
 from school.forms import FilterForm
@@ -59,23 +60,20 @@ def progressReportView(requset):
     return render(requset,"school/progress.html",context)
 
 def allocView(request):
+    expert_list = ExpertProfile.objects.all()
+
     if request.method == "GET":
         project_list = ProjectSingle.objects.all()
-
-        expert_list = ExpertProfile.objects.all()
-    
-        form = FilterForm()
+        form = FilterForm(request = request)
     else:
-        form = FilterForm(request.POST)
+        form = FilterForm(request.POST, request=request)
         if form.is_valid():
             college = form.cleaned_data["colleges"]
             special = form.cleaned_data["specials"]
             if college == "-1":
                 project_list = ProjectSingle.objects.all()
-                expert_list = ExpertProfile.objects.all()
             else:
                 project_list = ProjectSingle.objects.filter(teacher__college = college)
-                expert_list = ExpertProfile.objects.filter(college = college)
             project_list = project_list.filter(project_special = special)
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
