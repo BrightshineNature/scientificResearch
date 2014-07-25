@@ -102,7 +102,7 @@ class ExpertProfile(models.Model):
     def save(self, *args, **kwargs):
         super(ExpertProfile, self).save()
         auth, created = UserIdentity.objects.get_or_create(identity=EXPERT_USER)
-        self.userid.identities.add(auth)2
+        self.userid.identities.add(auth)
 
 class TeacherProfile(models.Model):
     userid = models.ForeignKey(User, unique=True,
