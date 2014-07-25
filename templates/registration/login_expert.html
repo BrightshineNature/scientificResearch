@@ -1,4 +1,4 @@
 {% extends "registration/widgets/_login_base.html" %}
 {%block form-action%}
-"{% url auth_expertlogin %}?next={%url auth_login_redirect auth_choices.expert %}"
+"{% url auth_expertlogin %}?next=/accounts/loginredirect/{{auth_choices.expert}}/"
 {%endblock%}

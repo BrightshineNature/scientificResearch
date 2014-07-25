@@ -1,15 +1,19 @@
 <ul class="nav navbar-nav navbar-right">
-  <li class="nav-li-username"><a href="/settings/profile">{{ request.user.username }}</a></li>
   {% if request.user.is_authenticated %}
   <li class="nav-li-username"><a href="/settings/profile">{{ request.user.username }}</a></li>
   {%if userauth.is_schooler %}
-  <li class="nav-li"><a href="" rel="tooltip" data-placement="bottom"data-original-title = "参赛学校管理页面">
+  <li class="nav-li"><a href="" rel="tooltip" data-placement="bottom" data-original-title = "专题管理员界面">
       <i class="icon-plus-sign icon-black"> </i></a>
   </li>
   {%endif%}
 
   {%if userauth.is_adminstaff %}
-  <li class="nav-li"><a href="/adminStaff/" rel="tooltip" data-placement="bottom"data-original-title = "省级管理员管理界面">
+  <li class="nav-li"><a href="/adminStaff/" rel="tooltip" data-placement="bottom"data-original-title = "管理员管理界面">
+      <i class="icon-th-list icon-black"> </i></a>
+  </li>
+  {%endif%}
+  {%if userauth.is_colleger %}
+  <li class="nav-li"><a href="" rel="tooltip" data-placement="bottom"data-original-title = "学院秘书管理界面">
       <i class="icon-th-list icon-black"> </i></a>
   </li>
   {%endif%}
@@ -19,8 +23,13 @@
       <i class="icon-camera icon-black"> </i></a>
   </li>
   {%endif%}
-  {%if userauth.is_student%}
-  <li class="nav-li"><a href=""  rel="tooltip" data-placement="bottom"data-original-title = "参赛团队页面">
+  {%if userauth.is_finance %}
+  <li class="nav-li"><a href=""  rel="tooltip" data-placement="bottom"data-original-title = "财务处管理页面">
+      <i class="icon-camera icon-black"> </i></a>
+  </li>
+  {%endif%}
+  {%if userauth.is_teacher%}
+  <li class="nav-li"><a href=""  rel="tooltip" data-placement="bottom"data-original-title = "教师页面">
       <i class="icon-tags icon-black"> </i></a>
   </li>
   {%endif%}
@@ -30,7 +39,7 @@
   </li>
   {%endif%}
   <li class="nav-li"><a href="/accounts/logout" rel="tooltip" data-placement="bottom"data-original-title = "离开">
-      <i class="icon-share icon-black"> </i></a></li>
+      <i class="glyphicon glyphicon-share"> </i></a></li>
   {% else %}
   <li ><a href="/accounts/login">登陆</a></li>
   {% endif %}

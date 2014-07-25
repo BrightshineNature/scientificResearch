@@ -1,6 +1,7 @@
 {% extends "widgets/dispatch/base/_addcollege_content.html"%}
 
 {%block sendButton%}
+<span id="dispatch_error_message"></span>
 <input type="button" class="btn btn-primary" id="{{auth_choices.teacher}}"  value="给教师发送邮件"/>
 {%endblock%}
 {%block users-table%}
