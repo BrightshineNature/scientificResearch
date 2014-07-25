@@ -73,6 +73,8 @@ function alloc() {
     var cnt = $(this).parents("[object]")[0]
 
     object_alloc_pos = cnt;
+    objects_table_pos = $(cnt).prev().find(".object_table_div");
+    // alert($(objects_table_pos).html())
 
     $("#object_modal").attr("object", $(cnt).attr('object'));
 
@@ -130,8 +132,11 @@ $("#saveObjectAlloc").on("click",function()
 function allocObjectCallback(data){
   if(data.status == '1')
   {
-    $(object_alloc_pos).html(data.object_alloc)
+    $(object_alloc_pos).html(data.object_alloc);
     alloc();
+
+    $(objects_table_pos).html(data.object_table);
+    selectAll();
 
   }
 
