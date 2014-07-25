@@ -46,6 +46,7 @@ class SchoolProfile(models.Model):
     userid = models.ForeignKey(User, unique=True,
                                verbose_name="权限对应ID")
 
+    department = models.CharField(blank=False,max_length=30,verbose_name=u"部门名称")
     class Meta:
         verbose_name = "专题管理员"
         verbose_name_plural = "专题管理员"
