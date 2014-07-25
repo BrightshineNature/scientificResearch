@@ -6,10 +6,13 @@ Desc: teacher' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
+
 from const import * 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.views import scheduleManage,finalReportViewWork
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
+from users.models import TeacherProfile
+from teacher.models import TeacherInfoSetting
 
 def appView(request):
 
@@ -23,7 +26,6 @@ def appView(request):
 
     }
     return render(request,"teacher/application.html",context)
-    
 def homeView(request):
     context = {
 
@@ -57,8 +59,19 @@ def fileView(request):
     return render(request,"teacher/file_upload.html",data)
 
 def settingView(request):
-    form = SettingForm()
-    context = {"form": form}
+    message = ""
+    teacher = TeacherProfile.objects.get(userid = request.user)
+    setting = TeacherInfoSetting.objects.get(teacher = teacher)
+    if request.method == "GET":
+        form = SettingForm(instance = setting)
+    else:
+        form = SettingForm(request.POST, instance = setting)
+        if form.is_valid():
+            form.save()
+            message = "ok"
+    context = {"form": form,
+               "message": message,
+               }
     return render(request, "teacher/setting.html", context)
 
 def financialView(request):

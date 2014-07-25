@@ -1,0 +1,40 @@
+<form class="well form" id="dispatch_form" method="POST" action="">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+        {{dispatchAddCollege_form.username}}
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+        {{dispatchAddCollege_form.email}}
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+        {{ dispatchAddCollege_form.password }}
+      </div>
+    </div>
+    <span class="pull-right">{% block sendButton%}{% endblock%}</span>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+        {{ dispatchAddCollege_form.college }}
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+        {{ dispatchAddCollege_form.person_firstname }}
+      </div>
+    </div>
+  </div>
+</form>
+{%include "widgets/dispatch/user_addcollege_table.html" %}

@@ -1,0 +1,4 @@
+{% extends "registration/widgets/_login_base.html" %}
+{%block form-action%}
+"{% url auth_adminlogin %}?next=/accounts/loginredirect/adminUser/"
+{%endblock%}

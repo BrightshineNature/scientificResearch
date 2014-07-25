@@ -1,15 +1,15 @@
 
-<div>
+<div id="applicationTable">
     <ul class="nav nav-pills">
-        <li class="active"><a href="#not_pass" data-toggle="tab">未通过<span class="badge">{{not_pass_apply_project_group.count}}</span></a>
+        <li class="active"><a href="#not_pass" data-toggle="tab">待处理<span class="badge">{{not_pass_apply_project_group.count}}</span></a>
         </li>
-        <li><a href="#pass" data-toggle="tab">已通过</a>
+        <li><a href="#pass" data-toggle="tab">已处理</a>
         </li>
     </ul>
 
     <div class="tab-content">
         <div class="tab-pane fade in active" id="not_pass">
-            <table class="table table-hover">
+            <table class="table table-hover" userrole={{userauth.role}} userstatus={{userauth.role}}>
                 <thead>
                     <tr>
                         <th>申请代码</th>
@@ -25,12 +25,12 @@
                 </thead>
 
                 <tbody>
-{% if not_pass_apply_project_group %}
-                        {% for item in not_pass_apply_project_group%}
-                    <tr>
+                    {% if not_pass_apply_project_group %}
+                    {% for item in not_pass_apply_project_group%}
+                    <tr iid={{item.project_id}} status={{item.project_status.status}}>
                         <td>{{item.project_application_code}}</td>
                         <td>{{item.title}}</td>
-                        <td>{{item.teacher}}</td>
+                        <td>{{item.teacher.teacherinfosetting.name}}</td>
                         <td>{{item.school}}</td>
                         <td> {{item.application_year}}</td>
                         <td>201s-7-1 </td>
@@ -43,7 +43,7 @@
                             {% endif%}
                         </td>
                         <td>
-                            <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm">评审 </button>
+                            <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" id="judge">评审 </button>
                         </td>
                     </tr>
                     {% endfor%}
@@ -52,6 +52,9 @@
             </table>
         </div>
         <div class="tab fade" id="pass">
+            <h4>
+                符合搜索条件的项目数量为 {{pass_apply_project_group.count}}.
+            </h4>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -67,12 +70,12 @@
                 </thead>
 
                 <tbody>
-{% if pass_apply_project_group %}
-                        {% for item in pass_apply_project_group%}
-                    <tr>
+                    {% if pass_apply_project_group %}
+                    {% for item in pass_apply_project_group%}
+                    <tr iid={{item.project_id}}>
                         <td>{{item.project_application_code}}</td>
                         <td>{{item.title}}</td>
-                        <td>{{item.teacher}}</td>
+                        <td>{{item.teacher.teacherinfosetting.name}}</td>
                         <td>{{item.school}}</td> 
                         <td> {{item.year}}</td>
                         <td>201s-7-1 </td>
@@ -99,18 +102,18 @@
                 </div>
 
                 <div class="modal-body">
-                    <form class="well">
+                    <form class="well" id="lookThroughForm" >
                         <div class="form-group">
-                            <label for="review_select">评审结果</label>
-                            <select id="review_select" class="form-control" >
-                                <option value="-1" selected="selected">请评审</option>
-                                <option value="1">通过</option>
-                                <option value="0">不通过</option>
-                            </select>
+                            <label for="review_select">审核结果</label>
+                            {{ProjectJudge_form.judgeresult}}
+                        </div>
+                        <div id="not_pass_article">
+                            <label>不通过方面</label>
+                            {{ProjectJudge_form.application}}
                         </div>
                         <div class="form-group" id="not_pass_reason">
                             <label class="add-on" for="review_reason">不通过原因</label>
-                            <textarea class="form-control" id="review_reason" rows="10" name="message_content"></textarea>
+                            {{ProjectJudge_form.reason}}
                         </div>
                     </form>
                 </div>
@@ -120,7 +123,7 @@
 
                 <div class="modal-footer">
                     <a class="btn" data-dismiss="modal">关闭</a>
-                    <a class="btn btn-primary" data-dismiss="modal">确定</a>
+                    <a class="btn btn-primary" data-dismiss="modal" id="commit">确定</a>
                 </div>
             </div>
 
@@ -128,10 +131,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="{{STATIC_URL}}js/project_info.js"></script>
-
-<script type="text/javascript" src="{{STATIC_URL}}js/common.js"></script>
-
-
-<!-- ajax_csrf-->
-<script type='text/javascript' src="{{STATIC_URL}}js/ajax_csrf.js"></script>

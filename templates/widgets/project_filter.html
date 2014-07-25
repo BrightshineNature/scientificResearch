@@ -1,15 +1,23 @@
 <div class="well form">
   <h3> 
     项目列表
-  </h3>
-  <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/" >
+</h3>
 
+{% ifequal userauth.status 'application'%}
+  <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/" >
+{%endifequal%}
+{%ifequal userauth.status 'research_concluding'%}
+ <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/researchconcluding" >
+{%endifequal%}
+{%ifequal userauth.status 'budget'%}
+ <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/" >
+{%endifequal%}
+{%ifequal userauth.status 'final'%}
+ <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/concludingProject" >
+{%endifequal%}
     {% csrf_token %}
     {% include "widgets/searchform.html" %}
 
   </form>
 
 </div>
-<h4>
-    符合搜索条件的项目数量为 {{not_pass_apply_project_group.count}}.
-</h4>

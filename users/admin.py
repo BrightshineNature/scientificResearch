@@ -7,6 +7,9 @@ RegisterClass = (SchoolProfile,
                  AdminStaffProfile,
                  FinanceProfile,
                  CollegeProfile,
+                 TeacherProfile,
+                 College,
+                 Special,
                  )
 for item in RegisterClass:
     admin.site.register(item)

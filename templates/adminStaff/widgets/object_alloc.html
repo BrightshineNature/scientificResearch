@@ -1,0 +1,23 @@
+<table class="table table-hover" id="object_alloc_table">
+  <thead>
+    <tr>
+      <th>用户名称</th>                      
+      <th>已分配{{instance.object_chinese_name}}</th>
+      <th>重新分配</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {%for user, object in instance.user_object_info.iteritems %}
+    <tr>
+      <td>{{user}}</td>
+      <td>{%for i in object%}{%ifequal forloop.counter 1%}{%else%},{%endifequal%}{{i}}{%endfor%}</td>
+      <td>
+        <a data-toggle="modal" id="" href="#object_modal"  pid="{{forloop.counter}}" class="btn btn-primary object_alloc"> 分配 </a>
+      </td>
+    </tr>
+    {%endfor%}
+
+
+  </tbody>
+</table>

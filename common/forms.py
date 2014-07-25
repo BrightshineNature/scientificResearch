@@ -2,15 +2,20 @@
 
 from django import forms
 from const import *
-from common.utils import get_application_year_choice,get_approval_year_choice
+from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice
 class ScheduleBaseForm(forms.Form):
-    status_choices = list(PROJECT_STATUS_CHOICES)
-
-
-    status_choices = tuple( [(-1, u"结题状态")] + status_choices)
-
-
+    status_choices = get_status_choice()
+    application_status_choice =get_application_status_choice()
+    status_choices = tuple( [(-1, u"项目状态")] + status_choices)
+    application_status_choices=get_application_status_choice()
+    application_status_choices=tuple([(-1,u"项目状态")]+application_status_choices)
     status =forms. ChoiceField(choices=status_choices,required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control', 
+            
+            }),
+        )
+    application_status =forms. ChoiceField(choices=application_status_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control', 
             
@@ -56,6 +61,22 @@ class ScheduleBaseForm(forms.Form):
             'id':'name',
             'placeholder':u"输入其他检索关键字"}), )
 
+
+class ProjectJudgeForm(forms.Form):
+    result_choices=(("-1","请审核"),("1","通过"),("0","不通过"))
+    judgeresult =forms.ChoiceField(choices=result_choices,required=True,
+        widget=forms.Select(attrs={
+            'class':'form-control', 
+            
+            }),
+        )
+    application_choice=(("网上申请不合格","网上申请不合格"),("申报书不合格","申报书不合格"))
+    application=forms.MultipleChoiceField(choices=application_choice,required=False,
+                                          widget=forms.CheckboxSelectMultiple())
+   
+    final_choice=(("网上提交不合格","网上提交不合格"),("结题书不合格"),("结题书不合格"))
+    final=forms.MultipleChoiceField(choices=final_choice,required=False,widget=forms.CheckboxSelectMultiple())
+    reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
 
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(

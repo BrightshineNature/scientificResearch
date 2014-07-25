@@ -8,8 +8,8 @@
             </tr>
         </thead>
         <tbody>
-            {% if template_notice_message_group%}
-            {%for  notice in template_notice_message_group%}
+            {% if item_list%}
+            {%for  notice in item_list%}
             <tr id={{notice.id}}>
                 <td>{{ notice.iid}}</td>
                 <td>{{ notice.title}}</td>
@@ -24,3 +24,6 @@
             {% endif %}
         </tbody>
     </table>
+    <div id="notice_paginator">
+        {%include "widgets/paginator.html"%} 
+    </div>

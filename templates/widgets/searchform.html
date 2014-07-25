@@ -3,16 +3,17 @@
 
 
 <div class="form-inline" role="form">
-    {% ifequal userauth.status "research_concluding"%}
+    {% ifnotequal userauth.status "application"%}
     <div class="form-group">
         {{schedule_form.status}}
         {{schedule_form.approval_year}}
     </div>
     {% else%}
     <div class="form-group">              
+        {{schedule_form.application_status}}
         {{schedule_form.application_year}} 
     </div>
-    {% endifequal%}
+    {% endifnotequal%}
 
 
     <div class="form-group">              
@@ -20,12 +21,10 @@
     </div>
 
 
-    {% ifnotequal userauth.role 'college' %}
     <div class="form-group">              
         {{schedule_form.college}}
     </div>
 
-    {% endifnotequal %}
 
     <div class="form-group">              
         {{schedule_form.other_search}}

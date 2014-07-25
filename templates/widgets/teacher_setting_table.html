@@ -1,6 +1,19 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/member_change.css" >
 
-<form class="well form" id="member_change_form" method="POST" action="">
+<form class="well form" id="member_change_form" method="POST" action="/teacher/setting">
+    {% if form.errors %}
+        <div class="alert alert-danger" id="alert-bar">
+        <button class="close" data-dismiss="alert">x</button>
+        <h4>表单存在未填项，请填写完整</h4>
+        </div>
+    {% endif %}
+    {% if message == "ok" %}
+        <div class="alert alert-success">
+        <button class="close" data-dismiss="alert">x</button>
+        <h4>保存成功</h4>
+        </div>
+    {% endif %}
+    {% csrf_token %}
     <div class="row">
         <div class="col-lg-3">
             <div class="input-group">
@@ -14,53 +27,11 @@
                 {{form.card}}
             </div> 
         </div>
-    </div>
-    <div class="row">
-	    <div class="col-lg-3">
+		<div class="col-lg-3">
             <div class="input-group">
                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                {{ form.sex }}
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                {{ form.birth }}
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
-                {{ form.target_type }}
+                {{form.birth}}
             </div> 
-        </div>
-				<div class="col-lg-3">
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
-                {{ form.degree }}
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
-                {{ form.position }}
-            </div>
-        </div>
-    </div>
-        <div class="row">
-        <div class="col-lg-3">
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
-                {{ form.title }}
-            </div> 
-        </div>
-				<div class="col-lg-3">
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
-                {{ form.base_type }}
-            </div>
         </div>
         <div class="col-lg-3">
             <div class="input-group">
@@ -69,5 +40,58 @@
             </div>
         </div>
     </div>
+	<div class="row">
+		<div class="col-lg-3">
+			<div class="input-group">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">性别</button>
+				</span>
+				{{ form.sex }}
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="input-group">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">支持对象</button>
+				</span>
+				{{ form.target_type }}
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="input-group">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">学位</button>
+				</span>
+				{{ form.degree }}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-3">
+			<div class="input-group">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">基地类型</button>
+				</span>
+				{{ form.position }}
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="input-group">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">职称</button>
+				</span>
+				{{ form.title }}
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="input-group">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button">行政职务</button>
+				</span>
+				{{ form.base_type }}
+			</div>
+		</div>
+	</div>
 		<button type="submit" class="btn btn-primary">提交</button>
 </form>
+<script type="text/javascript" src="{{STATIC_URL}}js/teacher/setting_control.js"></script>

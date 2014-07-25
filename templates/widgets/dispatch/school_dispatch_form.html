@@ -1,0 +1,8 @@
+{% extends "widgets/dispatch/base/_content.html"%}
+
+{%block sendButton%}
+<input type="button" class="btn btn-primary" id="{{auth_choices.school}}"  value="给专题管理员发送邮件"/>
+{%endblock%}
+{%block users-table%}
+{%include "widgets/dispatch/school_user_table.html" %}
+{%endblock %}

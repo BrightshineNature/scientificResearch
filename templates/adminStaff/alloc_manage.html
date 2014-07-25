@@ -4,315 +4,86 @@
 
 
 <div class="well">
-
     <ul class="nav nav-pills" id="myTab">
+
         <li class="active"><a href="#special_modify" data-toggle="tab">专题更改</a></li>
         <li><a href="#special_alloc" data-toggle="tab">专题分配</a></li>
-
         <li><a href="#college_modify" data-toggle="tab">学院更改</a></li>
         <li><a href="#college_alloc" data-toggle="tab">学院分配</a></li>
     </ul>
  
     <div class="tab-content">
+                        
+      {%for instance in instance_list %}
 
-        <div class="tab-pane fade active in" id="special_modify">
-            <p> </p>
+        <div id="{{instance.object_name}}_modify"
+        object = "{{instance.object_name}}"
 
-            <form class="form-inline" id="special_form">
+        {%ifequal forloop.counter 1%}
+        class="tab-pane fade active in"
+        {%else%}
+        class="tab-pane fade"
+        {%endifequal%}
 
-                <div class = "form-group">
-                    <label class="control-label" for="special_name">专题:</label>
-                </div>
-                <div class = "form-group">
-                    {{special_form.name}}
-                </div>
+        >          
+          <p> </p>
+          <form class="form-inline" id="">
+              <div class = "form-group">
+              <label class="control-label">{{instance.object_chinese_name}}:</label>
+              </div>
+              <div class = "form-group">
+              {{instance.object_form.name}}
+              </div>
+              <div class = "form-group">
+                <span class="btn btn-primary saveObjectName">保存{{instance.object_chinese_name}}名称</span> 
+              </div>
+          </form>
+          <p></p>
+          <div class="btn btn-primary deleteObjectName">删除所选{{instance.object_chinese_name}}
+          </div>  
 
-                <div class = "form-group">
-                    <span class="btn btn-primary" id="special_button" 
-                    onclick="saveSpecialName();"
-                    >保存专题名称
-                    </span> 
-                </div>
-            </form> 
+          <p></p>
 
-            <p></p>
+          <div class="object_table_div">
+              {%include "adminStaff/widgets/objects_table.html" %}
+          </div>
+        </div>
 
-            <div class="btn btn-primary" title="运行选中的动作" onclick="deleteSpecialName()">
-                  删除所选专题 
-            </div>  
-
-            <p></p>
-
-            <div id="info_schoolname">
-              <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                        <th scope="col" class="action-checkbox-column">  
-
-                            <div class="text">
-                              
-                                <input type="checkbox" id="all_special_checkbox"
-                                onclick = "selectAll()"
-                                >                       
-                              
-                            </div>
-
-                        </th>
-                        <th scope="col"> <div class="text"><span>专业列表</span></div> </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-
-                    {%for element in special_list %}
-                    <tr class="success">
-                        <td class="action-checkbox">
-                            <input type="checkbox" 
-                            class="action-select" 
-                            value= "{{element.id}}"
-                            id = "special_checkbox" >
-                        </td>
-                        <th> {{element}} </th>
-                    </tr>
-                    {%endfor%}
-
-                  </tbody>
-              </table>
-
-            </div>
-
+        <div class="tab-pane fade" id="{{instance.object_name}}_alloc"  object = "{{instance.object_name}}">
+          {%include "adminStaff/widgets/object_alloc.html"%}
         </div>
 
 
+      
+
+
+      {%endfor%}
+    </div>  
 
 
 
+    <div class="modal fade" style="display: none;" id="object_modal">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div class="tab-pane fade" id="special_alloc">
-              
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>用户名称</th>                      
-                      <th>已分配专题</th>
-                      <th>重新分配</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr>
-                      <td>test_user</td>
-                      <td>理科</td>
-                      <td>
-                        <a data-toggle="modal" id="overstatus_1" onclick="get_subject_id('1')" href="#special_modal"   pid="1" class="btn btn-primary">
-                          分配
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-        </div>
-
-        <div class="modal fade" style="display: none;" id="special_modal">
           <div class="modal-dialog">
-
             <div class="modal-content">
-
               <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
-                  <h3>重新分配</h3>
+                <h3>重新分配</h3>
+                <h4> </h4>
               </div>
-
               <div class="modal-body">
-                <ul class="list-group">
-
-                  {%for element in special_list%} 
-
-                  <li class="list-group-item">                         
-                    <input type="checkbox" class="action-select"> 
-                    {{element}}
-                    {%ifequal element.school_user None%}
-                    <span class="label label-danger"> 未分配</span>                    
-                    {%else%}
-                    <span class="label label-success"> 已分配</span>
-                    {%endifequal%}
-                  </li>
-
-                  {%endfor%}
-
-                </ul>                
+                {#{%include "adminStaff/widgets/objects_table.html" %} #}
               </div>
 
               <div class="modal-footer">
                 <a class="btn" data-dismiss="modal">关闭</a>
-                <a class="btn btn-primary" data-dismiss="modal" onclick="">保存更新</a>
+                <a class="btn btn-primary" data-dismiss="modal" id="saveObjectAlloc">保存更新</a>
               </div>
+
             </div>
           </div>
-        </div>
-
-
-
-
-
-
-
-
-
-
-        <div class="tab-pane fade " id="college_modify">
-            <p> </p>
-            <form class="form-inline" id="school_name_form">
-
-                <div class = "form-group">
-                    <label class="control-label" for="name">学院:</label>
-                </div>
-
-                <div class = "form-group">
-                    {{college_form.name}}
-                </div>
-
-                <div class = "form-group">
-                    <span class="btn btn-primary" id="school_name" onclick="save_school_name();" >保存学院名称</span> 
-                </div>
-            </form> 
-
-            <p></p>
-
-            <div class="btn btn-primary" title="运行选中的动作" onclick="delete_school_name()">
-                  删除所选学院 
-              </div>  
-              <p></p>
-
-              <div id="info_schoolname">
-                <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                          <th scope="col" class="action-checkbox-column">  
-                              <div class="text"><span><input type="checkbox" id="action-toggle"></span></div>
-                          </th>
-                          <th scope="col"> <div class="text"><span>学院列表</span></div> </th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-
-                      {%for element in college_list %}
-                      <tr class="success">
-                          <td class="action-checkbox">
-                              <input type="checkbox" class="action-select" value= "{{element.id }}" name="_selected_action">
-                          </td>
-                          <th> {{element}} </th>
-                      </tr>
-                      {%endfor%}
-
-                    </tbody>
-                </table>
-
-              </div>
-
-        </div>
-
-
-
-        <div class="tab-pane fade" id="college_alloc">
-              
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>用户名称</th>                      
-                      <th>已分配学院</th>
-                      <th>重新分配</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr>
-                      <td>test_user</td>
-                      <td>理科</td>
-                      
-
-                      <td>
-
-                        <a data-toggle="modal" id="overstatus_1" onclick="get_subject_id('1')" href="#college_modal"   pid="1" class="btn btn-primary">
-                          分配
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-        </div>
-
-        <div class="modal fade" style="display: none;" id="college_modal">
-          <div class="modal-dialog">
-
-            <div class="modal-content">
-              <div class="modal-header">
-                <a class="close" data-dismiss="modal">×</a>
-                  <h3>重新分配</h3>
-              </div>
-
-              <div class="modal-body">
-                <tr class="success">
-
-                    {%for element in college_list%}
-                    <td class="action-checkbox">
-                        <input type="checkbox" class="action-select" value= "{{element.id }}" name="_selected_action"
-
-                        {%ifequal forloop.counter 1%}
-                        checked = "true"
-                        {%else%}
-                        {%endifequal%}
-                        >
-                    </td>
-                    <th> {{element}}  </th>
-                    {%endfor%}
-                </tr>
-              </div>
-              <div class="modal-footer">
-              <a class="btn" data-dismiss="modal">关闭</a>
-              <a class="btn btn-primary" data-dismiss="modal" onclick="project_overstatus();">保存更新</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-
-
-
-
-
-
-       
-
-
-
-
-
-
-
-
-
-    </div>  
-
+    </div>
+    
 
 
 
@@ -351,9 +122,9 @@
 
 
       
-<script type='text/javascript' src="{{ STATIC_URL }}js/adminstaff/modify_adminStaff.js"></script>
+<!-- <script type='text/javascript' src="{{ STATIC_URL }}js/adminstaff/modify_adminStaff.js"></script> -->
 
-<script type="text/javascript" src="{{STATIC_URL}}js/common.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/common/alloc_manage.js"></script>
 
 
 <!-- ajax_csrf-->
