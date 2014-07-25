@@ -5,16 +5,22 @@ Created on 2014-06-07
 Desc: adminStaff' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from common.views import scheduleManage, financialManage
+from common.views import  financeManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
 def applicationProjectView(request):
-    context={}
-    return render(request,"finance/applicationProject.html",context)
+    userauth={
+        "role":"finance",
+        "status":"budget"
+    }
+    return financeManage(request,userauth)
 
 def concludingProjectView(request):
-    context={}
-    return render(request,"finance/concludingProject.html",context)
+    userauth={
+        "role":"finance",
+        "status":"final",
+    }
+    return financeManage(request,userauth)
 
 def financeBudgetView(request):
     context={}
@@ -28,7 +34,7 @@ def financialView(request):
     userauth = {
                 "role": 'finance', 
     }
-    return financialManage(request, userauth)
+    return financeManage(request, userauth)
 
 
 def financialInfoView(request):

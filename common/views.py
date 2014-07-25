@@ -34,11 +34,14 @@ def scheduleManage(request, userauth):
 def researchConcludingManage(request , userauth):
     context = schedule_form_data(request , userauth)
     return render(request, userauth['role']+'/research_concluding.html' ,context)
+def financeManage(request, userauth):
+    context = schedule_form_data(request, userauth)
+
+    return render(request, userauth['role'] + '/financeProject.html', context)
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
 
     return render(request, userauth['role'] + '/financial.html', context)
-
 def schedule_form_data(request , userauth):
 
     schedule_form = ScheduleBaseForm()

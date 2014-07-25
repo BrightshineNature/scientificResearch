@@ -5,9 +5,16 @@
 
 {% ifequal userauth.status 'application'%}
   <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/" >
-      {%else%}
+{%endifequal%}
+{%ifequal userauth.status 'research_concluding'%}
  <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/researchconcluding" >
-      {%endifequal%}
+{%endifequal%}
+{%ifequal userauth.status 'budget'%}
+ <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/" >
+{%endifequal%}
+{%ifequal userauth.status 'final'%}
+ <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/concludingProject" >
+{%endifequal%}
     {% csrf_token %}
     {% include "widgets/searchform.html" %}
 

@@ -1,5 +1,5 @@
 
-<div>
+<div id="applicationTable">
     <ul class="nav nav-pills">
         <li class="active"><a href="#not_pass" data-toggle="tab">待处理<span class="badge">{{not_pass_apply_project_group.count}}</span></a>
         </li>
@@ -105,11 +105,6 @@
                     <form class="well">
                         <div class="form-group">
                             <label for="review_select">审核结果</label>
-                            <!--<select id="review_select" class="form-control" >-->
-                                <!--<option value="-1" selected="selected">请审核</option>-->
-                                <!--<option value="1">通过</option>-->
-                                <!--<option value="0">不通过</option>-->
-                                <!--</select>-->
                             {{ProjectJudge_form.judgeresult}}
                         </div>
                         <div id="not_pass_article">

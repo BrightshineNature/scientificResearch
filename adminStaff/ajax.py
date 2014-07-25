@@ -18,7 +18,7 @@ from dajaxice.utils import deserialize_form
 from adminStaff.models import TemplateNoticeMessage
 from backend.logging import loginfo
 from common.sendEmail import sendemail
-
+from backend.utility import getContext
 @dajaxice_register
 def saveSpecialName(request, form):
     form = SpecialForm(deserialize_form(form))
@@ -57,6 +57,13 @@ def allocSpecial(request, user, alloced):
     return simplejson.dumps({'status':'1'})
 
 @dajaxice_register
+def getNoticePagination(request,page):
+    message=""
+    table=refresh_template_notice_table(request,page)
+    ret={"message":message,"table":table}
+    return simplejson.dumps(ret)
+    
+@dajaxice_register
 def TemplateNoticeChange(request,template_form,mod):
     if mod==-1:
         template_form=TemplateNoticeMessageForm(deserialize_form(template_form))
@@ -65,14 +72,15 @@ def TemplateNoticeChange(request,template_form,mod):
         template_notice=TemplateNoticeMessage.objects.get(pk=mod)
         f=TemplateNoticeMessageForm(deserialize_form(template_form),instance=template_notice)
         f.save()
-    table=refresh_template_notice_table(request)
+    table=refresh_template_notice_table(request,page)
     ret={"status":'0',"message":u"模版消息添加成功","table":table}
     return simplejson.dumps(ret)
-def refresh_template_notice_table(request):
+def refresh_template_notice_table(request,page):
     template_notice_message_form=TemplateNoticeMessageForm
     template_notice_message=TemplateNoticeMessage.objects.all()
     template_notice_message_group=[]
     cnt=1
+    page=(int)page
     for item in template_notice_message:
         nv={
             "id":item.id,
@@ -82,15 +90,14 @@ def refresh_template_notice_table(request):
         }
         cnt+=1
         template_notice_message_group.append(nv)
-    return render_to_string("widgets/template_notice_table.html",{
-            "template_notice_message_form":template_notice_message_form,
-            "template_notice_message_group":template_notice_message_group,
-    })
+    context=getContext(template_notice_message_group,page,"item",0)
+    context.update({"template_notice_message_form":template_notice_message_form})
+    return render_to_string("widgets/template_notice_table.html",context)
 @dajaxice_register
 def TemplateNoticeDelete(request,deleteID):
     template_notice=TemplateNoticeMessage.objects.get(pk=deleteID)
     template_notice.delete()
-    table=refresh_template_notice_table(request)
+    table=refresh_template_notice_table(request,page)
     ret={"status":'0',"message":u"模版消息删除成功","table":table}
     return simplejson.dumps(ret)
 

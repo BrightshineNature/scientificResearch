@@ -5,13 +5,14 @@ Created on 2014-06-07
 Desc: adminStaff' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from common.views import scheduleManage, financialManage
+from common.views import scheduleManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
 from adminStaff.models import TemplateNoticeMessage
 from users.models import SchoolProfile,CollegeProfile,ExpertProfile,Special
 from const import NOTICE_CHOICE
 from backend.logging import loginfo
+from backend.utility import getContext
 
 def appView(request):
 
@@ -87,12 +88,11 @@ def noticeMessageSetting(request):
         }
         cnt+=1
         template_notice_message_group.append(nv)
-
-    context={
+    context=getContext(template_notice_message_group,1,"item",0)
+    context.update({
         "template_notice_message_form":template_notice_message_form,
         "notice_choice":notice_choice,
-        "template_notice_message_group":template_notice_message_group,
-    }
+    })
     return render(request,"adminStaff/notice_message_setting.html",context)
 
 def dispatchView(request):
