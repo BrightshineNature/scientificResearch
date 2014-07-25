@@ -29,18 +29,6 @@ def scheduleView(request):
     }
     return scheduleManage(request, userauth)
 
-def judgeProjectView(request,pid,pass_p):
-    project=ProjectSingle.objects.get(pk=pid)
-    if pass_p=="1":
-        status_confirm(project,APPLICATION_SCHOOL_CONFIRM)
-
-    return scheduleView(request)
-
-def financialView(request):
-    userauth = {
-                "role": 'school',                
-    }
-    return financialManage(request, userauth)
 
 
 def financialInfoView(request):

@@ -7,7 +7,7 @@ Desc: adminStaff' view, includes home(manage), review report view
 from django.shortcuts import render
 from common.views import scheduleManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
-from adminStaff.forms import NewsForm, SpecialForm, CollegeForm,TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
+from adminStaff.forms import NewsForm,TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
 from common.views import scheduleManage, financialManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from adminStaff.forms import NewsForm, ObjectForm, TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm

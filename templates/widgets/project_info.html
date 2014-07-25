@@ -9,7 +9,7 @@
 
     <div class="tab-content">
         <div class="tab-pane fade in active" id="not_pass">
-            <table class="table table-hover" userrole={{userauth.role}}>
+            <table class="table table-hover" userrole={{userauth.role}} userstatus={{userauth.role}}>
                 <thead>
                     <tr>
                         <th>申请代码</th>
@@ -27,7 +27,7 @@
                 <tbody>
                     {% if not_pass_apply_project_group %}
                     {% for item in not_pass_apply_project_group%}
-                    <tr iid={{item.project_id}}>
+                    <tr iid={{item.project_id}} status={{item.project_status.status}}>
                         <td>{{item.project_application_code}}</td>
                         <td>{{item.title}}</td>
                         <td>{{item.teacher.teacherinfosetting.name}}</td>
@@ -102,7 +102,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form class="well">
+                    <form class="well" id="lookThroughForm" >
                         <div class="form-group">
                             <label for="review_select">审核结果</label>
                             {{ProjectJudge_form.judgeresult}}
@@ -131,10 +131,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="{{STATIC_URL}}js/project_info.js"></script>
-
-<script type="text/javascript" src="{{STATIC_URL}}js/common.js"></script>
-
-
-<!-- ajax_csrf-->
-<script type='text/javascript' src="{{STATIC_URL}}js/ajax_csrf.js"></script>
