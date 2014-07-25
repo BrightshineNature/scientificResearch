@@ -13,6 +13,7 @@ from teacher.forms import SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
 from users.models import ExpertProfile
 from school.forms import CollegeForm
+from backend.utility import getContext
 
 def appView(request):
     context = {}
@@ -52,6 +53,7 @@ def progressReportView(requset):
 def allocView(request):
     if request.method == "GET":
         project_list = ProjectSingle.objects.all()
+
         expert_list = ExpertProfile.objects.all()
     
         college_form = CollegeForm()
@@ -69,10 +71,11 @@ def allocView(request):
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
     
-    context = {"project_list": project_list,
-               "expert_list": expert_list,
-               "college_form": college_form,
-    }
+    context = getContext(project_list, 1, "item", 0)
+    context.update({
+                    "expert_list": expert_list,
+                    "college_form": college_form,
+                  })
     return render(request, "school/alloc.html", context)
 
 def researchConcludingView(request):
