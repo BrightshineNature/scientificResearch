@@ -13,6 +13,7 @@ RegisterClass = (
     StaticsDataTypeDict,
     UserIdentity,
     ProjectStatus,
+    NewsCategory,
 )
 
 for temp in RegisterClass:

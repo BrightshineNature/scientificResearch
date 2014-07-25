@@ -36,6 +36,13 @@
         </div>
     </div>
     <div class="form-group newsinfo">
+        <label class="col-lg-2 control-label">新闻类型：</label>
+        <div class="col-lg-6">
+            {{newsform.news_category}}
+        </div>
+    </div>
+
+    <div class="form-group newsinfo">
         <label class="col-lg-2 control-label">新闻附件：</label>
         <div class="col-lg-6">
             {{newsform.news_document}}
@@ -51,11 +58,11 @@
     </div>
 </form>
 <div id="newstable">
+    <h3>新闻管理</h3>
     {% include "adminStaff/widgets/newslist.html" %}
 </div>
 <!-- ajax_csrf-->
 <script type='text/javascript' src="{{STATIC_URL}}bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
-<script type='text/javascript' src="{{STATIC_URL}}js/newstable.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}js/news/news_release.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}js/news/jquery.hotkeys.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}js/news/bootstrap-wysiwyg.js"></script>
