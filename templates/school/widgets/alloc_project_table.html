@@ -2,7 +2,7 @@
 	<thead>
 		<tr>
 		  <th><label class="checkbox">
-                         <input type="checkbox" name="checkbox_alloc_project">
+                         <input type="checkbox" class="select_all" arg="checkbox_alloc_project">
                          </label>
                       </th>
 		  <th>项目编号</th>
@@ -18,7 +18,7 @@
       {% for project in item_list %}
         <tr>
 			  <td><label class="checkbox">
-                         <input type="checkbox" name="checkbox_project">
+                         <input type="checkbox" name="checkbox_alloc_project">
                          </label>
                       </td>
 			  <td>{{ project.project_code }}</td>
