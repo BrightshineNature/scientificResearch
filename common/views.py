@@ -34,11 +34,14 @@ def scheduleManage(request, userauth):
 def researchConcludingManage(request , userauth):
     context = schedule_form_data(request , userauth)
     return render(request, userauth['role']+'/research_concluding.html' ,context)
+def financeManage(request, userauth):
+    context = schedule_form_data(request, userauth)
+
+    return render(request, userauth['role'] + '/financeProject.html', context)
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
 
     return render(request, userauth['role'] + '/financial.html', context)
-
 def schedule_form_data(request , userauth):
 
     schedule_form = ScheduleBaseForm()
@@ -117,10 +120,9 @@ def finalReportViewWork(request,redirect=False):
 
     final = FinalSubmit.objects.all()[0]
     achivement_list = ProjectAchivement.objects.filter(finalsubmit_id = final.content_id)
+    datastatics_list = ProjectStatistics.objects.filter(finalsubmit_id = final.content_id) 
     projachivementform  = ProjectAchivementForm()
-
-    for temp in achivement_list:
-        loginfo(p=temp.achivementtype,label="achivementtype")
+    projdatastaticsform = ProjectDatastaticsForm()
 
     if request.method == "POST":
         final_form = FinalReportForm(request.POST, instance=final)
@@ -136,12 +138,14 @@ def finalReportViewWork(request,redirect=False):
 
     context = {
         'projachivementform':projachivementform,
+		'projdatastaticsform':projdatastaticsform,
         'statics_type':statics_type,
         'statics_grade_type':statics_grade_type,
         'final': final_form,
         'finalreportid':final.content_id,
         'redirect':redirect,
         'achivement_list':achivement_list,
+		'datastatics_list':datastatics_list,
 
     }
     return context
