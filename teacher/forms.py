@@ -107,5 +107,9 @@ class ProjectDatastaticsForm(forms.Form):
                                 widget=forms.TextInput(attrs={"class":'form-control', "placeholder": "数量", }),)
 
 
+class ProFundSummaryForm(ModelForm):
+	class Meta:
+		model = ProjectFundSummary
+		exclude = ('content_id','finalsubmit_id',)
 
 

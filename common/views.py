@@ -114,15 +114,13 @@ def get_search_data(schedule_form):
 
 
 def finalReportViewWork(request,redirect=False):
-    achivement_type = ACHIVEMENT_TYPE
-    statics_type = STATICS_TYPE
-    statics_grade_type = STATICS_TYPE
-
     final = FinalSubmit.objects.all()[0]
     achivement_list = ProjectAchivement.objects.filter(finalsubmit_id = final.content_id)
-    datastatics_list = ProjectStatistics.objects.filter(finalsubmit_id = final.content_id) 
+    datastatics_list = ProjectStatistics.objects.filter(finalsubmit_id = final.content_id)
+    projfundsummary = ProjectFundSummary.objects.get(finalsubmit_id = final.content_id) 
     projachivementform  = ProjectAchivementForm()
     projdatastaticsform = ProjectDatastaticsForm()
+    profundsummartform = ProFundSummaryForm(instance=projfundsummary)
 
     if request.method == "POST":
         final_form = FinalReportForm(request.POST, instance=final)
@@ -135,17 +133,15 @@ def finalReportViewWork(request,redirect=False):
     else:
         final_form = FinalReportForm(instance=final)
 
-
     context = {
         'projachivementform':projachivementform,
 		'projdatastaticsform':projdatastaticsform,
-        'statics_type':statics_type,
-        'statics_grade_type':statics_grade_type,
         'final': final_form,
         'finalreportid':final.content_id,
         'redirect':redirect,
         'achivement_list':achivement_list,
 		'datastatics_list':datastatics_list,
-
+		'projfundsummary':projfundsummary,
+		'profundsummartform':profundsummartform,
     }
     return context
