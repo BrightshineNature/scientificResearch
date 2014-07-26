@@ -3,6 +3,7 @@
 from django import forms
 from const import *
 from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice
+from common.models import ProjectInfo
 class ScheduleBaseForm(forms.Form):
     status_choices = get_status_choice()
     application_status_choice =get_application_status_choice()
@@ -77,6 +78,10 @@ class ProjectJudgeForm(forms.Form):
 
     reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
 
+
+science_type_choices = (("-1", "科技活动类型"),) + SCIENCE_ACTIVITY_TYPE_CHOICES
+
+
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
         max_length = 20,
@@ -119,10 +124,10 @@ class ProjectInfoForm(forms.Form):
             'class':'form-control ',
             'id':'name',
             'placeholder':u"学科代码"}), )
-    start_time = forms.CharField(
-        max_length = 20,
+    start_time = forms.DateField(
+        # max_length = 20,
         required=False,
-        widget=forms.TextInput(
+        widget=forms.DateInput(
             attrs={
             'class':'form-control ',
             'id':'name',
@@ -144,6 +149,8 @@ class ProjectInfoForm(forms.Form):
             'class':'form-control ',
             'id':'name',
             'placeholder':u"项目类型"}), )
+
+
 
 class BasisContentForm(forms.Form):
 

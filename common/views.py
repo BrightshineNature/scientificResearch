@@ -9,7 +9,7 @@ from teacher.models import *
 from backend.logging import logger, loginfo
 from adminStaff.models import ProjectSingle
 from django.db.models import Q
-
+from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 
     
 def getParam(pro_list, userauth,flag):
@@ -27,6 +27,26 @@ def getParam(pro_list, userauth,flag):
         "total_count":count,
     }
     return param
+
+def appManage(request, userauth):
+
+    project_info_form = ProjectInfoForm()
+    basis_content_form = BasisContentForm()
+    base_condition_form = BaseConditionForm()
+
+    context = {
+        'project_info_form': project_info_form,
+        'basis_content_form':basis_content_form,
+        'base_condition_form':base_condition_form,
+    }
+
+
+    return render(request, userauth['role'] + "/application.html", context)
+
+
+
+
+
 
 def scheduleManage(request, userauth):
     context = schedule_form_data(request, userauth)

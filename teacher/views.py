@@ -13,19 +13,14 @@ from common.views import scheduleManage,finalReportViewWork
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 from users.models import TeacherProfile
 from teacher.models import TeacherInfoSetting
+from common.views import appManage
 
 def appView(request):
 
-    project_info_form = ProjectInfoForm()
-    basis_content_form = BasisContentForm()
-    base_condition_form = BaseConditionForm()
-    context = {
-        'project_info_form': project_info_form,
-        'basis_content_form':basis_content_form,
-        'base_condition_form':base_condition_form,
-
+    userauth = {
+        'role':"teacher",
     }
-    return render(request,"teacher/application.html",context)
+    return appManage(request, userauth);    
     
 def homeView(request):
     context = {
