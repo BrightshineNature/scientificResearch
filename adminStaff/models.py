@@ -28,7 +28,7 @@ class ProjectSingle(models.Model):
     project_code = models.CharField(blank=True, null=True, default='',max_length=14, verbose_name=u"项目编号")
 
     title = models.CharField(max_length=400, blank=False,
-                             verbose_name=u"参赛题目")
+                             verbose_name=u"项目名称")
     comment = models.CharField(max_length=400, blank=True,
                              verbose_name=u"评审意见")
     teacher = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"项目申请人")

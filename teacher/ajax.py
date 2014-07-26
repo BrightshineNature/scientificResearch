@@ -121,3 +121,25 @@ def staticsChange(request,statics_type):
         staticsdatatype_set.append(temp.staticsdatatype)
     ret={'staticsdatatype':staticsdatatype_set,}
     return simplejson.dumps(ret)
+
+@dajaxice_register
+def fundSummary(request, form, finalsubmitid):
+    profundsummary = ProjectFundSummary.objects.get(finalsubmit_id = finalsubmitid) 
+    profundsummartform = ProFundSummaryForm(deserialize_form(form),instance = profundsummary)
+    if profundsummartform.is_valid():
+        profundsummartform.save()
+        message = u"保存成功"
+    else:
+        message = u"保存失败"
+
+    table = refresh_fundsummary_table(request,profundsummartform,finalsubmitid)
+    ret = {'message':message,'table':table}
+    return simplejson.dumps(ret)
+
+def refresh_fundsummary_table(request, profundsummartform,finalsubmitid):
+    return render_to_string("widgets/finalreport/final_fundsummary_table.html",
+                            {        
+                                'finalreportid':finalsubmitid,
+                                'profundsummartform':profundsummartform,
+        })
+
