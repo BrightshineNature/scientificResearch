@@ -61,9 +61,16 @@ def login_redirect(request,identity):
     elif check_auth(request.user,identity):
         pass
     else:
+        del request.session['auth_role']
         logout(request)
         return render_to_response('registration/logentry_error.html', context_instance=RequestContext(request))
     redirect_url = '/'+identity+'/'
     request.session['auth_role'] = identity
     loginfo(redirect_url)
     return HttpResponseRedirect(redirect_url)
+def logout_redirect(request):
+    try:
+        del request.session['auth_role']
+    except KeyError:
+        pass
+    return HttpResponseRedirect('/')
