@@ -49,20 +49,9 @@ def progressReportView(requset):
 
 def allocView(request):
     expert_list = ExpertProfile.objects.all()
-
-    if request.method == "GET":
-        project_list = ProjectSingle.objects.all()
-        form = FilterForm(request = request)
-    else:
-        form = FilterForm(request.POST, request=request)
-        if form.is_valid():
-            college = form.cleaned_data["colleges"]
-            special = form.cleaned_data["specials"]
-            if college == "-1":
-                project_list = ProjectSingle.objects.all()
-            else:
-                project_list = ProjectSingle.objects.filter(teacher__college = college)
-            project_list = project_list.filter(project_special = special)
+    project_list = ProjectSingle.objects.all()
+    form = FilterForm(request = request)
+    
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
     

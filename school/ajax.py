@@ -58,7 +58,7 @@ def getProjectList(request, college_id, special_id):
     if college_id == "-1":
         project_list = ProjectSingle.objects.all()
     else:
-        project_list = ProjectSingle.objects.filter(teacher__college = college)
+        project_list = ProjectSingle.objects.filter(teacher__college = college_id)
 
     if special_id != "-1":
         project_list = project_list.filter(project_special = special_id)
