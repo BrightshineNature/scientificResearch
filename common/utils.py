@@ -102,11 +102,94 @@ def get_qset(userauth):
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     return (pending,default,search)
 
+def statusRollBack(project,userrole,userstatus,form):
+    if userrole=="school":
+        if userstatus=="application":
+            form_list=form.getlist("application")
+            if len(form_list)==2:
+                set_status(project,PROJECT_STATUS_APPLY)
+                project.file_application=False
+                project.save()
+            elif len(form_list)==1:
+                if form_list[0]=="网上提交不合格":
+                    set_status(project,PROJECT_STATUS_APPLY)
+                elif form_list[0]=="申报书不合格":
+                    set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
+                    project.file_application=False
+                    project.save()
+                else:
+                    return False 
+            else:
+                return False
+        elif userstatus=="research_concluding":
+            if project.project_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
+                set_status(project,PROJECT_STATUS_TASK_BUDGET_OVER)
+                project.file_task=False
+                project.save()
+            elif project.project_status.status==PROJECT_STATUS_PROGRESS_COMMIT_OVER:
+                set_status(project,PROJECT_STATUS_SCHOOL_OVER)
+                project.file_interimachecklist=False
+                project.save()
+            elif project.project_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
+                form_list=form.getlist("final")
+                if len(form_list)==2:
+                    set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
+                    project.file_task=False
+                    project.save()
+                elif len(form_list==1):
+                    if form_list[0]=="网上提交不合格":
+                        set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
+                    elif form_list[1]=="结题书不合格":
+                        set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
+                        project.file_summary=False;
+                        project.save()
+                    else:
+                        return False
+                else:
+                    return False
+            else :
+                return False
+        else:
+            return False
+    elif userrole=="college":
+        form_list=form.getlist("application")
+        if len(form_list)==2:
+            set_status(project,PROJECT_STATUS_APPLY)
+            project.file_application=False
+            project.save()
+        elif len(form_list)==1:
+            if form_list[0]=="网上提交不合格":
+                set_status(project,PROJECT_STATUS_APPLY)
+            elif form_list[0]=="申报书不合格":
+                set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
+                project.file_application=False
+                project.save()
+            else:
+                return False 
+        else:
+            return False
+    elif userrole=="finance":
+        if userstatus=="budget":
+            set_status(project,PROJECT_STATUS_APPROVAL)
+        elif userstatus=="final":
+            set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
+        else:
+            return False
+    else:
+        return False
+    return True
+
+
+
+
 
 def set_status(project,status):
     project.project_status=ProjectStatus.objects.get(status=status)
     project.save()
 def status_confirm(project, confirm):
+    if confirm==-1:
+        set_status(project,project.project_status.status+1)
+    return True
     if project.project_status.status==PROJECT_STATUS_APPLY:
         if confirm==APPLICATION_WEB_CONFIRM:
             if project.file_application==True:

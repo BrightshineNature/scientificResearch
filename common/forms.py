@@ -78,6 +78,8 @@ class ProjectJudgeForm(forms.Form):
     final=forms.MultipleChoiceField(choices=final_choice,required=False,widget=forms.CheckboxSelectMultiple())
     reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
 
+class NoticeForm(forms.Form):
+    content=forms.CharField(required=True,widget=forms.Textarea(attrs={'class':'form-control','row':'6'}))
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
         max_length = 20,
