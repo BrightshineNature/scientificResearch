@@ -55,8 +55,8 @@ class ProjectSingle(models.Model):
     trade_code = models.CharField(blank=True,max_length = 20, verbose_name= u'国民行业代码(国标)')
     subject_name = models.CharField(blank=True,max_length = 20, verbose_name = u'学科名称')
     subject_code = models.CharField(blank=True,max_length = 20, verbose_name=u'学科代码')
-    start_time = models.DateField(blank=True,max_length = 20, verbose_name=u'研究开始时间')
-    end_time = models.DateField(blank=True,max_length = 20, verbose_name=u'研究结束时间')
+    start_time = models.DateField(blank=True,null=True,verbose_name=u'研究开始时间')
+    end_time = models.DateField(blank=True,null =True,verbose_name=u'研究结束时间')
     project_tpye =models.CharField(blank=True,max_length = 20, verbose_name = u'项目类型')
     class Meta:
         verbose_name = "项目"
