@@ -8,7 +8,7 @@
 	{% endif %}
 	{% for index in item2_index_list %}
 		{% ifequal index item2_page.number %}
-			<li><span>{{ index }}</span></li>
+			<li class="disabled"><span>{{ index }}</span></li>
 		{% else %}
 			<li><a href="javascript:void(0)" arg="{{ index }}" class="item_page">{{ index }}</a></li>
 		{% endifequal %}
@@ -17,7 +17,7 @@
 		<li><span>...</span></li>
 		<li><a href="javascript:void(0)" arg="{{ item2_page.paginator.num_pages }}" class="item_page">{{ item2_page.paginator.num_pages }}</a></li>
 	{% endif %}
-	{% if item_page.has_next %}
+	{% if item2_page.has_next %}
 		<li><a href="javascript:void(0)" arg="{{ item2_page.next_page_number }}" class="item_page">下一页></a></li>
 	{% endif %}
 </ul>
