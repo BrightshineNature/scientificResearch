@@ -2,29 +2,31 @@
 {% block inner_content %}
 <div class="well form-inline">
     <b>
-    <form id="subject_insitute_form" method="POST" action="/school/alloc/"><!-- begin category form-->
-	{% csrf_token %}
-    {{ form.specials }}
-    {{ form.colleges}}
-  <input type="submit" class="btn btn-primary" id="filter_button" value="筛选"/>
   <div class="alert alert-success" style="margin-top:20px">
     <a class="close" data-dismiss="alert">x</a>
     <h4 class="alert-heading">系统提示！</h4>
     <p>
-        指派专家时，请按照学院筛选后，进入指定学院进行指派工作。
+        1. 指派专家时，请分别筛选出对应类别的项目和专家后，点击选择对应项目集合和专家集合，然后点击批量指派按钮。分配时，可参考专家“已分配数量”内容。
+				<br/>
+				2. 取消分配专家时，选择对应项目集合，然后点击批量取消按钮。
     </p>
   </div>
-  </form><!--end category form -->
+    <div id="project_filter_form">
+	{% csrf_token %}
+    {{ form.specials }}
+    {{ form.colleges}}
+  <button class="btn btn-primary" id="project_filter_button">筛选项目</button>
+  </div><!--end category form -->
   
 <hr/>
   <div class="tab-content">
   <div class="tab-pane fade active in" id="review-page">
     <ul class="nav nav-pills">
       <li class="active">
-        <a href="#unalloced-section" data-toggle="tab">未指派<span class="badge">{{project_list.count}}</span></a>
+        <a href="#unalloced-section" data-toggle="tab" id="unalloc_tab">未指派<span class="badge">{{project_list.count}}</span></a>
       </li>
       <li>
-        <a href="#alloced-section" data-toggle="tab">已指派</a>
+        <a href="#alloced-section" data-toggle="tab" id="alloc_tab">已指派</a>
       </li>
 
     </ul><!--end ul title-->
@@ -32,64 +34,28 @@
     <div class="tab-content">
       <div class="tab-pane fade active in" id="unalloced-section">
 				{% include "school/widgets/unalloc_project_table.html" %}
-      <a data-toggle="modal" href="#alloc_choice"><button class="btn btn-primary">批量指派</button></a>
     </div><!--end content section-->
 
       <div class="tab-pane fade " id="alloced-section">
         {% include "school/widgets/alloc_project_table.html" %}
-      <a data-toggle="modal"><button class="btn btn-primary">批量取消</button></a>
       </div>
     </div><!--end tab content-->
   </div><!--end tab pane-->
   <hr/>
 
-    
-
+	<div id="expert_filter_form">
+		{% csrf_token %}
+    {{ form.colleges}}
+  	<button class="btn btn-primary" id="expert_filter_button">筛选评委</button>
+	</div>
   <div id="expert_list_div">
-		<table class="table" id="table_expert_list">
-    <thead>
-        <tr>
-            <th>专家姓名</th>
-            <th>所属学院</th>
-            <th>已分配数量</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for expert in expert_list %}
-            <tr>
-            <td>{{ expert }}</td>
-            <td>{{ expert.college }}</td>
-            <td>{{ expert.alloc_num }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+		{% include "school/widgets/alloc_expert_table.html" %}
   </div>
 
-	<div class="modal fade" id="alloc_choice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-		  <div class="modal-content">
-		    <div class="modal-header">
-		      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		      <h3 class="modal-title">选择指派评委</h3>
-		    </div>
-		    <div class="modal-body">
-                {% for expert in expert_list %}
-			        <label class="checkbox">
-						<input type="checkbox" name="checkbox_expert" value="{{ expert.userid }}">
-						    {{ expert }}
-					</label>
-					<br/>
-                {% endfor %}
-		    </div>
-		    <div class="modal-footer">
-		      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-		      <button type="button" class="btn btn-primary">保存</button>
-		    </div>
-		  </div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-
+	<div id="operator_area">
+  	<a data-toggle="modal" id="button_operator_cancel"><button class="btn btn-primary">批量取消</button></a>
+		<a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
+	</div>
  
 	<div class="modal fade" id="query_or_cancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -105,7 +71,6 @@
 		    {% endfor %}
             <div class="modal-footer">
 		      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-		      <button type="button" class="btn btn-primary">取消指派</button>
 		    </div>
 		  </div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->

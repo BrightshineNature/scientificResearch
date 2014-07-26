@@ -9,7 +9,7 @@ from teacher.models import *
 from backend.logging import logger, loginfo
 from adminStaff.models import ProjectSingle
 from django.db.models import Q
-
+from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 
     
 def getParam(pro_list, userauth,flag):
@@ -27,6 +27,26 @@ def getParam(pro_list, userauth,flag):
         "total_count":count,
     }
     return param
+
+def appManage(request, userauth):
+
+    project_info_form = ProjectInfoForm()
+    basis_content_form = BasisContentForm()
+    base_condition_form = BaseConditionForm()
+
+    context = {
+        'project_info_form': project_info_form,
+        'basis_content_form':basis_content_form,
+        'base_condition_form':base_condition_form,
+    }
+
+
+    return render(request, userauth['role'] + "/application.html", context)
+
+
+
+
+
 
 def scheduleManage(request, userauth):
     context = schedule_form_data(request, userauth)
@@ -114,16 +134,13 @@ def get_search_data(schedule_form):
 
 
 def finalReportViewWork(request,redirect=False):
-    achivement_type = ACHIVEMENT_TYPE
-    statics_type = STATICS_TYPE
-    statics_grade_type = STATICS_TYPE
-
     final = FinalSubmit.objects.all()[0]
     achivement_list = ProjectAchivement.objects.filter(finalsubmit_id = final.content_id)
+    datastatics_list = ProjectStatistics.objects.filter(finalsubmit_id = final.content_id)
+    projfundsummary = ProjectFundSummary.objects.get(finalsubmit_id = final.content_id) 
     projachivementform  = ProjectAchivementForm()
-
-    for temp in achivement_list:
-        loginfo(p=temp.achivementtype,label="achivementtype")
+    projdatastaticsform = ProjectDatastaticsForm()
+    profundsummartform = ProFundSummaryForm(instance=projfundsummary)
 
     if request.method == "POST":
         final_form = FinalReportForm(request.POST, instance=final)
@@ -136,15 +153,15 @@ def finalReportViewWork(request,redirect=False):
     else:
         final_form = FinalReportForm(instance=final)
 
-
     context = {
         'projachivementform':projachivementform,
-        'statics_type':statics_type,
-        'statics_grade_type':statics_grade_type,
+		'projdatastaticsform':projdatastaticsform,
         'final': final_form,
         'finalreportid':final.content_id,
         'redirect':redirect,
         'achivement_list':achivement_list,
-
+		'datastatics_list':datastatics_list,
+		'projfundsummary':projfundsummary,
+		'profundsummartform':profundsummartform,
     }
     return context

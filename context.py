@@ -48,40 +48,41 @@ def userauth_settings(request):
         "expert":EXPERT_USER,
         "finance":FINANCE_USER,
     }
-    if check_auth(user=request.user, authority=ADMINSTAFF_USER):
+    identity = request.session.get('auth_role', "")
+    if identity == ADMINSTAFF_USER and check_auth(user=request.user, authority=ADMINSTAFF_USER):
         userauth["is_adminstaff"] = True
         try:
             userauth["adminstaff"] = AdminStaffProfile.objects.get(userid=request.user)
         except AdminStaffProfile.DoesNotExist, err:
             loginfo(p=err, label="context AdminStaffProfile")
-    if check_auth(user=request.user, authority=FINANCE_USER):
+    if identity == FINANCE_USER and check_auth(user=request.user, authority=FINANCE_USER):
         userauth["is_finance"] = True
         try:
             userauth["finance"] = FinanceProfile.objects.get(userid=request.user)
         except FinanceProfile.DoesNotExist, err:
             loginfo(p=err, label="context FinanceProfile")
 
-    if check_auth(user=request.user, authority=SCHOOL_USER):
+    if identity == SCHOOL_USER and check_auth(user=request.user, authority=SCHOOL_USER):
         userauth["is_schooler"] = True
         try:
             userauth["school"] = SchoolProfile.objects.get(userid=request.user)
         except SchoolProfile.DoesNotExist, err:
             loginfo(p=err, label="context SchoolProfile")
-    if check_auth(user=request.user, authority=COLLEGE_USER):
+    if identity == COLLEGE_USER and check_auth(user=request.user, authority=COLLEGE_USER):
         userauth["is_colleger"] = True
         try:
             userauth["college"] = CollegeProfile.objects.get(userid=request.user)
         except CollegeProfile.DoesNotExist, err:
             loginfo(p=err, label="context CollegeProfile")
 
-    if check_auth(user=request.user, authority=EXPERT_USER):
+    if identity == EXPERT_USER and check_auth(user=request.user, authority=EXPERT_USER):
         userauth["is_experter"] = True
         try:
             userauth["expert"] = ExpertProfile.objects.get(userid=request.user)
         except ExpertProfile.DoesNotExist, err:
             loginfo(p=err, label="context ExpertProfile")
 
-    if check_auth(user=request.user, authority=TEACHER_USER):
+    if identity == TEACHER_USER and check_auth(user=request.user, authority=TEACHER_USER):
         userauth["is_teacher"] = True
         try:
             userauth["teacher"] = TeacherProfile.objects.get(userid=request.user)
