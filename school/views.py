@@ -67,10 +67,15 @@ def allocView(request):
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
     
     context = getContext(project_list, 1, "item", 0)
+
+    expert_form = FilterForm()
     context.update({
-                    "expert_list": expert_list,
                     "form": form,
+                    "expert_form": expert_form,
                   })
+
+    context.update(getContext(expert_list, 1, "item3", 0))
+
     return render(request, "school/alloc.html", context)
 
 def researchConcludingView(request):
