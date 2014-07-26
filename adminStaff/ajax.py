@@ -7,19 +7,19 @@ from dajaxice.utils import deserialize_form
 from django.utils import simplejson
 from django.template.loader import render_to_string
 
-from adminStaff.forms import NewsForm, ObjectForm,TemplateNoticeMessageForm
 from const import *
 from users.models import Special,ExpertProfile,TeacherProfile,SchoolProfile,CollegeProfile
-from adminStaff.forms import NewsForm,  TemplateNoticeMessageForm
+from adminStaff.forms import TemplateNoticeMessageForm
 from django import  forms
 from adminStaff.forms import TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
 from django.utils import simplejson
 from django.template.loader import render_to_string
 from dajaxice.utils import deserialize_form
-from adminStaff.models import TemplateNoticeMessage
+from adminStaff.models import TemplateNoticeMessage,News
 from backend.logging import loginfo
 from users.models import SchoolProfile,CollegeProfile,Special,College
 from teacher.models import TeacherInfoSetting
+from backend.logging import logger
 
 def getObject(object):
     if object == "special":
@@ -50,8 +50,8 @@ def refreshObjectAlloc(request, object):
         user_special_info = {}
 
         for i in SchoolProfile.objects.all():
-            user_special_info[i] = []   
-        
+            user_special_info[i] = []
+
         for i in Special.objects.all():
             if i.school_user:
                 user_special_info[i.school_user].append(i.name)
@@ -64,8 +64,8 @@ def refreshObjectAlloc(request, object):
         user_college_info = {}
 
         for i in CollegeProfile.objects.all():
-            user_college_info[i] = []   
-        
+            user_college_info[i] = []
+
         for i in College.objects.all():
             if i.college_user:
                 user_college_info[i.college_user].append(i.name)
@@ -78,62 +78,71 @@ def refreshObjectAlloc(request, object):
     else:
         loginfo("error in refreshObjectAlloc")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 from common.sendEmail import sendemail
-
+from backend.utility import getContext
 @dajaxice_register
-def saveObjectName(request, object, form):
+def saveSpecialName(request, form):
+    form = SpecialForm(deserialize_form(form))
 
-    print "save*****"
-    print object
-    form = ObjectForm(deserialize_form(form))
-
-    Object = getObject(object)
-
-
-    if form.is_valid():        
+    if form.is_valid():
+        p = Special(name = form.cleaned_data['name'])
         p = Object(name = form.cleaned_data['name'])
         print ""
         print p.name
         p.save()
+        return simplejson.dumps({'status':'1'})
     else :
-        pass
+        return simplejson.dumps({'status':'0'})
 
-    return simplejson.dumps({'status':'1' , 
+@dajaxice_register
+def deleteSpecialName(request, checked):
+
+    tag = False
+    for i in checked:
+        Special.objects.filter(id = i).delete()
+        tag = True
+    if tag :
+        return simplejson.dumps({'status':'1'})
+    else:
+        return simplejson.dumps({'status':'0'})
+    return simplejson.dumps({'status':'1' ,
         'objects_table': refreshObjectTable(request, object)
         })
 
 @dajaxice_register
-def deleteObjectName(request, object, deleted):
+def allocSpecial(request, user, alloced):
 
+    user = SchoolProfile.objects.filter(userid__username = user)
+
+    all_spe = Special.objects.all()
+    for spe in all_spe:
+        if alloced.count(spe.name):
+            spe.school_user = user[0]
+        elif spe.school_user == user[0]:
+            spe.school_user = None
+        spe.save()
+    return simplejson.dumps({'status':'1'})
+
+@dajaxice_register
+def getNoticePagination(request,page):
+    message=""
+    table=refresh_template_notice_table(request,page)
+    ret={"message":message,"table":table}
+    return simplejson.dumps(ret)
     
+
     Object = getObject(object)
 
     for i in deleted:
-        cnt = Object.objects.filter(name = i)        
+        cnt = Object.objects.filter(name = i)
         Object.objects.filter(name = i).delete()
-    return simplejson.dumps({'status':'1' , 
+    return simplejson.dumps({'status':'1' ,
         'objects_table': refreshObjectTable(request, object)
         })
 
 @dajaxice_register
 def allocObject(request, object, user, alloced):
-    
+
     filter_user = user
     if object == "special":
         user = SchoolProfile.objects.filter(userid__username = filter_user)[0]
@@ -167,13 +176,8 @@ def allocObject(request, object, user, alloced):
         'object_table': refreshObjectTable(request, object),
         })
 
-
-
-
-
-
 @dajaxice_register
-def TemplateNoticeChange(request,template_form,mod):
+def TemplateNoticeChange(request,template_form,mod,page):
     if mod==-1:
         template_form=TemplateNoticeMessageForm(deserialize_form(template_form))
         template_form.save()
@@ -181,14 +185,15 @@ def TemplateNoticeChange(request,template_form,mod):
         template_notice=TemplateNoticeMessage.objects.get(pk=mod)
         f=TemplateNoticeMessageForm(deserialize_form(template_form),instance=template_notice)
         f.save()
-    table=refresh_template_notice_table(request)
+    table=refresh_template_notice_table(request,page)
     ret={"status":'0',"message":u"模版消息添加成功","table":table}
     return simplejson.dumps(ret)
-def refresh_template_notice_table(request):
+def refresh_template_notice_table(request,page):
     template_notice_message_form=TemplateNoticeMessageForm
     template_notice_message=TemplateNoticeMessage.objects.all()
     template_notice_message_group=[]
     cnt=1
+    page=int(page)
     for item in template_notice_message:
         nv={
             "id":item.id,
@@ -198,15 +203,15 @@ def refresh_template_notice_table(request):
         }
         cnt+=1
         template_notice_message_group.append(nv)
-    return render_to_string("widgets/template_notice_table.html",{
-            "template_notice_message_form":template_notice_message_form,
-            "template_notice_message_group":template_notice_message_group,
-    })
+    context=getContext(template_notice_message_group,page,"item",0)
+    context.update({"template_notice_message_form":template_notice_message_form})
+    return render_to_string("widgets/template_notice_table.html",context)
 @dajaxice_register
-def TemplateNoticeDelete(request,deleteID):
+def TemplateNoticeDelete(request,deleteID,page):
     template_notice=TemplateNoticeMessage.objects.get(pk=deleteID)
     template_notice.delete()
-    table=refresh_template_notice_table(request)
+    table=refresh_template_notice_table(request,page)
+    #.c.c.oginfo(table)
     ret={"status":'0',"message":u"模版消息删除成功","table":table}
     return simplejson.dumps(ret)
 
@@ -256,8 +261,6 @@ def refresh_user_table(request,identity):
     return render_to_string("widgets/dispatch/user_addcollege_table.html",
                             {"users":users})
 
-
-
 @dajaxice_register
 def getTeacherInfo(request, name):
     message = ""
@@ -282,3 +285,21 @@ def modifyTeacherInfo(request, name, card, id):
         message = "fail"
 
     return simplejson.dumps({"message": message, })
+@dajaxice_register
+def get_news_list(request, uid):
+
+    logger.info("sep delete news"+"**"*10)
+    # check mapping relation
+    try:
+        delnews=News.objects.get(id=uid)
+        logger.info(delnews.id)
+        if request.method == "POST":
+            delnews.delete()
+            return simplejson.dumps({"is_deleted": True,
+                    "message": "delete it successfully!",
+                    "uid": str(uid)})
+        else:
+            return simplejson.dumps({"is_deleted": False,
+                                     "message": "Warning! Only POST accepted!"})
+    except Exception, err:
+        logger.info(err)

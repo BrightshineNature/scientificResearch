@@ -82,7 +82,7 @@ def get_qset(userauth):
             pending=create_QE(PROJECT_STATUS_TASK_COMMIT_OVER)|create_QE(PROJECT_STATUS_PROGRESS_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_COMMIT_OVER)
             default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
-    else:
+    elif userauth['role']=="college":
         if userauth['status']=="application":
             pending=create_QE(PROJECT_STATUS_APPLICATION_COMMIT_OVER)
             default=create_QE(PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
@@ -90,6 +90,15 @@ def get_qset(userauth):
         else:
             pending=Q()
             default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
+            search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
+    else:
+        if userauth['status']=="budget":
+            pending=create_QE(PROJECT_STATUS_TASK_COMMIT_OVER)
+            default=create_QE(PROJECT_STATUS_TASK_FINANCE_OVER)
+            search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
+        else:
+            pending=create_QE(PROJECT_STATUS_FINAL_COMMIT_OVER)
+            default=create_QE(PROJECT_STATUS_FINAL_FINANCE_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     return (pending,default,search)
 

@@ -13,7 +13,8 @@ RegisterClass = (
 	FinalSubmit,
 	ProjectAchivement,
     ProjectStatistics,
-    TeacherInfoSetting
+    TeacherInfoSetting,
+	ProjectFundSummary,
 )
 
 for temp in RegisterClass:

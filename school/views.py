@@ -7,11 +7,12 @@ Desc: school' view, includes home(manage), review report view
 from django.shortcuts import render
 from django.db.models import Q
 
-from common.views import scheduleManage, financialManage,researchConcludingManage
+from common.views import scheduleManage, researchConcludingManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from teacher.forms import SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
 from users.models import ExpertProfile
+from users.models import ExpertProfile, SchoolProfile
 from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
 from backend.logging import loginfo
 from school.forms import FilterForm
@@ -28,18 +29,6 @@ def scheduleView(request):
     }
     return scheduleManage(request, userauth)
 
-def judgeProjectView(request,pid,pass_p):
-    project=ProjectSingle.objects.get(pk=pid)
-    if pass_p=="1":
-        status_confirm(project,APPLICATION_SCHOOL_CONFIRM)
-
-    return scheduleView(request)
-
-def financialView(request):
-    userauth = {
-                "role": 'school',                
-    }
-    return financialManage(request, userauth)
 
 
 def financialInfoView(request):
@@ -59,32 +48,23 @@ def progressReportView(requset):
     return render(requset,"school/progress.html",context)
 
 def allocView(request):
-    if request.method == "GET":
-        project_list = ProjectSingle.objects.all()
-
-        expert_list = ExpertProfile.objects.all()
+    expert_list = ExpertProfile.objects.all()
+    project_list = ProjectSingle.objects.all()
+    form = FilterForm(request = request)
     
-        form = FilterForm()
-    else:
-        form = FilterForm(request.POST)
-        if form.is_valid():
-            college = form.cleaned_data["colleges"]
-            special = form.cleaned_data["specials"]
-            if college == "-1":
-                project_list = ProjectSingle.objects.all()
-                expert_list = ExpertProfile.objects.all()
-            else:
-                project_list = ProjectSingle.objects.filter(teacher__college = college)
-                expert_list = ExpertProfile.objects.filter(college = college)
-            project_list = project_list.filter(project_special = special)
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
     
     context = getContext(project_list, 1, "item", 0)
+
+    expert_form = FilterForm()
     context.update({
-                    "expert_list": expert_list,
                     "form": form,
+                    "expert_form": expert_form,
                   })
+
+    context.update(getContext(expert_list, 1, "item3", 0))
+
     return render(request, "school/alloc.html", context)
 
 def researchConcludingView(request):

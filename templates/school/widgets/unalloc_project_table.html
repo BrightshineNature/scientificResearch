@@ -1,13 +1,14 @@
 <table class="table table-condensed" id="unalloced_subject_table">
 	<thead>
 		<tr>
-		  <th>选择</th>
+		  <th><label class="checkbox">
+        	<input type="checkbox" class="select_all" arg="checkbox_unalloc_project">
+				</label></th>
 		  <th>项目编号</th>
 		  <th>发布题目名称</th>
 		  <th>所属学院</th>
 		  <th>所属分类</th>
 		  <th>题目状态</th>
-		  <th>操作</th>
 		</tr>
 	</thead>
 	<tbody id="unalloced_subject_table_body">
@@ -15,7 +16,7 @@
   {% for project in item_list %}
   <tr>
 		<td><label class="checkbox">
-        	<input type="checkbox" name="checkbox_project">
+        	<input type="checkbox" name="checkbox_unalloc_project">
 				</label>
     </td>
 		<td>{{ project.project_code }}</td>
@@ -23,7 +24,6 @@
 		<td>{{ project.teacher.college }}</td>
 		<td>{{ project.project_special }}</td>
 		<td>已通过</td>
-		<td><a data-toggle="modal" href="#alloc_choice">指派专家</a></td>
 	</tr>
 
   {% endfor %}
