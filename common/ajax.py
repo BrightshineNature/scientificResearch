@@ -19,7 +19,7 @@ from backend.logging import loginfo
 from const import *
 from adminStaff.models import ProjectSingle
 from common.utils import status_confirm
-from const import *
+from const.models import ScienceActivityType
 from adminStaff.models import ProjectSingle
 from common.forms import ProjectInfoForm
 
@@ -83,7 +83,9 @@ def saveProjectInfoForm(request, form, pid):
     p = ProjectSingle.objects.get(project_id = pid)
     if form.is_valid():        
         p.title = form.cleaned_data['project_name']
-        # p.science_type = form.cleaned_data['science_type']
+        science_type =form.cleaned_data['science_type']
+        scienceType = ScienceActivityType.objects.get(category=science_type)
+        p.science_type = scienceType
         p.trade_code = form.cleaned_data['trade_code']
         p.subject_name = form.cleaned_data['subject_name']
         p.subject_code = form.cleaned_data['subject_code']
