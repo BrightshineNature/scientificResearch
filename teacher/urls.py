@@ -18,7 +18,7 @@ urlpatterns = patterns('',
         teacher_views.memberChange,
        ),
     url(
-        r'^application$',
+        r'^application/(?P<pid>.{36})$',
         teacher_views.appView,
        ),
     url(

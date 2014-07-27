@@ -86,14 +86,15 @@ science_type_choices = (("-1", "科技活动类型"),) + SCIENCE_ACTIVITY_TYPE_C
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
         max_length = 20,
-        required=False,
-        widget=forms.TextInput(
-            attrs={
+        required=True,
+        widget=forms.TextInput(attrs={
             'class':'form-control ',            
-            'id':'name',
             'placeholder':u"项目名称"}), )
+
     science_type_choices = (("-1", "科技活动类型"),) + SCIENCE_ACTIVITY_TYPE_CHOICES
-    science_type = forms.ChoiceField(choices= science_type_choices,
+    science_type = forms.ChoiceField(
+        choices= science_type_choices,
+        required = True,
         widget=forms.Select(attrs={
             'class':'form-control', 
             'style':'margin: 0px!important',
@@ -103,52 +104,46 @@ class ProjectInfoForm(forms.Form):
         )
     trade_code = forms.CharField(
         max_length = 20,
-        required=False,
+        required=True,
         widget=forms.TextInput(
             attrs={
             'class':'form-control ',
-            'id':'name',
             'placeholder':u"国民行业代码（国标）"}), )
     subject_name = forms.CharField(
         max_length = 20,
-        required=False,
+        required=True,
         widget=forms.TextInput(
             attrs={
             'class':'form-control ',
-            'id':'name',
             'placeholder':u"学科名称"}), )
     subject_code = forms.CharField(
         max_length = 20,
-        required=False,
+        required=True,
         widget=forms.TextInput(
             attrs={
             'class':'form-control ',
-            'id':'name',
             'placeholder':u"学科代码"}), )
     start_time = forms.DateField(
         # max_length = 20,
-        required=False,
+        required=True,
         widget=forms.DateInput(
             attrs={
             'class':'form-control ',
-            'id':'name',
             'placeholder':u"研究开始时间"}), )
 
-    end_time = forms.CharField(
-        max_length = 20,
-        required=False,
-        widget=forms.TextInput(
+    end_time = forms.DateField(
+        # max_length = 20,
+        required=True,
+        widget=forms.DateInput(
             attrs={
             'class':'form-control ',
-            'id':'name',
             'placeholder':u"研究结束时间"}), )
     project_tpye =forms.CharField(
         max_length = 20,
-        required=False,
+        required=True,
         widget=forms.TextInput(
             attrs={
             'class':'form-control ',
-            'id':'name',
             'placeholder':u"项目类型"}), )
 
 
