@@ -37,13 +37,10 @@ def appManage(request, userauth, pid):
     base_condition_form = BaseConditionForm()
     p = ProjectSingle.objects.get(project_id = pid)
 
-    # SCIENCE_ACTIVITY_TYPE_CHOICES
-
-    # print "SBSB**(*(**(&*&&(^^"
-    # print p.science_type
     project_info_data = { 
         'project_name': p.title,
-        'science_type': p.science_type,
+        'science_type': p.science_type.category ,
+
         'trade_code': p.trade_code,
         'subject_name': p.subject_name,
         'subject_code': p.subject_code,

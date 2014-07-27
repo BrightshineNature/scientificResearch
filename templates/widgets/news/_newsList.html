@@ -1,0 +1,27 @@
+<div id="news-list">
+  <div class="news-documents documents-list">
+    {%if news_cate != "documents"%}
+    {% for news in news_list %}
+    <div class="usoft-listview-basic">
+      <ul>
+        <li>
+          <span class="usoft-listview-item-date" >{{news.news_date|date:"[y-m-d]"}}</span>
+          <span><a href="{{ news.id }}" title="{{news.news_title}}">{{ news.news_title|truncatechars:65 }}</a></span>
+        </li>
+      </ul>
+    </div>
+    {% endfor %}
+    {%else%}
+    {% for news in news_list %}
+    <div class="usoft-listview-basic">
+      <ul>
+        <li>
+          <span class="usoft-listview-item-date" >{{news.news_date|date:"[y-m-d]"}}</span>
+          <span><a href="{{news.news_document.url}}" title="{{news.document_name}}">{{ news.document_name|truncatechars:30 }}</a></span>
+        </li>
+      </ul>
+    </div>
+    {% endfor %}
+    {%endif%}
+  </div>
+</div>

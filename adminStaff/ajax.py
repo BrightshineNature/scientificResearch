@@ -17,44 +17,157 @@ from django.template.loader import render_to_string
 from dajaxice.utils import deserialize_form
 from adminStaff.models import TemplateNoticeMessage
 from backend.logging import loginfo
-from common.sendEmail import sendemail
-from backend.utility import getContext
-@dajaxice_register
-def saveSpecialName(request, form):
-    form = SpecialForm(deserialize_form(form))
 
-    if form.is_valid():
-        p = Special(name = form.cleaned_data['name'])
-        p.save()
-        return simplejson.dumps({'status':'1'})
+from users.models import SchoolProfile,CollegeProfile,Special,College
+from teacher.models import TeacherInfoSetting
+from backend.logging import logger
+from   adminStaff.forms      import ObjectForm
+def getObject(object):
+    if object == "special":
+        return Special
+    elif object == "college":
+        return College
     else :
-        return simplejson.dumps({'status':'0'})
+        print "error in getObject"
+        return None
+def refreshObjectTable(request, object):
 
-@dajaxice_register
-def deleteSpecialName(request, checked):
+    object_list = []
+    if(object == "special"):
+        for i in Special.objects.all() :
+            object_list.append({'name':i.name, 'user':i.school_user, })
+    elif object == "college":
+        for i in College.objects.all() :
+            object_list.append({'name':i.name, 'user':i.college_user, })
 
-    tag = False
-    for i in checked:
-        Special.objects.filter(id = i).delete()
-        tag = True
-    if tag :
-        return simplejson.dumps({'status':'1'})
+    instance = {
+        'object_list': object_list
+    }
+    return render_to_string("adminStaff/widgets/objects_table.html", {'instance': instance})
+def refreshObjectAlloc(request, object):
+
+    if object == "special":
+
+        user_special_info = {}
+
+        for i in SchoolProfile.objects.all():
+            user_special_info[i] = []   
+        
+        for i in Special.objects.all():
+            if i.school_user:
+                user_special_info[i.school_user].append(i.name)
+        instance = {
+            'object_chinese_name':'专题',
+            'user_object_info':user_special_info,
+        }
+        return render_to_string("adminStaff/widgets/object_alloc.html", {'instance': instance})
+    elif object == "college":
+        user_college_info = {}
+
+        for i in CollegeProfile.objects.all():
+            user_college_info[i] = []   
+        
+        for i in College.objects.all():
+            if i.college_user:
+                user_college_info[i.college_user].append(i.name)
+        instance = {
+            'object_chinese_name':'学院',
+            'user_object_info':user_college_info,
+        }
+        return render_to_string("adminStaff/widgets/object_alloc.html", {'instance': instance})
+
     else:
-        return simplejson.dumps({'status':'0'})
+        loginfo("error in refreshObjectAlloc")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from common.sendEmail import sendemail
 
 @dajaxice_register
-def allocSpecial(request, user, alloced):
+def saveObjectName(request, object, form):
 
-    user = SchoolProfile.objects.filter(userid__username = user)
+    print "save*****"
+    print object
+    form = ObjectForm(deserialize_form(form))
 
-    all_spe = Special.objects.all()
-    for spe in all_spe:
-        if alloced.count(spe.name):
-            spe.school_user = user[0]
-        elif spe.school_user == user[0]:
-            spe.school_user = None
-        spe.save()
-    return simplejson.dumps({'status':'1'})
+    Object = getObject(object)
+
+
+    if form.is_valid():        
+        p = Object(name = form.cleaned_data['name'])
+        print ""
+        print p.name
+        p.save()
+    else :
+        pass
+
+    return simplejson.dumps({'status':'1' , 
+        'objects_table': refreshObjectTable(request, object)
+        })
+
+@dajaxice_register
+def deleteObjectName(request, object, deleted):
+
+    
+    Object = getObject(object)
+
+    for i in deleted:
+        cnt = Object.objects.filter(name = i)        
+        Object.objects.filter(name = i).delete()
+    return simplejson.dumps({'status':'1' , 
+        'objects_table': refreshObjectTable(request, object)
+        })
+
+@dajaxice_register
+def allocObject(request, object, user, alloced):
+    
+    filter_user = user
+    if object == "special":
+        user = SchoolProfile.objects.filter(userid__username = filter_user)[0]
+    elif object == "college":
+
+        user = CollegeProfile.objects.filter(userid__username = filter_user)[0]
+    else:
+        loginfo("error in allocObject")
+
+    Object = getObject(object)
+    objs = Object.objects.all()
+    for o in objs:
+        if object == "special":
+            if alloced.count(o.name):
+                o.school_user = user
+            elif o.school_user == user:
+                o.school_user = None
+            o.save()
+        elif object == "college":
+            if alloced.count(o.name):
+                o.college_user = user
+            elif o.college_user == user:
+                o.college_user = None
+            o.save()
+        else:
+            loginfo("error in allocObject")
+
+
+    return simplejson.dumps({'status':'1' , 
+        'object_alloc': refreshObjectAlloc(request, object),
+        'object_table': refreshObjectTable(request, object),
+        })
+
 
 @dajaxice_register
 def getNoticePagination(request,page):

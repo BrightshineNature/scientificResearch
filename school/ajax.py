@@ -14,10 +14,14 @@ from common.utils import status_confirm
 from const.models import ProjectStatus
 
 @dajaxice_register
-def getUnallocProjectPagination(request, page, college_id, special_id):
+def getUnallocProjectPagination(request, page, college_id, special_id, path):
     message = ""
     page = int(page)
-    project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+    if path == FIRST_ROUND_PATH:
+        project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+    else:
+        project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
+
     if college_id != "-1":
         project_list = project_list.filter(teacher__college = college_id)
     if special_id != "-1":
@@ -28,12 +32,14 @@ def getUnallocProjectPagination(request, page, college_id, special_id):
     return simplejson.dumps({"message": message, "html": html, })
 
 @dajaxice_register
-def getAllocProjectPagination(request, page, college_id, special_id):
+def getAllocProjectPagination(request, page, college_id, special_id, path):
     message = ""
     page = int(page)
+    if path == FIRST_ROUND_PATH:
+        project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+    else:
+        project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
 
-    print page, college_id, special_id
-    project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
     if college_id != "-1":
         project_list = project_list.filter(teacher__college = college_id)
     if special_id != "-1":
@@ -44,38 +50,49 @@ def getAllocProjectPagination(request, page, college_id, special_id):
     return simplejson.dumps({"message": message, "html": html, })
 
 @dajaxice_register
-def getAllocExpertPagination(request, id, page):
+def getAllocExpertPagination(request, id, page, path):
     message = ""
     page = int(page)
+    is_first_round = (path == FIRST_ROUND_PATH)
+
     if id == "-1": expert_list = ExpertProfile.objects.all()
     else: expert_list = ExpertProfile.objects.filter(college__id = id)
     for expert in expert_list:
-        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round)).count()
 
     context = getContext(expert_list, page, "item3", 0)
     html = render_to_string("school/widgets/alloc_expert_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })
 
 @dajaxice_register
-def getExpertList(request, id):
+def getExpertList(request, id, path):
     message = ""
+    is_first_round = (path == FIRST_ROUND_PATH)
     if id == '-1': expert_list = ExpertProfile.objects.all()
     else: expert_list = ExpertProfile.objects.filter(college__id = id)
     for expert in expert_list:
-        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round)).count()
     context = getContext(expert_list, 1, "item3", 0)
     html = render_to_string("school/widgets/alloc_expert_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })
 
 @dajaxice_register
-def getProjectList(request, college_id, special_id):
-    alloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+def getProjectList(request, college_id, special_id, path):
+    if path == FIRST_ROUND_PATH:
+        alloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+    else:
+        alloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
+
     if college_id != "-1":
         alloc_project_list = alloc_project_list.filter(teacher__college = college_id)
     if special_id != "-1":
         alloc_project_list = alloc_project_list.filter(project_special = special_id)
     
-    unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+    if path == FIRST_ROUND_PATH:
+        unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+    else:
+        unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
+
     if college_id != "-1":
         unalloc_project_list = unalloc_project_list.filter(teacher__college = college_id)
     if special_id != "-1":
@@ -90,8 +107,10 @@ def getProjectList(request, college_id, special_id):
     return simplejson.dumps({"html_alloc": html_alloc, "html_unalloc": html_unalloc, })
 
 @dajaxice_register
-def allocProjectToExpert(request, project_list, expert_list):
+def allocProjectToExpert(request, project_list, expert_list, path):
     message = ""
+    is_first_round = (path == FIRST_ROUND_PATH)
+
     if len(project_list) == 0 or len(expert_list) == 0:
         message = "no project" if len(project_list) == 0 else "no expert"
     else:
@@ -100,40 +119,48 @@ def allocProjectToExpert(request, project_list, expert_list):
             project = ProjectSingle.objects.get(project_id = project_id)
             for expert in expert_list:
                 try:
-                    re_obj = Re_Project_Expert.objects.get(project = project, expert = expert, is_first_round = True)
+                    re_obj = Re_Project_Expert.objects.get(project = project, expert = expert, is_first_round = is_first_round)
                     re_obj.delete()
                 except:
                     pass
                 finally:
-                    Re_Project_Expert(project = project, expert = expert, is_first_round = True).save()
-            
-            project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+                    Re_Project_Expert(project = project, expert = expert, is_first_round = is_first_round).save()
+            if path == FIRST_ROUND_PATH:
+                project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+            else:
+                project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
             project.save()
         message = "ok"
     
     return simplejson.dumps({"message": message, })
 
 @dajaxice_register
-def cancelProjectAlloc(request, project_list):
+def cancelProjectAlloc(request, project_list, path):
     message = ""
+    is_first_round = (path == FIRST_ROUND_PATH)
+
     if len(project_list) == 0:
         message = "no project"
     else:
         for project_id in project_list:
             project = ProjectSingle.objects.get(project_id = project_id)
-            for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = True)):
+            for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round)):
                 re_obj.delete()
-        project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
-        project.save()
+            if path == FIRST_ROUND_PATH:
+                project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+            else:
+                project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
+            project.save()
         message = "ok"
     return simplejson.dumps({"message": message,})
 
 
 @dajaxice_register
-def queryAllocedExpert(request, project_id):
+def queryAllocedExpert(request, project_id, path):
     message = ""
+    is_first_round = (path == FIRST_ROUND_PATH)
     project = ProjectSingle.objects.get(project_id = project_id)
-    expert_list = [re_obj.expert for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = True))]
+    expert_list = [re_obj.expert for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round))]
 
     html = ''
     for expert in expert_list:
