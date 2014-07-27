@@ -9,12 +9,13 @@ from django.db.models import Q
 from adminStaff.models import ProjectSingle, Re_Project_Expert
 from backend.utility import getContext
 from users.models import ExpertProfile
+from const import *
 
 @dajaxice_register
 def getUnallocProjectPagination(request, page):
     message = ""
     page = int(page)
-    project_list = ProjectSingle.objects.all()
+    project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
     context = getContext(project_list, page, "item", 0)
     html = render_to_string("school/widgets/unalloc_project_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })
@@ -23,7 +24,7 @@ def getUnallocProjectPagination(request, page):
 def getAllocProjectPagination(request, page):
     message = ""
     page = int(page)
-    project_list = ProjectSingle.objects.all()
+    project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
     context = getContext(project_list, page, "item", 0)
     html = render_to_string("school/widgets/alloc_project_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })
@@ -62,9 +63,12 @@ def getProjectList(request, college_id, special_id):
 
     if special_id != "-1":
         project_list = project_list.filter(project_special = special_id)
-
-    context = getContext(project_list, 1, "item", 0)
-
-    html_alloc = render_to_string("school/widgets/alloc_project_table.html", context)
+    unalloc_project_list = project_list.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+    alloc_project_list = project_list.filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+    
+    context = getContext(unalloc_project_list, 1, "item", 0)
+    context2 = getContext(alloc_project_list, 1, "item2", 0)
+    
+    html_alloc = render_to_string("school/widgets/alloc_project_table.html", context2)
     html_unalloc = render_to_string("school/widgets/unalloc_project_table.html", context)
     return simplejson.dumps({"html_alloc": html_alloc, "html_unalloc": html_unalloc, })

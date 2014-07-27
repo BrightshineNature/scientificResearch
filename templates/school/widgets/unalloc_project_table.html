@@ -16,14 +16,14 @@
   {% for project in item_list %}
   <tr>
 		<td><label class="checkbox">
-        	<input type="checkbox" name="checkbox_unalloc_project">
+        	<input type="checkbox" name="checkbox_unalloc_project" value="{{ project.project_id }}">
 				</label>
     </td>
 		<td>{{ project.project_code }}</td>
 		<td>{{ project.title }}</td>
 		<td>{{ project.teacher.college }}</td>
 		<td>{{ project.project_special }}</td>
-		<td>已通过</td>
+		<td>{{ project.project_status }}</td>
 	</tr>
 
   {% endfor %}

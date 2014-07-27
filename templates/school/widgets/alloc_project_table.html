@@ -15,7 +15,7 @@
 	</thead>
 		<tbody id="alloced_subject_table_body">
                     
-      {% for project in item_list %}
+      {% for project in item2_list %}
         <tr>
 			  <td><label class="checkbox">
                          <input type="checkbox" name="checkbox_alloc_project">
@@ -25,12 +25,12 @@
 			  <td>{{ project.title }}</td>
 			  <td>{{ project.teacher.college }}</td>
 			  <td>{{ project.project_special }}</td>
-			  <td>已通过</td>
+			  <td>{{ project.project_status }}</td>
 			  <td><a data-toggle="modal" href="#query_or_cancel">查询指派信息</a></td>
 			</tr>
     {% endfor %}
   </tbody>
 </table>
 <div id="alloc_paginator">
-	{% include "widgets/paginator.html" %}
+	{% include "widgets/paginator2.html" %}
 </div>

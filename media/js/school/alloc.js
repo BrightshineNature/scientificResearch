@@ -84,4 +84,18 @@ function getExpertListCallback(data){
     $("#expert_list_div").html(data.html);
 }
 
+$("#button_operator_alloc button").click(function(){
+    var expert_list = []
+    var project_list = []
+    $("input[name='checkbox_expert']:checkbox:checked").each(function(){ 
+        expert_list.push($(this).val());
+    });
+    $("input[name='checkbox_unalloc_project']:checkbox:checked").each(function(){ 
+        project_list.push($(this).val());
+    });
+    alert(expert_list);
+    alert(project_list);
+});
+
+
 
