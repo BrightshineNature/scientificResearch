@@ -50,13 +50,15 @@ $("#member_change_table ").on("click",".btn-success",function(){
 
 });
 $("#add_new_member").click(function(){
+
+    alert("SSBB");
     
-    $("#member_change_form input").val('');
-    $("#member_change_form select").val(-1);
-    mod=1;
-    $(".modal-title").html("添加教师");
-    $("#save_change").html("确认添加");
-    $("#teacher_profile_info").modal();
+    // $("#member_change_form input").val('');
+    // $("#member_change_form select").val(-1);
+    // mod=1;
+    // $(".modal-title").html("添加教师");
+    // $("#save_change").html("确认添加");
+    // $("#teacher_profile_info").modal();
 });
 $("#save_change").click(function(){
     var formData=$("#member_change_form").serializeArray();
