@@ -118,6 +118,9 @@ class ProjectFundSummary(models.Model):
    							   verbose_name="经费决算表唯一ID")
     finalsubmit_id = models.ForeignKey(FinalSubmit)
    
+    finance_comment = models.CharField(max_length=50, blank=True, null=True,default="",
+   										verbose_name="财务评审意见")
+ 
     equcosts_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
    										verbose_name="设备费预算经费")
     equcosts_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",

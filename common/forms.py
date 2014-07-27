@@ -3,7 +3,6 @@
 from django import forms
 from const import *
 from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice
-from common.models import ProjectInfo
 class ScheduleBaseForm(forms.Form):
     status_choices = get_status_choice()
     application_status_choice =get_application_status_choice()
