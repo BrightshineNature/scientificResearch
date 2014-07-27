@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/member_change.css" >
 
 <p> </p>
-<form class="well form" id="project_info_form" method="POST" action="">
+<form class="well form">
     <div class="row">
         <div class="col-lg-3 ">
             <div class="input-group">
@@ -46,8 +46,9 @@
 
 
             <div class="input-group date form-date" data-date="" data-date-format="yyyy-mm-dd">
-                {{ project_info_form.start_time }}
+                
                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                {{ project_info_form.start_time }}
             </div>
         </div>
     </div>
@@ -55,10 +56,14 @@
 
     <div class="row">
         <div class="col-lg-3 ">
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+
+            <div class="input-group date form-date" data-date="" data-date-format="yyyy-mm-dd">  
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 {{ project_info_form.end_time }}
-            </div> 
+            </div>
+
+
+
         </div>
 
         <div class="col-lg-3">
@@ -71,9 +76,24 @@
 
 
     </div>
+
+
 </form>
 
 
-<link rel="stylesheet" href="/static/bootstrap-datepicker/css/bootstrap-datetimepicker.css" type="text/css" media="screen">
 
-<script type="text/javascript" src="/static/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
+
+
+
+<link rel="stylesheet" href="{{STATIC_URL}}bootstrap-datepicker/css/bootstrap-datetimepicker.css" type="text/css" media="screen">
+
+
+<script type='text/javascript' src="{{STATIC_URL}}bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
+
+
+
+
+
+
+
+
