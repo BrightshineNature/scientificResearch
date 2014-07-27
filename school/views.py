@@ -7,7 +7,7 @@ Desc: school' view, includes home(manage), review report view
 from django.shortcuts import render
 from django.db.models import Q
 
-from common.views import scheduleManage, researchConcludingManage
+from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from teacher.forms import SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
@@ -77,8 +77,10 @@ def finalAllocView(request):
     context = {}
     return render(request, "school/final_alloc.html", context)
 def noticeMessageSettingView(request):
-    context = {}
-    return render(request, "school/notice.html", context)
+    userauth={
+        "role":"special"
+    }
+    return noticeMessageSettingBase(request,userauth)
 
 def controlView(request):
     

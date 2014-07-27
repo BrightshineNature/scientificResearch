@@ -15,8 +15,9 @@ from adminStaff.forms import TemplateNoticeMessageForm,DispatchForm,DispatchAddC
 from django.utils import simplejson
 from django.template.loader import render_to_string
 from dajaxice.utils import deserialize_form
-from adminStaff.models import TemplateNoticeMessage,News
+from adminStaff.models import TemplateNoticeMessage
 from backend.logging import loginfo
+<<<<<<< HEAD
 from users.models import SchoolProfile,CollegeProfile,Special,College
 from teacher.models import TeacherInfoSetting
 from backend.logging import logger
@@ -94,6 +95,8 @@ def refreshObjectAlloc(request, object):
 
 
 
+=======
+>>>>>>> 200eb1c4dcd524699e1e957c029c46b68e17b913
 from common.sendEmail import sendemail
 
 @dajaxice_register
@@ -106,10 +109,15 @@ def saveObjectName(request, object, form):
     Object = getObject(object)
 
 
+<<<<<<< HEAD
     if form.is_valid():        
         p = Object(name = form.cleaned_data['name'])
         print ""
         print p.name
+=======
+    if form.is_valid():
+        p = Special(name = form.cleaned_data['name'])
+>>>>>>> 200eb1c4dcd524699e1e957c029c46b68e17b913
         p.save()
     else :
         pass
@@ -119,6 +127,7 @@ def saveObjectName(request, object, form):
         })
 
 @dajaxice_register
+<<<<<<< HEAD
 def deleteObjectName(request, object, deleted):
 
     
@@ -130,6 +139,18 @@ def deleteObjectName(request, object, deleted):
     return simplejson.dumps({'status':'1' , 
         'objects_table': refreshObjectTable(request, object)
         })
+=======
+def deleteSpecialName(request, checked):
+
+    tag = False
+    for i in checked:
+        Special.objects.filter(id = i).delete()
+        tag = True
+    if tag :
+        return simplejson.dumps({'status':'1'})
+    else:
+        return simplejson.dumps({'status':'0'})
+>>>>>>> 200eb1c4dcd524699e1e957c029c46b68e17b913
 
 @dajaxice_register
 def allocObject(request, object, user, alloced):
@@ -175,52 +196,6 @@ def getNoticePagination(request,page):
     ret={"message":message,"table":table}
     return simplejson.dumps(ret)
     
-
-    Object = getObject(object)
-
-    for i in deleted:
-        cnt = Object.objects.filter(name = i)
-        Object.objects.filter(name = i).delete()
-    return simplejson.dumps({'status':'1' ,
-        'objects_table': refreshObjectTable(request, object)
-        })
-
-@dajaxice_register
-def allocObject(request, object, user, alloced):
-
-    filter_user = user
-    if object == "special":
-        user = SchoolProfile.objects.filter(userid__username = filter_user)[0]
-    elif object == "college":
-
-        user = CollegeProfile.objects.filter(userid__username = filter_user)[0]
-    else:
-        loginfo("error in allocObject")
-
-    Object = getObject(object)
-    objs = Object.objects.all()
-    for o in objs:
-        if object == "special":
-            if alloced.count(o.name):
-                o.school_user = user
-            elif o.school_user == user:
-                o.school_user = None
-            o.save()
-        elif object == "college":
-            if alloced.count(o.name):
-                o.college_user = user
-            elif o.college_user == user:
-                o.college_user = None
-            o.save()
-        else:
-            loginfo("error in allocObject")
-
-
-    return simplejson.dumps({'status':'1' , 
-        'object_alloc': refreshObjectAlloc(request, object),
-        'object_table': refreshObjectTable(request, object),
-        })
-
 @dajaxice_register
 def TemplateNoticeChange(request,template_form,mod,page):
     if mod==-1:
@@ -305,46 +280,3 @@ def refresh_user_table(request,identity):
         users = ExpertProfile.objects.all()
     return render_to_string("widgets/dispatch/user_addcollege_table.html",
                             {"users":users})
-
-@dajaxice_register
-def getTeacherInfo(request, name):
-    message = ""
-    setting_list = TeacherInfoSetting.objects.filter(name = name)
-    context = {"setting_list": setting_list, }
-    html = render_to_string("adminStaff/widgets/modify_setting_table.html", context)
-    return simplejson.dumps({"message": message, "html": html, })
-
-@dajaxice_register
-def modifyTeacherInfo(request, name, card, id):
-    print "here"*100
-    message = ""
-    try:
-        if len(name) == 0 or len(card) == 0: raise
-
-        setting = TeacherInfoSetting.objects.get(id = id)
-        setting.name = name
-        setting.card = card
-        setting.save()
-        message = "ok"
-    except:
-        message = "fail"
-
-    return simplejson.dumps({"message": message, })
-@dajaxice_register
-def get_news_list(request, uid):
-
-    logger.info("sep delete news"+"**"*10)
-    # check mapping relation
-    try:
-        delnews=News.objects.get(id=uid)
-        logger.info(delnews.id)
-        if request.method == "POST":
-            delnews.delete()
-            return simplejson.dumps({"is_deleted": True,
-                    "message": "delete it successfully!",
-                    "uid": str(uid)})
-        else:
-            return simplejson.dumps({"is_deleted": False,
-                                     "message": "Warning! Only POST accepted!"})
-    except Exception, err:
-        logger.info(err)
