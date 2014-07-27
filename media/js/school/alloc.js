@@ -1,5 +1,19 @@
+if(!String.prototype.format) {
+    String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] != 'undefined'
+                ? args[number] : match;
+        });
+    };
+}
+
+var glob_path;
+
 $(document).ready(function(){
     $("#button_operator_cancel").hide(); 
+
+    glob_path = window.location.pathname.split('/')[2];
 });
 
 $("#alloc_tab").click(function(){
@@ -9,6 +23,15 @@ $("#alloc_tab").click(function(){
 $("#unalloc_tab").click(function(){
     $("#button_operator_cancel").hide(); 
     $("#button_operator_alloc").show();
+});
+
+
+$(document).on("click", ".select_all", function(){
+    var state = this.checked;
+    target = "[name='{0}']".format($(this).attr("arg"));
+    $(target).each(function(){
+        this.checked = state;  
+    });
 });
 
 var glob_project_college_id = "-1";
