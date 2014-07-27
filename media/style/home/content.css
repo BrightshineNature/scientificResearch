@@ -151,6 +151,7 @@ table.documents td {
     text-overflow:ellipsis;
     -o-text-overflow:ellipsis;
     overflow:hidden;
+    text-align:left!important;
 }
 .news-body {
     height: 100%;
@@ -162,6 +163,9 @@ table.documents td {
     height: 100%;
     width: 95%;
 /* border-right: 1px solid #0064b9; */
+}
+#news-list {
+    padding-top:20px;
 }
 
 .usoft-listview-header
@@ -205,6 +209,19 @@ table.documents td {
     margin: 0px 15px 0px 0px;
     text-align: right;
 }
+.usoft-listview-basic
+{
+    margin: 0px;
+    line-height: 2em;
+    margin-bottom:-9px;
+}
+.usoft-listview-basic li {
+    list-style-type: none;
+}
+.usoft-listview-basic ul,
+.usoft-listview-basic ol {
+    margin-left: -20px;
+}
 
 .news-list-important {
     margin: 0;
@@ -212,9 +229,23 @@ table.documents td {
     padding: 0 15px;
 }
 .news-documents {
-    height: 75% !important;
+    padding-top: 15px;
+    padding-left: 15px;
+    height: 100% !important;
 }
-
+.news-body .news-documents {
+    padding-top: 0px;
+}
+.news-main {
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-rightf: 20px;
+}
+.news-documents table {
+}
+.news-documents a {
+    color: rgb(128,128,128);
+}
 /* home linker*/
 #footer-links {
     background: rgb(32, 183, 240);

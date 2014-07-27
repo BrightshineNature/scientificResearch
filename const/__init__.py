@@ -224,7 +224,7 @@ ACHIVEMENT_TYPE=(
 
 
 PAGE_ELEMENTS = 10
-
+FIRST_ROUND_PATH = "alloc"
 
 # APP: news
 # the following 4 variables are used in foreground,
