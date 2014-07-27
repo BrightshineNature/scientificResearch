@@ -78,7 +78,7 @@ def finalAllocView(request):
     return render(request, "school/final_alloc.html", context)
 def noticeMessageSettingView(request):
     userauth={
-        "role":"special"
+        "role":"school"
     }
     return noticeMessageSettingBase(request,userauth)
 
