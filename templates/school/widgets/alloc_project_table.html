@@ -18,7 +18,7 @@
       {% for project in item2_list %}
         <tr>
 			  <td><label class="checkbox">
-                         <input type="checkbox" name="checkbox_alloc_project">
+                         <input type="checkbox" name="checkbox_alloc_project" value="{{ project.project_id }}">
                          </label>
                       </td>
 			  <td>{{ project.project_code }}</td>
@@ -26,7 +26,7 @@
 			  <td>{{ project.teacher.college }}</td>
 			  <td>{{ project.project_special }}</td>
 			  <td>{{ project.project_status }}</td>
-			  <td><a data-toggle="modal" href="#query_or_cancel">查询指派信息</a></td>
+			  <td><a data-toggle="modal" href="#query_modal" class="query_info" arg="{{ project.project_id }}">查询指派信息</a></td>
 			</tr>
     {% endfor %}
   </tbody>

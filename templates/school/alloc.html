@@ -42,7 +42,7 @@
     </div><!--end tab content-->
   </div><!--end tab pane-->
   <hr/>
-
+   <div id="id_div_expert">
 	<div id="expert_filter_form">
 		{% csrf_token %}
     {{ form.colleges}}
@@ -51,13 +51,13 @@
   <div id="expert_list_div">
 		{% include "school/widgets/alloc_expert_table.html" %}
   </div>
-
+    </div>
 	<div id="operator_area">
   	<a data-toggle="modal" id="button_operator_cancel"><button class="btn btn-primary">批量取消</button></a>
 		<a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
 	</div>
  
-	<div class="modal fade" id="query_or_cancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="query_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 		  <div class="modal-content">
 		    <div class="modal-header">
@@ -65,10 +65,6 @@
 		      <h3 class="modal-title">已指派评委列表</h3>
 		    </div>
 		    <div class="modal-body">
-            {% for expert in expert_list %}
-					{{ expert }}
-					<br/>
-		    {% endfor %}
             <div class="modal-footer">
 		      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 		    </div>
