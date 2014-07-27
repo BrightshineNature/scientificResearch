@@ -10,8 +10,8 @@ from backend.logging import logger, loginfo
 from adminStaff.models import ProjectSingle
 from django.db.models import Q
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
+from const.models import ScienceActivityType
 
-    
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
@@ -28,16 +28,33 @@ def getParam(pro_list, userauth,flag):
     }
     return param
 
-def appManage(request, userauth):
+def appManage(request, userauth, pid):
 
     project_info_form = ProjectInfoForm()
     basis_content_form = BasisContentForm()
     base_condition_form = BaseConditionForm()
+    p = ProjectSingle.objects.get(project_id = pid)
 
+    # SCIENCE_ACTIVITY_TYPE_CHOICES
+
+    # print "SBSB**(*(**(&*&&(^^"
+    # print p.science_type
+    project_info_data = { 
+        'project_name': p.title,
+        'science_type': p.science_type,
+        'trade_code': p.trade_code,
+        'subject_name': p.subject_name,
+        'subject_code': p.subject_code,
+        'start_time': p.start_time,
+        'end_time': p.end_time,
+        'project_tpye': p.project_tpye,
+
+    }
     context = {
-        'project_info_form': project_info_form,
+        'project_info_form': ProjectInfoForm(project_info_data),
         'basis_content_form':basis_content_form,
         'base_condition_form':base_condition_form,
+        'pid': pid,
     }
 
 

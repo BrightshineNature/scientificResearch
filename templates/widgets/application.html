@@ -1,46 +1,53 @@
 
-    <div class="table">
 
-      <ul class="nav nav-tabs">
+  <ul class="nav nav-tabs">
 
-        <li class="active"><a href="#project_infoform" data-toggle="tab"><strong>项目信息</strong></a></li>
-          
-        <li><a href="#project_member" data-toggle="tab"><strong>项目成员</strong></a></li>
-          
-          
-        <li><a href="#basis_content" data-toggle="tab"><strong>立项依据与研究内容</strong></a></li>
-          
-        <li><a href="#base_condition" data-toggle="tab"><strong>研究基础与工作条件</strong></a></li>
-        
-          
-
-      </ul>
+    <li class="active"><a href="#project_info_form" data-toggle="tab"><strong>项目信息</strong></a></li>
       
-      <div class="tab-content">
+    <li><a href="#project_member" data-toggle="tab"><strong>项目成员</strong></a></li>
+      
+      
+    <li><a href="#basis_content" data-toggle="tab"><strong>立项依据与研究内容</strong></a></li>
+      
+    <li><a href="#base_condition" data-toggle="tab"><strong>研究基础与工作条件</strong></a></li>
+    
+      
 
-        <div class="tab-pane active" id="project_infoform"> 
-          {% include "widgets/project_infoform.html" %}
-        </div>
+  </ul>
+  
+  <div class="tab-content" pid="{{pid}}" >
 
-        <div class="tab-pane" id="project_member">
-          {%include "widgets/member_change.html"%}
-        </div>
-
-
-        <div class="tab-pane" id="basis_content">
-
-        {% include "widgets/basis_content.html"%}
-
-        </div>
-
-        <div class="tab-pane" id="base_condition">
-
-          {% include "widgets/base_condition.html"%} 
-        </div>
-
-
-      </div>
-
+    <div class="tab-pane active" id="project_info_form"> 
+      {% include "widgets/project_infoform.html" %}
+      {%include "widgets/save_button.html"%}
 
 
     </div>
+
+    <div class="tab-pane" id="project_member">
+      {%include "widgets/member_change.html"%}
+    </div>
+
+
+    <div class="tab-pane" id="basis_content">
+
+    {% include "widgets/basis_content.html"%}
+
+    </div>
+
+    <div class="tab-pane" id="base_condition">
+
+      {% include "widgets/base_condition.html"%} 
+    </div>
+
+
+  </div>
+
+
+
+</div>
+
+
+
+<script type='text/javascript' src= "{{STATIC_URL}}js/common/application.js"> 
+</script>

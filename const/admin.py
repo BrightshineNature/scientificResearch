@@ -14,6 +14,7 @@ RegisterClass = (
     UserIdentity,
     ProjectStatus,
     NewsCategory,
+    ScienceActivityType,
 )
 
 for temp in RegisterClass:

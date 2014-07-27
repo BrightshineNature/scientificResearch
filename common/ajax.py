@@ -20,6 +20,9 @@ from const import *
 from adminStaff.models import ProjectSingle
 from common.utils import status_confirm
 from const import *
+from adminStaff.models import ProjectSingle
+from common.forms import ProjectInfoForm
+
 OVER_STATUS_NOTOVER = "notover"
 OVER_STATUS_OPENCHECK = "opencheck"
 OVER_STATUS_MIDCHECK = "midcheck"
@@ -79,3 +82,29 @@ def change_project_overstatus(request, project_id, changed_overstatus):
     else:
         res = "操作失败，请重试"
     return simplejson.dumps({'status':'1', 'res':res})
+
+
+
+@dajaxice_register
+def saveProjectInfoForm(request, form, pid):
+    form = ProjectInfoForm(deserialize_form(form))
+
+
+    p = ProjectSingle.objects.get(project_id = pid)
+    if form.is_valid():        
+        p.title = form.cleaned_data['project_name']
+        # p.science_type = form.cleaned_data['science_type']
+        p.trade_code = form.cleaned_data['trade_code']
+        p.subject_name = form.cleaned_data['subject_name']
+        p.subject_code = form.cleaned_data['subject_code']
+        p.start_time = form.cleaned_data['start_time']
+        p.end_time = form.cleaned_data['end_time']
+        p.project_tpye = form.cleaned_data['project_tpye']
+        p.save()            
+        pass
+    else :
+        print "error in saveProjectInfoForm"
+
+    
+
+

@@ -14,17 +14,20 @@
       </tr>
     </thead>
     <tbody>
+
+      {%for p in project_list %}
       <tr>
-        <td >51012014666666</td>
-        <td >testForYou</td>
-        <td >文科</td>
-        <td >huhu</td>
+        <td >{{p.project_application_code}}</td>
+        <td >{{p.title}}</td>
+        <td >{{p.project_special}}</td>
+        <td >{{p.project_tpye}}</td>
         <td >
-          <a href="/teacher/application" class="btn btn-primary btn-sm">申请表</a>
-          <a href="/teacher/file_upload" class="btn btn-primary btn-sm">文件上传</a>
+          <a href="/teacher/application/{{p.project_id}}" class="btn btn-primary btn-sm">申请表</a>
+          <a href="/teacher/file_upload/{{p.project_id}}" class="btn btn-primary btn-sm">文件上传</a>
         </td>
-        <td style="color:red">校级不通过:项目立项依据有问题</td>
+        <td style="color:red">{{p.comment}}</td>
       </tr>
+      {%endfor%}
     </tbody>
   </table>
 </div>

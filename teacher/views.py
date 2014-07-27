@@ -14,16 +14,19 @@ from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 from users.models import TeacherProfile
 from teacher.models import TeacherInfoSetting
 from common.views import appManage
-
-def appView(request):
+from adminStaff.models import ProjectSingle
+def appView(request, pid):
 
     userauth = {
         'role':"teacher",
     }
-    return appManage(request, userauth);    
+    return appManage(request, userauth, pid);    
     
 def homeView(request):
+
+    project_list = ProjectSingle.objects.all();
     context = {
+        'project_list':project_list,
 
     }
     return render(request,"teacher/project_info.html",context)
