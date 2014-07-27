@@ -17,7 +17,7 @@ from django.template.loader import render_to_string
 from dajaxice.utils import deserialize_form
 from adminStaff.models import TemplateNoticeMessage
 from backend.logging import loginfo
-<<<<<<< HEAD
+
 from users.models import SchoolProfile,CollegeProfile,Special,College
 from teacher.models import TeacherInfoSetting
 from backend.logging import logger
@@ -95,8 +95,6 @@ def refreshObjectAlloc(request, object):
 
 
 
-=======
->>>>>>> 200eb1c4dcd524699e1e957c029c46b68e17b913
 from common.sendEmail import sendemail
 
 @dajaxice_register
@@ -109,15 +107,10 @@ def saveObjectName(request, object, form):
     Object = getObject(object)
 
 
-<<<<<<< HEAD
     if form.is_valid():        
         p = Object(name = form.cleaned_data['name'])
         print ""
         print p.name
-=======
-    if form.is_valid():
-        p = Special(name = form.cleaned_data['name'])
->>>>>>> 200eb1c4dcd524699e1e957c029c46b68e17b913
         p.save()
     else :
         pass
@@ -127,7 +120,6 @@ def saveObjectName(request, object, form):
         })
 
 @dajaxice_register
-<<<<<<< HEAD
 def deleteObjectName(request, object, deleted):
 
     
@@ -139,18 +131,6 @@ def deleteObjectName(request, object, deleted):
     return simplejson.dumps({'status':'1' , 
         'objects_table': refreshObjectTable(request, object)
         })
-=======
-def deleteSpecialName(request, checked):
-
-    tag = False
-    for i in checked:
-        Special.objects.filter(id = i).delete()
-        tag = True
-    if tag :
-        return simplejson.dumps({'status':'1'})
-    else:
-        return simplejson.dumps({'status':'0'})
->>>>>>> 200eb1c4dcd524699e1e957c029c46b68e17b913
 
 @dajaxice_register
 def allocObject(request, object, user, alloced):
