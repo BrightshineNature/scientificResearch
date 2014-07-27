@@ -85,7 +85,7 @@ def newsRelease(request):
     if request.method == "GET":
         form = NewsForm()
     else:
-        form = NewsForm(request.POST)
+        form = NewsForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
     newsList = News.objects.all()

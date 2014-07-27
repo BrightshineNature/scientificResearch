@@ -23,4 +23,9 @@ urlpatterns = patterns('',
                        url(r'news/news_cate=(?P<news_cate>\S+)$',
                            home_views.newsListByCate,
                            ),
+                       url(r'^news/(?P<news_id>\d+)$',
+                           home_views.read_news,
+                           name='read_news'
+                           ),
+
                      )
