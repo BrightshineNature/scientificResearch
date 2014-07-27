@@ -7,9 +7,14 @@ Created on 2014-06-07
 Desc: home view
 '''
 from django.shortcuts import render
-
+from const import *
+from adminStaff.models import *
+from backend.utility import getContext
 def index(request):
-    context={}
+    news_announcement = News.objects.filter(news_category__category=NEWS_CATEGORY_ANNOUNCEMENT).order_by('-news_date')
+    news_docs = News.objects.exclude(news_document=u'').order_by('-news_date')
+    context = getContext(news_announcement, 1, "news_announcement")
+    context.update(getContext(news_docs,1,"news_docs"))
     return render(request,"home/home.html",context)
 def show(request):
     context={}

@@ -17,6 +17,7 @@ from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
 from backend.logging import loginfo
 from school.forms import FilterForm
 from backend.utility import getContext
+from const import *
 
 def appView(request):
     context = {}
@@ -49,20 +50,18 @@ def progressReportView(requset):
 
 def allocView(request):
     expert_list = ExpertProfile.objects.all()
-    project_list = ProjectSingle.objects.all()
+    unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+    alloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
     form = FilterForm(request = request)
+    expert_form = FilterForm()
     
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
     
-    context = getContext(project_list, 1, "item", 0)
-
-    expert_form = FilterForm()
-    context.update({
-                    "form": form,
-                    "expert_form": expert_form,
-                  })
-
+    context = {"form": form,
+               "expert_form": expert_form,}
+    context.update(getContext(unalloc_project_list, 1, "item", 0))
+    context.update(getContext(alloc_project_list, 1, "item2", 0))
     context.update(getContext(expert_list, 1, "item3", 0))
 
     return render(request, "school/alloc.html", context)
@@ -103,7 +102,3 @@ def controlView(request):
     }
     return render(request, "school/control.html", context);
 
-def infoModifyView(request):
-    form = SettingForm()
-    context = {"form": form,}
-    return render(request, "school/teacher_info_modify.html", context)
