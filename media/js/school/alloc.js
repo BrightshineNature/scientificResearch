@@ -44,7 +44,8 @@ $("#project_filter_button").click(function(){
     glob_project_college_id = $("#project_filter_form #id_colleges").val();
     glob_project_special_id = $("#project_filter_form #id_specials").val();
     Dajaxice.school.getProjectList(getProjectListCallback, {"college_id": glob_project_college_id, 
-                                                            "special_id": glob_project_special_id,});
+                                                            "special_id": glob_project_special_id,
+                                                            "path": glob_path,});
 });
 function getProjectListCallback(data){
     $("#alloced-section").html(data.html_alloc);
@@ -56,7 +57,8 @@ $(document).on("click", "#unalloc_paginator .item_page", function(){
     page = $(this).attr("arg");   
     Dajaxice.school.getUnallocProjectPagination(getUnallocCallback, {"page": page,
                                                                      "college_id": glob_project_college_id,
-                                                                     "special_id": glob_project_special_id,}); 
+                                                                     "special_id": glob_project_special_id,
+                                                                     "path": glob_path,}); 
 });
 function getUnallocCallback(data){
     $("#unalloced-section").html(data.html);
@@ -66,7 +68,8 @@ $(document).on("click", "#alloc_paginator .item_page", function(){
     page = $(this).attr("arg");   
     Dajaxice.school.getAllocProjectPagination(getAllocCallback, {"page": page,
                                                                  "college_id": glob_project_college_id,
-                                                                 "special_id": glob_project_special_id,}); 
+                                                                 "special_id": glob_project_special_id,
+                                                                 "path": glob_path,}); 
 
 });
 function getAllocCallback(data){
@@ -78,7 +81,8 @@ var glob_expert_college_id = "-1";
 $(document).on("click", "#alloc_expert_paginator .item_page", function(){
     page = $(this).attr("arg");
     Dajaxice.school.getAllocExpertPagination(getAllocExpertCallback, {"page": page,
-                                                                      "id": glob_expert_college_id,});
+                                                                      "id": glob_expert_college_id,
+                                                                      "path": glob_path,});
 });
 function getAllocExpertCallback(data){
     $("#expert_list_div").html(data.html);
@@ -86,7 +90,8 @@ function getAllocExpertCallback(data){
 
 $("#expert_filter_button").click(function(){
     glob_expert_college_id = $("#expert_filter_form #id_colleges").val();
-    Dajaxice.school.getExpertList(getExpertListCallback, {"id": glob_expert_college_id, });
+    Dajaxice.school.getExpertList(getExpertListCallback, {"id": glob_expert_college_id, 
+                                                          "path": glob_path,});
 });
 function getExpertListCallback(data){
     $("#expert_list_div").html(data.html);
@@ -98,13 +103,16 @@ function refresh(){
     var page3 = $("#unalloc_paginator .disabled").val()
     Dajaxice.school.getUnallocProjectPagination(getUnallocCallback, {"page": page3,
                                                                      "college_id": glob_project_college_id,
-                                                                     "special_id": glob_project_special_id,}); 
+                                                                     "special_id": glob_project_special_id,
+                                                                     "path": glob_path, }); 
     Dajaxice.school.getAllocProjectPagination(getAllocCallback, {"page": page2,
                                                                      "college_id": glob_project_college_id,
-                                                                     "special_id": glob_project_special_id,}); 
+                                                                     "special_id": glob_project_special_id,
+                                                                     "path": glob_path,}); 
 
     Dajaxice.school.getAllocExpertPagination(getAllocExpertCallback, {"page": page1,
-                                                                      "id": glob_expert_college_id,});
+                                                                      "id": glob_expert_college_id,
+                                                                      "path": glob_path,});
 
 }
 
@@ -118,7 +126,8 @@ $("#button_operator_alloc button").click(function(){
         project_list.push($(this).val());
     });
     Dajaxice.school.allocProjectToExpert(allocProjectToExpertCallback, {"project_list": project_list,
-                                                                        "expert_list": expert_list,});
+                                                                        "expert_list": expert_list,
+                                                                        "path": glob_path,});
 });
 
 function allocProjectToExpertCallback(data){
@@ -140,7 +149,8 @@ $("#button_operator_cancel button").click(function(){
     $("input[name='checkbox_alloc_project']:checkbox:checked").each(function(){ 
         project_list.push($(this).val());
     });
-    Dajaxice.school.cancelProjectAlloc(cancelProjectAllocCallback, {"project_list": project_list,});
+    Dajaxice.school.cancelProjectAlloc(cancelProjectAllocCallback, {"project_list": project_list,
+                                                                    "path": glob_path,});
 });
 function cancelProjectAllocCallback(data){
     if(data.message == "ok"){
@@ -154,7 +164,8 @@ function cancelProjectAllocCallback(data){
 
 $(document).on("click", ".query_info", function(){
     project_id = $(this).attr("arg");
-    Dajaxice.school.queryAllocedExpert(queryAllocedExpertCallback, {"project_id": project_id, });
+    Dajaxice.school.queryAllocedExpert(queryAllocedExpertCallback, {"project_id": project_id, 
+                                                                    "path": glob_path,});
 });
 function queryAllocedExpertCallback(data){
     $("#query_modal .modal-body").html(data.html);

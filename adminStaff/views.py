@@ -8,7 +8,7 @@ from django.shortcuts import render
 from common.views import scheduleManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from adminStaff.forms import NewsForm,TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
-from common.views import scheduleManage, financialManage
+from common.views import scheduleManage, financialManage,noticeMessageSettingBase
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from adminStaff.forms import NewsForm, ObjectForm, TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
 from adminStaff.models import TemplateNoticeMessage,News
@@ -16,7 +16,7 @@ from users.models import SchoolProfile,CollegeProfile,ExpertProfile,Special,Coll
 from const import NOTICE_CHOICE
 from backend.logging import loginfo
 from backend.utility import getContext
-
+from common.forms import NoticeForm
 def appView(request):
 
     context = {}
@@ -93,27 +93,10 @@ def newsRelease(request):
              "newsList":newsList}
     return render(request,"adminStaff/news_release.html",context)
 def noticeMessageSetting(request):
-    notice_choice=NOTICE_CHOICE
-    template_notice_message=TemplateNoticeMessage.objects.all()
-    template_notice_message_form = TemplateNoticeMessageForm()
-    template_notice_message_group=[]
-    cnt=1
-    for item in template_notice_message:
-        nv={
-            "id":item.id,
-            "iid":cnt,
-            "title":item.title,
-            "message":item.message,
-        }
-        cnt+=1
-        template_notice_message_group.append(nv)
-    context=getContext(template_notice_message_group,1,"item",0)
-    context.update({
-        "template_notice_message_form":template_notice_message_form,
-        "notice_choice":notice_choice,
-    })
-    return render(request,"adminStaff/notice_message_setting.html",context)
-
+    userauth={
+        "role":"adminStaff"
+    }
+    return noticeMessageSettingBase(request,userauth)
 def dispatchView(request):
     dispatch_form = DispatchForm()
     dispatchAddCollege_form=DispatchAddCollegeForm()

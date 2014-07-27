@@ -77,11 +77,36 @@ class ProjectJudgeForm(forms.Form):
     final_choice=(("网上提交不合格","网上提交不合格"),("结题书不合格"),("结题书不合格"))
     final=forms.MultipleChoiceField(choices=final_choice,required=False,widget=forms.CheckboxSelectMultiple())
     reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
+from users.models import SchoolProfile
+from adminStaff.models import ProjectSingle
+class NoticeForm(forms.Form):
+    
+    content=forms.CharField(required=True,widget=forms.Textarea(attrs={'class':'form-control','row':'6'}))
+    special=forms.BooleanField(required=False)
+    college=forms.BooleanField(required=False)
+    teacher=forms.BooleanField(required=False)
+    expert=forms.BooleanField(required=False)
+    teacher_year=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
+    teacher_special=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
+    expert_year=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
+    expert_special=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
 
-
-science_type_choices = (("-1", "科技活动类型"),) + SCIENCE_ACTIVITY_TYPE_CHOICES
-
-
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop("request",None)
+        super(NoticeForm,self).__init__(*args,**kwargs)
+        if request == None:return
+        if SchoolProfile.objects.filter(userid=required.user).count()>0:
+            project_group=ProjectSingle.objects.filter(project_special__userid=required.user)
+            teacher_year_choice=[("-1","所有年份")]
+            teacher_year_choice.extend(list(Set([ (item.approval_year,item.approval_year) for item in project_group])))
+            teacher_year_choice=tuple(teacher_year_choice)
+            teacher_special_choice=[("-1","全部专题")]
+            teacher_special_choice.extend(list(Set([(item.project_special.id,item.project_special.name) for item in project_group])))
+            teacher_special_choice=tuple(teacher_special_choice)
+            self.fields["teacher_year"].choices=teacher_year_choice
+            self.fields["expert_year"].choices=teacher_year_choice
+            self.fields["teacher_special"].choices=teacher_special_choice
+            self.fields["expert_special"].choices=teacher_special_choice
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
         max_length = 20,
@@ -144,8 +169,6 @@ class ProjectInfoForm(forms.Form):
             attrs={
             'class':'form-control ',
             'placeholder':u"项目类型"}), )
-
-
 
 class BasisContentForm(forms.Form):
 
