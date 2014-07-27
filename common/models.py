@@ -11,6 +11,7 @@ from adminStaff.models import ProjectSingle
 from django.db import models
 from django.db.models import Model
 from const.models import ScienceActivityType
+from const.models import ProfessionalTitle,ExecutivePosition
 
 # class ProjectInfo(Model):
 
@@ -38,4 +39,14 @@ from const.models import ScienceActivityType
 
 #     project_tpye =models.CharField( max_length = 20, verbose_name = u'项目类型')
 
+
+class ProjectMember(Model):
+
+    project = models.ForeignKey(ProjectSingle, null = True)
+    name = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'姓名')
+    birth_year = models.DateField(blank= False,null=True,default=lambda: datetime.datetime.today(),verbose_name=u'出生年份')
+    tel = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'电话')
+    mail = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'邮箱')    
+    professional_title = models.ForeignKey(ProfessionalTitle, null = True, verbose_name=u'职称')
+    executive_position = models.ForeignKey(ExecutivePosition, null = True, verbose_name=u'行政职务')
 
