@@ -10,8 +10,6 @@ def getSpecial(user):
     print "in getSpecial"
     # print ret
     return ret
-    
-
 def getCollege(user):
 
     return College.objects.filter(school_user__userid = user)
