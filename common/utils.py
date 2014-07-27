@@ -103,10 +103,12 @@ def get_qset(userauth):
     return (pending,default,search)
 
 def statusRollBack(project,userrole,userstatus,form):
+    project.project_sendback_status=project.project_status
     if userrole=="school":
         if userstatus=="application":
             form_list=form.getlist("application")
             if len(form_list)==2:
+               
                 set_status(project,PROJECT_STATUS_APPLY)
                 project.file_application=False
                 project.save()
@@ -177,9 +179,8 @@ def statusRollBack(project,userrole,userstatus,form):
             return False
     else:
         return False
+    project.save()
     return True
-
-
 
 
 
@@ -189,6 +190,8 @@ def set_status(project,status):
 def status_confirm(project, confirm):
     if confirm==-1:
         set_status(project,project.project_status.status+1)
+        if project.project_status.status==project.project_sendback_status.status:
+            set_status(project,project.project_status.status+1)
     return True
     if project.project_status.status==PROJECT_STATUS_APPLY:
         if confirm==APPLICATION_WEB_CONFIRM:

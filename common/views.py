@@ -165,3 +165,27 @@ def finalReportViewWork(request,redirect=False):
 		'profundsummartform':profundsummartform,
     }
     return context
+def noticeMessageSettingBase(request,userauth):
+    notice_choice=NOTICE_CHOICE
+    template_notice_message=TemplateNoticeMessage.objects.all()
+    template_notice_message_form = TemplateNoticeMessageForm()
+    template_notice_message_group=[]
+    cnt=1
+    for item in template_notice_message:
+        nv={
+            "id":item.id,
+            "iid":cnt,
+            "title":item.title,
+            "message":item.message,
+        }
+        cnt+=1
+        template_notice_message_group.append(nv)
+    notice_form=NoticeForm(request=request)   
+    context=getContext(template_notice_message_group,1,"item",0)
+    context.update({
+        "template_notice_message_form":template_notice_message_form,
+        "notice_choice":notice_choice,
+        "notice_form":notice_form,
+        "userauth":userauth
+    })
+    return render(request, userauth['role'] + "/notoce_message_setting.html", context)
