@@ -4,8 +4,10 @@
                 <th ><strong>类别</strong></th>
                 <th ><strong>级别</strong></th>
                 <th ><strong>数量</strong></th>
+                {% if is_submited %}
                 <th><strong>修改</strong></th>
                 <th><strong>删除</strong></th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -14,12 +16,14 @@
                 <td value={{datastatics.staticstype.staticstype}}>{{datastatics.staticstype}}</td>
                 <td value={{datastatics.staticsdatatype.staticsdatatype}}>{{datastatics.staticsdatatype}}</td>
                 <td>{{datastatics.statics_num}}</td>
+                {% if is_submited %}
                 <td>
                     <button class="btn btn-success">修改</button>
                 </td>
                 <td>
                     <button class="btn btn-danger">删除</button>
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>        

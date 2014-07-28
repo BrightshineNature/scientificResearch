@@ -3,7 +3,9 @@
 <div class="hero-unit">
 	<form class="form" id="project_fundsuammary_form" method="POST" action="">
 		{% include "widgets/finalreport/final_fundsummary_table.html"  %}
+        {% if is_submited %}
    		<button type="button" class="btn btn-primary" onclick="projectfundsummary()">保存经费决算表</button>
+        {% endif %}
 	</form>
 </div>
 <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/fundsuammary.js"></script>

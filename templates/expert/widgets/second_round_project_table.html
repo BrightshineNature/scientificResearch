@@ -11,16 +11,16 @@
     </tr>
   </thead>
   <tbody>
-    {% for project in item2_list %}
+    {% for item in item2_list %}
     <tr>
-      <td>{{ project.project_code }}</td>
-      <td>{{ project.title }}</td>
-      <td>{{ project.project_special }}</td>
-      <td>{{ project.teacher.college }}</td>
-      <td>{% if not project.scored %}未审核{% else %}已审核{% endif %}</td>
-      <td>{{ project.score }}</td>
+      <td>{{ item.project.project_code }}</td>
+      <td>{{ item.project.title }}</td>
+      <td>{{ item.project.project_special }}</td>
+      <td>{{ item.project.teacher.college }}</td>
+      <td>{% if item.score == 0 %}未审核{% else %}已审核{% endif %}</td>
+      <td>{{ item.score }}</td>
       <td>
-        <span><a href="review" class='btn btn-primary'>审阅</a></span>
+        <span><a href="/expert/final_review/?re_id={{ item.id }}" class='btn btn-primary'>审阅</a></span>
       </td>
     </tr>
 		{% endfor %}

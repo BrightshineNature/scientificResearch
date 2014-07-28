@@ -4,6 +4,29 @@ from backend.logging import loginfo
 from django.db.models import Q
 from const import *
 from const.models import ProjectStatus
+from expert.forms import *
+
+def getScoreTable(project):
+    category = project.project_special.expert_review.category      
+    if category == EXPERT_REVIEW_BASICSCIENTIFIC:
+        return BasicScientificResearchScoreTable
+    elif category == EXPERT_REVIEW_HUMANITIESSOCIAL:
+        return HumanitiesSocialSciencesResearchScoreTable
+    elif category == EXPERT_REVIEW_MAJORPROJECT:
+        return MajorProjectScoreTable
+    else:
+        return KeyLaboratoryProjectScoreTable
+
+def getScoreForm(project):
+    category = project.project_special.expert_review.category      
+    if category == EXPERT_REVIEW_BASICSCIENTIFIC:
+        return BasicScientificResearchScoreForm
+    elif category == EXPERT_REVIEW_HUMANITIESSOCIAL:
+        return HumanitiesSocialSciencesResearchScoreForm
+    elif category == EXPERT_REVIEW_MAJORPROJECT:
+        return MajorProjectScoreForm
+    else:
+        return KeyLaboratoryProjectScoreForm
 
 def get_application_year_choice():
     project_group=ProjectSingle.objects.all()
@@ -79,7 +102,7 @@ def get_qset(userauth):
             default=create_QE(PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
         else:
-            pending=create_QE(PROJECT_STATUS_TASK_COMMIT_OVER)|create_QE(PROJECT_STATUS_PROGRESS_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_COMMIT_OVER)
+            pending=create_QE(PROJECT_STATUS_TASK_FINANCE_OVER)|create_QE(PROJECT_STATUS_PROGRESS_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_FINANCE_OVER)
             default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     elif userauth['role']=="college":

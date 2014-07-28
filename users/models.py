@@ -2,7 +2,7 @@
 from backend.logging import logger
 from django.db import models
 from django.contrib.auth.models import User
-from const.models import UserIdentity
+from const.models import UserIdentity,ExpertReview
 from const import ADMINSTAFF_USER,SCHOOL_USER,COLLEGE_USER,TEACHER_USER,EXPERT_USER,FINANCE_USER,VISITOR_USER
 
 class AdminStaffProfile(models.Model):
@@ -82,6 +82,11 @@ class CollegeProfile(models.Model):
 class Special(models.Model):
 
     school_user = models.ForeignKey(SchoolProfile, blank=True, null=True, verbose_name=u"专题管理员")
+    try:
+        default_status = ExpertReview.objects.get(status = EXPERT_REVIEW_BASICSCIENTIFIC)
+    except:
+        default_status = 1
+    expert_review = models.ForeignKey(ExpertReview, blank=False, null=False, default=default_status,verbose_name=u"专家评审表")
     name = models.CharField(blank=False,max_length=30)
     class Meta:
         verbose_name = "专题"

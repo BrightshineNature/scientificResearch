@@ -6,8 +6,10 @@
                 <th ><strong>主要完成者</strong></th>
                 <th ><strong>成果说明</strong></th>
                 <th ><strong>标注状况</strong></th>
+                {% if is_submited %}
                 <th><strong>修改</strong></th>
                 <th><strong>删除</strong></th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -18,12 +20,14 @@
                 <td>{{achivement.mainmember}}</td>
                 <td>{{achivement.introduction}}</td>
                 <td>{{achivement.remarks}}</td>
+                {% if is_submited %} 
                 <td>
                     <button class="btn btn-success">修改</button>
                 </td>
                 <td>
                     <button class="btn btn-danger">删除</button>
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>        
