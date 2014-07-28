@@ -6,22 +6,32 @@ Desc: school' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
 from django.db.models import Q
-
-from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase
-from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
-from teacher.forms import SettingForm
-from adminStaff.models import ProjectSingle, Re_Project_Expert
-from users.models import ExpertProfile
-from users.models import ExpertProfile, SchoolProfile
-from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
+from django.contrib.auth.decorators import login_required
+from django.views.decorators import csrf
+from backend.decorators import *
 from backend.logging import loginfo
-from school.forms import FilterForm
 from backend.utility import getContext
 from const import *
+from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
 
+from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase
+
+from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm,SettingForm
+from adminStaff.models import ProjectSingle, Re_Project_Expert
+from school.forms import FilterForm
+
+from users.models import ExpertProfile, SchoolProfile
+
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
 def appView(request):
     context = {}
     return render(request,"school/application.html",context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
 def scheduleView(request):
 
     userauth = {
@@ -30,8 +40,9 @@ def scheduleView(request):
     }
     return scheduleManage(request, userauth)
 
-
-
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
 def financialInfoView(request):
     budgetinfoform = ProjectBudgetInformationForm()
     budgetannuform = ProjectBudgetAnnualForm()    
@@ -41,13 +52,24 @@ def financialInfoView(request):
     }
     return render(request,"school/project_financial_info.html",context)
 
+
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
 def finalReportView(request):
     context = {}
     return render(request,"school/final.html",context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
 def progressReportView(requset):
     context={}
     return render(requset,"school/progress.html",context)
-
+    
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
 def allocView(request):
     expert_list = ExpertProfile.objects.all()
     unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
@@ -67,6 +89,9 @@ def allocView(request):
 
     return render(request, "school/alloc.html", context)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
 def researchConcludingView(request):
     userauth={
         "role":"school",
@@ -74,6 +99,9 @@ def researchConcludingView(request):
     }
     return researchConcludingManage(request,userauth)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
 def finalAllocView(request):
     expert_list = ExpertProfile.objects.all()
     unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
@@ -93,15 +121,19 @@ def finalAllocView(request):
 
     return render(request, "school/alloc.html", context)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
 def noticeMessageSettingView(request):
     userauth={
         "role":"school"
     }
     return noticeMessageSettingBase(request,userauth)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
 def controlView(request):
-    
-
     special = [     
               {
                 'year_list': [2015,],
@@ -113,9 +145,6 @@ def controlView(request):
     },
         
     ]
-
-
-    
     context = {
         'special' :special,
     }

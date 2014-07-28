@@ -206,8 +206,8 @@ def noticeMessageSettingBase(request,userauth):
     })
     if request.method == "POST":
         mail=NoticeForm(request.POST)
+        loginfo(mail)
         if mail.is_valid():
-            loginfo(mail)
             mailtospecial=mail.cleaned_data["special"]
             mailtocollege=mail.cleaned_data["college"]
         else:
