@@ -12,7 +12,7 @@ from backend.decorators import *
 from backend.logging import loginfo
 from const import *
 
-from common.views import scheduleManage,finalReportViewWork,appManage
+from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork 
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
@@ -60,11 +60,17 @@ def commitmentView(request):
     context = {}
     return render(request, "teacher/commitment.html", context)
 
+<<<<<<< HEAD
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
 def finalReportView(request):
     context = finalReportViewWork(request)
+=======
+def finalReportView(request,pid):
+
+    context = finalReportViewWork(request,pid)
+>>>>>>> bbe7b980a3faeb693ec90fea9b7464ab2b427713
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/final.html",context)
@@ -126,8 +132,15 @@ def financialView(request):
 @login_required
 @authority_required(TEACHER_USER)
 def finalInfoView(request):
-
+    teacher = TeacherProfile.objects.get(userid = request.user)
+    project_list = ProjectSingle.objects.filter(teacher = teacher)
     context = {
-
+		'project_list':project_list,
     }
     return render(request,"teacher/finalinfo.html",context)
+
+def fundBudgetView(request,pid):
+    context = fundBudgetViewWork(request,pid)
+    if context['redirect']:
+		return HttpResponseRedirect('/teacher/finalinfo')
+    return render(request,"teacher/fundbudget.html",context)

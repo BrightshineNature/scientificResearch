@@ -1,0 +1,31 @@
+<table class="table table-hover">     
+  <thead>
+    <tr>
+      <th>项目编号</th>
+      <th>名称</th>
+      <th>所属分类</th>
+      <th>学院</th>
+      <th>评审状态</th>
+      <th>评分</th>
+      <th>详情</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for project in item2_list %}
+    <tr>
+      <td>{{ project.project_code }}</td>
+      <td>{{ project.title }}</td>
+      <td>{{ project.project_special }}</td>
+      <td>{{ project.teacher.college }}</td>
+      <td>{% if not project.scored %}未审核{% else %}已审核{% endif %}</td>
+      <td>{{ project.score }}</td>
+      <td>
+        <span><a href="review" class='btn btn-primary'>审阅</a></span>
+      </td>
+    </tr>
+		{% endfor %}
+  </tbody>
+</table>
+<div id="second_round_paginator">
+	{% include "widgets/paginator2.html" %}
+</div>

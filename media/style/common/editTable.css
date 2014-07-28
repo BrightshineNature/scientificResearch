@@ -32,7 +32,7 @@ input {
     text-align: left;
 }
 #mainTable td + td, #mainTable th + th {
-        text-align: right;
+        text-align: left;
 }
 #mainTable.scrollable thead tr, #mainTable.scrollable tfoot tr  {
         position: relative;
@@ -48,4 +48,12 @@ input {
 
 #mainTable.scrollable td, #mainTable.scrollable th {
         width: 200px
+}
+
+#mainTable input{
+    padding: 0px !important;
+    border: 0px !important;
+    text-align: left !important;
+    width:100%;
+    height:25px;
 }
