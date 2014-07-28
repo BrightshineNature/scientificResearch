@@ -59,7 +59,8 @@ def allocView(request):
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
     
     context = {"form": form,
-               "expert_form": expert_form,}
+               "expert_form": expert_form,
+               "page_info": "alloc",}
     context.update(getContext(unalloc_project_list, 1, "item", 0))
     context.update(getContext(alloc_project_list, 1, "item2", 0))
     context.update(getContext(expert_list, 1, "item3", 0))
@@ -74,8 +75,24 @@ def researchConcludingView(request):
     return researchConcludingManage(request,userauth)
 
 def finalAllocView(request):
-    context = {}
-    return render(request, "school/final_alloc.html", context)
+    expert_list = ExpertProfile.objects.all()
+    unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
+    alloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
+    form = FilterForm(request = request)
+    expert_form = FilterForm()
+    
+    for expert in expert_list:
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = False)).count()
+    
+    context = {"form": form,
+               "expert_form": expert_form,
+               "page_info": "finalalloc",}
+    context.update(getContext(unalloc_project_list, 1, "item", 0))
+    context.update(getContext(alloc_project_list, 1, "item2", 0))
+    context.update(getContext(expert_list, 1, "item3", 0))
+
+    return render(request, "school/alloc.html", context)
+
 def noticeMessageSettingView(request):
     context = {}
     return render(request, "school/notice.html", context)
