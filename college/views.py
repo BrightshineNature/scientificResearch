@@ -75,7 +75,7 @@ def researchConcludingView(request):
 @login_required
 @authority_required(COLLEGE_USER)
 def dispatchView(request):
-    dispatchAddCollege_form=DispatchAddCollegeForm()
+    dispatchAddCollege_form=DispatchAddCollegeForm(user=request.user)
     teacher_users = TeacherProfile.objects.all()
     context = {
                "dispatchAddCollege_form":dispatchAddCollege_form,
