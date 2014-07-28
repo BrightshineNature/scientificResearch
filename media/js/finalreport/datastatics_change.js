@@ -53,16 +53,17 @@ STATICS_DATA_TYPE={
 }
 var datastaticsid,tr;
 $("#datastatics_change_table").on("click",".btn-danger",function(){
-    var finalsubmitid = $("#datastatics_change_table").attr("value");
+    var pid = $("#datastatics_change_table").attr("value");
     tr=$(this).closest("tr");
     datastaticsid=$(tr).attr("value")
-    Dajaxice.teacher.datastaticsDelete(delete_datastatics_callback,{'datastaticsid':datastaticsid,'finalsubmitid':finalsubmitid}); 
+    Dajaxice.teacher.datastaticsDelete(delete_datastatics_callback,{'datastaticsid':datastaticsid,'pid':pid}); 
         
 });
 
 function delete_datastatics_callback(data){
-    alert(data.message);
+
     $("#datastatics_change_table").html(data.table);
+    alert(data.message);    
 }
 
 $("#datastatics_change_table ").on("click",".btn-success",function(){
@@ -87,18 +88,19 @@ $("#add_new_datastatics").click(function(){
 });
 
 $("#datastatics_save_change").click(function(){
-    var finalsubmitid = $("#datastatics_change_table").attr("value");
+    var pid = $("#datastatics_change_table").attr("value");
     Dajaxice.teacher.datastaticsChange(add_or_update_datastatics_callback,
                                 {   
                                     'form': $('#datastatics_change_form').serialize(true),
                                     'datastaticsid': datastaticsid,
-                                    'finalsubmitid':finalsubmitid,       
+                                    'pid':pid,       
                             });
 });
 
 function add_or_update_datastatics_callback(data){
-    alert(data.message);
+
     $("#datastatics_change_table").html(data.table);
+    alert(data.message);
 }
 
 $("#id_staticstype").change(function(){

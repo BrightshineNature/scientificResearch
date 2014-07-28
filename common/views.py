@@ -153,13 +153,13 @@ def get_search_data(schedule_form):
 
 
 def finalReportViewWork(request,pid,redirect=False):
-    final = FinalSubmit.objects.get(project_id = pid )
-    achivement_list = ProjectAchivement.objects.filter(finalsubmit_id = final.content_id)
-    datastatics_list = ProjectStatistics.objects.filter(finalsubmit_id = final.content_id)
-    projfundsummary = ProjectFundSummary.objects.get(finalsubmit_id = final.content_id) 
+    final = FinalSubmit.objects.get( project_id = pid)
+    achivement_list = ProjectAchivement.objects.filter( project_id = pid )
+    datastatics_list = ProjectStatistics.objects.filter( project_id = pid )
+    projfundsummary = ProjectFundSummary.objects.get( project_id = pid ) 
     projachivementform  = ProjectAchivementForm()
     projdatastaticsform = ProjectDatastaticsForm()
-    profundsummartform = ProFundSummaryForm(instance=projfundsummary)
+    profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
 
     if request.method == "POST":
         final_form = FinalReportForm(request.POST, instance=final)
@@ -178,19 +178,17 @@ def finalReportViewWork(request,pid,redirect=False):
         'projachivementform':projachivementform,
 		'projdatastaticsform':projdatastaticsform,
         'final': final_form,
-        'finalreportid':final.content_id,
         'pid':pid,
         'redirect':redirect,
         'achivement_list':achivement_list,
 		'datastatics_list':datastatics_list,
 		'projfundsummary':projfundsummary,
-		'profundsummartform':profundsummartform,
+		'profundsummaryform':profundsummaryform,
     }
     return context
 
 def fundBudgetViewWork(request,pid,redirect=False):
-    final = FinalSubmit.objects.get(project_id = pid )
-    fundbudget = ProjectFundBudget.objects.get(finalsubmit_id = final)
+    fundbudget = ProjectFundBudget.objects.get(project_id = pid)
     print request.method
     if request.method == "POST":
         fundbudget_form = ProFundBudgetForm(request.POST, instance=fundbudget)

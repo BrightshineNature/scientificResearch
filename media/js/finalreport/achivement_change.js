@@ -1,16 +1,17 @@
 var achivementid,tr;
 
 $("#achivement_change_table").on("click",".btn-danger",function(){
-    var finalsubmitid = $("#achivement_change_table").attr("value");
+    var pid = $("#achivement_change_table").attr("value");
     tr=$(this).closest("tr");
     achivementid=$(tr).attr("value");
-    Dajaxice.teacher.achivementDelete(delete_achivement_callback,{'achivementid':achivementid,'finalsubmitid':finalsubmitid});       
+    Dajaxice.teacher.achivementDelete(delete_achivement_callback,{'achivementid':achivementid,'pid':pid});       
 });
 
 
 function delete_achivement_callback(data){
-    alert(data.message);
+
     $("#achivement_change_table").html(data.table);
+    alert(data.message);
 }
 
 $("#achivement_change_table ").on("click",".btn-success",function(){
@@ -35,17 +36,18 @@ $("#add_new_achivement").click(function(){
 });
 
 $("#achivement_save_change").click(function(){
-    var finalsubmitid = $("#achivement_change_table").attr("value");
+    var pid = $("#achivement_change_table").attr("value");
     Dajaxice.teacher.achivementChange(add_or_update_achivement_callback,
                                 {   
                                     'form': $('#achivement_change_form').serialize(true),
                                     'achivementid': achivementid,
-                                    'finalsubmitid':finalsubmitid,       
+                                    'pid':pid,       
                             });
 });
 
 function add_or_update_achivement_callback(data){
-    alert(data.message);
+
     $("#achivement_change_table").html(data.table);
+    alert(data.message);
 }
 
