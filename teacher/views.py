@@ -140,8 +140,9 @@ def finalInfoView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-def fundBudgetView(request,pid):
-    context = fundBudgetViewWork(request,pid)
+@check_submit_status(SUBMIT_STATUS_FINAL)
+def fundBudgetView(request,pid,is_submited=False):
+    context = fundBudgetViewWork(request,pid,is_submited)
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/fundbudget.html",context)

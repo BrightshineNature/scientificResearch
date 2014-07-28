@@ -189,7 +189,7 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     }
     return context
 
-def fundBudgetViewWork(request,pid,redirect=False):
+def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     fundbudget = ProjectFundBudget.objects.get(project_id = pid)
     print request.method
     if request.method == "POST":
@@ -206,8 +206,8 @@ def fundBudgetViewWork(request,pid,redirect=False):
     context = {
 		'redirect':redirect,
 		'fundbudget_form':fundbudget_form,
-		'finalreportid':final.content_id,
         'pid':pid,
+        'is_submited':is_submited,
     }
     return context
     
