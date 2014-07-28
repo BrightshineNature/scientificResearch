@@ -5,24 +5,33 @@ Created on 2014-06-07
 Desc: adminStaff' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
-from common.views import scheduleManage
-from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
-from adminStaff.forms import NewsForm,TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
-from common.views import scheduleManage, financialManage,noticeMessageSettingBase
-from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
-from adminStaff.forms import NewsForm, ObjectForm, TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
-from adminStaff.models import TemplateNoticeMessage,News
-from users.models import SchoolProfile,CollegeProfile,ExpertProfile,Special,College
-from const import NOTICE_CHOICE
+from django.contrib.auth.decorators import login_required
+from django.views.decorators import csrf
+from backend.decorators import *
+from const import *
 from backend.logging import loginfo
 from backend.utility import getContext
+
+from adminStaff.forms import NewsForm,ObjectForm,TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
+from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import NoticeForm
+
+from common.views import scheduleManage, financialManage,noticeMessageSettingBase,scheduleManage
+
+from adminStaff.models import TemplateNoticeMessage,News
+from users.models import SchoolProfile,CollegeProfile,ExpertProfile,Special,College
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
 def appView(request):
 
     context = {}
     return render(request, "adminStaff/application.html", context)
 
-
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
 def allocManageView(request):
     userauth = {
         'role': 'adminStaff',
@@ -72,6 +81,10 @@ def allocManageView(request):
     }
 
     return render(request, "adminStaff/alloc_manage.html", context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
 def scheduleView(request):
 
 
@@ -81,6 +94,9 @@ def scheduleView(request):
     }
     return scheduleManage(request, userauth)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
 def newsRelease(request):
     if request.method == "GET":
         form = NewsForm()
@@ -92,6 +108,10 @@ def newsRelease(request):
     context={"newsform":NewsForm,
              "newsList":newsList}
     return render(request,"adminStaff/news_release.html",context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
 def noticeMessageSetting(request):
     userauth={
         "role":"adminStaff"
@@ -113,6 +133,10 @@ def dispatchView(request):
                "users":expert_users,
     }
     return render(request, "adminStaff/dispatch.html", context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
 def financialView(request):
     userauth = {
                 "role": 'adminStaff', 
@@ -120,6 +144,9 @@ def financialView(request):
     return financialManage(request, userauth)
 
 
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
 def financialInfoView(request):
     budgetinfoform = ProjectBudgetInformationForm()
     budgetannuform = ProjectBudgetAnnualForm()    
@@ -129,6 +156,9 @@ def financialInfoView(request):
     }
     return render(request,"adminStaff/project_financial_info.html",context)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
 def infoModifyView(request):
     context = {}
     return render(request, "adminStaff/teacher_info_modify.html", context)

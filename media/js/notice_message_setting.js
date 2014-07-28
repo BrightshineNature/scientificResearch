@@ -77,4 +77,38 @@ $(document).on("click","#id_expert",function(){
         $("#expert_chose").hide(300);
     }
 });
+$("#send_mail").click(function(){
+    Dajaxice.common.SendMail(send_mail_callback,{
+        form:$("#noticemessage_form").serialize(true)
+    });
+});
+$("#alert_close").click(function(){
+    $("#noticemessage_warning").hide();
+});
+$("#alert_close1").click(function(){
+    $("#noticemessage_success").hide();
+});
+$("#noticemessage_warning").hide();
+$("#noticemessage_success").hide();
+function send_mail_callback(data){
+    alert(data.status);
+    if(data.status==1){
+        $("#error_message").html("邮件标题不能为空！");
 
+    }
+    else if(data.status==2){
+        $("#error_message").html("邮件内容不能为空！");
+    }
+    else if(data.status==3){
+        $("#error_message").html("没有符合要求接收者！");
+    }
+    if(data.status!==0){ $("#noticemessage_warning").show();
+$("#noticemessage_success").hide();
+}
+else{
+    $("#noticemessage_warning").hide();
+    $("#noticemessage_success").show();
+}
+
+
+}

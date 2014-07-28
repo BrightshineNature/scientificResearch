@@ -2,18 +2,22 @@
     <fieldset>
         <div class="row">
             <div class="col-lg-4">
-                <form class="well" method="POST" id="noticemessage_form" action="">
+                <form class="well" method="POST" id="noticemessage_form" >
                     {% csrf_token %}
                     <div class="alert alert-info control-group">
                         <a class="close" data-dismiss="alert">×</a>
                         <strong>说明:</strong>提示信息将在相应角色登录后显示
                     </div>
+                    <div class="alert alert-danger" id="noticemessage_warning" >
+                            <a class="close" id="alert_close">×</a>
+                            <span id="error_message"> 角色选择错误</span>
+                        </div>
+ <div class="alert alert-success" id="noticemessage_success" >
+                            <a class="close" id="alert_close1">×</a>
+                            邮件发送成功
+                        </div>
                     <div class="form-group">
                         <label class="control-label" for="select_role">角色选择</label>
-                        <div class="alert alert-error" id="noticemessage_warning" style="display: none;">
-                            <a class="close" data-dismiss="alert">×</a>
-                            角色选择错误
-                        </div>
                         <div class="controls">
                             {%ifequal userauth.role 'adminStaff'%}
                             <div>
@@ -72,7 +76,7 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">确认发送</button>
+                        <button type="button" class="btn btn-primary" id="send_mail">确认发送</button>
                         <button class="btn">取消</button>
                     </div>
                 </form>

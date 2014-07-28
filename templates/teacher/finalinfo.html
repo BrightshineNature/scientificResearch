@@ -15,35 +15,23 @@
         <th>审核意见</th>
       </tr>
     </thead>
-    <tbody>
+	<tbody>
+	  {% for project in project_list  %}
       <tr>
-        <td >51012014666666</td>
-        <td >创新模式下的大数据挖掘</td>
-        <td >在研</td>
-        <td >基础研究</td>
-        <td >文科</td>
-        <td >2014</td>
+		  <td >{{project.project_code}}</td>
+		  <td >{{project.title}}</td>
+		  <td >{{project.project_status}}</td>
+		  <td >{{project.science_type}}</td>
+		  <td >{{project.project_special}}</td>
+		  <td >{{project.approval_year}}</td>
         <td > 
-          <a href="/teacher/final" class="btn btn-primary btn-sm">结题报告</a>
+			<a href="/teacher/final/{{project.project_id}}" class="btn btn-primary btn-sm">结题报告</a>
           <a href="/teacher/file_upload" class="btn btn-primary btn-sm">文件上传</a>
-          <a href="/teacher/financial" class="btn btn-primary btn-sm">经费管理</a>
+          <a href="/teacher/fundbudget/{{project.project_id}}" class="btn btn-primary btn-sm">经费管理</a>
         </td>
         <td style="color:red">院级不通过:项目立项依据有问题</td>
-      </tr>
-      <tr>
-        <td>51012019888888</td>
-        <td>大数据挖掘的创新思维</td>
-        <td>在研</td>
-        <td>基础研究</td>
-        <td>文科</td>
-        <td>2014</td>
-        <td>
-          <a href="/teacher/final" class="btn btn-primary btn-sm">结题报告</a>
-          <a href="/teacher/file_upload" class="btn btn-primary btn-sm">文件上传</a>
-          <a href="/teacher/financial" class="btn btn-primary btn-sm">经费管理</a>
-        </td>
-        <td style="color:red">校级不通过:项目立项依据有问题</td>
-      </tr>
+	</tr>
+	  {% endfor %}
     </tbody>
   </table>
 <script>

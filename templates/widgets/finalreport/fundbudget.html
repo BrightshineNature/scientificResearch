@@ -1,0 +1,27 @@
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/editTable.css" >
+
+<div class="hero-unit">
+	<form class="form" id="project_fundbudget_form" method="POST" action="/teacher/fundbudget/{{pid}}">
+		{% csrf_token  %}
+	<table id="mainTable" class="table table-striped" value={{finalreportid}}>
+	<thead><tr><th>科目</th><th>预算经费</th><th>说明</th></tr></thead>
+	<tbody>
+		<tr><td><strong>1.设备费</strong></td><td>{{fundbudget_form.equcosts_budget}}</td><td>{{fundbudget_form.equcosts_remark}}</td></tr>
+		<tr><td>&nbsp;&nbsp;&nbsp;(1)设备购置费</td><td>{{fundbudget_form.equacquisition_budget}}</td><td>{{fundbudget_form.equacquisition_remark}}</td></tr>
+		<tr><td>&nbsp;&nbsp;&nbsp;(2)试制改造费</td><td>{{fundbudget_form.equtrial_budget}}</td><td>{{fundbudget_form.equtrial_remark}}</td></tr>
+		<tr><td>&nbsp;&nbsp;&nbsp;(3)设备改造与租凭费</td><td>{{fundbudget_form.equrent_budget}}</td><td>{{fundbudget_form.equrent_remark}}</td></tr>
+		<tr><td><strong>2.材料费</strong></td><td>{{fundbudget_form.material_budget}}</td><td>{{fundbudget_form.material_remark}}</td></tr>
+		<tr><td><strong>3.测试化验加工费</strong></td><td>{{fundbudget_form.testcosts_budget}}</td><td>{{fundbudget_form.testcosts_remark}}</td></tr>
+		<tr><td><strong>4.燃料动力费</strong></td><td>{{fundbudget_form.fuelpower_budget}}</td><td>{{fundbudget_form.fuelpower_remark}}</td></tr>
+		<tr><td><strong>5.差旅费</strong></td><td>{{fundbudget_form.travel_budget}}</td><td>{{fundbudget_form.travel_remark}}</td></tr>
+		<tr><td><strong>6.会议费</strong></td><td>{{fundbudget_form.conference_budget}}</td><td>{{fundbudget_form.conference_remark}}</td></tr>
+		<tr><td><strong>7.国际合作与交流费</strong></td><td>{{fundbudget_form.cooperation_budget}}</td><td>{{fundbudget_form.cooperation_remark}}</td></tr>
+		<tr><td><strong>8.出版/文献费</strong></td><td>{{fundbudget_form.publish_budget}}</td><td>{{fundbudget_form.publish_remark}}</td></tr>
+		<tr><td><strong>9.劳务费</strong></td><td>{{fundbudget_form.laborcosts_budget}}</td><td>{{fundbudget_form.laborcosts_remark}}</td></tr>
+		<tr><td><strong>10.专家咨询费</strong></td><td>{{fundbudget_form.expertadvice_budget}}</td><td>{{fundbudget_form.expertadvice_remark}}</td></tr>
+	</tbody>
+	<tfoot><tr><td><strong>合计</strong></td><td>{{fundbudget_form.total_budget}}</td><td>{{fundbudget_form.total_remark}}</td></tr></tfoot>
+  </table>
+   		<button class="btn btn-primary" type="submit">保存经费预算表</button>
+	</form>
+</div>
