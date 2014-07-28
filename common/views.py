@@ -37,10 +37,13 @@ def appManage(request, userauth, pid):
     base_condition_form = BaseConditionForm()
     p = ProjectSingle.objects.get(project_id = pid)
 
+    # SCIENCE_ACTIVITY_TYPE_CHOICES
+
+    # print "SBSB**(*(**(&*&&(^^"
+    # print p.science_type
     project_info_data = { 
         'project_name': p.title,
-        'science_type': p.science_type.category ,
-
+        'science_type': p.science_type,
         'trade_code': p.trade_code,
         'subject_name': p.subject_name,
         'subject_code': p.subject_code,
@@ -230,12 +233,12 @@ def noticeMessageSettingBase(request,userauth):
         "notice_form":notice_form,
         "userauth":userauth
     })
-    if request.method == "POST":
-        mail=NoticeForm(request.POST)
-        if mail.is_valid():
-            loginfo(mail)
-            mailtospecial=mail.cleaned_data["special"]
-            mailtocollege=mail.cleaned_data["college"]
-        else:
-            loginfo(mail.errors)
+    #if request.method == "POST":
+        #mail=NoticeForm(request.POST)
+        #if mail.is_valid():
+            #loginfo(mail)
+            #mailtospecial=mail.cleaned_data["special"]
+            #mailtocollege=mail.cleaned_data["college"]
+        #else:
+            #loginfo(mail.errors)
     return render(request, userauth['role'] + "/notice_message_setting.html", context)

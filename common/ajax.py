@@ -16,13 +16,15 @@ from django.template.loader import render_to_string
 
 from django.db.models import Q
 from backend.logging import loginfo
+from django.conf import settings
 from const import *
 from adminStaff.models import ProjectSingle
 from common.utils import status_confirm
 from const.models import ScienceActivityType
-from adminStaff.models import ProjectSingle
+from adminStaff.models import ProjectSingle,Re_Project_Expert
 from common.forms import ProjectInfoForm
-
+from django.core.mail import send_mail
+from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile
 OVER_STATUS_NOTOVER = "notover"
 OVER_STATUS_OPENCHECK = "opencheck"
 OVER_STATUS_MIDCHECK = "midcheck"
@@ -33,6 +35,58 @@ OVER_STATUS_CHOICES = (
     ('no', u"未结题"),
     ('yes', u"已结题"),    
 )
+
+@dajaxice_register
+def SendMail(request,form):
+    form=deserialize_form(form)
+    loginfo(form)
+    
+    #send_mail(form["mail_title"],form["mail_content"],"zhc1009@163.com",["347096491@qq.com","369385153@qq.com"])
+    if form["mail_title"]=="":
+        status=1
+    elif form["mail_content"]=="":
+        status=2
+    else:
+        recipient_list=[]
+        if form.get("special"):
+            special_group=SchoolProfile.objects.all()
+            recipient_list.extend([item.userid.email for item in special_group])
+        if form.get("college"):
+            college_group=CollegeProfile.objects.all()
+            recipient_list.extend([item.userid.email for item in college_group])
+        if form.get("teacher"):
+            if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
+                teacher_group=TeacherProfile.objects.all()
+                recipient_list.extend([item.userid.email for item in teacher_group])
+            else:
+                year_group=form.getlist("teacher_year")
+                sp_group=form.getlist("teacher_special")
+                sp_group=[int(item) for item in sp_group]
+                project_group=ProjectSingle.objects.filter(application_year__in=year_group,project_special__in=sp_group)
+                teacher_group=[item.teacher for item in project_group]
+                recipient_list.extend([item.userid.email for item in teacher_group])
+        if form.get("expert"):
+            if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
+                expert_group=ExpertProfile.objects.all()
+                recipient_list.extend([item.userid.email for item in expert_group])
+            else:
+                year_group=form.getlist("expert_year")
+                sp_group=form.getlist("expert_special")
+                sp_group=[int(item) for item in sp_group]
+                project_group=ProjectSingle.objects.filter(application_year__in=year_group,project_special__in=sp_group)
+                expert_group=[]
+                for project in project_group:
+                    p_e_group=Re_Project_Expert.objects.filter(project=project)
+                    expert_group.extend([item.expert for item in p_e_group])
+                expert_group=list(set(expert_group))
+                recipient_list.extend([item.userid.email for item in expert_group])
+        if len(recipient_list)==0:
+            status=3
+        else:
+            status=0
+            send_mail(form["mail_title"],form["mail_content"],settings.DEFAULT_FROM_EMAIL,["347096491@qq.com","369385153@qq.com"])
+    return simplejson.dumps({"status":status})
+
 @dajaxice_register
 def getStatus(request):
     return simplejson.dumps({
