@@ -29,7 +29,9 @@ def appView(request, pid, is_submited = False):
     userauth = {
         'role':"teacher",
     }
-    return appManage(request, userauth, pid);    
+    context = appManage(request, pid)
+    context['user'] = "teacher"
+    return render(request, "teacher/application.html", context)
     
 @csrf.csrf_protect
 @login_required
@@ -65,8 +67,10 @@ def commitmentView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-def finalReportView(request):
-    context = finalReportViewWork(request)
+@check_submit_status(SUBMIT_STATUS_FINAL)
+def finalReportView(request,pid,is_submited=False):
+    context = finalReportViewWork(request,pid,is_submited)
+    loginfo(p=is_submited,label="is_submited")
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/final.html",context)
@@ -135,8 +139,12 @@ def finalInfoView(request):
     }
     return render(request,"teacher/finalinfo.html",context)
 
-def fundBudgetView(request,pid):
-    context = fundBudgetViewWork(request,pid)
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
+@check_submit_status(SUBMIT_STATUS_FINAL)
+def fundBudgetView(request,pid,is_submited=False):
+    context = fundBudgetViewWork(request,pid,is_submited)
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/fundbudget.html",context)

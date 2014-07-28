@@ -10,7 +10,7 @@ from adminStaff.models import ProjectSingle, Re_Project_Expert
 from backend.utility import getContext
 from users.models import ExpertProfile
 from const import *
-from common.utils import status_confirm
+from common.utils import status_confirm, getScoreTable
 from const.models import ProjectStatus
 
 @dajaxice_register
@@ -124,7 +124,10 @@ def allocProjectToExpert(request, project_list, expert_list, path):
                 except:
                     pass
                 finally:
-                    Re_Project_Expert(project = project, expert = expert, is_first_round = is_first_round).save()
+                    re_obj = Re_Project_Expert(project = project, expert = expert, is_first_round = is_first_round)
+                    re_obj.save()
+                    table = getScoreTable(project)
+                    table(re_obj = re_obj).save()
             if path == FIRST_ROUND_PATH:
                 project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
             else:

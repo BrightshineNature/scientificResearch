@@ -15,6 +15,7 @@ from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
 from teacher.models import ProjectFundBudget
 from common.models import ProjectMember
+from common.models import ProjectMember,BasisContent , BaseCondition
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
@@ -31,13 +32,28 @@ def getParam(pro_list, userauth,flag):
     }
     return param
 
-def appManage(request, userauth, pid):
+def appManage(request, pid):
 
     
 
-    project_member_form = ProjectMemberForm()
-    basis_content_form = BasisContentForm()
-    base_condition_form = BaseConditionForm()
+
+    
+
+    basis_content = BasisContent.objects.filter(project__project_id = pid)
+    if basis_content:
+        basis_content_id = basis_content[0].id
+        basis_content_form = BasisContentForm(instance = basis_content[0])
+    else :
+        basis_content_id = ""
+        basis_content_form = BasisContentForm()
+
+    base_condition = BaseCondition.objects.filter(project__project_id = pid)
+    if base_condition:
+        base_condition_id = base_condition[0].id
+        base_condition_form = BaseConditionForm(instance = base_condition[0])
+    else :
+        base_condition_id = ""
+        base_condition_form = BaseConditionForm()
     
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
@@ -52,17 +68,33 @@ def appManage(request, userauth, pid):
         'project_tpye': p.project_tpye,
     }
 
+
+
     project_member_list = ProjectMember.objects.filter(project__project_id = pid)
+
+    # for i in project_member_list:
+    #     i.professional_title_id = i.professional_title.category
+    #     i.executive_position_id = i.executive_position.category
+
+
+
+    print "UUUUUU***************"
+
+
+
     context = {
         'project_info_form': ProjectInfoForm(project_info_data),
         'project_member_form': ProjectMemberForm(),
         'basis_content_form':basis_content_form,
+        'basis_content_id':basis_content_id,
+
         'base_condition_form':base_condition_form,
+        'base_condition_id':base_condition_id,
         'project_member_list': project_member_list,
         'pid': pid,
     }
 
-
+    return context
     return render(request, userauth['role'] + "/application.html", context)
 
 
@@ -159,7 +191,7 @@ def get_search_data(schedule_form):
             return pro_list
 
 
-def finalReportViewWork(request,pid,redirect=False):
+def finalReportViewWork(request,pid,is_submited,redirect=False):
     final = FinalSubmit.objects.get( project_id = pid)
     achivement_list = ProjectAchivement.objects.filter( project_id = pid )
     datastatics_list = ProjectStatistics.objects.filter( project_id = pid )
@@ -180,7 +212,6 @@ def finalReportViewWork(request,pid,redirect=False):
         final_form = FinalReportForm(instance=final)
 
     loginfo(p=redirect, label="redirect")
-    loginfo(p=request.method, label="request.method")
     context = {
         'projachivementform':projachivementform,
 		'projdatastaticsform':projdatastaticsform,
@@ -191,10 +222,11 @@ def finalReportViewWork(request,pid,redirect=False):
 		'datastatics_list':datastatics_list,
 		'projfundsummary':projfundsummary,
 		'profundsummaryform':profundsummaryform,
+        'is_submited':is_submited,
     }
     return context
 
-def fundBudgetViewWork(request,pid,redirect=False):
+def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     fundbudget = ProjectFundBudget.objects.get(project_id = pid)
     print request.method
     if request.method == "POST":
@@ -211,10 +243,11 @@ def fundBudgetViewWork(request,pid,redirect=False):
     context = {
 		'redirect':redirect,
 		'fundbudget_form':fundbudget_form,
-		'finalreportid':final.content_id,
         'pid':pid,
+        'is_submited':is_submited,
     }
     return context
+    
 def noticeMessageSettingBase(request,userauth):
     notice_choice=NOTICE_CHOICE
     template_notice_message=TemplateNoticeMessage.objects.all()

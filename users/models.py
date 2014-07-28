@@ -86,7 +86,7 @@ class Special(models.Model):
         default_status = ExpertReview.objects.get(status = EXPERT_REVIEW_BASICSCIENTIFIC)
     except:
         default_status = 1
-    expert_review = models.ForeignKey(ExpertReview, blank=False, null=False, default=default_status,verbose_name=u"专题管理员")
+    expert_review = models.ForeignKey(ExpertReview, blank=False, null=False, default=default_status,verbose_name=u"专家评审表")
     name = models.CharField(blank=False,max_length=30)
     class Meta:
         verbose_name = "专题"

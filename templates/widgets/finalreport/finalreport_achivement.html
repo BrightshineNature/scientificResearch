@@ -55,7 +55,9 @@
             </div>
         </div>
     </div>
+    {% if is_submited  %}
     <button class="btn btn-primary pull-right" style="margin-right:25px;" id="add_new_achivement" >添加新成果</button>
+    {% endif %}
     <br>
     {% include 'widgets/finalreport/final_achivement_table.html' %}
 <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/achivement_change.js"></script>

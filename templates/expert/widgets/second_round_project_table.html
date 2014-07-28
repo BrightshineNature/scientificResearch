@@ -17,10 +17,10 @@
       <td>{{ item.project.title }}</td>
       <td>{{ item.project.project_special }}</td>
       <td>{{ item.project.teacher.college }}</td>
-      <td>{% if not item.scored %}未审核{% else %}已审核{% endif %}</td>
+      <td>{% if item.score == 0 %}未审核{% else %}已审核{% endif %}</td>
       <td>{{ item.score }}</td>
       <td>
-        <span><a href="final_review" class='btn btn-primary'>审阅</a></span>
+        <span><a href="/expert/final_review/?re_id={{ item.id }}" class='btn btn-primary'>审阅</a></span>
       </td>
     </tr>
 		{% endfor %}
