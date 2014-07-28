@@ -3,6 +3,7 @@
 from django import forms
 from const import *
 from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice
+from common.models import ProjectMember
 class ScheduleBaseForm(forms.Form):
     status_choices = get_status_choice()
     application_status_choice =get_application_status_choice()
@@ -77,11 +78,37 @@ class ProjectJudgeForm(forms.Form):
     final_choice=(("网上提交不合格","网上提交不合格"),("结题书不合格"),("结题书不合格"))
     final=forms.MultipleChoiceField(choices=final_choice,required=False,widget=forms.CheckboxSelectMultiple())
     reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
+from users.models import SchoolProfile
+from adminStaff.models import ProjectSingle
+class NoticeForm(forms.Form):
+    
+    mail_content=forms.CharField(required=True,widget=forms.Textarea(attrs={'class':'form-control','row':'6'}))
+    mail_title=forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control'}))
+    special=forms.BooleanField(required=False)
+    college=forms.BooleanField(required=False)
+    teacher=forms.BooleanField(required=False)
+    expert=forms.BooleanField(required=False)
+    teacher_year=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
+    teacher_special=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
+    expert_year=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
+    expert_special=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
 
-
-science_type_choices = (("-1", "科技活动类型"),) + SCIENCE_ACTIVITY_TYPE_CHOICES
-
-
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop("request",None)
+        super(NoticeForm,self).__init__(*args,**kwargs)
+        if request == None:return
+        if SchoolProfile.objects.filter(userid=request.user).count()>0:
+            project_group=ProjectSingle.objects.filter(project_special__school_user__userid=request.user)
+            teacher_year_choice=[]
+            teacher_year_choice.extend(list(set([ (item.approval_year,item.approval_year) for item in project_group])))
+            teacher_year_choice=tuple(teacher_year_choice)
+            teacher_special_choice=[]
+            teacher_special_choice.extend(list(set([(item.project_special.id,item.project_special.name) for item in project_group])))
+            teacher_special_choice=tuple(teacher_special_choice)
+            self.fields["teacher_year"].choices=teacher_year_choice
+            self.fields["expert_year"].choices=teacher_year_choice
+            self.fields["teacher_special"].choices=teacher_special_choice
+            self.fields["expert_special"].choices=teacher_special_choice
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
         max_length = 20,
@@ -144,8 +171,6 @@ class ProjectInfoForm(forms.Form):
             attrs={
             'class':'form-control ',
             'placeholder':u"项目类型"}), )
-
-
 
 class BasisContentForm(forms.Form):
 
@@ -252,3 +277,7 @@ class BaseConditionForm(forms.Form):
             'id':'name',
             'placeholder':u"对申请者负责的前一个已结题基本科研业务费专项项目完成情况、后续研究进展及与本申请项目的关系加以详细说明。另附该已结题项目研究工作总结摘要（限500字）和相关成果的详细目录"}), )
 
+class ProjectMemberForm(forms.ModelForm):
+    class Meta:
+        model = ProjectMember
+        fields = ('name', 'birth_year', 'tel', 'mail', 'professional_title', 'executive_position')

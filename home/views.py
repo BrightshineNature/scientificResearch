@@ -7,14 +7,17 @@ Created on 2014-06-07
 Desc: home view
 '''
 from django.shortcuts import render
+from django.template import Context
+from django.http import HttpResponse, Http404
 from const import *
-from adminStaff.models import *
+from adminStaff.models import News
 from backend.utility import getContext
+from backend.logging import loginfo
 def index(request):
     news_announcement = News.objects.filter(news_category__category=NEWS_CATEGORY_ANNOUNCEMENT).order_by('-news_date')
     news_docs = News.objects.exclude(news_document=u'').order_by('-news_date')
-    context = getContext(news_announcement, 1, "news_announcement")
-    context.update(getContext(news_docs,1,"news_docs"))
+    context = getContext(news_announcement, 1, "news_announcement",page_elems=7)
+    context.update(getContext(news_docs,1,"news_docs",page_elems = 7))
     return render(request,"home/home.html",context)
 def show(request):
     context={}
@@ -23,8 +26,34 @@ def showProject(request, project_id = ""):
     context={}
     return render(request,"home/show_project.html",context)
 def newsListByCate(request, news_cate):
-    context={}
+    try:
+        if news_cate == NEWS_CATEGORY_DOCUMENTS:
+            news_list = News.objects.exclude(news_document=u'').order_by('-news_date')
+        else:
+            news_list = News.objects.filter(news_category__category=news_cate).order_by('-news_date')
+    except:
+        raise Http404
+    context = getContext(news_list,1, 'news')
     context["news_cate"] = news_cate
     context['%s_active' % news_cate] = 'active'
     return render(request, 'home/newsContentByCate.html', \
                   context)
+def get_news(news_id = None):
+    if news_id:
+        try:
+            news_content = News.objects.get(id = news_id)
+        except:
+            raise Http404
+    else: # get latest news
+        news_content = (News.objects.count() and News.objects.order_by('-news_date')[0]) or None
+    return news_content
+
+def read_news(request, news_id):
+    news = get_news(news_id)
+    news_cate = news.news_category
+    context = Context({
+        'news': news,
+        'news_cate':news_cate,
+        '%s_active' % news_cate.category: 'active',
+    })
+    return render(request,'home/news-content.html',context)

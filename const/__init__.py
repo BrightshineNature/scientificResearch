@@ -105,7 +105,7 @@ PROJECT_STATUS_CHOICES=(
     (PROJECT_STATUS_PROGRESS_SCHOOL_OVER,u"进展报告专题审核完成"),
     (PROJECT_STATUS_FINAL_WEB_OVER,u"结题书网上提交"),
     (PROJECT_STATUS_FINAL_COMMIT_OVER,u"结题书提交完成"),
-    (PROJECT_STATUS_FINAL_FINANCE_OVER,u"结题书专家审核完成"),
+    (PROJECT_STATUS_FINAL_FINANCE_OVER,u"结题书财务审核完成"),
     (PROJECT_STATUS_FINAL_SCHOOL_OVER,u"结题书专题审核完成"),
     (PROJECT_STATUS_FINAL_EXPERT_SUBJECT,u"结题书专家分配完成"),
     (PROJECT_STATUS_FINAL_REVIEW_OVER,u"项目结题评审完成"),
@@ -224,7 +224,7 @@ ACHIVEMENT_TYPE=(
 
 
 PAGE_ELEMENTS = 10
-
+FIRST_ROUND_PATH = "alloc"
 
 # APP: news
 # the following 4 variables are used in foreground,

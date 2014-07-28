@@ -56,5 +56,25 @@ $(document).on("click",".change_template_notice",function(){
 });
 $(document).on("click",".select_template_notice",function(){
     tr=$(this).closest("tr");
-    $("#textarea").val($(tr).children("td:eq(2)").html());
+    $("#id_mail_content").val($(tr).children("td:eq(2)").html());
+    $("#id_mail_title").val($(tr).children("td:eq(1)").html());
 });
+$("#teacher_chose").hide();
+$("#expert_chose").hide();
+$(document).on("click","#id_teacher",function(){
+    if(this.checked===true){
+        $("#teacher_chose").show(300);
+    }
+    else{
+        $("#teacher_chose").hide(300);
+    }
+});
+$(document).on("click","#id_expert",function(){
+    if(this.checked===true){
+        $("#expert_chose").show(300);
+    }
+    else{
+        $("#expert_chose").hide(300);
+    }
+});
+

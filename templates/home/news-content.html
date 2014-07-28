@@ -1,0 +1,35 @@
+{% extends 'home/base/_content.html' %}
+{% block before_css %}
+   {{ block.super }}
+   <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/home/newsContent.css" >
+{% endblock  %}
+{% block before_home_content%}
+   {% include "widgets/news/newsNav.html"%}
+{% endblock %}
+{% block home_content %}
+<div class="news-body">
+  <div class="news-main">
+      <h4><a href="{{ news.id }}">{{ news.news_title }}</a></h4>
+      <span class="usoft-listview-more">
+        <h6><a href="/home/news/news_cate={{news_cate.category}}"><sub>《</sub>更多 More</a></h6>
+      </span>
+      <div class="news-content">
+        <div>
+          {% autoescape off %}
+          {{ news.news_content|safe }}
+          {% endautoescape %}
+          <br/>
+          <br />
+          {% if news.news_document %}
+          <p>附件：<a href="{{news.news_document.url}}" target="_blank" >{{ news.document_name }}</a></p>
+          <br />
+          {% endif %}
+        </div>
+      </div>
+     </div>
+   </div> <!-- news-list -->
+ </div> <!-- news-main -->
+
+ {% endblock %}
+
+
