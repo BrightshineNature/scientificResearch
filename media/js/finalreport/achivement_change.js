@@ -4,7 +4,8 @@ $("#achivement_change_table").on("click",".btn-danger",function(){
     var pid = $("#achivement_change_table").attr("value");
     tr=$(this).closest("tr");
     achivementid=$(tr).attr("value");
-    Dajaxice.teacher.achivementDelete(delete_achivement_callback,{'achivementid':achivementid,'pid':pid});       
+    var is_submited = $("#achivement_change_table").attr("is_submited");
+    Dajaxice.teacher.achivementDelete(delete_achivement_callback,{'achivementid':achivementid,'pid':pid,'is_submited':is_submited,});       
 });
 
 
@@ -37,11 +38,13 @@ $("#add_new_achivement").click(function(){
 
 $("#achivement_save_change").click(function(){
     var pid = $("#achivement_change_table").attr("value");
+    var is_submited = $("#achivement_change_table").attr("is_submited");
     Dajaxice.teacher.achivementChange(add_or_update_achivement_callback,
                                 {   
                                     'form': $('#achivement_change_form').serialize(true),
                                     'achivementid': achivementid,
-                                    'pid':pid,       
+                                    'pid':pid,
+                                    'is_submited':is_submited,       
                             });
 });
 
