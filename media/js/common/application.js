@@ -138,9 +138,16 @@ function jump(cnt_content, cnt_tab){
     next_content = cnt_content.next();
     next_tab = cnt_tab.next();
     cnt_content.removeClass("active");
+    cnt_content.removeClass("in");
+
     cnt_tab.removeClass("active");
+    cnt_tab.removeClass("in");
+
     next_content.addClass("active");
+    next_content.addClass("in");
+
     next_tab.addClass("active");
+    next_tab.addClass("in");
 }
 
 
@@ -174,10 +181,36 @@ $(document).on("click", ".save_button",function(){
     {
         var cnt_tab = $(this).parent().parent().prev().children("li:eq(2)");
         jump(cnt_content, cnt_tab);
+
+        Dajaxice.common.saveBasisContent(saveBasisContentCallback,{
+            'form': $("#basis_content_form").serialize(),
+            'pid': pid,
+            'bid': $("#basis_content_form").attr("bid"),
+        })
+    }
+    else if($(cnt_content).attr("id") == "base_condition")
+    {
+        var cnt_tab = $(this).parent().parent().prev().children("li:eq(3)");
+        
+        user = $("[user]").attr("user")
+        location.href = "/" + user + "/file_upload/" + pid;
+
+        // alert($("#base_condition_form").attr("bid"));
+        Dajaxice.common.saveBaseCondition(saveBaseConditionCallback,{
+            'form': $("#base_condition_form").serialize(),
+            'pid': pid,
+            'bid': $("#base_condition_form").attr("bid"),
+        })
     }
 
 });
 
 function saveProjectInfoFormCallback(data) {
+
+}
+function saveBasisContentCallback(data) {
+
+}
+function saveBaseConditionCallback(data){
 
 }

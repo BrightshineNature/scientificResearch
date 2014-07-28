@@ -1,7 +1,7 @@
 <div class="report-content-container"> 
   <ul class="nav nav-pills">
 
-    <li {% if not error %}class="active" {% endif %}><a href="#project_info_form" data-toggle="tab"><strong>项目信息</strong></a></li>
+    <li {% if not error %}class="active" {% endif %}><a href="#project_info_form" data-toggle="tab">项目信息</a></li>
       
     <li><a href="#project_member" data-toggle="tab">项目成员</a></li>
       
@@ -15,7 +15,7 @@
     {% endif %}
   </ul>
   
-  <div class="tab-content" pid="{{pid}}" >
+  <div class="tab-content" pid="{{pid}}" user = 'user' >
 
     <div class="tab-pane fade {% if not error %} active in {% endif %}" id="project_info_form"> 
       {% include "widgets/project_infoform.html" %}
@@ -38,8 +38,9 @@
     </div>
 
     <div class="tab-pane fade" id="base_condition">
-
       {% include "widgets/base_condition.html"%} 
+      {%include "widgets/save_button.html"%}
+
     </div>
 
     <div class="tab-pane fade {% if error %} active in {% endif %}" id="score_board">

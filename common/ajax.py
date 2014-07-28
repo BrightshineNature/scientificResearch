@@ -23,11 +23,10 @@ from common.utils import status_confirm
 from const.models import ScienceActivityType
 from common.views import schedule_form_data
 from adminStaff.models import ProjectSingle
-from common.forms import ProjectInfoForm, ProjectMemberForm
-from common.models import ProjectMember
+from common.forms import ProjectInfoForm, ProjectMemberForm,BasisContentForm, BaseConditionForm
+from common.models import ProjectMember, BasisContent, BaseCondition
 
 from adminStaff.models import ProjectSingle,Re_Project_Expert
-from common.forms import ProjectInfoForm
 from django.core.mail import send_mail
 from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile
 OVER_STATUS_NOTOVER = "notover"
@@ -211,3 +210,51 @@ def deleteProjectMember(request, mid):
         'project_member_table':refreshMemberTabel(),
     }
     return simplejson.dumps(context)
+
+@dajaxice_register
+def saveBasisContent(request, form, pid, bid):
+
+    if bid :
+        basis_content = BasisContent.objects.get(id = bid)
+        form = BasisContentForm(deserialize_form(form), instance = basis_content)
+    else :
+        form = BasisContentForm(deserialize_form(form))
+
+    if form.is_valid():
+        print "OK"
+        temp = form.save(commit = False)
+        temp.project = ProjectSingle.objects.get(project_id = pid)
+        temp.save()
+    else:
+        print form.errors
+        print "error in saveBasisContent"
+    context = {
+        'status':1,
+    }
+    return simplejson.dumps(context)
+
+@dajaxice_register
+def saveBaseCondition(request, form, pid, bid):
+
+    if bid :
+        base_condition = BaseCondition.objects.get(id = bid)
+        form = BaseConditionForm(deserialize_form(form), instance = base_condition)
+    else :
+        form = BaseConditionForm(deserialize_form(form))
+
+    context = {
+        'status':1,
+    }
+    if form.is_valid():
+        print "OK"
+        temp = form.save(commit = False)
+        temp.project = ProjectSingle.objects.get(project_id = pid)
+        temp.save()
+    else:
+        context['status'] = 0
+        print form.errors
+        print "error in saveBaseCondition"
+    
+    return simplejson.dumps(context)
+
+

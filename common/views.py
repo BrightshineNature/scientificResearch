@@ -30,13 +30,28 @@ def getParam(pro_list, userauth,flag):
     }
     return param
 
-def appManage(request, userauth, pid):
+def appManage(request, pid):
 
     
 
-    project_member_form = ProjectMemberForm()
-    basis_content_form = BasisContentForm()
-    base_condition_form = BaseConditionForm()
+
+    
+
+    basis_content = BasisContent.objects.filter(project__project_id = pid)
+    if basis_content:
+        basis_content_id = basis_content[0].id
+        basis_content_form = BasisContentForm(instance = basis_content[0])
+    else :
+        basis_content_id = ""
+        basis_content_form = BasisContentForm()
+
+    base_condition = BaseCondition.objects.filter(project__project_id = pid)
+    if base_condition:
+        base_condition_id = base_condition[0].id
+        base_condition_form = BaseConditionForm(instance = base_condition[0])
+    else :
+        base_condition_id = ""
+        base_condition_form = BaseConditionForm()
     
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
@@ -62,19 +77,22 @@ def appManage(request, userauth, pid):
 
 
     print "UUUUUU***************"
-    # print p.project_id
-    # print pid
-    # print project_member_list
+
+
+
     context = {
         'project_info_form': ProjectInfoForm(project_info_data),
         'project_member_form': ProjectMemberForm(),
-        'basis_content_form':BasisContentForm(instance= BasisContent.objects.get(project__project_id = pid) ),
+        'basis_content_form':basis_content_form,
+        'basis_content_id':basis_content_id,
+
         'base_condition_form':base_condition_form,
+        'base_condition_id':base_condition_id,
         'project_member_list': project_member_list,
         'pid': pid,
     }
 
-
+    return context
     return render(request, userauth['role'] + "/application.html", context)
 
 
