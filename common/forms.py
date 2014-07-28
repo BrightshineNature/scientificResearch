@@ -71,11 +71,11 @@ class ProjectJudgeForm(forms.Form):
             
             }),
         )
-    application_choice=(("网上申请不合格","网上申请不合格"),("申报书不合格","申报书不合格"))
+    application_choice=((u"网上申请不合格",u"网上申请不合格"),(u"申报书不合格",u"申报书不合格"))
     application=forms.MultipleChoiceField(choices=application_choice,required=False,
                                           widget=forms.CheckboxSelectMultiple())
    
-    final_choice=(("网上提交不合格","网上提交不合格"),("结题书不合格"),("结题书不合格"))
+    final_choice=((u"网上提交不合格",u"网上提交不合格"),(u"结题书不合格",u"结题书不合格"))
     final=forms.MultipleChoiceField(choices=final_choice,required=False,widget=forms.CheckboxSelectMultiple())
     reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
 from users.models import SchoolProfile

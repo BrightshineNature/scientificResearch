@@ -40,7 +40,7 @@ $("#judge").click(function(){
 });
 $("#commit").click(function(){
 
-    var value=$("#review_select").val();
+    var value=$("#id_judgeresult").val();
     if(value!=-1){
         Dajaxice.common.LookThroughResult(look_through_call_back,{
             "judgeid":judgeid,
@@ -52,5 +52,11 @@ $("#commit").click(function(){
     
 });
 function look_through_call_back(data){
-    
+    if(userstatus=="application"){
+        $("#applicationTable").html(data.table_html);
+    } 
+    else{
+        $("#researchTable").html(data.table_html)
+    }
+
 }
