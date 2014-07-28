@@ -80,5 +80,5 @@ class BaseCondition(Model):
 
     progress = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'完成本专项项目情况')
 
-
+class uploadFile
 

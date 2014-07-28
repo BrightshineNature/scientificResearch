@@ -96,7 +96,13 @@ def appManage(request, pid):
     return render(request, userauth['role'] + "/application.html", context)
 
 
+def fileUploadManage(request, pid):
 
+
+    context = {
+        'files':files,
+    }
+    return context
 
 
 

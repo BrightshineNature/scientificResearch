@@ -12,7 +12,7 @@ from backend.decorators import *
 from backend.logging import loginfo
 from const import *
 
-from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork 
+from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage 
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
@@ -31,7 +31,20 @@ def appView(request, pid, is_submited = False):
     }
     context = appManage(request, pid)
     context['user'] = "teacher"
+    context['is_submited'] = is_submited
     return render(request, "teacher/application.html", context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
+@check_submit_status(SUBMIT_STATUS_APPLICATION)
+def fileUploadManageView(request, pid, is_submited = False):
+
+    context = fileUploadManage(request, pid)
+    context['user'] = "teacher"
+    context['is_submited'] = is_submited
+    return render(request, "teacher/file_upload.html", context)
+
     
 @csrf.csrf_protect
 @login_required
@@ -82,12 +95,12 @@ def progressReportView(request):
     context = {}
     return render(request,"teacher/progress.html",context)
 
-@csrf.csrf_protect
-@login_required
-@authority_required(TEACHER_USER)
-def fileView(request):
-    data={};
-    return render(request,"teacher/file_upload.html",data)
+# @csrf.csrf_protect
+# @login_required
+# @authority_required(TEACHER_USER)
+# def fileView(request):
+#     data={};
+#     return render(request,"teacher/file_upload.html",data)
 
 @csrf.csrf_protect
 @login_required
