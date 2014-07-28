@@ -281,3 +281,12 @@ class ProjectMemberForm(forms.ModelForm):
     class Meta:
         model = ProjectMember
         fields = ('name', 'birth_year', 'tel', 'mail', 'professional_title', 'executive_position')
+        widgets = {
+            'name':forms.TextInput(attrs = {'class':'form-control', 'placeholder': "姓名",}),
+            'birth_year':forms.DateInput(attrs = {'class':'form-control','placeholder': "出生年份",}),
+            'tel':forms.TextInput(attrs = {'class':'form-control','placeholder': "电话",}),
+            'mail':forms.TextInput(attrs = {'class':'form-control','placeholder': "邮箱",}),
+            'professional_title':forms.Select(attrs = {'class':'form-control','placeholder': "职称",}),
+            'executive_position':forms.Select(attrs = {'class':'form-control','placeholder': "行政职务",}),
+
+        }

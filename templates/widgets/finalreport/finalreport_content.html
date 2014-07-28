@@ -1,4 +1,4 @@
-<form method="POST" action="/teacher/final" class="form-inline" id="finalsubmitform" role="form">
+<form method="POST" action="/teacher/final/{{pid}}" class="form-inline" id="finalsubmitform" role="form">
 	{% csrf_token %}
     {% if final.project_keyword.errors or final.project_summary.errors  or  final.project_plan.errors %}
     <div class="alert alert-danger finalerror-lg">

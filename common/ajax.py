@@ -22,6 +22,10 @@ from adminStaff.models import ProjectSingle
 from common.utils import status_confirm
 from const.models import ScienceActivityType
 from common.views import schedule_form_data
+from adminStaff.models import ProjectSingle
+from common.forms import ProjectInfoForm, ProjectMemberForm
+from common.models import ProjectMember
+
 from adminStaff.models import ProjectSingle,Re_Project_Expert
 from common.forms import ProjectInfoForm
 from django.core.mail import send_mail
@@ -163,6 +167,18 @@ def saveProjectInfoForm(request, form, pid):
     else :
         print "error in saveProjectInfoForm"
 
-    
+
+@dajaxice_register
+def saveProjectMember(request, form, pid):
+    form = ProjectMemberForm(deserialize_form(form))
+
+    if form.is_valid():
+        print form
+        form.save()
+    else:
+        print form.errors
+        print "error in saveProjectMember"
+
+
 
 

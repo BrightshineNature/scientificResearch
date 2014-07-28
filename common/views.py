@@ -1,7 +1,7 @@
 # coding: UTF-8
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
-from common.forms import  ScheduleBaseForm,ProjectJudgeForm
+from common.forms import  ScheduleBaseForm,ProjectJudgeForm, ProjectMemberForm
 from common.utils import get_query_status,get_qset,get_query_application_status
 from const import *
 from teacher.forms import *
@@ -13,7 +13,7 @@ from backend.utility import getContext
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
-
+from common.models import ProjectMember
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
@@ -32,30 +32,32 @@ def getParam(pro_list, userauth,flag):
 
 def appManage(request, userauth, pid):
 
-    project_info_form = ProjectInfoForm()
+    
+
+    project_member_form = ProjectMemberForm()
     basis_content_form = BasisContentForm()
     base_condition_form = BaseConditionForm()
+    
     p = ProjectSingle.objects.get(project_id = pid)
-
-    # SCIENCE_ACTIVITY_TYPE_CHOICES
-
-    # print "SBSB**(*(**(&*&&(^^"
-    # print p.science_type
     project_info_data = { 
         'project_name': p.title,
-        'science_type': p.science_type,
+        'science_type': p.science_type.category ,
+
         'trade_code': p.trade_code,
         'subject_name': p.subject_name,
         'subject_code': p.subject_code,
         'start_time': p.start_time,
         'end_time': p.end_time,
         'project_tpye': p.project_tpye,
-
     }
+
+    project_member_list = ProjectMember.objects.filter(project__project_id = pid)
     context = {
         'project_info_form': ProjectInfoForm(project_info_data),
+        'project_member_form': ProjectMemberForm(),
         'basis_content_form':basis_content_form,
         'base_condition_form':base_condition_form,
+        'project_member_list': project_member_list,
         'pid': pid,
     }
 
@@ -152,14 +154,14 @@ def get_search_data(schedule_form):
             return pro_list
 
 
-def finalReportViewWork(request,redirect=False):
-    final = FinalSubmit.objects.all()[0]
-    achivement_list = ProjectAchivement.objects.filter(finalsubmit_id = final.content_id)
-    datastatics_list = ProjectStatistics.objects.filter(finalsubmit_id = final.content_id)
-    projfundsummary = ProjectFundSummary.objects.get(finalsubmit_id = final.content_id) 
+def finalReportViewWork(request,pid,redirect=False):
+    final = FinalSubmit.objects.get( project_id = pid)
+    achivement_list = ProjectAchivement.objects.filter( project_id = pid )
+    datastatics_list = ProjectStatistics.objects.filter( project_id = pid )
+    projfundsummary = ProjectFundSummary.objects.get( project_id = pid ) 
     projachivementform  = ProjectAchivementForm()
     projdatastaticsform = ProjectDatastaticsForm()
-    profundsummartform = ProFundSummaryForm(instance=projfundsummary)
+    profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
 
     if request.method == "POST":
         final_form = FinalReportForm(request.POST, instance=final)
@@ -172,16 +174,40 @@ def finalReportViewWork(request,redirect=False):
     else:
         final_form = FinalReportForm(instance=final)
 
+    loginfo(p=redirect, label="redirect")
+    loginfo(p=request.method, label="request.method")
     context = {
         'projachivementform':projachivementform,
 		'projdatastaticsform':projdatastaticsform,
         'final': final_form,
-        'finalreportid':final.content_id,
+        'pid':pid,
         'redirect':redirect,
         'achivement_list':achivement_list,
 		'datastatics_list':datastatics_list,
 		'projfundsummary':projfundsummary,
-		'profundsummartform':profundsummartform,
+		'profundsummaryform':profundsummaryform,
+    }
+    return context
+
+def fundBudgetViewWork(request,pid,redirect=False):
+    fundbudget = ProjectFundBudget.objects.get(project_id = pid)
+    print request.method
+    if request.method == "POST":
+        fundbudget_form = ProFundBudgetForm(request.POST, instance=fundbudget)
+        if fundbudget_form.is_valid():
+            fundbudget_form.save()
+            redirect = True
+        else:
+            logger.info("ProFundBudgetForm Valid Failed"+"**"*10)
+            logger.info(fundbudget_form.errors)
+    else:
+        fundbudget_form = ProFundBudgetForm(instance=fundbudget)
+
+    context = {
+		'redirect':redirect,
+		'fundbudget_form':fundbudget_form,
+		'finalreportid':final.content_id,
+        'pid':pid,
     }
     return context
 def noticeMessageSettingBase(request,userauth):
