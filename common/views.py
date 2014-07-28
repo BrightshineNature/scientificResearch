@@ -231,12 +231,4 @@ def noticeMessageSettingBase(request,userauth):
         "notice_form":notice_form,
         "userauth":userauth
     })
-    #if request.method == "POST":
-        #mail=NoticeForm(request.POST)
-        #if mail.is_valid():
-            #loginfo(mail)
-            #mailtospecial=mail.cleaned_data["special"]
-            #mailtocollege=mail.cleaned_data["college"]
-        #else:
-            #loginfo(mail.errors)
     return render(request, userauth['role'] + "/notice_message_setting.html", context)

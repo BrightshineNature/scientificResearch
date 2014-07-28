@@ -6,22 +6,33 @@ Desc: teacher' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators import csrf
+from backend.decorators import *
+from backend.logging import loginfo
+from const import *
 
-from const import * 
+from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork 
+
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
-from common.views import scheduleManage,finalReportViewWork,fundBudgetViewWork
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
+
 from users.models import TeacherProfile
 from teacher.models import TeacherInfoSetting
-from common.views import appManage
 from adminStaff.models import ProjectSingle
-def appView(request, pid):
 
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
+def appView(request, pid):
     userauth = {
         'role':"teacher",
     }
     return appManage(request, userauth, pid);    
     
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
 def homeView(request):
 
     project_list = ProjectSingle.objects.all();
@@ -30,6 +41,10 @@ def homeView(request):
 
     }
     return render(request,"teacher/project_info.html",context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
 def memberChange(request):
     professional=PROFESSIONAL_TITLE
     executive=EXECUTIVE_POSITION
@@ -38,25 +53,45 @@ def memberChange(request):
     context['executive']=executive
     return render(request,"teacher/member_change.html",context)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
 def commitmentView(request):
     context = {}
     return render(request, "teacher/commitment.html", context)
 
+<<<<<<< HEAD
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
+def finalReportView(request):
+    context = finalReportViewWork(request)
+=======
 def finalReportView(request,pid):
 
     context = finalReportViewWork(request,pid)
+>>>>>>> bbe7b980a3faeb693ec90fea9b7464ab2b427713
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/final.html",context)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
 def progressReportView(request):
     context = {}
     return render(request,"teacher/progress.html",context)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
 def fileView(request):
     data={};
     return render(request,"teacher/file_upload.html",data)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
 def settingView(request):
     message = ""
     teacher = TeacherProfile.objects.get(userid = request.user)
@@ -73,6 +108,9 @@ def settingView(request):
                }
     return render(request, "teacher/setting.html", context)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
 def financialView(request):
     if request.method == "POST":
         budgetinfoform = ProjectBudgetInformationForm(request.POST)
@@ -90,6 +128,9 @@ def financialView(request):
     }
     return render(request,"teacher/financial.html",context)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
 def finalInfoView(request):
     teacher = TeacherProfile.objects.get(userid = request.user)
     project_list = ProjectSingle.objects.filter(teacher = teacher)
