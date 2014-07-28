@@ -7,9 +7,11 @@ from const import *
 from teacher.forms import *
 from teacher.models import *
 from backend.logging import logger, loginfo
-from adminStaff.models import ProjectSingle
+from adminStaff.models import ProjectSingle,TemplateNoticeMessage
 from django.db.models import Q
-from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
+from backend.utility import getContext
+from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
+from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
 
 def getParam(pro_list, userauth,flag):
@@ -202,4 +204,12 @@ def noticeMessageSettingBase(request,userauth):
         "notice_form":notice_form,
         "userauth":userauth
     })
-    return render(request, userauth['role'] + "/notoce_message_setting.html", context)
+    if request.method == "POST":
+        mail=NoticeForm(request.POST)
+        if mail.is_valid():
+            loginfo(mail)
+            mailtospecial=mail.cleaned_data["special"]
+            mailtocollege=mail.cleaned_data["college"]
+        else:
+            loginfo(mail.errors)
+    return render(request, userauth['role'] + "/notice_message_setting.html", context)

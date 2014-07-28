@@ -95,7 +95,7 @@ def finalAllocView(request):
 
 def noticeMessageSettingView(request):
     userauth={
-        "role":"special"
+        "role":"school"
     }
     return noticeMessageSettingBase(request,userauth)
 
