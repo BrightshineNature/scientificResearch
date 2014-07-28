@@ -164,19 +164,48 @@ def saveProjectInfoForm(request, form, pid):
         pass
     else :
         print "error in saveProjectInfoForm"
+    return simplejson.dumps({'status':'1'})
 
+
+def refreshMemberTabel():
+    project_member_list = ProjectMember.objects.all()
+    return render_to_string( "widgets/project_member_table.html", {
+        'project_member_list':project_member_list,
+
+        })
 
 @dajaxice_register
-def saveProjectMember(request, form, pid):
-    form = ProjectMemberForm(deserialize_form(form))
+def saveProjectMember(request, form, pid, mid):
+    if mid:
+        mem = ProjectMember.objects.get(id = mid)
+        form = ProjectMemberForm(deserialize_form(form),instance = mem)
+    else :
+        form = ProjectMemberForm(deserialize_form(form))
+    
+    context = {
+        'status':0,
+        'project_member_table': "",
+    }
 
     if form.is_valid():
-        print form
-        form.save()
+        temp = form.save(commit = False)
+        temp.project = ProjectSingle.objects.get(project_id = pid)
+        temp.save()
+        context['status'] = 1
+        context['project_member_table'] = refreshMemberTabel()
+
     else:
         print form.errors
         print "error in saveProjectMember"
 
 
+    return simplejson.dumps(context)
+@dajaxice_register
+def deleteProjectMember(request, mid):
+    ProjectMember.objects.get(id = mid).delete()
 
-
+    context = {
+        'status':1,
+        'project_member_table':refreshMemberTabel(),
+    }
+    return simplejson.dumps(context)
