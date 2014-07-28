@@ -13,7 +13,7 @@ from backend.utility import getContext
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
-from common.models import ProjectMember
+from common.models import ProjectMember,BasisContent , BaseCondition
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
@@ -30,13 +30,28 @@ def getParam(pro_list, userauth,flag):
     }
     return param
 
-def appManage(request, userauth, pid):
+def appManage(request, pid):
 
     
 
-    project_member_form = ProjectMemberForm()
-    basis_content_form = BasisContentForm()
-    base_condition_form = BaseConditionForm()
+
+    
+
+    basis_content = BasisContent.objects.filter(project__project_id = pid)
+    if basis_content:
+        basis_content_id = basis_content[0].id
+        basis_content_form = BasisContentForm(instance = basis_content[0])
+    else :
+        basis_content_id = ""
+        basis_content_form = BasisContentForm()
+
+    base_condition = BaseCondition.objects.filter(project__project_id = pid)
+    if base_condition:
+        base_condition_id = base_condition[0].id
+        base_condition_form = BaseConditionForm(instance = base_condition[0])
+    else :
+        base_condition_id = ""
+        base_condition_form = BaseConditionForm()
     
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
@@ -51,17 +66,33 @@ def appManage(request, userauth, pid):
         'project_tpye': p.project_tpye,
     }
 
+
+
     project_member_list = ProjectMember.objects.filter(project__project_id = pid)
+
+    # for i in project_member_list:
+    #     i.professional_title_id = i.professional_title.category
+    #     i.executive_position_id = i.executive_position.category
+
+
+
+    print "UUUUUU***************"
+
+
+
     context = {
         'project_info_form': ProjectInfoForm(project_info_data),
         'project_member_form': ProjectMemberForm(),
         'basis_content_form':basis_content_form,
+        'basis_content_id':basis_content_id,
+
         'base_condition_form':base_condition_form,
+        'base_condition_id':base_condition_id,
         'project_member_list': project_member_list,
         'pid': pid,
     }
 
-
+    return context
     return render(request, userauth['role'] + "/application.html", context)
 
 

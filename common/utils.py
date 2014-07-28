@@ -4,6 +4,29 @@ from backend.logging import loginfo
 from django.db.models import Q
 from const import *
 from const.models import ProjectStatus
+from expert.forms import *
+
+def getScoreTable(project):
+    category = project.project_special.expert_review.category      
+    if category == EXPERT_REVIEW_BASICSCIENTIFIC:
+        return BasicScientificResearchScoreTable
+    elif category == EXPERT_REVIEW_HUMANITIESSOCIAL:
+        return HumanitiesSocialSciencesResearchScoreTable
+    elif category == EXPERT_REVIEW_MAJORPROJECT:
+        return MajorProjectScoreTable
+    else:
+        return KeyLaboratoryProjectScoreTable
+
+def getScoreForm(project):
+    category = project.project_special.expert_review.category      
+    if category == EXPERT_REVIEW_BASICSCIENTIFIC:
+        return BasicScientificResearchScoreForm
+    elif category == EXPERT_REVIEW_HUMANITIESSOCIAL:
+        return HumanitiesSocialSciencesResearchScoreForm
+    elif category == EXPERT_REVIEW_MAJORPROJECT:
+        return MajorProjectScoreForm
+    else:
+        return KeyLaboratoryProjectScoreForm
 
 def get_application_year_choice():
     project_group=ProjectSingle.objects.all()

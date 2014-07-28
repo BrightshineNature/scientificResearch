@@ -29,7 +29,9 @@ def appView(request, pid, is_submited = False):
     userauth = {
         'role':"teacher",
     }
-    return appManage(request, userauth, pid);    
+    context = appManage(request, pid)
+    context['user'] = "teacher"
+    return render(request, "teacher/application.html", context)
     
 @csrf.csrf_protect
 @login_required

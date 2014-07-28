@@ -195,7 +195,7 @@ table.documents td {
 .front-wrap ul
 {
     list-style: url(../images/arrow.gif);
-    margin-left: 5px;
+    margin-left: -40px!important;
 }
 
 .usoft-listview-header h3 {
