@@ -21,6 +21,7 @@ from const import *
 from adminStaff.models import ProjectSingle
 from common.utils import status_confirm
 from const.models import ScienceActivityType
+from common.views import schedule_form_data
 from adminStaff.models import ProjectSingle
 from common.forms import ProjectInfoForm, ProjectMemberForm
 from common.models import ProjectMember
@@ -118,8 +119,9 @@ def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
         "role":userrole,
         "status":userstatus
     })
+    loginfo(userstatus)
     if userstatus=="application":
-        table_html=render_to_string("widgets/project_filter.html",context)
+        table_html=render_to_string("widgets/project_info.html",context)
     else:
         table_html=render_to_string("widgets/research_concluding_table.html",context)
     return simplejson.dumps({"table_html":table_html})   
