@@ -9,6 +9,21 @@ $(".form-date").datetimepicker({
     minView:2
 });
 
+$(".form-year").datetimepicker({
+    format:'yyyy',
+    weekStart:1,
+    // todayBtn: 1,
+    autoclose: 1,
+    startView: 4,
+
+    // todayHighlight:1,
+    // startView:2,
+    // forceParse:0,
+    minView:4,
+});
+
+
+
 function jump(cnt_content, cnt_tab){
     next_content = cnt_content.next();
     next_tab = cnt_tab.next();
@@ -17,7 +32,27 @@ function jump(cnt_content, cnt_tab){
     next_content.addClass("active");
     next_tab.addClass("active");
 }
+
+
+
+$(document).on("click", "#saveProjectMember", function(){
+    var pid = $(this).parents("[pid]").attr("pid");
+    var form = $("#project_member_form").serialize();
+    alert($(""));
+    alert(form);
+    Dajaxice.common.saveProjectMember(saveProjectMemberCallback, {
+        'form':form,
+        'pid':pid,
+    })
+
+
+});
+
+function saveProjectMemberCallback(){
+
+}
 $(document).on("click", ".save_button",function(){
+    alert("TT");
     
     var cnt_content = $(this).parent();
     

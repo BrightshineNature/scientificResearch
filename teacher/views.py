@@ -15,7 +15,7 @@ from users.models import TeacherProfile
 from teacher.models import TeacherInfoSetting
 from common.views import appManage
 from adminStaff.models import ProjectSingle
-def appView(request, pid):
+def appView(request, pid, is_submited = False):
 
     userauth = {
         'role':"teacher",

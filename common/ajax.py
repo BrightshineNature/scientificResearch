@@ -21,7 +21,8 @@ from adminStaff.models import ProjectSingle
 from common.utils import status_confirm
 from const.models import ScienceActivityType
 from adminStaff.models import ProjectSingle
-from common.forms import ProjectInfoForm
+from common.forms import ProjectInfoForm, ProjectMemberForm
+from common.models import ProjectMember
 
 OVER_STATUS_NOTOVER = "notover"
 OVER_STATUS_OPENCHECK = "opencheck"
@@ -107,6 +108,18 @@ def saveProjectInfoForm(request, form, pid):
     else :
         print "error in saveProjectInfoForm"
 
-    
+
+@dajaxice_register
+def saveProjectMember(request, form, pid):
+    form = ProjectMemberForm(deserialize_form(form))
+
+    if form.is_valid():
+        print form
+        form.save()
+    else:
+        print form.errors
+        print "error in saveProjectMember"
+
+
 
 

@@ -5,7 +5,7 @@
 
 from const import *
 from adminStaff.models import ProjectSingle
-
+import uuid,datetime, os
 
 
 from django.db import models
@@ -44,7 +44,7 @@ class ProjectMember(Model):
 
     project = models.ForeignKey(ProjectSingle, null = True)
     name = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'姓名')
-    birth_year = models.DateField(blank= False,null=True,default=lambda: datetime.datetime.today(),verbose_name=u'出生年份')
+    birth_year = models.IntegerField(blank= False,null=True, max_length = 4, verbose_name=u'出生年份')
     tel = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'电话')
     mail = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'邮箱')    
     professional_title = models.ForeignKey(ProfessionalTitle, null = True, verbose_name=u'职称')
