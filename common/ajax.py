@@ -19,7 +19,10 @@ from backend.logging import loginfo
 from const import *
 from adminStaff.models import ProjectSingle
 from common.utils import status_confirm
-from const import *
+from const.models import ScienceActivityType
+from adminStaff.models import ProjectSingle
+from common.forms import ProjectInfoForm
+
 OVER_STATUS_NOTOVER = "notover"
 OVER_STATUS_OPENCHECK = "opencheck"
 OVER_STATUS_MIDCHECK = "midcheck"
@@ -31,7 +34,7 @@ OVER_STATUS_CHOICES = (
     ('yes', u"已结题"),    
 )
 @dajaxice_register
-def get_status(request):
+def getStatus(request):
     return simplejson.dumps({
         "application_c":PROJECT_STATUS_APPLICATION_COMMIT_OVER,
         "application_s":PROJECT_STATUS_APPLICATION_COLLEGE_OVER,
@@ -42,7 +45,7 @@ def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
     project=ProjectSingle.objects.get(pk=judgeid)
     form=deserialize_form(look_through_form)
     if form["judgeresult"]=="1":
-        status_confirm(project,project.project_status.status+1)
+        status_confirm(project,-1)
     else:
     
         comment={
@@ -52,6 +55,16 @@ def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
         }
         project.comment=eval(comment)
         project.save()
+        statusRollBack(project,userrole,userstatus,form)
+    context=schedule_form_data(request,{
+        "role":userrole,
+        "status":userstatus
+    })
+    if userstatus=="application":
+        table_html=render_to_string("widgets/project_filter.html",context)
+    else:
+        table_html=render_to_string("widgets/research_concluding_table.html",context)
+    return simplejson.dumps({"table_html":table_html})   
 @dajaxice_register
 def change_project_overstatus(request, project_id, changed_overstatus):
     '''
@@ -69,3 +82,31 @@ def change_project_overstatus(request, project_id, changed_overstatus):
     else:
         res = "操作失败，请重试"
     return simplejson.dumps({'status':'1', 'res':res})
+
+
+
+@dajaxice_register
+def saveProjectInfoForm(request, form, pid):
+    form = ProjectInfoForm(deserialize_form(form))
+
+
+    p = ProjectSingle.objects.get(project_id = pid)
+    if form.is_valid():        
+        p.title = form.cleaned_data['project_name']
+        science_type =form.cleaned_data['science_type']
+        scienceType = ScienceActivityType.objects.get(category=science_type)
+        p.science_type = scienceType
+        p.trade_code = form.cleaned_data['trade_code']
+        p.subject_name = form.cleaned_data['subject_name']
+        p.subject_code = form.cleaned_data['subject_code']
+        p.start_time = form.cleaned_data['start_time']
+        p.end_time = form.cleaned_data['end_time']
+        p.project_tpye = form.cleaned_data['project_tpye']
+        p.save()            
+        pass
+    else :
+        print "error in saveProjectInfoForm"
+
+    
+
+

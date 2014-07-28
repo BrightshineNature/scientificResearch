@@ -110,6 +110,6 @@ class ProjectDatastaticsForm(forms.Form):
 class ProFundSummaryForm(ModelForm):
 	class Meta:
 		model = ProjectFundSummary
-		exclude = ('content_id','finalsubmit_id',)
+		exclude = ('content_id','finalsubmit_id','finance_comment',)
 
 

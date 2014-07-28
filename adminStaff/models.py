@@ -29,10 +29,10 @@ class ProjectSingle(models.Model):
 
     title = models.CharField(max_length=400, blank=False,
                              verbose_name=u"项目名称")
-    comment = models.CharField(max_length=400, blank=True,
+    comment = models.CharField(max_length=400, blank=True,null=True,
                              verbose_name=u"评审意见")
     teacher = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"项目申请人")
-    project_sendback_status = models.ForeignKey(ProjectStatus,blank=False,default=None,verbose_name=u"项目退回状态")
+    project_sendback_status = models.ForeignKey(ProjectStatus,blank=True,null=True,default=None,verbose_name=u"项目退回状态")
     # expert = models.ManyToManyField(ExpertProfile, through = "Re_Project_Expert")
 
     try:
@@ -46,18 +46,18 @@ class ProjectSingle(models.Model):
     application_year = models.IntegerField(blank=False, null=False, max_length=4,default=lambda: datetime.datetime.today().year,verbose_name=u"申请年份")
     approval_year=models.IntegerField(blank=True, null=True, max_length=4,verbose_name=u"立项年份")
     conclude_year = models.IntegerField(blank=True, null=True, max_length=4,verbose_name=u"结题年份")
-    submit_date=models.DateField(blank=True,null=True,verbose_name=u"提交日期")
+    submit_date=models.DateField(blank=True,null=True,default=lambda: datetime.datetime.today(),verbose_name=u"提交日期")
     file_application = models.BooleanField(null=False, default=False,verbose_name=u"申报书")
     file_task = models.BooleanField(null=False, default=False,verbose_name=u"任务书")
     file_interimchecklist = models.BooleanField(null=False, default=False,verbose_name=u"进展报告")
     file_summary = models.BooleanField(null=False, default=False,verbose_name=u"结题书")
-    science_type = models.ForeignKey(ScienceActivityType, verbose_name=u'科技活动类型')
-    trade_code = models.CharField(blank=True,max_length = 20, verbose_name= u'国民行业代码(国标)')
-    subject_name = models.CharField(blank=True,max_length = 20, verbose_name = u'学科名称')
-    subject_code = models.CharField(blank=True,max_length = 20, verbose_name=u'学科代码')
+    science_type = models.ForeignKey(ScienceActivityType,blank=True,null=True, verbose_name=u'科技活动类型')
+    trade_code = models.CharField(blank=True,null=True,max_length = 20, verbose_name= u'国民行业代码(国标)')
+    subject_name = models.CharField(blank=True,null=True,max_length = 20, verbose_name = u'学科名称')
+    subject_code = models.CharField(blank=True,null=True,max_length = 20, verbose_name=u'学科代码')
     start_time = models.DateField(blank=True,null=True,default=lambda: datetime.datetime.today(),verbose_name=u'研究开始时间')
     end_time = models.DateField(blank=True,null =True,default=lambda: datetime.datetime.today(),verbose_name=u'研究结束时间')
-    project_tpye =models.CharField(blank=True,max_length = 20, verbose_name = u'项目类型')
+    project_tpye =models.CharField(blank=True,null=True,max_length = 20, verbose_name = u'项目类型')
     class Meta:
         verbose_name = "项目"
         verbose_name_plural = "项目"

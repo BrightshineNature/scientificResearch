@@ -15,12 +15,13 @@ from adminStaff.forms import TemplateNoticeMessageForm,DispatchForm,DispatchAddC
 from django.utils import simplejson
 from django.template.loader import render_to_string
 from dajaxice.utils import deserialize_form
-from adminStaff.models import TemplateNoticeMessage,News
+from adminStaff.models import TemplateNoticeMessage
 from backend.logging import loginfo
+
 from users.models import SchoolProfile,CollegeProfile,Special,College
 from teacher.models import TeacherInfoSetting
 from backend.logging import logger
-
+from   adminStaff.forms      import ObjectForm
 def getObject(object):
     if object == "special":
         return Special
@@ -50,8 +51,8 @@ def refreshObjectAlloc(request, object):
         user_special_info = {}
 
         for i in SchoolProfile.objects.all():
-            user_special_info[i] = []
-
+            user_special_info[i] = []   
+        
         for i in Special.objects.all():
             if i.school_user:
                 user_special_info[i.school_user].append(i.name)
@@ -64,8 +65,8 @@ def refreshObjectAlloc(request, object):
         user_college_info = {}
 
         for i in CollegeProfile.objects.all():
-            user_college_info[i] = []
-
+            user_college_info[i] = []   
+        
         for i in College.objects.all():
             if i.college_user:
                 user_college_info[i.college_user].append(i.name)
@@ -78,71 +79,62 @@ def refreshObjectAlloc(request, object):
     else:
         loginfo("error in refreshObjectAlloc")
 
-from common.sendEmail import sendemail
-from backend.utility import getContext
-@dajaxice_register
-def saveSpecialName(request, form):
-    form = SpecialForm(deserialize_form(form))
 
-    if form.is_valid():
-        p = Special(name = form.cleaned_data['name'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from common.sendEmail import sendemail
+
+@dajaxice_register
+def saveObjectName(request, object, form):
+
+    print "save*****"
+    print object
+    form = ObjectForm(deserialize_form(form))
+
+    Object = getObject(object)
+
+
+    if form.is_valid():        
         p = Object(name = form.cleaned_data['name'])
         print ""
         print p.name
         p.save()
-        return simplejson.dumps({'status':'1'})
     else :
-        return simplejson.dumps({'status':'0'})
+        pass
 
-@dajaxice_register
-def deleteSpecialName(request, checked):
-
-    tag = False
-    for i in checked:
-        Special.objects.filter(id = i).delete()
-        tag = True
-    if tag :
-        return simplejson.dumps({'status':'1'})
-    else:
-        return simplejson.dumps({'status':'0'})
-    return simplejson.dumps({'status':'1' ,
+    return simplejson.dumps({'status':'1' , 
         'objects_table': refreshObjectTable(request, object)
         })
 
 @dajaxice_register
-def allocSpecial(request, user, alloced):
+def deleteObjectName(request, object, deleted):
 
-    user = SchoolProfile.objects.filter(userid__username = user)
-
-    all_spe = Special.objects.all()
-    for spe in all_spe:
-        if alloced.count(spe.name):
-            spe.school_user = user[0]
-        elif spe.school_user == user[0]:
-            spe.school_user = None
-        spe.save()
-    return simplejson.dumps({'status':'1'})
-
-@dajaxice_register
-def getNoticePagination(request,page):
-    message=""
-    table=refresh_template_notice_table(request,page)
-    ret={"message":message,"table":table}
-    return simplejson.dumps(ret)
     
-
     Object = getObject(object)
 
     for i in deleted:
-        cnt = Object.objects.filter(name = i)
+        cnt = Object.objects.filter(name = i)        
         Object.objects.filter(name = i).delete()
-    return simplejson.dumps({'status':'1' ,
+    return simplejson.dumps({'status':'1' , 
         'objects_table': refreshObjectTable(request, object)
         })
 
 @dajaxice_register
 def allocObject(request, object, user, alloced):
-
+    
     filter_user = user
     if object == "special":
         user = SchoolProfile.objects.filter(userid__username = filter_user)[0]
@@ -176,6 +168,14 @@ def allocObject(request, object, user, alloced):
         'object_table': refreshObjectTable(request, object),
         })
 
+
+@dajaxice_register
+def getNoticePagination(request,page):
+    message=""
+    table=refresh_template_notice_table(request,page)
+    ret={"message":message,"table":table}
+    return simplejson.dumps(ret)
+    
 @dajaxice_register
 def TemplateNoticeChange(request,template_form,mod,page):
     if mod==-1:
@@ -260,46 +260,3 @@ def refresh_user_table(request,identity):
         users = ExpertProfile.objects.all()
     return render_to_string("widgets/dispatch/user_addcollege_table.html",
                             {"users":users})
-
-@dajaxice_register
-def getTeacherInfo(request, name):
-    message = ""
-    setting_list = TeacherInfoSetting.objects.filter(name = name)
-    context = {"setting_list": setting_list, }
-    html = render_to_string("adminStaff/widgets/modify_setting_table.html", context)
-    return simplejson.dumps({"message": message, "html": html, })
-
-@dajaxice_register
-def modifyTeacherInfo(request, name, card, id):
-    print "here"*100
-    message = ""
-    try:
-        if len(name) == 0 or len(card) == 0: raise
-
-        setting = TeacherInfoSetting.objects.get(id = id)
-        setting.name = name
-        setting.card = card
-        setting.save()
-        message = "ok"
-    except:
-        message = "fail"
-
-    return simplejson.dumps({"message": message, })
-@dajaxice_register
-def get_news_list(request, uid):
-
-    logger.info("sep delete news"+"**"*10)
-    # check mapping relation
-    try:
-        delnews=News.objects.get(id=uid)
-        logger.info(delnews.id)
-        if request.method == "POST":
-            delnews.delete()
-            return simplejson.dumps({"is_deleted": True,
-                    "message": "delete it successfully!",
-                    "uid": str(uid)})
-        else:
-            return simplejson.dumps({"is_deleted": False,
-                                     "message": "Warning! Only POST accepted!"})
-    except Exception, err:
-        logger.info(err)

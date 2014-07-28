@@ -10,8 +10,8 @@ from backend.logging import logger, loginfo
 from adminStaff.models import ProjectSingle
 from django.db.models import Q
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
+from const.models import ScienceActivityType
 
-    
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
@@ -28,16 +28,30 @@ def getParam(pro_list, userauth,flag):
     }
     return param
 
-def appManage(request, userauth):
+def appManage(request, userauth, pid):
 
     project_info_form = ProjectInfoForm()
     basis_content_form = BasisContentForm()
     base_condition_form = BaseConditionForm()
+    p = ProjectSingle.objects.get(project_id = pid)
 
+    project_info_data = { 
+        'project_name': p.title,
+        'science_type': p.science_type.category ,
+
+        'trade_code': p.trade_code,
+        'subject_name': p.subject_name,
+        'subject_code': p.subject_code,
+        'start_time': p.start_time,
+        'end_time': p.end_time,
+        'project_tpye': p.project_tpye,
+
+    }
     context = {
-        'project_info_form': project_info_form,
+        'project_info_form': ProjectInfoForm(project_info_data),
         'basis_content_form':basis_content_form,
         'base_condition_form':base_condition_form,
+        'pid': pid,
     }
 
 
@@ -165,3 +179,27 @@ def finalReportViewWork(request,redirect=False):
 		'profundsummartform':profundsummartform,
     }
     return context
+def noticeMessageSettingBase(request,userauth):
+    notice_choice=NOTICE_CHOICE
+    template_notice_message=TemplateNoticeMessage.objects.all()
+    template_notice_message_form = TemplateNoticeMessageForm()
+    template_notice_message_group=[]
+    cnt=1
+    for item in template_notice_message:
+        nv={
+            "id":item.id,
+            "iid":cnt,
+            "title":item.title,
+            "message":item.message,
+        }
+        cnt+=1
+        template_notice_message_group.append(nv)
+    notice_form=NoticeForm(request=request)   
+    context=getContext(template_notice_message_group,1,"item",0)
+    context.update({
+        "template_notice_message_form":template_notice_message_form,
+        "notice_choice":notice_choice,
+        "notice_form":notice_form,
+        "userauth":userauth
+    })
+    return render(request, userauth['role'] + "/notoce_message_setting.html", context)
