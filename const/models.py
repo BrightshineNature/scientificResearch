@@ -122,7 +122,6 @@ class AchivementTypeDict(models.Model):
     class Meta:
         verbose_name = "成果类型列表"
         verbose_name_plural = "成果类型列表"
-	
     def __unicode__(self):
         return self.get_achivementtype_display()
 
@@ -162,3 +161,12 @@ class UserIdentity(models.Model):
     def __unicode__(self):
         return self.get_identity_display()
 
+class ExpertReview(models.Model):
+    category = models.CharField(max_length=30, blank=False, unique=True,
+                                choices=EXPERT_REVIEW_TABLE_CHOICES,
+                                verbose_name="专家评审表")
+    class Meta:
+        verbose_name = "专家评审表"
+        verbose_name_plural = "专家评审表"
+    def __unicode__(self):
+        return self.get_category_display()
