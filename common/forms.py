@@ -3,6 +3,7 @@
 from django import forms
 from const import *
 from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice
+from common.models import ProjectMember
 class ScheduleBaseForm(forms.Form):
     status_choices = get_status_choice()
     application_status_choice =get_application_status_choice()
@@ -276,3 +277,7 @@ class BaseConditionForm(forms.Form):
             'id':'name',
             'placeholder':u"对申请者负责的前一个已结题基本科研业务费专项项目完成情况、后续研究进展及与本申请项目的关系加以详细说明。另附该已结题项目研究工作总结摘要（限500字）和相关成果的详细目录"}), )
 
+class ProjectMemberForm(forms.ModelForm):
+    class Meta:
+        model = ProjectMember
+        fields = ('name', 'birth_year', 'tel', 'mail', 'professional_title', 'executive_position')

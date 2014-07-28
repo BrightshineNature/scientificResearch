@@ -1,6 +1,8 @@
 # coding: UTF-8
 import uuid,datetime, os
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 from backend.utility import make_uuid
 from settings import MEDIA_ROOT
 from settings import NEWS_DOCUMENTS_PATH
@@ -22,7 +24,6 @@ class ProjectSingle(models.Model):
     project_id = models.CharField(max_length=50, primary_key=True,
                                   default=make_uuid,
                                   verbose_name=u"题目唯一ID")
-
     project_application_code = models.CharField(blank=False, null=True, max_length=14, verbose_name=u"项目申报编号")
 
     project_code = models.CharField(blank=True, null=True, default='',max_length=14, verbose_name=u"项目编号")
@@ -94,3 +95,52 @@ class News(models.Model):
     class Meta:
         verbose_name = "新闻"
         verbose_name_plural = "新闻"
+
+
+
+class BasicScientificResearchScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    summary = models.IntegerField(blank = False, default = 0, verbose_name = u"研究计划要点和执行情况概述", validators = [MaxValueValidator(10), MinValueValidator(0)])
+    completion = models.IntegerField(blank = False, default = 0, verbose_name = u"立项考核指标及完成情况", validators = [MaxValueValidator(30), MinValueValidator(0)])
+    achievement = models.IntegerField(blank = False, default = 0, verbose_name = u"研究工作主要进展和取得的成果", validators = [MaxValueValidator(40), MinValueValidator(0)])
+    prospect = models.IntegerField(blank = False, default = 0, verbose_name = u"重大项目培育科研专题科研项目下一步研究计划和谋划重大项目的工作思路", validators = [MaxValueValidator(10), MinValueValidator(0)])
+    funds_report = models.IntegerField(blank = False, default = 0, verbose_name = u"经费使用情况汇报", validators = [MaxValueValidator(10), MinValueValidator(0)])
+    class Meta:
+        verbose_name = u"基本科研业务费重大项目培育科研专题项目评审表"
+        verbose_name_plural = u"基本科研业务费重大项目培育科研专题项目评审表"
+
+class HumanitiesSocialSciencesResearchScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    significance = models.IntegerField(blank = False, default = 0, verbose_name = u"研究意义", validators = [MaxValueValidator(25), MinValueValidator(0)])
+    innovation = models.IntegerField(blank = False, default = 0, verbose_name = u"研究内容及创新性", validators = [MaxValueValidator(25), MinValueValidator(0)])
+    feasibility = models.IntegerField(blank = False, default = 0, verbose_name = u"研究方案及可行性", validators = [MaxValueValidator(25), MinValueValidator(0)])
+    base = models.IntegerField(blank = False, default = 0, verbose_name = u"研究基础与工作条件", validators = [MaxValueValidator(25), MinValueValidator(0)])
+    class Meta:
+        verbose_name = u"基本科研业务费人文社科科研专题一般项目评审表"
+        verbose_name_plural = u"基本科研业务费人文社科科研专题一般项目评审表"
+
+
+class MajorProjectScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    evaluation = models.IntegerField(blank = False, default = 0, verbose_name = u"项目成果及前景评价", validators = [MaxValueValidator(20), MinValueValidator(0)])
+    feasibility = models.IntegerField(blank = False, default = 0, verbose_name = u"工作计划可行性", validators = [MaxValueValidator(25), MinValueValidator(0)])
+    funds_report = models.IntegerField(blank = False, default = 0, verbose_name = u"经费使用情况", validators = [MaxValueValidator(10), MinValueValidator(0)])
+    expection = models.IntegerField(blank = False, default = 0, verbose_name = u"预期成果合理性", validators = [MaxValueValidator(20), MinValueValidator(0)])
+    measures = models.IntegerField(blank = False, default = 0, verbose_name = u"为实现考核目标所采取的措施", validators = [MaxValueValidator(25), MinValueValidator(0)])
+    class Meta:
+        verbose_name = u"重大项目培育科研专题项目评审表"
+        verbose_name_plural = u"重大项目培育科研专题项目评审表"
+
+
+class KeyLaboratoryProjectScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    significance = models.IntegerField(blank = False, default = 0, verbose_name = u"立项意义", validators = [MaxValueValidator(25), MinValueValidator(0)])
+    innovation = models.IntegerField(blank = False, default = 0, verbose_name = u"研究内容及创新性", validators = [MaxValueValidator(30), MinValueValidator(0)])
+    feasibility = models.IntegerField(blank = False, default = 0, verbose_name = u"研究方案及可行性", validators = [MaxValueValidator(20), MinValueValidator(0)])
+    base = models.IntegerField(blank = False, default = 0, verbose_name = u"研究基础与工作条件", validators = [MaxValueValidator(15), MinValueValidator(0)])
+    funds_report = models.IntegerField(blank = False, default = 0, verbose_name = u"经费是否合理", validators = [MaxValueValidator(10), MinValueValidator(0)])
+    class Meta:
+        verbose_name = u"重点实验室专题项目评审表"
+        verbose_name_plural = u"重点实验室专题项目评审表"
+
+
