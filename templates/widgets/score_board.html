@@ -1,0 +1,41 @@
+<p></p>
+<form class="well form" method="post"  action="review/?re_id={{ re_obj.id }}">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-9">
+      <div id="id_alert">
+      </div>
+      <table class="table table-bordered table-striped" id="score-table">
+        <colgroup>
+          <col class="col-lg-4">
+          <col class="col-lg-1">
+					<col class="col-lg-2">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>打分点</th>
+            <th>得分</th>
+						<th>反馈</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for field in score_form %}
+						<tr>
+							<td>{{ field.label_tag }}</td>
+							<td>{{ field }}</td>
+							<td>{{ field.errors }}</td>
+						</tr>
+					{% endfor %}
+        </tbody>
+      </table>
+
+    </div> 
+
+  </div> <!-- row -->
+
+  
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">提交</button>
+  </div>
+</form>
+
