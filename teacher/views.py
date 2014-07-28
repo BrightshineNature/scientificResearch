@@ -24,6 +24,7 @@ from adminStaff.models import ProjectSingle
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
+@check_submit_status(SUBMIT_STATUS_APPLICATION)
 def appView(request, pid, is_submited = False):
     userauth = {
         'role':"teacher",

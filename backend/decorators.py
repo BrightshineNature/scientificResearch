@@ -88,15 +88,15 @@ class check_submit_status(object):
         self.phase = phase
     def get_submit_status(self):
         if self.phase == SUBMIT_STATUS_APPLICATION:
-            psss
+            pass
         elif self.phase == SUBMIT_STATUS_TASK:
-            psss
+            pass
         elif self.phase == SUBMIT_STATUS_PROGRESS:
-            psss
+            pass
         elif self.phase == SUBMIT_STATUS_FINAL:
-            psss
+            pass
         elif self.phase == SUBMIT_STATUS_REVIEW:
-            psss
+            pass
         return True
     def __call__(self, method):
         def wrappered_method(request, *args, **kwargs):
@@ -115,7 +115,7 @@ class check_submit_status(object):
                 pass
             elif identity == TEACHER_USER and check_auth(user=request.user, authority=TEACHER_USER):
                 pid = kwargs.get("pid", None)
-                is_submited = get_submit();
+                is_submited = self.get_submit_status();
             loginfo(p=is_submited, label="check_submit_status decorator, is_submited")
             kwargs["is_submited"] = is_submited
             response = method(request, *args, **kwargs)
