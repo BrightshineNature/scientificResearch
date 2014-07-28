@@ -54,9 +54,10 @@ STATICS_DATA_TYPE={
 var datastaticsid,tr;
 $("#datastatics_change_table").on("click",".btn-danger",function(){
     var pid = $("#datastatics_change_table").attr("value");
+    var is_submited = $("#datastatics_change_table").attr("is_submited");
     tr=$(this).closest("tr");
     datastaticsid=$(tr).attr("value")
-    Dajaxice.teacher.datastaticsDelete(delete_datastatics_callback,{'datastaticsid':datastaticsid,'pid':pid}); 
+    Dajaxice.teacher.datastaticsDelete(delete_datastatics_callback,{'datastaticsid':datastaticsid,'pid':pid,'is_submited':is_submited,}); 
         
 });
 
@@ -89,11 +90,13 @@ $("#add_new_datastatics").click(function(){
 
 $("#datastatics_save_change").click(function(){
     var pid = $("#datastatics_change_table").attr("value");
+    var is_submited = $("#datastatics_change_table").attr("is_submited");
     Dajaxice.teacher.datastaticsChange(add_or_update_datastatics_callback,
                                 {   
                                     'form': $('#datastatics_change_form').serialize(true),
                                     'datastaticsid': datastaticsid,
-                                    'pid':pid,       
+                                    'pid':pid,
+                                    'is_submited':is_submited,       
                             });
 });
 

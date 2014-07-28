@@ -1,13 +1,13 @@
-<form method="POST" action="/teacher/final/{{pid}}" class="form-inline" id="finalsubmitform" role="form">
-	{% csrf_token %}
-    {% if final.project_keyword.errors or final.project_summary.errors  or  final.project_plan.errors %}
+<div id="final_content">
+<form method="POST" action="" class="form-inline" id="finalsubmitform" role="form">
+    {% if final.project_keyword.errors or final.project_summary.errors  or  final.project_plan.errors or final.project_progress.errors or final.academic_exchange.errors or final.existing_problems.errors %}
     <div class="alert alert-danger finalerror-lg">
       <button class="close" data-dismiss="alert">×</button>
 	  <p>
 	  “报告正文”标签下的
       {%if final.project_keyword.errors %} “关键字“  &nbsp; {% endif %}
       {%if final.project_summary.errors %} “项目摘要“ &nbsp;  {% endif %}
-	  {%if final.project_plan.errors %} “研究计划要点及执行情况概述“  &nbsp; {% endif %}
+	    {%if final.project_plan.errors %} “研究计划要点及执行情况概述“  &nbsp; {% endif %}
       {%if final.project_progress.errors %} “研究工作主要进展和所取得的成果“  &nbsp; {% endif %}
       {%if final.academic_exchange.errors %} “国内外学术合作交流与人才培养情况“  &nbsp; {% endif %}
       {%if final.existing_problems.errors %} “存在的问题、建议及其他需要说明的情况“  &nbsp; {% endif %}
@@ -107,6 +107,13 @@
       </div>
     </blockquote><!--end project content-->
   {% if is_submited %}
-	{% include "teacher/widgets/commit_button.html"%}
+  <center>
+    <button class="btn btn-large btn-block btn-success" id="finalsubmitform_btn" style="width:40%;" pid={{pid}} is_submited={{is_submited}} type="button">信息填写无误后，提交报告</button>
+    <br/>
+    <small class="pull-center">Tips: 截止日期前可以修改</small>
+    <a class="btn btn-primary" href="#auditing" data-toggle="tab">下一步</a>
+  </center>
   {% endif %}
 </form>
+<script type='text/javascript' src="{{STATIC_URL}}js/finalreport/finalcontent.js"></script>
+</div>
