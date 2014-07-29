@@ -14,8 +14,8 @@ from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,No
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
 from teacher.models import ProjectFundBudget
-from common.models import ProjectMember
-from common.models import ProjectMember,BasisContent , BaseCondition
+
+from common.models import ProjectMember,BasisContent , BaseCondition, UploadFile
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
@@ -97,12 +97,43 @@ def appManage(request, pid):
     return context
     return render(request, userauth['role'] + "/application.html", context)
 
-
+from django.core.files.storage import default_storage
+# def handle_uploaded_file(f):
+#     print f.name
+#     print f.size
+#     # print f.url
+#     # print f.path
 def fileUploadManage(request, pid):
+
+    print "fileUploadManage**********"
+    files = UploadFile.objects.filter(project__project_id = pid)
+    if request.method == 'POST':
+        f = request.FILES['file']
+        print "find 'OK:: ' "
+        obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
+        if obj :
+            path = obj.file_obj.path
+            if default_storage.exists(path):
+                default_storage.delete(path)
+        else :
+            pass
+
+        obj = UploadFile()
+        obj.name = f.name
+        obj.project = ProjectSingle.objects.get(project_id = pid)
+        obj.file_obj = f
+        obj.upload_time = time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
+        obj.file_type = f.name
+        obj.file_size = f.size
+
+    else :
+        pass
+        # form = UploadFileForm()
+
 
 
     context = {
-        'files':files,
+        'files': files,
     }
     return context
 
