@@ -79,3 +79,27 @@ class BaseCondition(Model):
     research = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'承担科研项目情况')
 
     progress = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'完成本专项项目情况')
+
+import settings
+import time
+class UploadFile(Model):
+
+    project = models.ForeignKey(ProjectSingle)
+    name = models.CharField(max_length=100, blank=False, verbose_name="文件名称")
+    file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH +"/%Y/%m/%d",
+                                verbose_name="文件对象")
+    upload_time = models.DateTimeField(blank=True, null=True,
+                                      verbose_name="上传时间")
+    file_size = models.CharField(max_length=50, blank=True, null=True,
+                                 default=None, verbose_name="文件大小")
+    file_type = models.CharField(max_length=50, blank=True, null=True,
+                                 default=None, verbose_name="文件类型")
+
+    class Meta:
+        verbose_name = "文件上传"
+        verbose_name_plural = "文件上传"
+
+    def __unicode__(self):
+        return self.name 
+
+

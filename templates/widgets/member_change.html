@@ -69,8 +69,10 @@
 
 <p> </p>
 
+{%if is_submit%}
 <button class="btn btn-primary" id="addNewProjectMember"  data-toggle="modal"
 data-target="#member_info_modal" >添加新成员</button>
+{%endif%}
 
 <div id = "project_member_table_div">
 {%include "widgets/project_member_table.html" %}
