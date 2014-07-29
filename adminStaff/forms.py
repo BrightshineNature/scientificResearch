@@ -31,16 +31,24 @@ class DispatchForm(forms.Form):
                                        widget=forms.TextInput(attrs={'class':'form-control','id':"person_firstname",'placeholder':u"负责人"}))
 
 class DispatchAddCollegeForm(DispatchForm):
-    COLLEGE_CHOICE_list = []
-    def __init__(self,*args,**kwargs):
-        request = kwargs.pop("request", None)
-        super(FilterForm, self).__init__(*args, **kwargs)
+    COLLEGE_CHOICE_list =[]
     college_list = College.objects.all()
     for obj in college_list:
         COLLEGE_CHOICE_list.append((obj.id, obj.name))
     COLLEGE_CHOICE = tuple(COLLEGE_CHOICE_list)
     college = forms.ChoiceField(required=True,choices=COLLEGE_CHOICE,widget=forms.Select(attrs={'class':'form-control'}))
-    
+    def __init__(self,*args,**kwargs):
+        user = kwargs.get("user",None)
+        if user != None:
+            del kwargs['user']
+        super(DispatchAddCollegeForm, self).__init__(*args, **kwargs)
+        if user != None:
+            college_list = College.objects.filter(college_user__userid= user)
+            college_choice_list=[]
+            for obj in college_list:
+                college_choice_list.append((obj.id, obj.name))
+                college_choice = tuple(college_choice_list)
+            self.fields["college"].choices = college_choice
 # class SpecialForm(forms.Form):
 #     name = forms.CharField(
 #       label='Your name',
