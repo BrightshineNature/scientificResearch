@@ -20,6 +20,7 @@ from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 from users.models import TeacherProfile
 from teacher.models import TeacherInfoSetting
 from adminStaff.models import ProjectSingle
+from forms import ProjectCreationForm
 
 @csrf.csrf_protect
 @login_required
@@ -37,9 +38,10 @@ def appView(request, pid, is_submited = False):
 def homeView(request):
 
     project_list = ProjectSingle.objects.all();
+    creationForm = ProjectCreationForm()
     context = {
         'project_list':project_list,
-
+        'form': creationForm,
     }
     return render(request,"teacher/project_info.html",context)
 

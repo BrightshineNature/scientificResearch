@@ -145,3 +145,8 @@ def refresh_fundsummary_table(request, profundsummaryform,pid):
                                 'profundsummaryform':profundsummaryform,
         })
 
+@dajaxice_register
+def createProject(request, title, special):
+    teacher = TeacherProfile.objects.get(userid = request.user)
+    createNewProject(teacher, title, special)
+    return simplejson.dumps({})

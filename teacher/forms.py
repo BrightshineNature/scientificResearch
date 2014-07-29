@@ -4,7 +4,7 @@ from django.forms import ModelForm
 
 from teacher.models import *
 import datetime
-
+from users.models import Special
 from const import *
 
 
@@ -116,4 +116,15 @@ class ProFundBudgetForm(ModelForm):
 	class Meta:
 		model = ProjectFundBudget
 		exclude = ('content_id','project_id','finance_comment')
+
+class ProjectCreationForm(forms.Form):
+    SPECIAL_CHOICE = tuple((special.id, special.name) for special in Special.objects.all())
+    title = forms.CharField(
+                            required=True,
+                            widget=forms.TextInput(attrs={"class":'form-control', "placeholder": "项目名称", }),)
+    special = forms.ChoiceField(required = True, choices = SPECIAL_CHOICE, widget = forms.Select(attrs = {"class": "form-control",}))
+
+
+
+
 

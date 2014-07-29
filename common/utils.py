@@ -5,6 +5,19 @@ from django.db.models import Q
 from const import *
 from const.models import ProjectStatus
 from expert.forms import *
+from users.models import Special
+
+import datetime
+
+def createNewProject(teacher, title, special):
+    year = datetime.datetime().year
+
+    project = ProjectSingle()
+    project.project_application_code = "%d%04d" % (year, ProjectSingle.objects.all().count())
+    project.title = title
+    project.project_special = Special.objects.get(special = special)
+    project.teacher = teacher
+    project.application_year = year
 
 def getScoreTable(project):
     category = project.project_special.expert_review.category      
