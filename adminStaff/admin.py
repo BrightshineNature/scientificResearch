@@ -6,12 +6,13 @@ Created on 2013-3-27
 '''
 
 from django.contrib import admin
-from adminStaff.models import ProjectSingle, Re_Project_Expert
+from adminStaff.models import ProjectSingle, Re_Project_Expert, BasicScientificResearchScoreTable
 
 
 RegisterClass = (
     ProjectSingle,
     Re_Project_Expert,
+    BasicScientificResearchScoreTable,
 )
 
 for temp in RegisterClass:

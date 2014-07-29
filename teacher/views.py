@@ -60,17 +60,12 @@ def commitmentView(request):
     context = {}
     return render(request, "teacher/commitment.html", context)
 
-<<<<<<< HEAD
+
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
 def finalReportView(request):
     context = finalReportViewWork(request)
-=======
-def finalReportView(request,pid):
-
-    context = finalReportViewWork(request,pid)
->>>>>>> bbe7b980a3faeb693ec90fea9b7464ab2b427713
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/final.html",context)
