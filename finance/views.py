@@ -11,7 +11,7 @@ from backend.decorators import *
 from backend.logging import loginfo
 from const import *
 
-from common.views import  financeManage
+from common.views import  financeManage,fundBudgetViewWork,finalReportViewWork
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 
 @csrf.csrf_protect
@@ -37,15 +37,15 @@ def concludingProjectView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(FINANCE_USER)
-def financeBudgetView(request):
-    context={}
+def financeBudgetView(request,pid):
+    context=fundBudgetViewWork(request,pid,False)
     return render(request,"finance/financeBudget.html",context)
 
 @csrf.csrf_protect
 @login_required
 @authority_required(FINANCE_USER)
-def financeAuditingView(request):
-    context={}
+def financeAuditingView(request,pid):
+    context=finalReportViewWork(request,pid,False)
     return render(request,"finance/financeAuditing.html",context)
 
 @csrf.csrf_protect
