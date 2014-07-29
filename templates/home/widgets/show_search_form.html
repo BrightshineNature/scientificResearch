@@ -1,34 +1,4 @@
-<form class="form-inline" action="." method="GET" id="search-tools-bar" >
-  <div class="form-group">
-     <select name="search_school" class="form-control search-input">
-       <option selected="true" value="">学校名</option>
-       {% for school in schools %}
-       <option value="{{ school.id }}" {% if school.id|add:"0" == search_school|add:"0" %}
-               selected="true"
-               {% endif %}>{{ school }}</option>
-       {% endfor %}
-     </select>
-     <select name="search_year" class="form-control search-input">
-       <option selected="true" value="">年份</option>
-       {% for year in years %}
-       <option value="{{ year }}" {% if year|add:"0" == search_year|add:"0" %}
-               selected="true"
-               {% endif %} >{{ year }}</option>
-       {% endfor %}
-     </select>
-     <select name="search_grade" class="form-control search-input">
-       <option selected="true" value="">等级</option>
-       {% for grade in grades %}
-       <option value="{{ grade.id }}" {% if grade.id|add:"0" == search_grade|add:"0" %}
-               selected="true"
-               {% endif %}>{{ grade }}</option>
-       {% endfor %}
-     </select>
-  </div>
-  <div class="form-group">
-     <input type="text" class="form-control search-input" name="search_keywords" value="{{keywords}}" placeholder="关键字">
-  </div>
-  <div class="form-group">
-    <input id="search-news" class="search-news" type="submit" value="Go!" alt="Go." title="Go.">
-  </div>
+<form class="form-inline" action="." method="POST" id="search-tools-bar" >
+    {% csrf_token %}
+    {% include "widgets/searchform.html" %}
 </form>

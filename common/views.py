@@ -34,8 +34,6 @@ def getParam(pro_list, userauth,flag):
 
 def appManage(request, pid):
 
-    
-
 
     
 
@@ -58,7 +56,7 @@ def appManage(request, pid):
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
         'project_name': p.title,
-        'science_type': p.science_type.category ,
+        'science_type': p.science_type.category if p.science_type else None,
 
         'trade_code': p.trade_code,
         'subject_name': p.subject_name,
@@ -157,7 +155,7 @@ def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
 
     return render(request, userauth['role'] + '/financial.html', context)
-def schedule_form_data(request , userauth):
+def schedule_form_data(request , userauth=""):
 
     schedule_form = ScheduleBaseForm()
     ProjectJudge_form=ProjectJudgeForm()
@@ -172,10 +170,9 @@ def schedule_form_data(request , userauth):
     param=getParam(pro_list,userauth,default)
     context ={ 'schedule_form':schedule_form,
                'has_data': has_data,
-               'userauth': userauth,
+               'usercontext': userauth,
                'ProjectJudge_form':ProjectJudge_form,
     }
-    
     context.update(param)
 
     return context

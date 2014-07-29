@@ -46,7 +46,7 @@ class ProjectMember(Model):
     name = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'姓名')
     birth_year = models.IntegerField(blank= False,null=True, max_length = 4, verbose_name=u'出生年份')
     tel = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'电话')
-    mail = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'邮箱')    
+    mail = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'邮箱')
     professional_title = models.ForeignKey(ProfessionalTitle, null = True, verbose_name=u'职称')
     executive_position = models.ForeignKey(ExecutivePosition, null = True, verbose_name=u'行政职务')
 
@@ -54,7 +54,7 @@ class BasisContent(Model):
 
     project = models.ForeignKey(ProjectSingle, blank = True, null = True)
 
-    basis = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'项目的立项依据')   
+    basis = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'项目的立项依据')
 
     content = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'项目的研究内容、研究目标,以及拟解决的关键科学问题')
 
