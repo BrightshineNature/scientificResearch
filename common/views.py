@@ -96,6 +96,7 @@ def appManage(request, pid):
     return render(request, userauth['role'] + "/application.html", context)
 
 from django.core.files.storage import default_storage
+import time
 # def handle_uploaded_file(f):
 #     print f.name
 #     print f.size
@@ -104,15 +105,18 @@ from django.core.files.storage import default_storage
 def fileUploadManage(request, pid):
 
     print "fileUploadManage**********"
-    files = UploadFile.objects.filter(project__project_id = pid)
+    
     if request.method == 'POST':
         f = request.FILES['file']
         print "find 'OK:: ' "
         obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
-        if obj :
+        if obj :            
+            obj = obj[0] # assert only exist one    
             path = obj.file_obj.path
-            if default_storage.exists(path):
-                default_storage.delete(path)
+            obj.delete()
+            default_storage.delete(path)
+            
+                
         else :
             pass
 
@@ -123,12 +127,16 @@ def fileUploadManage(request, pid):
         obj.upload_time = time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
         obj.file_type = f.name
         obj.file_size = f.size
+        obj.save()
 
     else :
         pass
         # form = UploadFileForm()
 
-
+    files = UploadFile.objects.filter(project__project_id = pid)
+    for i in files:
+        i.file_size = '%.3f KB' % (float(i.file_size) / 1024)
+        # i.file_size += 'KB'
 
     context = {
         'files': files,

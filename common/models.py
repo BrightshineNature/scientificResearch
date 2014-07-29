@@ -81,6 +81,7 @@ class BaseCondition(Model):
     progress = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'完成本专项项目情况')
 
 import settings
+import time
 class UploadFile(Model):
 
     project = models.ForeignKey(ProjectSingle)
