@@ -154,7 +154,7 @@ def get_search_data(schedule_form):
             return pro_list
 
 
-def finalReportViewWork(request,pid,redirect=False):
+def finalReportViewWork(request,pid,is_submited,redirect=False):
     final = FinalSubmit.objects.get( project_id = pid)
     achivement_list = ProjectAchivement.objects.filter( project_id = pid )
     datastatics_list = ProjectStatistics.objects.filter( project_id = pid )
@@ -175,7 +175,6 @@ def finalReportViewWork(request,pid,redirect=False):
         final_form = FinalReportForm(instance=final)
 
     loginfo(p=redirect, label="redirect")
-    loginfo(p=request.method, label="request.method")
     context = {
         'projachivementform':projachivementform,
 		'projdatastaticsform':projdatastaticsform,
@@ -186,6 +185,7 @@ def finalReportViewWork(request,pid,redirect=False):
 		'datastatics_list':datastatics_list,
 		'projfundsummary':projfundsummary,
 		'profundsummaryform':profundsummaryform,
+        'is_submited':is_submited,
     }
     return context
 
@@ -210,6 +210,7 @@ def fundBudgetViewWork(request,pid,redirect=False):
         'pid':pid,
     }
     return context
+    
 def noticeMessageSettingBase(request,userauth):
     notice_choice=NOTICE_CHOICE
     template_notice_message=TemplateNoticeMessage.objects.all()

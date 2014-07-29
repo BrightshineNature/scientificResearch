@@ -65,8 +65,10 @@ def commitmentView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-def finalReportView(request, pid):
-    context = finalReportViewWork(request, pid)
+@check_submit_status(SUBMIT_STATUS_FINAL)
+def finalReportView(request,pid,is_submited=False):
+    context = finalReportViewWork(request,pid,is_submited)
+    loginfo(p=is_submited,label="is_submited")
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/final.html",context)
@@ -135,6 +137,9 @@ def finalInfoView(request):
     }
     return render(request,"teacher/finalinfo.html",context)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
 def fundBudgetView(request,pid):
     context = fundBudgetViewWork(request,pid)
     if context['redirect']:
