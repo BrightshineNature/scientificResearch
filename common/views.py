@@ -56,7 +56,7 @@ def appManage(request, pid):
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
         'project_name': p.title,
-        'science_type': p.science_type.category ,
+        'science_type': p.science_type.category if p.science_type else None,
 
         'trade_code': p.trade_code,
         'subject_name': p.subject_name,

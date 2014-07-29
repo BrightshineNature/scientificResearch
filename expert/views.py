@@ -20,14 +20,13 @@ from expert import forms
 from common.utils import getScoreTable, getScoreForm
 from teacher.forms import *
 from teacher.models import *
-from common.views import finalReportViewWork
+from common.views import finalReportViewWork, appManage
 
 @csrf.csrf_protect
 @login_required
 @authority_required(EXPERT_USER)
 def homeView(request):
     is_first_round = request.GET.get("is_first_round", "1")
-    print is_first_round
     expert = ExpertProfile.objects.get(userid = request.user)
     re_list_1 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)))
     for re_obj in re_list_1:
@@ -85,20 +84,17 @@ def finalReportView(request, is_submited = False):
 def applicationView(request, is_submited = False):
     re_id = request.GET.get("re_id")
     re_obj = Re_Project_Expert.objects.get(id = re_id)
+    pid = re_obj.project.project_id
     score_table = getScoreTable(re_obj.project).objects.get(re_obj = re_obj)
-    project_info_form = ProjectInfoForm()
-    basis_content_form = BasisContentForm()
-    base_condition_form = BaseConditionForm()
+
+    context = appManage(request, pid)
 
     if request.method == "GET":
         score_form = getScoreForm(re_obj.project)(instance = score_table)
-        context = {
-            'project_info_form': project_info_form,
-            'basis_content_form':basis_content_form,
-            'base_condition_form':base_condition_form,
+        context.update({
             'score_form': score_form,
             're_obj': re_obj,
-        }
+        })
         return render(request, "expert/application.html", context)
     else:
         score_form = getScoreForm(re_obj.project)(request.POST, instance = score_table)
@@ -106,13 +102,10 @@ def applicationView(request, is_submited = False):
             score_form.save()
             return HttpResponseRedirect("/expert/redirect/?is_first_round=1")
         else:
-            context = {
-                'project_info_form': project_info_form,
-                'basis_content_form':basis_content_form,
-                'base_condition_form':base_condition_form,
+            context.update({
                 'score_form': score_form,
                 're_obj': re_obj,
                 'error': score_form.errors
-            }
+            })
             return render(request, "expert/application.html", context)
 

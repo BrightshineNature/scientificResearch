@@ -20,6 +20,8 @@ from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 from users.models import TeacherProfile
 from teacher.models import TeacherInfoSetting
 from adminStaff.models import ProjectSingle
+from forms import ProjectCreationForm
+from common.utils import createNewProject
 
 @csrf.csrf_protect
 @login_required
@@ -52,11 +54,28 @@ def fileUploadManageView(request, pid, is_submited = False):
 def homeView(request):
 
     project_list = ProjectSingle.objects.all();
+    creationForm = ProjectCreationForm()
     context = {
         'project_list':project_list,
-
+        'form': creationForm,
     }
     return render(request,"teacher/project_info.html",context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
+def createView(request):
+    if request.method == "POST":
+        creationForm = ProjectCreationForm(request.POST)
+        if creationForm.is_valid():
+            title = creationForm.cleaned_data["title"]
+            special = creationForm.cleaned_data["special"]
+            teacher = TeacherProfile.objects.get(userid = request.user)
+            createNewProject(teacher, title, special)
+            return HttpResponseRedirect(reverse("teacher.views.homeView"))
+        else:
+            pass
+
 
 @csrf.csrf_protect
 @login_required
