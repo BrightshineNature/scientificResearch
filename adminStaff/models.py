@@ -71,7 +71,7 @@ class Re_Project_Expert(models.Model):
     expert = models.ForeignKey(ExpertProfile)
     is_first_round = models.BooleanField(blank=False, default=False)
     class Meta:
-        unique_together = (("project", "expert", ))
+        unique_together = (("project", "expert", "is_first_round",))
         verbose_name = "项目审核分配"
         verbose_name_plural = "项目审核分配"
 

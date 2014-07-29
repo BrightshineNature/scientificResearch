@@ -11,6 +11,7 @@ from django.db.models import Q
 from adminStaff.models import Re_Project_Expert
 from users.models import ExpertProfile
 from backend.utility import getContext
+from expert import forms
 
 def homeView(request):
     expert = ExpertProfile.objects.get(userid = request.user)
@@ -31,10 +32,15 @@ def applicationView(request):
     project_info_form = ProjectInfoForm()
     basis_content_form = BasisContentForm()
     base_condition_form = BaseConditionForm()
+
+    score_form = forms.BasicScientificResearchScoreForm()
+
     context = {
         'project_info_form': project_info_form,
         'basis_content_form':basis_content_form,
         'base_condition_form':base_condition_form,
+        'score_form': score_form,
+        'is_expert': True,
     }
 
     return render(request, "expert/application.html", context)

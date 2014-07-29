@@ -11,8 +11,9 @@
       
     <li><a href="#base_condition" data-toggle="tab"><strong>研究基础与工作条件</strong></a></li>
     
-      
-
+    {% if userauth.is_experter %}
+    <li><a href="#score_board" data-toggle="tab"><strong>项目评价</strong></a></li>     
+    {% endif %}
   </ul>
   
   <div class="tab-content" pid="{{pid}}" >
@@ -40,7 +41,9 @@
       {% include "widgets/base_condition.html"%} 
     </div>
 
-
+    <div class="tab-pane" id="score_board">
+      {% include "widgets/score_board.html" %}
+    </div>
   </div>
 
 
