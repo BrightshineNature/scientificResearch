@@ -6,18 +6,30 @@ from const import *
 from const.models import ProjectStatus
 from expert.forms import *
 from users.models import Special
+from common.models import BasisContent, BaseCondition
+from teacher.models import FinalSubmit, ProjectFundSummary, ProjectFundBudget
 
 import datetime
 
 def createNewProject(teacher, title, special):
-    year = datetime.datetime().year
+    year = datetime.datetime.now().year
 
     project = ProjectSingle()
     project.project_application_code = "%d%04d" % (year, ProjectSingle.objects.all().count())
     project.title = title
-    project.project_special = Special.objects.get(special = special)
+    project.project_special = Special.objects.get(id = special)
     project.teacher = teacher
     project.application_year = year
+
+    print "----" * 100
+    project.save()
+
+    BasisContent(project = project).save()
+    BaseCondition(project = project).save()
+
+    FinalSubmit(project_id = project).save()   
+    ProjectFundSummary(project_id = project).save()
+    ProjectFundBudget(project_id = project).save()
 
 def getScoreTable(project):
     category = project.project_special.expert_review.category      

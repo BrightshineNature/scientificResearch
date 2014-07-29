@@ -53,5 +53,9 @@ urlpatterns = patterns('',
 		r'^fundbudget/(?P<pid>.{36})$',
 		teacher_views.fundBudgetView,
 	),
+    url(
+        r'^create$',
+        teacher_views.createView,
+    ),
 )
 urlpatterns += staticfiles_urlpatterns()

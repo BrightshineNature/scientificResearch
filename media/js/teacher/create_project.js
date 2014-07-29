@@ -11,10 +11,7 @@ $("#button_create_project").click(function(){
         $("#create_project_modal #id_title").val("输入名称不能为空");
     }
     else{
-        Dajaxice.Teacher.createProject(createProjectCallback, {"title": title,
-                                                               "spcial": special,});
+        $("#create-form").trigger("submit");
     }
 });
-function createProjectCallback(data){
-    
-}
+
