@@ -1,19 +1,21 @@
 <p></p>
-<form class="well form" method="post"  action="?pid={{pid}}&flag={{flag}}">
+<form class="well form" method="post"  action="review/?re_id={{ re_obj.id }}">
   {% csrf_token %}
   <div class="row">
-    <div class="col-lg-7">
+    <div class="col-lg-9">
       <div id="id_alert">
       </div>
       <table class="table table-bordered table-striped" id="score-table">
         <colgroup>
-          <col class="span1">
-          <col class="span2">
+          <col class="col-lg-4">
+          <col class="col-lg-1">
+					<col class="col-lg-2">
         </colgroup>
         <thead>
           <tr>
             <th>打分点</th>
             <th>得分</th>
+						<th>反馈</th>
           </tr>
         </thead>
         <tbody>
@@ -21,6 +23,7 @@
 						<tr>
 							<td>{{ field.label_tag }}</td>
 							<td>{{ field }}</td>
+							<td>{{ field.errors }}</td>
 						</tr>
 					{% endfor %}
         </tbody>

@@ -75,8 +75,8 @@ class Re_Project_Expert(models.Model):
         verbose_name = "项目审核分配"
         verbose_name_plural = "项目审核分配"
     def __unicode__(self):
-        s = u"初审" if is_first_round else u"终审"
-        return "%s_%s_%s" % (s, expert, project)
+        s = u"初审" if self.is_first_round else u"终审"
+        return "%s_%s_%s" % (s, self.expert, self.project)
 
 class News(models.Model):
     news_title = models.CharField(verbose_name = u"标题",
