@@ -9,11 +9,11 @@ urlpatterns = patterns('',
         expert_views.homeView,
     ),
     url(
-        r'^review$',
+        r'^review',
         expert_views.applicationView,
     ),
 	url(
-		r'final_review$',
+		r'final_review',
 		expert_views.finalReportView,
 	),
 )
