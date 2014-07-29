@@ -51,7 +51,7 @@ $("#member_change_table ").on("click",".btn-success",function(){
 });
 $("#add_new_member").click(function(){
 
-    alert("SSBB");
+    // alert("SSBB");
     
     // $("#member_change_form input").val('');
     // $("#member_change_form select").val(-1);

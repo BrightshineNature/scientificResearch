@@ -1,25 +1,28 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/member_change.css" >
 
-<div class="modal  fade in" id="teacher_profile_info">
+<div class="modal  fade in" id="member_info_modal">
     <div class="modal-dialog">
         <div class="modal-content">
+
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="modal_title">Modal title</h4>
             </div>
+
             <div class="modal-body">
-                <form class="well form" id="member_change_form" method="POST" action="">
+                <form class="well form" id="project_member_form">
+
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                <input type="text" class="form-control" name="teacher_name" placeholder="姓名">
+                                {{project_member_form.name}}
                             </div> 
                         </div>
                         <div class="col-lg-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
-                                <input type="text" class="form-control" name="teacher_birth"  placeholder="出生年份">
+                            <div class="input-group date form-year" data-date=""data-date-format="yyyy">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                {{project_member_form.birth_year}}
                             </div>
                         </div>
                     </div>
@@ -28,13 +31,13 @@
                         <div class="col-lg-6">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></span>
-                                <input type="text" class="form-control"  name="teacher_tel" placeholder="电话">
+                                {{project_member_form.tel}}
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                                <input type="text" class="form-control" name="teacher_email" placeholder="邮箱">
+                                {{project_member_form.mail}}
                             </div>
                         </div>
                     </div>
@@ -42,62 +45,66 @@
                         <div class="col-lg-6">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                <select  class="form-control search-input" name="teacher_professional">
-                                    <option selected="true" value="-1">职称</option>
-                                    {% for item in professional %}
-                                    <option value="{{ item.0}}">
-                                    {{ item.1 }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
+                                {{project_member_form.professional_title}}
                             </div> 
                         </div>
                         <div class="col-lg-6">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                <select  class="form-control search-input" name="teacher_duty">
-                                    <option selected="true" value="-1">行政职务</option>
-                                    {%for item in executive%}
-                                    <option value="{{item.0}}">
-                                    {{item.1}}
-                                    </option>
-                                    {%endfor%}
-                                </select>
+                                {{project_member_form.executive_position}}
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel_change">关闭</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="save_change">保存</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="saveProjectMember">保存</button>
             </div>
+
         </div>
     </div>
 </div>
 
 <p> </p>
 
-<button class="btn btn-primary" id="add_new_member"  data-toggle="modal"
-data-target="#teacher_profile_info" >添加新成员</button>
+<button class="btn btn-primary" id="addNewMember"  data-toggle="modal"
+data-target="#member_info_modal" >添加新成员</button>
 
-<table class="well table" id="member_change_table">
+<table class="well table" id="member_table">
     <thead>
         <tr>
-            <td><strong>姓名</strong></td>
-            <td><strong>出生年份</strong></td>
-            <td><strong>电话</strong></td>
-            <td><strong>邮箱</strong></td>
-            <td><strong>职称</strong></td>
-            <td><strong>行政职务</strong></td>
-            <td><strong>修改</strong></td>
-            <td><strong>删除</strong></td>
+            <th><strong>姓名</strong></th>
+            <th><strong>出生年份</strong></th>
+            <th><strong>电话</strong></th>
+            <th><strong>邮箱</strong></th>
+            <th><strong>职称</strong></th>
+            <th><strong>行政职务</strong></th>
+            <th><strong>修改</strong></th>
+            <th><strong>删除</strong></th>
         </tr>
     </thead>
+        {%for item in project_member_list%}
+        <tr>
+            <td>item.name</td>
+            <td>item.birth </td>
+            <td>item.tel </td>
+            <td>item.mail </td>
+            <td>item.professional_title </td>
+            <td>item.executive_position </td>
+            <td> </td>
+            <td> </td>
+
+        </tr>
+        {%endfor%}
+
     <tbody>
+
     </tbody>
 </table>
-<script type='text/javascript' src="{{STATIC_URL}}js/member_change.js"></script>
+<!-- <script type='text/javascript' src="{{STATIC_URL}}js/member_change.js"></script> -->
+<!-- <script type='text/javascript' src="{{STATIC_URL}}js/common/application.js"></script> -->
 <!-- ajax_csrf-->
 <!--<scriptype='text/javascript' src="{{STATIC_URL}}js/ajax_csrf.js"></script>-->
             <!-- dajax-->
