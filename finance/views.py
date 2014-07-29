@@ -68,3 +68,9 @@ def financialInfoView(request):
         'budgetannuform':budgetannuform,
     }
     return render(request,"finance/project_financial_info.html",context)
+@csrf.csrf_protect
+@login_required
+@authority_required(FINANCE_USER)
+def exportFinanceView(request):
+    context={}
+    return render(request,"finance/exportFinance.html",context)
