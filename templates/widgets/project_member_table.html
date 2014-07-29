@@ -1,0 +1,38 @@
+<table class="well table" id="project_member_table">
+    <thead>
+        <tr>
+            <th><strong>姓名</strong></th>
+            <th><strong>出生年份</strong></th>
+            <th><strong>电话</strong></th>
+            <th><strong>邮箱</strong></th>
+            <th><strong>职称</strong></th>
+            <th><strong>行政职务</strong></th>
+            <th><strong>修改</strong></th>
+            <th><strong>删除</strong></th>
+        </tr>
+    </thead>
+        {%for item in project_member_list%}
+        <tr mid="{{item.id}}">
+            <td>{{item.name}}</td>
+            <td>{{item.birth_year}}</td>
+            <td>{{item.tel}}</td>
+            <td>{{item.mail}}</td>
+
+
+            <td value= "{{item.professional_title.id}}">{{item.professional_title}}</td>
+
+
+            <td value = "{{item.executive_position.id }}">{{item.executive_position }}</td>
+
+
+            <td><button class = "btn btn-success modifyProjectMember" data-toggle="modal"
+                data-target="#member_info_modal">修改</button> </td>
+            <td> <button class = "btn btn-danger deleteProjectMember">删除</button></td>
+
+        </tr>
+        {%endfor%}
+
+    <tbody>
+
+    </tbody>
+</table>
