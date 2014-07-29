@@ -22,7 +22,7 @@ urlpatterns = patterns('',
         teacher_views.appView,
        ),
     url(
-        r'final$',
+        r'^final/(?P<pid>.{36})$',
         teacher_views.finalReportView,
 	),
     url(
@@ -49,5 +49,9 @@ urlpatterns = patterns('',
         r'finalinfo$',
         teacher_views.finalInfoView,
     ),
+	url(
+		r'^fundbudget/(?P<pid>.{36})$',
+		teacher_views.fundBudgetView,
+	),
 )
 urlpatterns += staticfiles_urlpatterns()

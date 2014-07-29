@@ -112,4 +112,8 @@ class ProFundSummaryForm(ModelForm):
 		model = ProjectFundSummary
 		exclude = ('content_id','finalsubmit_id','finance_comment',)
 
+class ProFundBudgetForm(ModelForm):
+	class Meta:
+		model = ProjectFundBudget
+		exclude = ('content_id','finalsubmit_id','finance_comment')
 

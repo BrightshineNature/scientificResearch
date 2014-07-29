@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect,HttpResponse
 
 from const import * 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
-from common.views import scheduleManage,finalReportViewWork
+from common.views import scheduleManage,finalReportViewWork,fundBudgetViewWork
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 from users.models import TeacherProfile
 from teacher.models import TeacherInfoSetting
@@ -42,9 +42,9 @@ def commitmentView(request):
     context = {}
     return render(request, "teacher/commitment.html", context)
 
-def finalReportView(request):
+def finalReportView(request,pid):
 
-    context = finalReportViewWork(request)
+    context = finalReportViewWork(request,pid)
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/final.html",context)
@@ -91,8 +91,15 @@ def financialView(request):
     return render(request,"teacher/financial.html",context)
 
 def finalInfoView(request):
-
+    teacher = TeacherProfile.objects.get(userid = request.user)
+    project_list = ProjectSingle.objects.filter(teacher = teacher)
     context = {
-
+		'project_list':project_list,
     }
     return render(request,"teacher/finalinfo.html",context)
+
+def fundBudgetView(request,pid):
+    context = fundBudgetViewWork(request,pid)
+    if context['redirect']:
+		return HttpResponseRedirect('/teacher/finalinfo')
+    return render(request,"teacher/fundbudget.html",context)
