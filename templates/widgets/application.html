@@ -1,48 +1,46 @@
-{% if not error %}
-{{ error }}
-{% endif %}
-  <ul class="nav nav-tabs">
+<div class="report-content-container"> 
+  <ul class="nav nav-pills">
 
     <li {% if not error %}class="active" {% endif %}><a href="#project_info_form" data-toggle="tab"><strong>项目信息</strong></a></li>
       
-    <li><a href="#project_member" data-toggle="tab"><strong>项目成员</strong></a></li>
+    <li><a href="#project_member" data-toggle="tab">项目成员</a></li>
       
       
-    <li><a href="#basis_content" data-toggle="tab"><strong>立项依据与研究内容</strong></a></li>
+    <li><a href="#basis_content" data-toggle="tab">立项依据与研究内容</a></li>
       
-    <li><a href="#base_condition" data-toggle="tab"><strong>研究基础与工作条件</strong></a></li>
+    <li><a href="#base_condition" data-toggle="tab">研究基础与工作条件</a></li>
     
     {% if userauth.is_experter %}
-    <li {% if error %}class="active" {% endif %}><a href="#score_board" data-toggle="tab"><strong>项目评价</strong></a></li>     
+    <li {% if error %}class="active" {% endif %}><a href="#score_board" data-toggle="tab">项目评价</a></li>     
     {% endif %}
   </ul>
   
   <div class="tab-content" pid="{{pid}}" >
 
-    <div class="tab-pane {% if not error %} active {% endif %}" id="project_info_form"> 
+    <div class="tab-pane fade {% if not error %} active in {% endif %}" id="project_info_form"> 
       {% include "widgets/project_infoform.html" %}
       {%include "widgets/save_button.html"%}
 
 
     </div>
 
-    <div class="tab-pane" id="project_member">
+    <div class="tab-pane fade" id="project_member">
       {%include "widgets/member_change.html"%}
     </div>
 
 
-    <div class="tab-pane" id="basis_content">
+    <div class="tab-pane fade" id="basis_content">
 
     {% include "widgets/basis_content.html"%}
 
     </div>
 
-    <div class="tab-pane" id="base_condition">
+    <div class="tab-pane fade" id="base_condition">
 
       {% include "widgets/base_condition.html"%} 
     </div>
 
-    <div class="tab-pane {% if error %} active {% endif %}" id="score_board">
+    <div class="tab-pane fade {% if error %} active in {% endif %}" id="score_board">
       {% include "widgets/score_board.html" %}
     </div>
   </div>

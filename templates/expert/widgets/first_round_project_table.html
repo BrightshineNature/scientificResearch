@@ -20,7 +20,7 @@
       <td>{% if item.score == 0 %}未审核{% else %}已审核{% endif %}</td>
       <td>{{ item.score }}</td>
       <td>
-        <span><a href="review/?re_id={{ item.id }}" class='btn btn-primary'>审阅</a></span>
+        <span><a href="/expert/review/?re_id={{ item.id }}" class='btn btn-primary'>审阅</a></span>
       </td>
     </tr>
 		{% endfor %}
