@@ -9,6 +9,9 @@ from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators import csrf
+from backend.decorators import *
 
 from adminStaff.models import Re_Project_Expert
 from users.models import ExpertProfile
@@ -17,7 +20,11 @@ from expert import forms
 from common.utils import getScoreTable, getScoreForm
 from teacher.forms import *
 from teacher.models import *
+from common.views import finalReportViewWork
 
+@csrf.csrf_protect
+@login_required
+@authority_required(EXPERT_USER)
 def homeView(request):
     is_first_round = request.GET.get("is_first_round", "1")
     print is_first_round
@@ -39,35 +46,24 @@ def homeView(request):
 
     return render(request,"expert/home.html", context)
 
-def finalReportView(request):
+@csrf.csrf_protect
+@login_required
+@authority_required(EXPERT_USER)
+@check_submit_status(SUBMIT_STATUS_FINAL)
+def finalReportView(request, is_submited = False):
     re_id = request.GET.get("re_id")
     re_obj = Re_Project_Expert.objects.get(id = re_id)
     pid = re_obj.project
     score_table = getScoreTable(re_obj.project).objects.get(re_obj = re_obj)
-
-    final = FinalSubmit.objects.get( project_id = pid)
-    achivement_list = ProjectAchivement.objects.filter( project_id = pid )
-    datastatics_list = ProjectStatistics.objects.filter( project_id = pid )
-    projfundsummary = ProjectFundSummary.objects.get( project_id = pid ) 
-    projachivementform  = ProjectAchivementForm()
-    projdatastaticsform = ProjectDatastaticsForm()
-    profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
-    final_form = FinalReportForm(instance = final)
+    
+    context = finalReportViewWork(request, pid, is_submited)
     if request.method == "GET":
         score_form = getScoreForm(re_obj.project)(instance = score_table)
 
-        context = {
-            'projachivementform':projachivementform,
-		    'projdatastaticsform':projdatastaticsform,
-            'final': final_form,
-            'pid':pid,
-            'achivement_list':achivement_list,
-		    'datastatics_list':datastatics_list,
-		    'projfundsummary':projfundsummary,
-		    'profundsummaryform':profundsummaryform,
+        context.update({
             'score_form': score_form,
             're_obj': re_obj,
-        }
+        })
         return render(request,"expert/final.html",context)
     else:
         score_form = getScoreForm(re_obj.project)(request.POST, instance = score_table)
@@ -75,23 +71,18 @@ def finalReportView(request):
             score_form.save()
             return HttpResponseRedirect("/expert/redirect/?is_first_round=0")
         else:
-            context = {
-                'projachivementform':projachivementform,
-		        'projdatastaticsform':projdatastaticsform,
-                'final': final_form,
-                'pid':pid,
-                'achivement_list':achivement_list,
-		        'datastatics_list':datastatics_list,
-		        'projfundsummary':projfundsummary,
-		        'profundsummaryform':profundsummaryform,
+            context.update({
                 'score_form': score_form,
                 're_obj': re_obj,
                 'error': score_form.errors,
-            }
+            })
             return render(request,"expert/final.html",context)
 
-
-def applicationView(request):
+@csrf.csrf_protect
+@login_required
+@authority_required(EXPERT_USER)
+@check_submit_status(SUBMIT_STATUS_APPLICATION)
+def applicationView(request, is_submited = False):
     re_id = request.GET.get("re_id")
     re_obj = Re_Project_Expert.objects.get(id = re_id)
     score_table = getScoreTable(re_obj.project).objects.get(re_obj = re_obj)
