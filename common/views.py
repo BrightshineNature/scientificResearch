@@ -189,10 +189,11 @@ def get_search_data(schedule_form):
      if schedule_form.is_valid():
             application_status=schedule_form.cleaned_data['application_status']
             status=schedule_form.cleaned_data['status']
-            application_year= schedule_form.cleaned_data['application_year']
+            conclude_year= schedule_form.cleaned_data['conclude_year']
             approval_year=schedule_form.cleaned_data['approval_year']
             special=schedule_form.cleaned_data['special']
             college=schedule_form.cleaned_data['college']
+            _year= schedule_form.cleaned_data['application_year']
             other_search=schedule_form.cleaned_data['other_search']
             if application_status=="-1":
                 application_status=''
@@ -210,12 +211,15 @@ def get_search_data(schedule_form):
                 special=''
             if college=="-1":
                 college=''
+            if conclude_year=="-1":
+                conclude_year=''
             q0=(application_status and Q(project_status__status__gte=application_first_status,project_status__status__lte=application_last_status)) or None
             q1=(status and Q(project_status__status__gte=first_status,project_status__lte=last_status)) or None
             q2=(application_year and Q(application_year=application_year)) or None
             q3=(approval_year and Q(approval_year=approval_year)) or None
             q4=(special and Q(project_special=special)) or None
             q5=(college and Q(school=college)) or None
+            q7=(conclude_year and Q(conclude_year= conclude_year)) or None
             if other_search:
                 sqlstr=other_search
                 q6_1=Q(project_code__contains=sqlstr)
@@ -225,7 +229,7 @@ def get_search_data(schedule_form):
                 q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3,q6_4])
             else:
                 q6=None
-            qset=filter(lambda x:x!=None,[q0,q1,q2,q3,q4,q5,q6])
+            qset=filter(lambda x:x!=None,[q0,q1,q2,q3,q4,q5,q6,q7])
             if qset:
                 qset=reduce(lambda x,y: x&y ,qset)
                 pro_list=ProjectSingle.objects.filter(qset)

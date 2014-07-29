@@ -162,3 +162,10 @@ def financialInfoView(request):
 def infoModifyView(request):
     context = {}
     return render(request, "adminStaff/teacher_info_modify.html", context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
+def infoExportView(request):
+    context = {}
+    return render(request, "adminStaff/infoexport.html", context)
