@@ -254,7 +254,7 @@ def change_project_unique_code(request, project_id,project_unique_code):
     try:
         if ProjectSingle.objects.filter(project_code = project_unique_code).count():
             raise
-        project_obj.project_unique_code = project_unique_code
+        project_obj.project_code = project_unique_code
         project_obj.save()
         # if len(project_unique_code.strip()) == 0:
         #     project_unique_code = "无"
