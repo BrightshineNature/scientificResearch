@@ -13,7 +13,7 @@ from const import *
 
 from common.views import  financeManage,fundBudgetViewWork,finalReportViewWork
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
-
+from common.forms import ScheduleBaseForm
 @csrf.csrf_protect
 @login_required
 @authority_required(FINANCE_USER)
@@ -72,5 +72,7 @@ def financialInfoView(request):
 @login_required
 @authority_required(FINANCE_USER)
 def exportFinanceView(request):
-    context={}
+    schedule_form = ScheduleBaseForm()
+    context={'schedule_form':schedule_form
+    }
     return render(request,"finance/exportFinance.html",context)

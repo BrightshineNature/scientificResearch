@@ -13,39 +13,32 @@ class ScheduleBaseForm(forms.Form):
     status =forms. ChoiceField(choices=status_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control', 
-            
             }),
         )
     application_status =forms. ChoiceField(choices=application_status_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control', 
-            
             }),
         )
-    
     application_year_choices = get_application_year_choice()
     application_year = forms.ChoiceField(choices =  application_year_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control' ,
-            
             }),)
     approval_year_choices = get_approval_year_choice()
     approval_year = forms.ChoiceField(choices =  approval_year_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control' ,
-            
             }),)
-
-
-    
-
+    conclude_year = forms.ChoiceField(choices =  application_year_choices,required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control' ,
+            }),)
     special_choices = (('-1', '专题类型'), ('0', '理科'), ('1', '文科'))
     special = forms.ChoiceField(choices= special_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control ',
-            
             }),)
-
     college_choices = (('-1', '学院'), ('0', '计算机'), ('1', '管经'))
     college = forms.ChoiceField(choices = college_choices,required=False,
         widget=forms.Select(attrs={
@@ -68,20 +61,17 @@ class ProjectJudgeForm(forms.Form):
     judgeresult =forms.ChoiceField(choices=result_choices,required=True,
         widget=forms.Select(attrs={
             'class':'form-control', 
-            
             }),
         )
     application_choice=((u"网上申请不合格",u"网上申请不合格"),(u"申报书不合格",u"申报书不合格"))
     application=forms.MultipleChoiceField(choices=application_choice,required=False,
                                           widget=forms.CheckboxSelectMultiple())
-   
     final_choice=((u"网上提交不合格",u"网上提交不合格"),(u"结题书不合格",u"结题书不合格"))
     final=forms.MultipleChoiceField(choices=final_choice,required=False,widget=forms.CheckboxSelectMultiple())
     reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
 from users.models import SchoolProfile
 from adminStaff.models import ProjectSingle
 class NoticeForm(forms.Form):
-    
     mail_content=forms.CharField(required=True,widget=forms.Textarea(attrs={'class':'form-control','row':'6'}))
     mail_title=forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control'}))
     special=forms.BooleanField(required=False)
