@@ -32,8 +32,6 @@ def getParam(pro_list, userauth,flag):
 
 def appManage(request, userauth, pid):
 
-    
-
     project_member_form = ProjectMemberForm()
     basis_content_form = BasisContentForm()
     base_condition_form = BaseConditionForm()
@@ -65,10 +63,6 @@ def appManage(request, userauth, pid):
     return render(request, userauth['role'] + "/application.html", context)
 
 
-
-
-
-
 def scheduleManage(request, userauth):
     context = schedule_form_data(request, userauth)
     return render(request, userauth['role'] + '/schedule.html', context)
@@ -83,7 +77,7 @@ def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
 
     return render(request, userauth['role'] + '/financial.html', context)
-def schedule_form_data(request , userauth):
+def schedule_form_data(request , userauth=""):
 
     schedule_form = ScheduleBaseForm()
     ProjectJudge_form=ProjectJudgeForm()
@@ -98,10 +92,9 @@ def schedule_form_data(request , userauth):
     param=getParam(pro_list,userauth,default)
     context ={ 'schedule_form':schedule_form,
                'has_data': has_data,
-               'userauth': userauth,
+               'usercontext': userauth,
                'ProjectJudge_form':ProjectJudge_form,
     }
-    
     context.update(param)
 
     return context

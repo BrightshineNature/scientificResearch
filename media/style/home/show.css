@@ -133,3 +133,15 @@ p.title {
 .scroll ul li a:hover {
         border:1px solid #f60;
 }
+
+#show_search_div select{
+    width:220px;
+}
+#show_search_div .form-group:first-child{
+    width:260px!important;
+}
+
+#show_search_div #id_status{
+    visibility:hidden;
+    width:0px!important;
+}
