@@ -65,8 +65,8 @@ def commitmentView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-def finalReportView(request):
-    context = finalReportViewWork(request)
+def finalReportView(request, pid):
+    context = finalReportViewWork(request, pid)
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/final.html",context)

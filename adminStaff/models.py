@@ -111,6 +111,8 @@ class BasicScientificResearchScoreTable(models.Model):
     class Meta:
         verbose_name = u"基本科研业务费重大项目培育科研专题项目评审表"
         verbose_name_plural = u"基本科研业务费重大项目培育科研专题项目评审表"
+    def get_total_score(self):
+        return self.summary + self.completion + self.achievement + self.prospect + self.funds_report
 
 class HumanitiesSocialSciencesResearchScoreTable(models.Model):
     re_obj = models.ForeignKey(Re_Project_Expert)
@@ -121,6 +123,8 @@ class HumanitiesSocialSciencesResearchScoreTable(models.Model):
     class Meta:
         verbose_name = u"基本科研业务费人文社科科研专题一般项目评审表"
         verbose_name_plural = u"基本科研业务费人文社科科研专题一般项目评审表"
+    def get_total_score(self):
+        return self.significance + self.innovation + self.feasibility + self.base
 
 
 class MajorProjectScoreTable(models.Model):
@@ -133,7 +137,8 @@ class MajorProjectScoreTable(models.Model):
     class Meta:
         verbose_name = u"重大项目培育科研专题项目评审表"
         verbose_name_plural = u"重大项目培育科研专题项目评审表"
-
+    def get_total_score(self):
+        return self.evaluation + self.feasibility + self.funds_report + self.expection + self.measures
 
 class KeyLaboratoryProjectScoreTable(models.Model):
     re_obj = models.ForeignKey(Re_Project_Expert)
@@ -145,3 +150,5 @@ class KeyLaboratoryProjectScoreTable(models.Model):
     class Meta:
         verbose_name = u"重点实验室专题项目评审表"
         verbose_name_plural = u"重点实验室专题项目评审表"
+    def get_total_score(self):
+        return self.significance + self.innovation + self.feasibility + self.base + self.funds_report
