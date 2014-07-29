@@ -330,3 +330,6 @@ class ProjectMemberForm(forms.ModelForm):
             'executive_position':forms.Select(attrs = {'class':'form-control','placeholder': "行政职务",}),
 
         }
+
+
+

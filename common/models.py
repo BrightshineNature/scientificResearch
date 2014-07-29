@@ -46,7 +46,7 @@ class ProjectMember(Model):
     name = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'姓名')
     birth_year = models.IntegerField(blank= False,null=True, max_length = 4, verbose_name=u'出生年份')
     tel = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'电话')
-    mail = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'邮箱')    
+    mail = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'邮箱')
     professional_title = models.ForeignKey(ProfessionalTitle, null = True, verbose_name=u'职称')
     executive_position = models.ForeignKey(ExecutivePosition, null = True, verbose_name=u'行政职务')
 
@@ -54,7 +54,7 @@ class BasisContent(Model):
 
     project = models.ForeignKey(ProjectSingle, blank = True, null = True)
 
-    basis = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'项目的立项依据')   
+    basis = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'项目的立项依据')
 
     content = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'项目的研究内容、研究目标,以及拟解决的关键科学问题')
 
@@ -80,5 +80,26 @@ class BaseCondition(Model):
 
     progress = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'完成本专项项目情况')
 
+import settings
+import time
+class UploadFile(Model):
+
+    project = models.ForeignKey(ProjectSingle)
+    name = models.CharField(max_length=100, blank=False, verbose_name="文件名称")
+    file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH +"/%Y/%m/%d",
+                                verbose_name="文件对象")
+    upload_time = models.DateTimeField(blank=True, null=True,
+                                      verbose_name="上传时间")
+    file_size = models.CharField(max_length=50, blank=True, null=True,
+                                 default=None, verbose_name="文件大小")
+    file_type = models.CharField(max_length=50, blank=True, null=True,
+                                 default=None, verbose_name="文件类型")
+
+    class Meta:
+        verbose_name = "文件上传"
+        verbose_name_plural = "文件上传"
+
+    def __unicode__(self):
+        return self.name 
 
 

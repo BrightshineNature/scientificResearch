@@ -1,53 +1,15 @@
 <div class="clearfix">
-  <div class="box photo col3">
-    <a href="/home/show/0083e2d5-a759-4eaf-9b10-027617811bd6" title="{{ project.title }}"><img src="{{ project.img }}"  class="img-rounded"/></a>
-    <h4 class="title"><strong>中华人民共和国</strong></h4>
-    <hr/>
-    <p><strong>参赛团队:</strong>&nbsp;&nbsp;alice</p>
-    <p class="title">创新实验学院</p>
-  </div>
-  <div class="box photo col3">
-    <a href="/home/show/0083e2d5-a759-4eaf-9b10-027617811bd6" title="{{ project.title }}"><img src="{{ project.img }}"  class="img-rounded"/></a>
-    <h4 class="title"><strong>中华人民共和国</strong></h4>
-    <hr/>
-    <p><strong>参赛团队:</strong>&nbsp;&nbsp;alice</p>
-    <p class="title">创新实验学院</p>
-  </div>
-  <div class="box photo col3">
-    <a href="" title="{{ project.title }}"><img src="{{ project.img }}"  class="img-rounded"/></a>
-    <h4 class="title"><strong>中华人民共和国</strong></h4>
-    <hr/>
-    <p><strong>参赛团队:</strong>&nbsp;&nbsp;alice</p>
-    <p class="title">创新实验学院</p>
-  </div>
-  <div class="box photo col3">
-    <a href="" title="{{ project.title }}"><img src="{{ project.img }}"  class="img-rounded"/></a>
-    <h4 class="title"><strong>中华人民共和国</strong></h4>
-    <hr/>
-    <p><strong>参赛团队:</strong>&nbsp;&nbsp;alice</p>
-    <p class="title">创新实验学院</p>
-  </div>
-  <div class="box photo col3">
-    <a href="" title="{{ project.title }}"><img src="{{ project.img }}"  class="img-rounded"/></a>
-    <h4 class="title"><strong>中华人民共和国</strong></h4>
-    <hr/>
-    <p><strong>参赛团队:</strong>&nbsp;&nbsp;alice</p>
-    <p class="title">创新实验学院</p>
-  </div>
-  <div class="box photo col3">
-    <a href="" title="{{ project.title }}"><img src="{{ project.img }}"  class="img-rounded"/></a>
-    <h4 class="title"><strong>中华人民共和国</strong></h4>
-    <hr/>
-    <p><strong>参赛团队:</strong>&nbsp;&nbsp;alice</p>
-    <p class="title">创新实验学院</p>
-  </div>
-  <div class="box photo col3">
-    <a href="" title="{{ project.title }}"><img src="{{ project.img }}"  class="img-rounded"/></a>
-    <h4 class="title"><strong>中华人民共和国</strong></h4>
-    <hr/>
-    <p><strong>参赛团队:</strong>&nbsp;&nbsp;alice</p>
-    <p class="title">创新实验学院</p>
-  </div>
+  {% if project_list %}
+    {% for project in project_list %}
+      <div class="box photo col3">
+        <a href="{% url home.views.showProject project.project_id %}" title="{{ project.title }}"><img src="{{ project.img }}"  /></a>
+        <h4 class="title">{{ project.title|truncatechars:14 }}</h4>
+        <hr/>
+        <p><strong>项目负责人:</strong>&nbsp;&nbsp;{{ project.teacher }}</p>
+        <p class="title">{{ project.teacher.college}}</p>
+      </div>
+    {% endfor %}
+  {% endif %}
 </div>
 <!-- <div id="page-nav" style="display=none;"> -->
 <div id="page-nav">

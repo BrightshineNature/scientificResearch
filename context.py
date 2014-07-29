@@ -88,7 +88,6 @@ def userauth_settings(request):
             userauth["teacher"] = TeacherProfile.objects.get(userid=request.user)
         except TeacherProfile.DoesNotExist, err:
             loginfo(p=err, label="context TeacherProfile")
-
     context = {"userauth": userauth,
                "auth_choices":auth_choices,
     }

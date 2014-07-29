@@ -1,4 +1,5 @@
 var judgeid,userrole,userstatus,projectstatus,applicationstatus_s,applicationstatus_c,finalstatus;
+var glo_project_id;
 $("#not_pass_reason").hide();
 $("#not_pass_article").hide();
 $("#id_judgeresult").css("color","gray");
@@ -59,4 +60,22 @@ function look_through_call_back(data){
         $("#researchTable").html(data.table_html)
     }
 
+}
+$('td a[href="#project_code_add"]').click(function(){
+  glo_project_id = $(this).attr('pid');
+  var project_unique_code = $(this).parent().text().trim();
+  $('#project_code_add').find('#project_code').val(project_unique_code);
+})
+$('#project_code_submit').click(function(){
+  var project_unique_code = $('#project_code_add').find('#project_code').val().trim();
+  Dajaxice.adminStaff.change_project_unique_code(change_projectuniquecode_callback,{'project_id':glo_project_id,"project_unique_code":project_unique_code});
+})
+function change_projectuniquecode_callback(data){
+    if(data.res == "error"){
+        alert("格式不合法或相同编号已存在");
+    }
+    else{
+        var target = "#ProjectUniqueCode_" + glo_project_id;
+        $(target).html(data.res);
+    }
 }

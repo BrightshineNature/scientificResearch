@@ -148,6 +148,10 @@ def refresh_fundsummary_table(request, profundsummaryform,pid):
         })
 
 @dajaxice_register
+def createProject(request, title, special):
+    teacher = TeacherProfile.objects.get(userid = request.user)
+    createNewProject(teacher, title, special)
+    return simplejson.dumps({})
 def finalReportContent(request,pid,finalsubmitform,is_submited):
     final = FinalSubmit.objects.get( project_id = pid)
     final_form = FinalReportForm(deserialize_form(finalsubmitform),instance=final)

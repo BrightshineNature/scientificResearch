@@ -12,7 +12,7 @@ from backend.decorators import *
 from backend.logging import loginfo
 from const import *
 
-from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork 
+from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage 
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
@@ -20,6 +20,8 @@ from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 from users.models import TeacherProfile
 from teacher.models import TeacherInfoSetting
 from adminStaff.models import ProjectSingle
+from forms import ProjectCreationForm
+from common.utils import createNewProject
 
 @csrf.csrf_protect
 @login_required
@@ -31,7 +33,20 @@ def appView(request, pid, is_submited = False):
     }
     context = appManage(request, pid)
     context['user'] = "teacher"
+    context['is_submited'] = is_submited
     return render(request, "teacher/application.html", context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
+@check_submit_status(SUBMIT_STATUS_APPLICATION)
+def fileUploadManageView(request, pid, is_submited = False):
+
+    context = fileUploadManage(request, pid)
+    context['user'] = "teacher"
+    context['is_submited'] = is_submited
+    return render(request, "teacher/file_upload.html", context)
+
     
 @csrf.csrf_protect
 @login_required
@@ -39,11 +54,28 @@ def appView(request, pid, is_submited = False):
 def homeView(request):
 
     project_list = ProjectSingle.objects.all();
+    creationForm = ProjectCreationForm()
     context = {
         'project_list':project_list,
-
+        'form': creationForm,
     }
     return render(request,"teacher/project_info.html",context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
+def createView(request):
+    if request.method == "POST":
+        creationForm = ProjectCreationForm(request.POST)
+        if creationForm.is_valid():
+            title = creationForm.cleaned_data["title"]
+            special = creationForm.cleaned_data["special"]
+            teacher = TeacherProfile.objects.get(userid = request.user)
+            createNewProject(teacher, title, special)
+            return HttpResponseRedirect(reverse("teacher.views.homeView"))
+        else:
+            pass
+
 
 @csrf.csrf_protect
 @login_required
@@ -82,12 +114,12 @@ def progressReportView(request):
     context = {}
     return render(request,"teacher/progress.html",context)
 
-@csrf.csrf_protect
-@login_required
-@authority_required(TEACHER_USER)
-def fileView(request):
-    data={};
-    return render(request,"teacher/file_upload.html",data)
+# @csrf.csrf_protect
+# @login_required
+# @authority_required(TEACHER_USER)
+# def fileView(request):
+#     data={};
+#     return render(request,"teacher/file_upload.html",data)
 
 @csrf.csrf_protect
 @login_required
