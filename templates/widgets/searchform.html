@@ -3,7 +3,7 @@
 
 
 <div class="form-inline" role="form">
-    {% ifnotequal userauth.status "application"%}
+    {% ifnotequal usercontext.status "application"%}
     <div class="form-group">
         {{schedule_form.status}}
         {{schedule_form.approval_year}}

@@ -146,6 +146,7 @@ def fileUploadManage(request, pid):
 
 
 def scheduleManage(request, userauth):
+    loginfo(userauth["role"])
     context = schedule_form_data(request, userauth)
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
