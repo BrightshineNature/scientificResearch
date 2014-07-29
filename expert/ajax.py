@@ -8,19 +8,23 @@ from django.db.models import Q
 from adminStaff.models import Re_Project_Expert
 from backend.utility import getContext
 from users.models import ExpertProfile
+from common.utils import getScoreTable, getScoreForm
 
 @dajaxice_register
 def getPagination(request, page, is_first_round):
     message = ""
     expert = ExpertProfile.objects.get(userid = request.user)
     page = int(page)
-    project_list = [re_obj.project for re_obj in Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round))]
+    re_list = list(Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round)))
+    for re_obj in re_list:
+        re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
+    re_list.sort(key = lambda x: x.score)
     if is_first_round:
-        context = getContext(project_list, page, "item", 0, 2)
+        context = getContext(re_list, page, "item", 0)
         html = render_to_string("expert/widgets/first_round_project_table.html", context)
         message = "first round"
     else:
-        context = getContext(project_list, page, "item2", 0, 2)
+        context = getContext(re_list, page, "item2", 0)
         html = render_to_string("expert/widgets/second_round_project_table.html", context)
         message = "second round"
     return simplejson.dumps({"message": message, "html": html, })

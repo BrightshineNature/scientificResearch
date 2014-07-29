@@ -13,7 +13,9 @@ from backend.utility import getContext
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
+from teacher.models import ProjectFundBudget
 from common.models import ProjectMember
+from common.models import ProjectMember,BasisContent , BaseCondition
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
@@ -30,11 +32,26 @@ def getParam(pro_list, userauth,flag):
     }
     return param
 
-def appManage(request, userauth, pid):
+def appManage(request, pid):
 
-    project_member_form = ProjectMemberForm()
-    basis_content_form = BasisContentForm()
-    base_condition_form = BaseConditionForm()
+
+    
+
+    basis_content = BasisContent.objects.filter(project__project_id = pid)
+    if basis_content:
+        basis_content_id = basis_content[0].id
+        basis_content_form = BasisContentForm(instance = basis_content[0])
+    else :
+        basis_content_id = ""
+        basis_content_form = BasisContentForm()
+
+    base_condition = BaseCondition.objects.filter(project__project_id = pid)
+    if base_condition:
+        base_condition_id = base_condition[0].id
+        base_condition_form = BaseConditionForm(instance = base_condition[0])
+    else :
+        base_condition_id = ""
+        base_condition_form = BaseConditionForm()
     
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
@@ -49,18 +66,44 @@ def appManage(request, userauth, pid):
         'project_tpye': p.project_tpye,
     }
 
+
+
     project_member_list = ProjectMember.objects.filter(project__project_id = pid)
+
+    # for i in project_member_list:
+    #     i.professional_title_id = i.professional_title.category
+    #     i.executive_position_id = i.executive_position.category
+
+
+
+    print "UUUUUU***************"
+
+
+
     context = {
         'project_info_form': ProjectInfoForm(project_info_data),
         'project_member_form': ProjectMemberForm(),
         'basis_content_form':basis_content_form,
+        'basis_content_id':basis_content_id,
+
         'base_condition_form':base_condition_form,
+        'base_condition_id':base_condition_id,
         'project_member_list': project_member_list,
         'pid': pid,
     }
 
-
+    return context
     return render(request, userauth['role'] + "/application.html", context)
+
+
+def fileUploadManage(request, pid):
+
+
+    context = {
+        'files':files,
+    }
+    return context
+
 
 
 def scheduleManage(request, userauth):
@@ -71,7 +114,11 @@ def researchConcludingManage(request , userauth):
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financeManage(request, userauth):
     context = schedule_form_data(request, userauth)
-
+    for item in context.get("pass_apply_project_group"):
+        item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
+    for item in context.get("not_pass_apply_project_group"):
+        item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
+            
     return render(request, userauth['role'] + '/financeProject.html', context)
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
@@ -156,16 +203,16 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     projdatastaticsform = ProjectDatastaticsForm()
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
 
-    if request.method == "POST":
-        final_form = FinalReportForm(request.POST, instance=final)
-        if final_form.is_valid():
-            final_form.save()
-            redirect = True
-        else:
-            logger.info("Final Form Valid Failed"+"**"*10)
-            logger.info(final_form.errors)
-    else:
-        final_form = FinalReportForm(instance=final)
+    # if request.method == "POST":
+    #     final_form = FinalReportForm(request.POST, instance=final)
+    #     if final_form.is_valid():
+    #         final_form.save()
+    #         redirect = True
+    #     else:
+    #         logger.info("Final Form Valid Failed"+"**"*10)
+    #         logger.info(final_form.errors)
+    # else:
+    final_form = FinalReportForm(instance=final)
 
     loginfo(p=redirect, label="redirect")
     context = {

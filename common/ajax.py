@@ -23,11 +23,10 @@ from common.utils import status_confirm
 from const.models import ScienceActivityType
 from common.views import schedule_form_data
 from adminStaff.models import ProjectSingle
-from common.forms import ProjectInfoForm, ProjectMemberForm
-from common.models import ProjectMember
+from common.forms import ProjectInfoForm, ProjectMemberForm,BasisContentForm, BaseConditionForm
+from common.models import ProjectMember, BasisContent, BaseCondition
 
 from adminStaff.models import ProjectSingle,Re_Project_Expert
-from common.forms import ProjectInfoForm
 from django.core.mail import send_mail
 from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile
 OVER_STATUS_NOTOVER = "notover"
@@ -166,19 +165,96 @@ def saveProjectInfoForm(request, form, pid):
         pass
     else :
         print "error in saveProjectInfoForm"
+    return simplejson.dumps({'status':'1'})
 
+
+def refreshMemberTabel():
+    project_member_list = ProjectMember.objects.all()
+    return render_to_string( "widgets/project_member_table.html", {
+        'project_member_list':project_member_list,
+
+        })
 
 @dajaxice_register
-def saveProjectMember(request, form, pid):
-    form = ProjectMemberForm(deserialize_form(form))
+def saveProjectMember(request, form, pid, mid):
+    if mid:
+        mem = ProjectMember.objects.get(id = mid)
+        form = ProjectMemberForm(deserialize_form(form),instance = mem)
+    else :
+        form = ProjectMemberForm(deserialize_form(form))
+    
+    context = {
+        'status':0,
+        'project_member_table': "",
+    }
 
     if form.is_valid():
-        print form
-        form.save()
+        temp = form.save(commit = False)
+        temp.project = ProjectSingle.objects.get(project_id = pid)
+        temp.save()
+        context['status'] = 1
+        context['project_member_table'] = refreshMemberTabel()
+
     else:
         print form.errors
         print "error in saveProjectMember"
 
 
+    return simplejson.dumps(context)
+@dajaxice_register
+def deleteProjectMember(request, mid):
+    ProjectMember.objects.get(id = mid).delete()
+
+    context = {
+        'status':1,
+        'project_member_table':refreshMemberTabel(),
+    }
+    return simplejson.dumps(context)
+
+@dajaxice_register
+def saveBasisContent(request, form, pid, bid):
+
+    if bid :
+        basis_content = BasisContent.objects.get(id = bid)
+        form = BasisContentForm(deserialize_form(form), instance = basis_content)
+    else :
+        form = BasisContentForm(deserialize_form(form))
+
+    if form.is_valid():
+        print "OK"
+        temp = form.save(commit = False)
+        temp.project = ProjectSingle.objects.get(project_id = pid)
+        temp.save()
+    else:
+        print form.errors
+        print "error in saveBasisContent"
+    context = {
+        'status':1,
+    }
+    return simplejson.dumps(context)
+
+@dajaxice_register
+def saveBaseCondition(request, form, pid, bid):
+
+    if bid :
+        base_condition = BaseCondition.objects.get(id = bid)
+        form = BaseConditionForm(deserialize_form(form), instance = base_condition)
+    else :
+        form = BaseConditionForm(deserialize_form(form))
+
+    context = {
+        'status':1,
+    }
+    if form.is_valid():
+        print "OK"
+        temp = form.save(commit = False)
+        temp.project = ProjectSingle.objects.get(project_id = pid)
+        temp.save()
+    else:
+        context['status'] = 0
+        print form.errors
+        print "error in saveBaseCondition"
+    
+    return simplejson.dumps(context)
 
 

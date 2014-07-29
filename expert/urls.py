@@ -16,5 +16,9 @@ urlpatterns = patterns('',
 		r'final_review',
 		expert_views.finalReportView,
 	),
+    url(
+        r'^redirect',
+        expert_views.homeView,
+    ),
 )
 urlpatterns += staticfiles_urlpatterns()

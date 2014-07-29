@@ -1,12 +1,12 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/member_change.css" >
 
-<div class="modal  fade in" id="member_info_modal">
+<div class="modal  fade in" id="member_info_modal" mid="">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="modal_title">Modal title</h4>
+                <h4 class="modal-title" id="modal_title"></h4>
             </div>
 
             <div class="modal-body">
@@ -69,40 +69,12 @@
 
 <p> </p>
 
-<button class="btn btn-primary" id="addNewMember"  data-toggle="modal"
+<button class="btn btn-primary" id="addNewProjectMember"  data-toggle="modal"
 data-target="#member_info_modal" >添加新成员</button>
 
-<table class="well table" id="member_table">
-    <thead>
-        <tr>
-            <th><strong>姓名</strong></th>
-            <th><strong>出生年份</strong></th>
-            <th><strong>电话</strong></th>
-            <th><strong>邮箱</strong></th>
-            <th><strong>职称</strong></th>
-            <th><strong>行政职务</strong></th>
-            <th><strong>修改</strong></th>
-            <th><strong>删除</strong></th>
-        </tr>
-    </thead>
-        {%for item in project_member_list%}
-        <tr>
-            <td>item.name</td>
-            <td>item.birth </td>
-            <td>item.tel </td>
-            <td>item.mail </td>
-            <td>item.professional_title </td>
-            <td>item.executive_position </td>
-            <td> </td>
-            <td> </td>
-
-        </tr>
-        {%endfor%}
-
-    <tbody>
-
-    </tbody>
-</table>
+<div id = "project_member_table_div">
+{%include "widgets/project_member_table.html" %}
+</div>
 <!-- <script type='text/javascript' src="{{STATIC_URL}}js/member_change.js"></script> -->
 <!-- <script type='text/javascript' src="{{STATIC_URL}}js/common/application.js"></script> -->
 <!-- ajax_csrf-->
