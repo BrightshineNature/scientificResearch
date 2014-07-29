@@ -25,7 +25,7 @@ from common.views import schedule_form_data
 from adminStaff.models import ProjectSingle
 from common.forms import ProjectInfoForm, ProjectMemberForm,BasisContentForm, BaseConditionForm
 from common.models import ProjectMember, BasisContent, BaseCondition
-
+from teacher.models import ProjectFundBudget,ProjectFundSummary
 from adminStaff.models import ProjectSingle,Re_Project_Expert
 from django.core.mail import send_mail
 from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile
@@ -101,9 +101,19 @@ def getStatus(request):
 @dajaxice_register
 def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
     project=ProjectSingle.objects.get(pk=judgeid)
+    loginfo(look_through_form)
     form=deserialize_form(look_through_form)
+    loginfo(form)
     if form["judgeresult"]=="1":
         status_confirm(project,-1)
+        if userstatus=="budget":
+            finance_budget=ProjectFundBudget.objects.get(project_id=project)
+            finance_budget.comment=form.get("reason")
+            finance_budget.save()
+        if userstatus=="final":
+            finance_summary=ProjectFundSummary.objects.get(project_id=project)
+            finance_summary.finance_comment=form.get("reason")
+            finance_summary.save()
     else:
     
         comment={

@@ -82,12 +82,12 @@
                     {% endifequal%}
                     {% ifequal usercontext.status 'budget'%}
                     <td>
-                        <a href="/finance/financeBudget" class="btn btn-primary btn-sm">审核</a>
+                        <a href="/finance/financeBudget/{{item.project_id}}" class="btn btn-primary btn-sm">审核</a>
                     </td>
                     {% endifequal%}
                     {%ifequal usercontext.status 'final'%}
                     <td>
-                        <a href="/finance/financeAuditing" class="btn btn-primary btn-sm">审核</a>
+                        <a href="/finance/financeAuditing/{{item.project_id}}" class="btn btn-primary btn-sm">审核</a>
                     </td>
                     {%endifequal%}
                 </tr>

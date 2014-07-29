@@ -18,11 +18,11 @@ urlpatterns = patterns('',
         finance_views.concludingProjectView,
     ),
     url(
-        r'financeBudget$',
+        r'financeBudget/(?P<pid>.{36})$',
         finance_views.financeBudgetView,
     ),
     url(
-        r'financeAuditing$',
+        r'financeAuditing/(?P<pid>.{36})$',
         finance_views.financeAuditingView,
     ),
     url(
