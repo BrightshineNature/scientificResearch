@@ -42,8 +42,8 @@ urlpatterns = patterns('',
         teacher_views.progressReportView,
     ),
     url(
-        r'file_upload$',
-        teacher_views.fileView,
+        r'file_upload/(?P<pid>.{36})$',
+        teacher_views.fileUploadManageView,
     ),
     url(
         r'finalinfo$',
@@ -53,5 +53,9 @@ urlpatterns = patterns('',
 		r'^fundbudget/(?P<pid>.{36})$',
 		teacher_views.fundBudgetView,
 	),
+    url(
+        r'^create$',
+        teacher_views.createView,
+    ),
 )
 urlpatterns += staticfiles_urlpatterns()

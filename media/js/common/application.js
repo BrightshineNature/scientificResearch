@@ -192,7 +192,8 @@ $(document).on("click", ".save_button",function(){
     {
         var cnt_tab = $(this).parent().parent().prev().children("li:eq(3)");
         
-        user = $("[user]").attr("user")
+        user = $("[user]").attr("user");
+        alert(user);
         location.href = "/" + user + "/file_upload/" + pid;
 
         // alert($("#base_condition_form").attr("bid"));

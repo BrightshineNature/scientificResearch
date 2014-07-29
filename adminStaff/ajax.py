@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from common.utility import get_xls_path
 from const import *
 from users.models import Special,ExpertProfile,TeacherProfile,SchoolProfile,CollegeProfile
+from adminStaff.models import ProjectSingle
 from adminStaff.forms import TemplateNoticeMessageForm
 from django import  forms
 from adminStaff.forms import TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
@@ -53,8 +54,8 @@ def refreshObjectAlloc(request, object):
         user_special_info = {}
 
         for i in SchoolProfile.objects.all():
-            user_special_info[i] = []   
-        
+            user_special_info[i] = []
+
         for i in Special.objects.all():
             if i.school_user:
                 user_special_info[i.school_user].append(i.name)
@@ -67,8 +68,8 @@ def refreshObjectAlloc(request, object):
         user_college_info = {}
 
         for i in CollegeProfile.objects.all():
-            user_college_info[i] = []   
-        
+            user_college_info[i] = []
+
         for i in College.objects.all():
             if i.college_user:
                 user_college_info[i.college_user].append(i.name)
@@ -93,7 +94,7 @@ def saveObjectName(request, object, form):
     Object = getObject(object)
 
 
-    if form.is_valid():        
+    if form.is_valid():
         p = Object(name = form.cleaned_data['name'])
         print ""
         print p.name
@@ -101,26 +102,26 @@ def saveObjectName(request, object, form):
     else :
         pass
 
-    return simplejson.dumps({'status':'1' , 
+    return simplejson.dumps({'status':'1' ,
         'objects_table': refreshObjectTable(request, object)
         })
 
 @dajaxice_register
 def deleteObjectName(request, object, deleted):
 
-    
+
     Object = getObject(object)
 
     for i in deleted:
-        cnt = Object.objects.filter(name = i)        
+        cnt = Object.objects.filter(name = i)
         Object.objects.filter(name = i).delete()
-    return simplejson.dumps({'status':'1' , 
+    return simplejson.dumps({'status':'1' ,
         'objects_table': refreshObjectTable(request, object)
         })
 
 @dajaxice_register
 def allocObject(request, object, user, alloced):
-    
+
     filter_user = user
     if object == "special":
         user = SchoolProfile.objects.filter(userid__username = filter_user)[0]
@@ -149,7 +150,7 @@ def allocObject(request, object, user, alloced):
             loginfo("error in allocObject")
 
 
-    return simplejson.dumps({'status':'1' , 
+    return simplejson.dumps({'status':'1' ,
         'object_alloc': refreshObjectAlloc(request, object),
         'object_table': refreshObjectTable(request, object),
         })
@@ -161,7 +162,7 @@ def getNoticePagination(request,page):
     table=refresh_template_notice_table(request,page)
     ret={"message":message,"table":table}
     return simplejson.dumps(ret)
-    
+
 @dajaxice_register
 def TemplateNoticeChange(request,template_form,mod,page):
     if mod==-1:
@@ -252,3 +253,44 @@ def infoExport(request,eid):
     path = get_xls_path(request,eid)
     ret = {'path':path}
     return simplejson.dumps(ret)
+
+@dajaxice_register
+def getTeacherInfo(request, name):
+    message = ""
+    setting_list = TeacherInfoSetting.objects.filter(name = name)
+    context = {"setting_list": setting_list, }
+    html = render_to_string("adminStaff/widgets/modify_setting_table.html", context)
+    return simplejson.dumps({"message": message, "html": html, })
+
+@dajaxice_register
+def modifyTeacherInfo(request, name, card, id):
+    message = ""
+    try:
+        if len(name) == 0 or len(card) == 0: raise
+
+        setting = TeacherInfoSetting.objects.get(id = id)
+        setting.name = name
+        setting.card = card
+        setting.save()
+        message = "ok"
+    except:
+        message = "fail"
+
+    return simplejson.dumps({"message": message, })
+@dajaxice_register
+def change_project_unique_code(request, project_id,project_unique_code):
+    '''
+    change project_unique_code
+    '''
+    project_obj = ProjectSingle.objects.get(project_id = project_id)
+    try:
+        if ProjectSingle.objects.filter(project_code = project_unique_code).count():
+            raise
+        project_obj.project_code = project_unique_code
+        project_obj.save()
+        # if len(project_unique_code.strip()) == 0:
+        #     project_unique_code = "无"
+    except Exception, e:
+        loginfo(e)
+        project_unique_code = "error"
+    return simplejson.dumps({'status':'1', 'res':project_unique_code})

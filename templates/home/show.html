@@ -5,9 +5,9 @@
 {% endblock  %}
 {% block home_content %}
   <!-- index style -->
-
-    {%include "home/widgets/show_search_form.html"%}
-
+    <div  id="show_search_div" >
+      {%include "home/widgets/show_search_form.html"%}
+    </div>
     <div  class="container" id="flow_list_container">
       {% include "home/ajax/_show_list.html" %}
     </div>

@@ -13,7 +13,9 @@ from backend.utility import getContext
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
-from common.models import ProjectMember,BasisContent , BaseCondition
+from teacher.models import ProjectFundBudget
+
+from common.models import ProjectMember,BasisContent , BaseCondition, UploadFile
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
@@ -31,8 +33,6 @@ def getParam(pro_list, userauth,flag):
     return param
 
 def appManage(request, pid):
-
-    
 
 
     
@@ -56,7 +56,7 @@ def appManage(request, pid):
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
         'project_name': p.title,
-        'science_type': p.science_type.category ,
+        'science_type': p.science_type.category if p.science_type else None,
 
         'trade_code': p.trade_code,
         'subject_name': p.subject_name,
@@ -95,8 +95,53 @@ def appManage(request, pid):
     return context
     return render(request, userauth['role'] + "/application.html", context)
 
+from django.core.files.storage import default_storage
+import time
+# def handle_uploaded_file(f):
+#     print f.name
+#     print f.size
+#     # print f.url
+#     # print f.path
+def fileUploadManage(request, pid):
 
+    print "fileUploadManage**********"
+    
+    if request.method == 'POST':
+        f = request.FILES['file']
+        print "find 'OK:: ' "
+        obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
+        if obj :            
+            obj = obj[0] # assert only exist one    
+            path = obj.file_obj.path
+            obj.delete()
+            default_storage.delete(path)
+            
+                
+        else :
+            pass
 
+        obj = UploadFile()
+        obj.name = f.name
+        obj.project = ProjectSingle.objects.get(project_id = pid)
+        obj.file_obj = f
+        obj.upload_time = time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
+        obj.file_type = f.name
+        obj.file_size = f.size
+        obj.save()
+
+    else :
+        pass
+        # form = UploadFileForm()
+
+    files = UploadFile.objects.filter(project__project_id = pid)
+    for i in files:
+        i.file_size = '%.3f KB' % (float(i.file_size) / 1024)
+        # i.file_size += 'KB'
+
+    context = {
+        'files': files,
+    }
+    return context
 
 
 
@@ -108,13 +153,17 @@ def researchConcludingManage(request , userauth):
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financeManage(request, userauth):
     context = schedule_form_data(request, userauth)
-
+    for item in context.get("pass_apply_project_group"):
+        item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
+    for item in context.get("not_pass_apply_project_group"):
+        item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
+            
     return render(request, userauth['role'] + '/financeProject.html', context)
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
 
     return render(request, userauth['role'] + '/financial.html', context)
-def schedule_form_data(request , userauth):
+def schedule_form_data(request , userauth=""):
 
     schedule_form = ScheduleBaseForm()
     ProjectJudge_form=ProjectJudgeForm()
@@ -129,10 +178,9 @@ def schedule_form_data(request , userauth):
     param=getParam(pro_list,userauth,default)
     context ={ 'schedule_form':schedule_form,
                'has_data': has_data,
-               'userauth': userauth,
+               'usercontext': userauth,
                'ProjectJudge_form':ProjectJudge_form,
     }
-    
     context.update(param)
 
     return context
@@ -140,10 +188,11 @@ def get_search_data(schedule_form):
      if schedule_form.is_valid():
             application_status=schedule_form.cleaned_data['application_status']
             status=schedule_form.cleaned_data['status']
-            application_year= schedule_form.cleaned_data['application_year']
+            conclude_year= schedule_form.cleaned_data['conclude_year']
             approval_year=schedule_form.cleaned_data['approval_year']
             special=schedule_form.cleaned_data['special']
             college=schedule_form.cleaned_data['college']
+            _year= schedule_form.cleaned_data['application_year']
             other_search=schedule_form.cleaned_data['other_search']
             if application_status=="-1":
                 application_status=''
@@ -161,12 +210,15 @@ def get_search_data(schedule_form):
                 special=''
             if college=="-1":
                 college=''
+            if conclude_year=="-1":
+                conclude_year=''
             q0=(application_status and Q(project_status__status__gte=application_first_status,project_status__status__lte=application_last_status)) or None
             q1=(status and Q(project_status__status__gte=first_status,project_status__lte=last_status)) or None
             q2=(application_year and Q(application_year=application_year)) or None
             q3=(approval_year and Q(approval_year=approval_year)) or None
             q4=(special and Q(project_special=special)) or None
             q5=(college and Q(school=college)) or None
+            q7=(conclude_year and Q(conclude_year= conclude_year)) or None
             if other_search:
                 sqlstr=other_search
                 q6_1=Q(project_code__contains=sqlstr)
@@ -176,7 +228,7 @@ def get_search_data(schedule_form):
                 q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3,q6_4])
             else:
                 q6=None
-            qset=filter(lambda x:x!=None,[q0,q1,q2,q3,q4,q5,q6])
+            qset=filter(lambda x:x!=None,[q0,q1,q2,q3,q4,q5,q6,q7])
             if qset:
                 qset=reduce(lambda x,y: x&y ,qset)
                 pro_list=ProjectSingle.objects.filter(qset)
