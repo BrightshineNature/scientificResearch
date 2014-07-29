@@ -19,9 +19,7 @@ def createNewProject(teacher, title, special):
     project.title = title
     project.project_special = Special.objects.get(id = special)
     project.teacher = teacher
-    project.application_year = year
 
-    print "----" * 100
     project.save()
 
     BasisContent(project = project).save()
