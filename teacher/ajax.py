@@ -11,7 +11,7 @@ from const.models import *
 from backend.logging import logger, loginfo
 from django.template.loader import render_to_string
 @dajaxice_register
-def achivementChange(request,form,achivementid,pid):
+def achivementChange(request,form,achivementid,pid,is_submited):
 
     achivementform = ProjectAchivementForm(deserialize_form(form))
     projectsingle = ProjectSingle.objects.get(project_id=pid)
@@ -43,30 +43,31 @@ def achivementChange(request,form,achivementid,pid):
         logger.info("achivementform Valid Failed"+"**"*10)
         logger.info(achivementform.errors)
         message = u"数据没有填完整，请重新填写"
-    table = refresh_achivement_table(request,pid) 
+    table = refresh_achivement_table(request,pid,is_submited) 
     ret={'table':table,'message':message,}
     return simplejson.dumps(ret)
 
 
-def refresh_achivement_table(request,pid):
+def refresh_achivement_table(request,pid,is_submited):
     achivement_list = ProjectAchivement.objects.filter(project_id = pid)
     return render_to_string("widgets/finalreport/final_achivement_table.html",
                             {        
                                 'pid':pid,
                                 'achivement_list':achivement_list,
+                                'is_submited':is_submited,
         })
 
 @dajaxice_register
-def achivementDelete(request,achivementid,pid):
+def achivementDelete(request,achivementid,pid,is_submited):
     projectsingle = ProjectSingle.objects.get(project_id=pid)
-    delete_achivement = ProjectAchivement.objects.get(project_id = pid)
+    delete_achivement = ProjectAchivement.objects.get(content_id = achivementid)
     delete_achivement.delete()
-    table = refresh_achivement_table(request,pid) 
+    table = refresh_achivement_table(request,pid,is_submited) 
     ret = {'message':u'删除成功','table':table}
     return simplejson.dumps(ret)
 
 @dajaxice_register
-def datastaticsChange(request,form,datastaticsid,pid):
+def datastaticsChange(request,form,datastaticsid,pid,is_submited):
 
     datastaticsform = ProjectDatastaticsForm(deserialize_form(form))
     projectsingle = ProjectSingle.objects.get(project_id = pid)
@@ -94,23 +95,24 @@ def datastaticsChange(request,form,datastaticsid,pid):
         logger.info("datastaticsform Valid Failed"+"**"*10)
         logger.info(datastaticsform.errors)
         message = u"数据没有填完整，请重新填写"
-    table = refresh_datastatics_table(request,pid) 
+    table = refresh_datastatics_table(request,pid,is_submited) 
     ret={'table':table,'message':message,}
     return simplejson.dumps(ret)
 
-def refresh_datastatics_table(request,pid):
+def refresh_datastatics_table(request,pid,is_submited):
     datastatics_list = ProjectStatistics.objects.filter(project_id = pid)
     return render_to_string("widgets/finalreport/final_datastatics_table.html",
                             {        
                                 'pid':pid,
                                 'datastatics_list':datastatics_list,
+                                'is_submited':is_submited,
         })
 
 @dajaxice_register
-def datastaticsDelete(request,datastaticsid,pid):
+def datastaticsDelete(request,datastaticsid,pid,is_submited):
     delete_datastatics = ProjectStatistics.objects.get(content_id = datastaticsid)
     delete_datastatics.delete()
-    table = refresh_datastatics_table(request,pid) 
+    table = refresh_datastatics_table(request,pid,is_submited) 
     ret = {'message':u'删除成功','table':table}
     return simplejson.dumps(ret)
 
@@ -150,3 +152,22 @@ def createProject(request, title, special):
     teacher = TeacherProfile.objects.get(userid = request.user)
     createNewProject(teacher, title, special)
     return simplejson.dumps({})
+def finalReportContent(request,pid,finalsubmitform,is_submited):
+    final = FinalSubmit.objects.get( project_id = pid)
+    final_form = FinalReportForm(deserialize_form(finalsubmitform),instance=final)
+    if final_form.is_valid():
+        final_form.save()
+        go_next = True
+    else:
+        go_next = False
+        finalsubmitform = refresh_finalsubmit_form(request,final_form,is_submited)
+    ret = {'finalsubmitform':finalsubmitform,'go_next':go_next,}
+    return simplejson.dumps(ret)
+
+def refresh_finalsubmit_form(request,final_form,is_submited):
+
+    return render_to_string("widgets/finalreport/finalreport_content.html",
+                            {        
+                                'is_submited':is_submited,
+                                'final':final_form,
+        })

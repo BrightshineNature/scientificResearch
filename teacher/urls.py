@@ -42,8 +42,8 @@ urlpatterns = patterns('',
         teacher_views.progressReportView,
     ),
     url(
-        r'file_upload$',
-        teacher_views.fileView,
+        r'file_upload/(?P<pid>.{36})$',
+        teacher_views.fileUploadManageView,
     ),
     url(
         r'finalinfo$',

@@ -1,9 +1,9 @@
 {% ifnotequal userauth.role 'college'%}
 <ul class="nav nav-pills">
-    <li class="active"><a href="#not_pass" data-toggle="tab">未处理<span class="badge">{{not_pass_apply_project_group.count}}</span></a>
-    </li>
-    <li><a href="#pass" data-toggle="tab">项目列表</a>
-    </li>
+  <li class="active"><a href="#not_pass" data-toggle="tab">未处理<span class="badge">{{not_pass_apply_project_group.count}}</span></a>
+  </li>
+  <li><a href="#pass" data-toggle="tab">项目列表</a>
+  </li>
 </ul>
 
 {%endifnotequal%}
@@ -20,7 +20,17 @@
                     <th>立项年度</th>   
                     <th>专题类型</th>
                     <th>项目状态</th>
+                    {%ifnotequal userauth.role "finance"%}
                     <th>附件</th>
+                    {%endifnotequal%}
+                    {% ifequal userauth.status "budget"%}
+                    <th>立项金额</th>
+                    {% endifequal%}
+                    {%ifequal userauth.status "final"%}
+                    <th>预算</th>
+                    <th>决算</th>
+                    <th>结余</th>
+                    {%endifequal%}
                     <th>审核</th>
                 </tr>
             </thead>
@@ -34,18 +44,19 @@
                     <td>{{item.teacher.teacherinfosetting.name}}</td>
                     <td>{{item.school}}</td>
                     <td> {{item.approval_year}}</td>
-                    <td>{{item.specail}}</td>
+                    <td>{{item.project_special}}</td>
                     <td>{{item.project_status}}</td>
+                    {% ifnotequal userauth.role "finance"%}                   
                     <td>
                         {%if item.file_task%}
                         <span class="label label-success">任务书</span>
                         {%else%}
                         <span class="label label-danger">任务书</span>
 
-                        {%endif%}
-                        {%if item.file_interimchecklist%}
-                        <span class="label label-success">进展报告</span>
-                        {%else%}
+            {%endif%}
+            {%if item.file_interimchecklist%}
+            <span class="label label-success">进展报告</span>
+            {%else%}
 
                         <span class="label label-danger">进展报告</span>
                         {%endif%}
@@ -55,17 +66,26 @@
                         <span class="label label-danger">结题书</span>
                         {%endif%}
                     </td>
-                    {% ifequal userauth.role 'school'%}
+                    {% endifnotequal%}
+                    {% ifequal userauth.status "budget"%}
+                    <td>{{item.projectfundbudget.total_budget}}</td>
+                    {% endifequal%}
+                    {% ifequal usercontext.status "final"%}
+                    <td>{{item.projectfundsummary.total_budget}}</td>
+                    <td>{{item.projectfundsummary.total_expenditure}}</td>
+                    <td>{{item.remain}}</td>
+                    {% endifequal%}
+                    {% ifequal usercontext.role 'school'%}
                     <td>
                         <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" id="judge">审核</button>
                     </td>
                     {% endifequal%}
-                    {% ifequal userauth.status 'budget'%}
+                    {% ifequal usercontext.status 'budget'%}
                     <td>
                         <a href="/finance/financeBudget" class="btn btn-primary btn-sm">审核</a>
                     </td>
                     {% endifequal%}
-                    {%ifequal userauth.status 'final'%}
+                    {%ifequal usercontext.status 'final'%}
                     <td>
                         <a href="/finance/financeAuditing" class="btn btn-primary btn-sm">审核</a>
                     </td>
@@ -77,66 +97,69 @@
         </table>
     </div>
 
-    <div class="tab fade" id="pass">
-        {%else%}
-        <div class="tab" id="pass">
-            {%endifnotequal%}
+  <div class="tab fade" id="pass">
+    {%else%}
+    <div class="tab" id="pass">
+      {%endifnotequal%}
 
-            <h4>
-                符合搜索条件的项目数量为 {{pass_apply_project_group.count}}.
-            </h4>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>项目编号</th>
-                        <th>项目名称</th>          
-                        <th>项目负责人</th>          
-                        <th>学院</th>         
-                        <th>立项年度</th>   
-                        <th>专题类型</th>
-                        <th>项目状态</th>
-                        <th>附件</th>
-                    </tr>
-                </thead>
+      <h4>
+        符合搜索条件的项目数量为 {{pass_apply_project_group.count}}.
+      </h4>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>项目编号</th>
+            <th>项目名称</th>          
+            <th>项目负责人</th>          
+            <th>学院</th>         
+            <th>立项年度</th>   
+            <th>专题类型</th>
+            <th>项目状态</th>
+            <th>附件</th>
+          </tr>
+        </thead>
 
-                <tbody>
-                    {% if pass_apply_project_group%}
-                    {% for item in pass_apply_project_group%}
-                    <tr>
-                        <td>{{item.project_code}}</td>
-                        <td>{{item.title}}</td>
-                        <td>{{item.teacher.teacherinfosetting.name}}</td>
-                        <td>{{item.school}}</td>
-                        <td> {{item.approval_year}}</td>
-                        <td>{{item.specail.name}}</td>
-                        <td>{{item.project_status}}</td>
-                        <td>
-                            {%if item.file_task%}
-                            <span class="label label-success">任务书</span>
-                            {%else%}
-                            <span class="label label-danger">任务书</span>
+        <tbody>
+          {% if pass_apply_project_group%}
+          {% for item in pass_apply_project_group%}
+          <tr>
+            <td>
+              {%if userauth.is_schooler or userauth.is_adminstaff%}
+              <a data-toggle="modal" id="ProjectUniqueCode_{{item.project_id}}" href="#project_code_add" pid="{{item.project_id}}" >{{item.project_code}}</a>
+              {%else%}
+              {{item.project_code}}
+              {%endif%}
+            </td>
+            <td>{{item.title}}</td>
+            <td>{{item.teacher.teacherinfosetting.name}}</td>
+            <td>{{item.school}}</td>
+            <td> {{item.approval_year}}</td>
+            <td>{{item.specail.name}}</td>
+            <td>{{item.project_status}}</td>
+            <td>
+              {%if item.file_task%}
+              <span class="label label-success">任务书</span>
+              {%else%}
+              <span class="label label-danger">任务书</span>
 
-                            {%endif%}
-                            {%if item.file_interimchecklist%}
-                            <span class="label label-success">进展报告</span>
-                            {%else%}
+              {%endif%}
+              {%if item.file_interimchecklist%}
+              <span class="label label-success">进展报告</span>
+              {%else%}
 
-                            <span class="label label-danger">进展报告</span>
-                            {%endif%}
-                            {% if item.file_summary%}
-                            <span class="label label-success">结题书</span>
-                            {%else%}
-                            <span class="label label-danger">结题书</span>
-                            {%endif%}
-                        </td>
-                    </tr>
-                    {% endfor%}
-                    {% endif%}
-                </tbody>
-            </table>
-        </div>
+              <span class="label label-danger">进展报告</span>
+              {%endif%}
+              {% if item.file_summary%}
+              <span class="label label-success">结题书</span>
+              {%else%}
+              <span class="label label-danger">结题书</span>
+              {%endif%}
+            </td>
+          </tr>
+          {% endfor%}
+          {% endif%}
+        </tbody>
+      </table>
     </div>
-
-
-
+  </div>
 </div>

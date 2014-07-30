@@ -13,6 +13,8 @@ from backend.utility import getContext
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
+from teacher.models import ProjectFundBudget
+from common.models import ProjectMember
 from common.models import ProjectMember,BasisContent , BaseCondition
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
@@ -31,8 +33,6 @@ def getParam(pro_list, userauth,flag):
     return param
 
 def appManage(request, pid):
-
-    
 
 
     
@@ -96,7 +96,13 @@ def appManage(request, pid):
     return render(request, userauth['role'] + "/application.html", context)
 
 
+def fileUploadManage(request, pid):
 
+
+    context = {
+        'files':files,
+    }
+    return context
 
 
 
@@ -108,13 +114,17 @@ def researchConcludingManage(request , userauth):
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financeManage(request, userauth):
     context = schedule_form_data(request, userauth)
-
+    for item in context.get("pass_apply_project_group"):
+        item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
+    for item in context.get("not_pass_apply_project_group"):
+        item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
+            
     return render(request, userauth['role'] + '/financeProject.html', context)
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
 
     return render(request, userauth['role'] + '/financial.html', context)
-def schedule_form_data(request , userauth):
+def schedule_form_data(request , userauth=""):
 
     schedule_form = ScheduleBaseForm()
     ProjectJudge_form=ProjectJudgeForm()
@@ -129,10 +139,9 @@ def schedule_form_data(request , userauth):
     param=getParam(pro_list,userauth,default)
     context ={ 'schedule_form':schedule_form,
                'has_data': has_data,
-               'userauth': userauth,
+               'usercontext': userauth,
                'ProjectJudge_form':ProjectJudge_form,
     }
-    
     context.update(param)
 
     return context
@@ -194,16 +203,16 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     projdatastaticsform = ProjectDatastaticsForm()
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
 
-    if request.method == "POST":
-        final_form = FinalReportForm(request.POST, instance=final)
-        if final_form.is_valid():
-            final_form.save()
-            redirect = True
-        else:
-            logger.info("Final Form Valid Failed"+"**"*10)
-            logger.info(final_form.errors)
-    else:
-        final_form = FinalReportForm(instance=final)
+    # if request.method == "POST":
+    #     final_form = FinalReportForm(request.POST, instance=final)
+    #     if final_form.is_valid():
+    #         final_form.save()
+    #         redirect = True
+    #     else:
+    #         logger.info("Final Form Valid Failed"+"**"*10)
+    #         logger.info(final_form.errors)
+    # else:
+    final_form = FinalReportForm(instance=final)
 
     loginfo(p=redirect, label="redirect")
     context = {

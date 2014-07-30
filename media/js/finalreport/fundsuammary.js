@@ -8,6 +8,10 @@ function projectfundsummary(){
 }
 
 function fundSummary_callback(data){
-	alert(data.message);
     $("#mainTable").html(data.table);
+    alert(data.message);
+    $('#li_auditing').removeClass('active');        
+    $('#auditing').removeClass('active in');
+    $('#li_achivement').addClass('active');        
+    $('#achivement').addClass('active in');
 }

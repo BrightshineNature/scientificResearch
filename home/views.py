@@ -10,17 +10,42 @@ from django.shortcuts import render
 from django.template import Context
 from django.http import HttpResponse, Http404
 from const import *
-from adminStaff.models import News
+from adminStaff.models import News,ProjectSingle
+from common.forms import ScheduleBaseForm
 from backend.utility import getContext
 from backend.logging import loginfo
+from common.views import schedule_form_data
 def index(request):
     news_announcement = News.objects.filter(news_category__category=NEWS_CATEGORY_ANNOUNCEMENT).order_by('-news_date')
     news_docs = News.objects.exclude(news_document=u'').order_by('-news_date')
     context = getContext(news_announcement, 1, "news_announcement",page_elems=7)
     context.update(getContext(news_docs,1,"news_docs",page_elems = 7))
     return render(request,"home/home.html",context)
+
 def show(request):
-    context={}
+    project_page = request.GET.get('project_page')
+    try:
+        project_page = int(project_page)
+    except:
+        project_page = 1
+    if project_page <= 0:
+        raise Http404
+    schedule_form = ScheduleBaseForm()
+    if request.method == 'POST':
+        schedule_form = ScheduleBaseForm(request.POST)
+        pro_list=get_search_data(schedule_form)
+    else:
+        pro_list=ProjectSingle.objects.all()
+    context = getContext(pro_list,project_page,'project',page_elems = 9)
+    # for project in context["project_list"]:
+    #     # imgs = project.uploadedfiles_set.filter( \
+    #     #     Q(file_obj__iendswith="jpg") | \
+    #     #         Q(file_obj__iendswith="png") )
+    #     project.img = (imgs.count() and convert2media_url(imgs[0].file_obj.url)) or \
+    #         DEFAULT_IMG_URL
+    context.update({
+               'schedule_form':schedule_form,
+             })
     return render(request,"home/show.html",context)
 def showProject(request, project_id = ""):
     context={}
