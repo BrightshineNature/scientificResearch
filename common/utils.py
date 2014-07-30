@@ -184,7 +184,7 @@ def statusRollBack(project,userrole,userstatus,form):
                 project.file_task=False
                 project.save()
             elif project.project_status.status==PROJECT_STATUS_PROGRESS_COMMIT_OVER:
-                set_status(project,PROJECT_STATUS_SCHOOL_OVER)
+                set_status(project,PROJECT_STATUS_TASK_SCHOOL_OVER)
                 project.file_interimachecklist=False
                 project.save()
             elif project.project_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
