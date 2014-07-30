@@ -124,7 +124,7 @@ import time
 def getType(fname):
     for i in FileList:
         if FileList[i] == fname.split('.')[0]:
-            return i
+            return FileList[i]
     return FileList['file_other']
 
 
@@ -134,6 +134,7 @@ AcceptedExtension = [
 ]
 def handleFileUpload(request, pid,  entrance):
 
+    print "enter handleFileUpload"
     f = request.FILES[entrance]
     ftype = getType(f.name) 
     if(ftype != FileList[entrance]):
@@ -141,7 +142,7 @@ def handleFileUpload(request, pid,  entrance):
     if ftype != FileList['file_other']:
         if not AcceptedExtension.count(f.name.split('.')[1]):
             return 0
-
+    # print "enter *******"
     obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
     if obj :
         obj = obj[0] # assert only exist one    
@@ -150,6 +151,8 @@ def handleFileUpload(request, pid,  entrance):
         default_storage.delete(path)
     else :
         pass
+
+    # print "enter ********* save"
     project = ProjectSingle.objects.get(project_id = pid)
     obj = UploadFile()
     obj.name = f.name
