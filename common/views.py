@@ -16,6 +16,28 @@ from const.models import ScienceActivityType
 from teacher.models import ProjectFundBudget
 
 from common.models import ProjectMember,BasisContent , BaseCondition, UploadFile
+def addURL(project_list):
+    for item in project_list:
+        if item.file_application:
+            try:
+                item.application_url=UploadFile.objects.filter(project=item,file_type=FileList['file_application'])[0].file_obj.url
+            except:
+                item.file_application=False
+        if item.file_task:
+            try:
+                item.task_url=UploadFile.objects.filter(project=item,file_type=FileList['file_task'])[0].file_obj.url
+            except:
+                item.file_task=False
+        if item.file_interimchecklist:
+            try:
+                item.progress_url=UploadFile.objects.filter(project=item,file_type=FileList['file_interimchecklist'])[0].file_obj.url
+            except:
+                item.file_interimchecklist=False
+        if item.file_summary:
+            try:
+                item.summary_url=UploadFile.objects.filter(project=item,file_type=FileList['file_summary'])[0].file_obj.url
+            except:
+                item.file_summary=False
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
@@ -23,12 +45,11 @@ def getParam(pro_list, userauth,flag):
         pass_apply_project_group=pro_list.filter(default_q)
     else:
         pass_apply_project_group=pro_list.filter(search_q)
-    loginfo(pass_apply_project_group.count())
-    count=not_pass_apply_project_group.count()+pass_apply_project_group.count()
+    pass_apply_project_group=addURL(pass_apply_project_group)
+    not_pass_apply_project_group=addURL(not_pass_apply_project_group)
     param={
         "not_pass_apply_project_group":not_pass_apply_project_group,
         "pass_apply_project_group":pass_apply_project_group,
-        "total_count":count,
     }
     return param
 
@@ -194,9 +215,15 @@ def fileUploadManage(request, pid):
 def scheduleManage(request, userauth):
     loginfo(userauth["role"])
     context = schedule_form_data(request, userauth)
+    context.update({
+        "approve":PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT
+    })
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
     context = schedule_form_data(request , userauth)
+    context.update({
+        "review":PROJECT_STATUS_FINAL_EXPERT_SUBJECT
+    })
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financeManage(request, userauth):
     context = schedule_form_data(request, userauth)

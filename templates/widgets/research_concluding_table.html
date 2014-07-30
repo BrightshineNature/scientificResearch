@@ -49,19 +49,19 @@
                     {% ifnotequal usercontext.role "finance"%}                   
                     <td>
                         {%if item.file_task%}
-                        <span class="label label-success">任务书</span>
+                        <span  class="label label-success"><a href={{item.task_url}>任务书</a></span>
                         {%else%}
                         <span class="label label-danger">任务书</span>
 
                         {%endif%}
                         {%if item.file_interimchecklist%}
-                        <span class="label label-success">进展报告</span>
+                        <span class="label label-success"><a  href={{item.progress_url}}>进展报告</a></span>
                         {%else%}
 
                         <span class="label label-danger">进展报告</span>
                         {%endif%}
                         {% if item.file_summary%}
-                        <span class="label label-success">结题书</span>
+                        <span  class="label label-success"><a href={{item.summary_url}>结题书</a></span>
                         {%else%}
                         <span class="label label-danger">结题书</span>
                         {%endif%}
@@ -77,7 +77,11 @@
                     {% endifequal%}
                     {% ifequal usercontext.role 'school'%}
                     <td>
+                        {% ifequal item.project_status.status review%}
+                        <button class="btn btn-primary btn-sm" href="#">结题</button>
+                        {%else%}
                         <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" id="judge">审核</button>
+                        {%endifequal%}
                     </td>
                     {% endifequal%}
                     {% ifequal usercontext.status 'budget'%}
@@ -143,19 +147,19 @@
                         {% ifnotequal usercontext.role "finance"%}                   
                         <td>
                             {%if item.file_task%}
-                            <span class="label label-success">任务书</span>
+                            <span  class="label label-success"><a href={{item.task_url}>任务书</a></span>
                             {%else%}
                             <span class="label label-danger">任务书</span>
 
                             {%endif%}
                             {%if item.file_interimchecklist%}
-                            <span class="label label-success">进展报告</span>
+                            <span class="label label-success"><a  href={{item.progress_url}}>进展报告</a></span>
                             {%else%}
 
                             <span class="label label-danger">进展报告</span>
                             {%endif%}
                             {% if item.file_summary%}
-                            <span class="label label-success">结题书</span>
+                            <span  class="label label-success"><a href={{item.summary_url}>结题书</a></span>
                             {%else%}
                             <span class="label label-danger">结题书</span>
                             {%endif%}

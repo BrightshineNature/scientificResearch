@@ -36,13 +36,17 @@
                     <td>{{item.project_special}}</td>
                     <td>
                         {% if item.file_application%}
-                        <a href="#"><span class="label label-success"> 申报书 </span></a>
+                        <a href={{item.application_year}}><span class="label label-success"> 申报书 </span></a>
                         {% else%}
                         <a href="#"><span class="label label-danger"> 申报书 </span></a>
                         {% endif%}
                     </td>
                     <td>
-                        <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" id="judge">评审 </button>
+                        {% ifequal item.project_status.status approve%}
+                        <button class="btn btn-primary btn-sm" href="#">立项</button>
+                        {% else%}
+                        <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" id="judge">审核 </button>
+                        {%endifequal%}
                     </td>
                 </tr>
                 {% endfor%}
@@ -80,7 +84,11 @@
                     <td>201s-7-1 </td>
                     <td>{{item.project_special}}</td>
                     <td>
-                        <a href="#"><span class="label label-warning"> 申报书 </span></a>
+                        {% if item.file_application%}
+                        <a href={{item.application_year}}><span class="label label-success"> 申报书 </span></a>
+                        {% else%}
+                        <a href="#"><span class="label label-danger"> 申报书 </span></a>
+                        {% endif%}
                     </td>
                 </tr>
                 {% endfor%}
