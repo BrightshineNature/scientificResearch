@@ -332,6 +332,8 @@ def get_project_list(request):
         pro_list = ProjectSingle.objects.filter(teacher__userid = request.user)
     elif identity == EXPERT_USER:
         pro_list = ProjectSingle.objects.all()
+    else:
+        pro_list = ProjectSingle.objects.all()
     return pro_list
 def get_search_data(request,schedule_form):
     if schedule_form.is_valid():
