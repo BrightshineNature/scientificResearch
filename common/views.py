@@ -14,7 +14,7 @@ from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,No
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
 from teacher.models import ProjectFundBudget
-
+from users.models import College,Special
 from common.models import ProjectMember,BasisContent , BaseCondition, UploadFile
 def addURL(project_list):
     for item in project_list:
@@ -273,7 +273,10 @@ def get_project_list(request):
         loginfo(qset)
         pro_list = ProjectSingle.objects.filter(qset)
     elif identity == COLLEGE_USER:
-        colleges = College.objects.filter(college_user__userid = request.usr)
+        colleges = College.objects.filter(college_user__userid = request.user)
+        qset = reduce(lambda x,y:x|y,[Q(teacher__college = _college) for _college in colleges])
+        
+        pro_list = ProjectSingle.objects.filter(qset)
     elif identity == TEACHER_USER:
         pro_list = ProjectSingle.objects.filter(teacher__userid = request.user)
     elif identity == EXPERT_USER:
