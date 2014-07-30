@@ -117,7 +117,6 @@ class ProjectInfoForm(forms.Form):
             'class':'form-control', 
             'style':'margin: 0px!important',
             'placeholder':u"科技活动类型",
-            
             }),
         )
     trade_code = forms.CharField(
