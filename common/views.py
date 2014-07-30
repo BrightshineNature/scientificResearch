@@ -192,7 +192,7 @@ def get_search_data(schedule_form):
             approval_year=schedule_form.cleaned_data['approval_year']
             special=schedule_form.cleaned_data['special']
             college=schedule_form.cleaned_data['college']
-            _year= schedule_form.cleaned_data['application_year']
+            application_year = schedule_form.cleaned_data['application_year']
             other_search=schedule_form.cleaned_data['other_search']
             if application_status=="-1":
                 application_status=''
