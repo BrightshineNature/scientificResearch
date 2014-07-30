@@ -93,18 +93,24 @@ def saveObjectName(request, object, form):
 
     Object = getObject(object)
 
-
+    context = {
+        'status': 1 ,
+        'objects_table': "",
+    }
     if form.is_valid():
-        p = Object(name = form.cleaned_data['name'])
-        print ""
-        print p.name
-        p.save()
+        if Object.objects.filter(name = form.cleaned_data['name']):
+            print "hh" 
+            context['status'] = 0
+        else :
+            print "OK"
+            p = Object(name = form.cleaned_data['name'])
+            p.save()
     else :
         pass
 
-    return simplejson.dumps({'status':'1' ,
-        'objects_table': refreshObjectTable(request, object)
-        })
+    context['objects_table'] = refreshObjectTable(request, object)
+
+    return simplejson.dumps(context)
 
 @dajaxice_register
 def deleteObjectName(request, object, deleted):
@@ -250,7 +256,7 @@ def refresh_user_table(request,identity):
 
 @dajaxice_register
 def infoExport(request,eid):
-    proj_set = ProjectSingle.objects.filter(title = "电子竞技")
+    proj_set = ProjectSingle.objects.all()
     path = get_xls_path(request,eid,proj_set,"优秀人才")
     ret = {'path':path}
     return simplejson.dumps(ret)

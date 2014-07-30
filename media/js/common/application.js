@@ -38,6 +38,9 @@ $(document).on("click", "#addNewProjectMember", function(){
     $(member_info_modal).attr("mid", "");
 
     $(member_info_modal).find("h4").text("添加项目成员");
+    
+    $('#project_member_form_error').hide();
+
 
 })
 
@@ -45,10 +48,10 @@ $(document).on("click", "#saveProjectMember", function(){
     var pid = $(this).parents("[pid]").attr("pid");
     var form = $("#project_member_form").serialize();
 
-    $(member_info_modal).find("h4").text("修改项目成员");
 
     // alert($(""));
     // alert(form);
+    // $('#saveProjectMember').modal("toggle");
     Dajaxice.common.saveProjectMember(saveProjectMemberCallback, {
         'form':form,
         'pid':pid,
@@ -62,7 +65,21 @@ function saveProjectMemberCallback(data){
     // alert(data.project_member_table);
     if(data.status == 1)
     {
+        // alert("OK");
         $('#project_member_table_div').html(data.project_member_table);
+        $('#project_member_form_error').hide();
+
+        // $('#saveProjectMember').addClass('data-dismiss');
+        $('#member_info_modal').attr('data-dismiss', 'modal');
+        $('#member_info_modal').modal("hide");
+
+    }
+    else if(data.status == 0)
+    {
+        $('#project_member_form_error').html('您有字段没有被填写。');
+        $('#project_member_form_error').show();
+
+        $('#member_info_modal').attr('data-dismiss', '');
     }
 
 }
@@ -75,7 +92,7 @@ $(document).on("click", ".modifyProjectMember", function(){
     var cnt = $(this).parent().parent();
     // alert(cnt.html());
 
-
+    $(member_info_modal).find("h4").text("修改项目成员");
     $(member_info_modal).attr("mid", $(cnt).attr("mid"));
 
     $("input[name='name']").val($(cnt).children("td:eq(0)").html());
@@ -132,9 +149,10 @@ function deleteProjectMemberCallback(data){
 
 
 
+var cnt_content, cnt_tab;
 
 
-function jump(cnt_content, cnt_tab){
+function jump(){
     next_content = cnt_content.next();
     next_tab = cnt_tab.next();
     cnt_content.removeClass("active");
@@ -150,37 +168,35 @@ function jump(cnt_content, cnt_tab){
     next_tab.addClass("in");
 }
 
-
 $(document).on("click", ".save_button",function(){
     // alert("TT");
     
-    var cnt_content = $(this).parent();
+    cnt_content = $(this).parent();
+    // alert(cnt_content.html());
     
     var pid = $(this).parents("[pid]").attr("pid");
     // alert(pid);
-    if($(cnt_content).attr("id") == "project_info_form")
+    if($(cnt_content).attr("id") == "project_info")
     {
-        var cnt_tab = $(this).parent().parent().prev().children("li:eq(0)");        
-        jump(cnt_content, cnt_tab);    
+        cnt_tab = $(this).parent().parent().prev().children("li:eq(0)");        
         
         
 
         // alert($("#project_info_form").children("form").serialize());
         Dajaxice.common.saveProjectInfoForm(saveProjectInfoFormCallback,{
-            'form': $("#project_info_form").children("form").serialize(),
+            'form': $("#project_info_form").serialize(),
             'pid': pid,
         })
 
     }
     else if($(cnt_content).attr("id") == "project_member")
     {
-        var cnt_tab = $(this).parent().parent().prev().children("li:eq(1)");
-        jump(cnt_content, cnt_tab);
+        cnt_tab = $(this).parent().parent().prev().children("li:eq(1)");
+        jump();
     }
     else if($(cnt_content).attr("id") == "basis_content")
     {
-        var cnt_tab = $(this).parent().parent().prev().children("li:eq(2)");
-        jump(cnt_content, cnt_tab);
+        cnt_tab = $(this).parent().parent().prev().children("li:eq(2)");
 
         Dajaxice.common.saveBasisContent(saveBasisContentCallback,{
             'form': $("#basis_content_form").serialize(),
@@ -188,13 +204,12 @@ $(document).on("click", ".save_button",function(){
             'bid': $("#basis_content_form").attr("bid"),
         })
     }
-    else if($(cnt_content).attr("id") == "base_condition")
+    else
     {
-        var cnt_tab = $(this).parent().parent().prev().children("li:eq(3)");
+        // cnt_tab = $(this).parent().parent().prev().children("li:eq(3)");
         
         user = $("[user]").attr("user");
-        alert(user);
-        location.href = "/" + user + "/file_upload/" + pid;
+        // alert(user);
 
         // alert($("#base_condition_form").attr("bid"));
         Dajaxice.common.saveBaseCondition(saveBaseConditionCallback,{
@@ -206,12 +221,73 @@ $(document).on("click", ".save_button",function(){
 
 });
 
-function saveProjectInfoFormCallback(data) {
+var pid;
+$(document).on("click", ".submit_button", function(){
+
+    pid = $(this).parents("[pid]").attr("pid");
+
+    Dajaxice.common.checkValid(checkValidCallback, {
+        'pid': pid,
+    });
+})
+
+function saveProjectInfoFormCallback(data) 
+{
+    if(data.status == 1)
+    {
+        jump();    
+        $("#project_info_form_error").hide();
+    }
+    else if(data.status == 0)
+    {
+        // alert(data.error);
+
+        $("#project_info_form_error").html("您有字段没有被填写。");
+        $("#project_info_form_error").show();
+    }
 
 }
 function saveBasisContentCallback(data) {
+    if(data.status == 1)
+    {
+        jump();    
+        $("#basis_content_form_error").hide();
+    }
+    else if(data.status == 0)
+    {
+        // alert(data.error);
+
+        $("#basis_content_form_error").html("您有字段没有被填写。");
+        $("#basis_content_form_error").show();
+    }
 
 }
 function saveBaseConditionCallback(data){
+
+    if(data.status == 1)
+    {
+        $("#base_condition_form_error").hide();
+    }
+    else if(data.status == 0)
+    {
+        // alert(data.error);
+
+        $("#base_condition_form_error").html("您有字段没有被填写。");
+        $("#base_condition_form_error").show();
+    }
+
+
+}
+
+function checkValidCallback(data) {
+    // // alert("KK");
+    // alert(data.status)
+    if(data.status == 1)
+    {
+        // alert("")
+        user = $("[user]").attr("user");
+        location.href = "/" + user + "/file_upload/" + pid;
+    }
+
 
 }

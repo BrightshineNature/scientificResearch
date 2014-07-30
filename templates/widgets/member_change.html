@@ -10,19 +10,30 @@
             </div>
 
             <div class="modal-body">
+
+                <div class="alert alert-danger" role="alert" id = "project_member_form_error"
+                    style= "display:none">
+                </div>
+
                 <form class="well form" id="project_member_form">
 
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                <span class="input-group-addon">
+                                    姓名
+                                    <!-- <span class="glyphicon glyphicon-user"></span> -->
+                                </span>
                                 {{project_member_form.name}}
                             </div> 
                         </div>
                         <div class="col-lg-6">
                             <div class="input-group date form-year" data-date=""data-date-format="yyyy">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                
+                                <span class="input-group-addon">出生年份</span>
                                 {{project_member_form.birth_year}}
+
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </div>
                     </div>
@@ -30,13 +41,21 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></span>
+
+                                <span class="input-group-addon">
+                                    电话
+                                    <!-- <span class="glyphicon glyphicon-earphone"></span> -->
+                                </span>
                                 {{project_member_form.tel}}
+
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                                <span class="input-group-addon">
+                                    邮箱
+                                    <!-- <span class="glyphicon glyphicon-envelope"></span> -->
+                                </span>
                                 {{project_member_form.mail}}
                             </div>
                         </div>
@@ -44,13 +63,19 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                <span class="input-group-addon">
+                                    职称
+                                    <!-- <span class="glyphicon glyphicon-user"></span> -->
+                                </span>
                                 {{project_member_form.professional_title}}
                             </div> 
                         </div>
                         <div class="col-lg-6">
                             <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                <span class="input-group-addon">
+                                    行政职务
+                                    <!-- <span class="glyphicon glyphicon-user"></span> -->
+                                </span>
                                 {{project_member_form.executive_position}}
                             </div>
                         </div>
@@ -60,7 +85,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel_change">关闭</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="saveProjectMember">保存</button>
+                <button type="button" class="btn btn-primary" data-dismiss="" id="saveProjectMember">保存</button>
             </div>
 
         </div>
@@ -69,7 +94,7 @@
 
 <p> </p>
 
-{%if is_submit%}
+{%if is_submited%}
 <button class="btn btn-primary" id="addNewProjectMember"  data-toggle="modal"
 data-target="#member_info_modal" >添加新成员</button>
 {%endif%}

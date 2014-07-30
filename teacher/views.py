@@ -32,7 +32,7 @@ def appView(request, pid, is_submited = False):
         'role':"teacher",
     }
     context = appManage(request, pid)
-    context['user'] = "teacher"
+    context['user'] = "teacher"    
     context['is_submited'] = is_submited
     return render(request, "teacher/application.html", context)
 

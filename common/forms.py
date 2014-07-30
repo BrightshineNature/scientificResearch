@@ -2,6 +2,7 @@
 
 from django import forms
 from const import *
+from backend.logging import loginfo
 from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice,get_conclude_year_choices
 from common.models import ProjectMember, BasisContent, BaseCondition
 from users.models import Special,College
@@ -45,9 +46,7 @@ class ScheduleBaseForm(forms.Form):
     college = forms.ChoiceField(choices = college_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control',
-            
             }),)
-
     other_search= forms.CharField(
         max_length = 20,
         required=False,
@@ -56,7 +55,30 @@ class ScheduleBaseForm(forms.Form):
             'class':'form-control ',
             'id':'name',
             'placeholder':u"输入其他检索关键字"}), )
-
+    def __init__(self,*args,**kwargs):
+        request  = kwargs.get("request",None)
+        if request != None:
+            del kwargs['request']
+        super(ScheduleBaseForm, self).__init__(*args, **kwargs)
+        if request != None:
+            identity = request.session.get('auth_role', "")
+            if identity == SCHOOL_USER:
+                obj_list = Special.objects.filter(school_user__userid = request.user)
+                choice_list=[]
+                choice_list.append((-1,"专题类型"))
+                for obj in obj_list:
+                    choice_list.append((obj.id, obj.name))
+                obj_choice = tuple(choice_list)
+                loginfo(obj_choice)
+                self.fields["special"].choices = obj_choice
+            elif identity == COLLEGE_USER:
+                obj_list = College.objects.filter(college_user__userid = request.user)
+                choice_list=[]
+                choice_list.append((-1,"学院"))
+                for obj in obj_list:
+                    choice_list.append((obj.id, obj.name))
+                obj_choice = tuple(choice_list)
+                self.fields["college"].choices = obj_choice 
 
 class ProjectJudgeForm(forms.Form):
     result_choices=(("-1","请审核"),("1","通过"),("0","不通过"))
@@ -114,7 +136,7 @@ class ProjectInfoForm(forms.Form):
         choices= science_type_choices,
         required = True,
         widget=forms.Select(attrs={
-            'class':'form-control', 
+            'class':'form-control',
             'style':'margin: 0px!important',
             'placeholder':u"科技活动类型",
             }),

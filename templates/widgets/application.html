@@ -1,7 +1,7 @@
 <div class="report-content-container"> 
   <ul class="nav nav-pills">
 
-    <li {% if not error %}class="active" {% endif %}><a href="#project_info_form" data-toggle="tab">项目信息</a></li>
+    <li {% if not error %}class="active" {% endif %}><a href="#project_info" data-toggle="tab">项目信息</a></li>
       
     <li><a href="#project_member" data-toggle="tab">项目成员</a></li>
       
@@ -17,7 +17,7 @@
   
   <div class="tab-content" pid="{{pid}}" user = '{{user}}' >
 
-    <div class="tab-pane fade {% if not error %} active in {% endif %}" id="project_info_form"> 
+    <div class="tab-pane fade {% if not error %} active in {% endif %}" id="project_info"> 
       {% include "widgets/project_infoform.html" %}
       {%include "widgets/save_button.html"%}
 
@@ -38,8 +38,24 @@
     </div>
 
     <div class="tab-pane fade" id="base_condition">
-      {% include "widgets/base_condition.html"%} 
-      {%include "widgets/save_button.html"%}
+      {% include "widgets/base_condition.html"%}
+       
+      {% if is_submited %}
+
+      <div class="row">
+          <div class = "col-md-4  col-md-offset-3 save_button">
+            <button class="btn btn-large btn-block btn-success" style="width:50%;">确认无误后，保存</button>
+          </div>
+
+          <div class = "col-md-4 submit_button">
+            <button class="btn btn-large btn-block btn-success" style="width:20%;">提交</button>
+          </div>
+      </div>
+          <!-- <small class="pull-center">Tips: 截止日期前可以修改</small> -->
+
+      </div>
+{% endif %}
+
 
     </div>
 
