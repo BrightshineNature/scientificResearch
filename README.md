@@ -6,7 +6,7 @@ ScientificResearch
 
 # How to install
 
- 1. create database in mysql: create database ScienceResearch character SET utf8;
+ 1. create database in mysql: create database ScientificResearch character SET utf8;
  1. sync database in project root path: python manage.py syncdb
  1. migrate database: python manage.py migrate
  1. test server : python manage.py runserver IP:PORT

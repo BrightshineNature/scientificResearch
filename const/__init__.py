@@ -276,3 +276,11 @@ class EXCELTYPE_DICT_OBJECT(object):
         self.INFO_FUNDSUMMARY = EXCELTYPE_INFO_FUNDSUMMARY
         self.INFO_FUNDBUDGET = EXCELTYPE_INFO_FUNDBUDGET
 
+FileList={
+    'file_application' : u"基本科研业务费专项项目申请书",
+    'file_task' : u"基本科研业务费专项项目任务书",
+    'file_interimchecklist' : u"基本科研业务费专项项目进展报告",
+    'file_summary' : u"基本科研业务费专项项目结题报告",
+    'file_other':u"其他",
+}
+

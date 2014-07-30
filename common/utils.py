@@ -130,11 +130,11 @@ def create_Q(start,end):
 def get_qset(userauth):
     if userauth['role']=="school" :
         if userauth['status']=="application":
-            pending=create_QE(PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
+            pending=create_QE(PROJECT_STATUS_APPLICATION_COLLEGE_OVER)|create_QE(PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
             default=create_QE(PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
         else:
-            pending=create_QE(PROJECT_STATUS_TASK_FINANCE_OVER)|create_QE(PROJECT_STATUS_PROGRESS_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_FINANCE_OVER)
+            pending=create_QE(PROJECT_STATUS_TASK_FINANCE_OVER)|create_QE(PROJECT_STATUS_PROGRESS_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_FINANCE_OVER)|create_QE(PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
             default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     elif userauth['role']=="college":
