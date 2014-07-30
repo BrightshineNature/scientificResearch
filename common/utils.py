@@ -14,7 +14,6 @@ import datetime
 def createNewProject(teacher, title, special):
     year = datetime.datetime.now().year
 
-    print type(teacher), title, special
 
     project = ProjectSingle()
     project.project_application_code = "%d%04d" % (year, ProjectSingle.objects.all().count())
