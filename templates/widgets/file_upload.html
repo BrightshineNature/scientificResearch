@@ -60,7 +60,7 @@
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目申请书上传</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目申请书”</strong></p>
 
-            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="application_file" accept="doc,docx" >
+            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_application" accept="doc,docx" >
 
 
             <button 
@@ -77,7 +77,7 @@
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目进展报告上传</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目进展报告”</strong></p>
 
-            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="process_file" accept="doc,docx" >
+            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_interimchecklist" accept="doc,docx" >
 
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
             
@@ -89,7 +89,7 @@
             {% csrf_token %}
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目结题报告上传</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目结题报告”</strong></p>
-            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="final_file" accept="doc,docx" >
+            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_summary" accept="doc,docx" >
 
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
         </form>
@@ -104,7 +104,7 @@
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目任务书</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目任务书”</strong></p>
 
-            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="task_file" accept="doc,docx" >
+            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_task" accept="doc,docx" >
 
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
         </form>
@@ -114,7 +114,7 @@
             {% csrf_token %}
             <span class="label label-info col-lg-12"><h4>其他文件上传</h4></span>
             <p class="tip">上传的文件不能命名为<strong>其他四个入口的名称</strong></p>
-            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="other_file" accept="doc,docx" >
+            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_other" accept="doc,docx" >
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
         </form>
     </div>

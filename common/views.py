@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
 from common.forms import  ScheduleBaseForm,ProjectJudgeForm, ProjectMemberForm
-from common.utils import get_query_status,get_qset,get_query_application_status
+from common.utils import get_query_status,get_qset,get_query_application_status,status_confirm
 from const import *
 from teacher.forms import *
 from teacher.models import *
@@ -102,46 +102,25 @@ import time
 #     print f.size
 #     # print f.url
 #     # print f.path
-FileType = [u"基本科研业务费专项项目申请书",
-            u"基本科研业务费专项项目进展报告",
-            u"基本科研业务费专项项目结题报告",
-            u"基本科研业务费专项项目任务书",
-            u"其他", ]
-def getType(fname):
-    for i in FileType:
-        if i == fname.split('.')[0]:
-            return i
-    return FileType[4]
 
-EntranceMapToType= {
-    "application_file":u"基本科研业务费专项项目申请书",
-    "process_file":u"基本科研业务费专项项目进展报告",
-    "final_file":u"基本科研业务费专项项目结题报告",
-    "task_file":u"基本科研业务费专项项目任务书",
-    "other_file":u"其他",
-}
-Entrance = [
-    "application_file",
-    "process_file",
-    "final_file",
-    "task_file",
-    "other_file",
-]
+def getType(fname):
+    for i in FileList:
+        if FileList[i] == fname.split('.')[0]:
+            return i
+    return FileList['file_other']
+
+
+
 AcceptedExtension = [
     'doc', 'docx', 'DOC', 'DOCX',
 ]
 def handleFileUpload(request, pid,  entrance):
 
     f = request.FILES[entrance]
-    print "********CMP::"
-    print f.name
-    print getType(f.name)
-    print entrance
-    print EntranceMapToType[entrance]
     ftype = getType(f.name) 
-    if(ftype != EntranceMapToType[entrance]):
+    if(ftype != FileList[entrance]):
         return 0
-    if ftype != FileType[4]:
+    if ftype != FileList['file_other']:
         if not AcceptedExtension.count(f.name.split('.')[1]):
             return 0
 
@@ -153,14 +132,30 @@ def handleFileUpload(request, pid,  entrance):
         default_storage.delete(path)
     else :
         pass
+    project = ProjectSingle.objects.get(project_id = pid)
     obj = UploadFile()
     obj.name = f.name
-    obj.project = ProjectSingle.objects.get(project_id = pid)
+    obj.project = project
     obj.file_obj = f
     obj.upload_time = time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
     obj.file_type = ftype
     obj.file_size = f.size
     obj.save()
+
+    if entrance == 'file_application':
+        project.file_application = True
+        status_confirm(project, APPLICATION_SUBMIT_CONFIRM)
+    elif entrance == 'file_task':
+        project.file_task = True
+        status_confirm(project, TASK_SUBMIT_CONFIRM)
+    elif entrance == 'file_interimchecklist':
+        project.file_interimchecklist = True
+        status_confirm(project, PROGRESS_SUBMIT_CONFIRM)
+    elif entrance == 'file_summary':
+        project.file_summary = True
+        status_confirm(project, FINAL_SUBMIT_CONFIRM)
+        
+    project.save()
     return 1
 
 
@@ -181,7 +176,7 @@ def fileUploadManage(request, pid):
 
 
 
-        for i in Entrance:
+        for i in FileList:
             if request.FILES.has_key(i):
                 if not handleFileUpload(request, pid, i):
                     error = 1
@@ -193,6 +188,7 @@ def fileUploadManage(request, pid):
         # form = UploadFileForm()
 
     files = UploadFile.objects.filter(project__project_id = pid)
+
     for i in files:
         i.file_size = '%.3f KB' % (float(i.file_size) / 1024)
         # i.file_size += 'KB'

@@ -193,8 +193,7 @@ $(document).on("click", ".save_button",function(){
         var cnt_tab = $(this).parent().parent().prev().children("li:eq(3)");
         
         user = $("[user]").attr("user");
-        alert(user);
-        location.href = "/" + user + "/file_upload/" + pid;
+        // alert(user);
 
         // alert($("#base_condition_form").attr("bid"));
         Dajaxice.common.saveBaseCondition(saveBaseConditionCallback,{
@@ -206,6 +205,16 @@ $(document).on("click", ".save_button",function(){
 
 });
 
+var pid;
+$(document).on("click", ".submit_button", function(){
+
+    pid = $(this).parents("[pid]").attr("pid");
+
+    Dajaxice.common.checkValid(checkValidCallback, {
+        'pid': pid,
+    });
+})
+
 function saveProjectInfoFormCallback(data) {
 
 }
@@ -213,5 +222,18 @@ function saveBasisContentCallback(data) {
 
 }
 function saveBaseConditionCallback(data){
+
+}
+
+function checkValidCallback(data) {
+    // // alert("KK");
+    // alert(data.status)
+    if(data.status == 1)
+    {
+        // alert("")
+        user = $("[user]").attr("user");
+        location.href = "/" + user + "/file_upload/" + pid;
+    }
+
 
 }
