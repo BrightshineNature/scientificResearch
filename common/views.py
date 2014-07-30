@@ -141,12 +141,10 @@ def handleFileUpload(request, pid,  entrance):
     ftype = getType(f.name) 
     if(ftype != EntranceMapToType[entrance]):
         return 0
-    
     if ftype != FileType[4]:
         if not AcceptedExtension.count(f.name.split('.')[1]):
             return 0
 
-    
     obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
     if obj :
         obj = obj[0] # assert only exist one    
@@ -155,7 +153,6 @@ def handleFileUpload(request, pid,  entrance):
         default_storage.delete(path)
     else :
         pass
-
     obj = UploadFile()
     obj.name = f.name
     obj.project = ProjectSingle.objects.get(project_id = pid)
@@ -170,7 +167,6 @@ def handleFileUpload(request, pid,  entrance):
 def fileUploadManage(request, pid):
 
     print "fileUploadManage**********"
-    
     error = 0
     if request.method == 'POST':
         if request.POST.has_key("fid"):

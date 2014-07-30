@@ -255,3 +255,12 @@ EXPERT_REVIEW_TABLE_CHOICES =(
 )
 
 EXPERT_NUM = 10
+
+FileList={
+    'show_application' : u"基本科研业务费专项项目申请书",
+    'show_task' : u"基本科研业务费专项项目任务书",
+    'show_progress' : u"基本科研业务费专项项目进展报告",
+    'show_summary' : u"基本科研业务费专项项目结题报告",
+    'show_other':u"其他",
+}
+
