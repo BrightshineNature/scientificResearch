@@ -471,8 +471,11 @@ def cell_style(horizontal,vertical):
     return style
 
 def average(score_list):
-   average_score = set_float(sum(score_list))/len(score_list)
-   return set_float(average_score)
+    if len(score_list):
+        average_score = set_float(sum(score_list))/len(score_list)
+    else:
+        average_score = 0
+    return set_float(average_score)
 
 def set_float(num):
     return float('%.2f' % num)
