@@ -134,23 +134,23 @@ def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
     else:
         table_html=render_to_string("widgets/research_concluding_table.html",context)
     return simplejson.dumps({"table_html":table_html})   
-@dajaxice_register
-def change_project_overstatus(request, project_id, changed_overstatus):
-    '''
-    change project overstatus
-    '''
-    choices = dict(OVER_STATUS_CHOICES)
+# @dajaxice_register
+# def change_project_overstatus(request, project_id, changed_overstatus):
+#     '''
+#     change project overstatus
+#     '''
+#     choices = dict(OVER_STATUS_CHOICES)
 
 
-    res = choices[changed_overstatus]    
-    return simplejson.dumps({'status':'1', 'res':res})
+#     res = choices[changed_overstatus]    
+#     return simplejson.dumps({'status':'1', 'res':res})
 
-    if changed_overstatus in choices:
-        AdminStaffService.ProjectOverStatusChange(project_id, changed_overstatus)
-        res = choices[changed_overstatus]
-    else:
-        res = "操作失败，请重试"
-    return simplejson.dumps({'status':'1', 'res':res})
+#     if changed_overstatus in choices:
+#         AdminStaffService.ProjectOverStatusChange(project_id, changed_overstatus)
+#         res = choices[changed_overstatus]
+#     else:
+#         res = "操作失败，请重试"
+#     return simplejson.dumps({'status':'1', 'res':res})
 
 
 
@@ -267,4 +267,48 @@ def saveBaseCondition(request, form, pid, bid):
     
     return simplejson.dumps(context)
 
+from common.utils import status_confirm
+@dajaxice_register
+def checkValid(request, pid):
 
+    project = ProjectSingle.objects.get(project_id = pid)
+    context = {
+        'status':1,
+    }
+    if not project.title :
+        context['status'] = 0
+        # print '0'
+    elif not project.science_type :
+        context['status'] = 0
+        # print '1'
+    elif not project.trade_code :
+        context['status'] = 0
+        # print '2'
+    elif not project.subject_name :
+        context['status'] = 0
+        # print '3'
+    elif not project.subject_code :
+        context['status'] = 0
+        # print '4'
+    elif not project.start_time :
+        context['status'] = 0
+        # print '5'
+    elif not project.end_time :
+        context['status'] = 0
+        # print '6'
+    elif not project.project_tpye :
+        context['status'] = 0
+        # print '7'
+
+    if not BasisContent.objects.filter(project__project_id = pid):
+        context['status'] = 0
+        # print '8'
+    if not BaseCondition.objects.filter(project__project_id = pid):
+        context['status'] = 0
+        # print '9'
+    
+    if context['status']:
+        status_confirm(project, APPLICATION_WEB_CONFIRM)
+
+
+    return simplejson.dumps(context)
