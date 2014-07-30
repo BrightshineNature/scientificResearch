@@ -14,11 +14,15 @@ import datetime
 def createNewProject(teacher, title, special):
     year = datetime.datetime.now().year
 
+    print type(teacher), title, special
+
     project = ProjectSingle()
     project.project_application_code = "%d%04d" % (year, ProjectSingle.objects.all().count())
     project.title = title
     project.project_special = Special.objects.get(id = special)
     project.teacher = teacher
+    project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLY)
+    project.application_year = year
 
     project.save()
 
