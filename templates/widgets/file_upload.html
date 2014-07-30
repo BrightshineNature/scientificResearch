@@ -41,7 +41,6 @@
 <br/>
 
 
-{%if not readonly %}
 <div class="page-header">
     <h3>文件上传操作</h3>
 </div>
@@ -61,10 +60,13 @@
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目申请书上传</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目申请书”</strong></p>
 
-
             <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="application_file" accept="doc,docx" >
 
-            <button type="submit" class="btn btn-success submit_button"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
+
+            <button 
+            type= "submit"
+             class="btn btn-success submit_button"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
+            
 
         </form>
     </div>
@@ -74,8 +76,11 @@
             {% csrf_token %}
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目进展报告上传</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目进展报告”</strong></p>
+
             <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="process_file" accept="doc,docx" >
+
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
+            
         </form>
     </div>
 
@@ -85,6 +90,7 @@
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目结题报告上传</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目结题报告”</strong></p>
             <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="final_file" accept="doc,docx" >
+
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
         </form>
     </div>
@@ -97,7 +103,9 @@
             {% csrf_token %}
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目任务书</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目任务书”</strong></p>
+
             <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="task_file" accept="doc,docx" >
+
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
         </form>
     </div>
@@ -124,6 +132,7 @@
         <!-- <li>添加文件后请<strong>不要刷新页面</strong>，否则不能进行删除文件操作。</li> -->
     </ul>
 </div>
-{%endif%}
+
+
 
 <script type='text/javascript' src= "{{STATIC_URL}}js/common/file_upload.js"> </script>
