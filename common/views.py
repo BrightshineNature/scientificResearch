@@ -33,10 +33,6 @@ def getParam(pro_list, userauth,flag):
     return param
 
 def appManage(request, pid):
-
-
-    
-
     basis_content = BasisContent.objects.filter(project__project_id = pid)
     if basis_content:
         basis_content_id = basis_content[0].id
@@ -176,18 +172,10 @@ def fileUploadManage(request, pid):
                 obj.delete()
                 default_storage.delete(path)
 
-
-
-
-
-
         for i in Entrance:
             if request.FILES.has_key(i):
                 if not handleFileUpload(request, pid, i):
                     error = 1
-                
-            
-
     else :
         pass
         # form = UploadFileForm()
@@ -202,8 +190,6 @@ def fileUploadManage(request, pid):
         'error': error
     }
     return context
-
-
 
 def scheduleManage(request, userauth):
     loginfo(userauth["role"])
@@ -225,15 +211,15 @@ def financialManage(request, userauth):
     return render(request, userauth['role'] + '/financial.html', context)
 def schedule_form_data(request , userauth=""):
 
-    schedule_form = ScheduleBaseForm()
+    schedule_form = ScheduleBaseForm(request=request)
     ProjectJudge_form=ProjectJudgeForm()
     has_data = False
     if request.method == 'POST':
         schedule_form = ScheduleBaseForm(request.POST)
-        pro_list=get_search_data(schedule_form)
+        pro_list=get_search_data(request,schedule_form)
         default=False
     else:
-        pro_list=ProjectSingle.objects.all()
+        pro_list=get_project_list(request)
         default=True
     param=getParam(pro_list,userauth,default)
     context ={ 'schedule_form':schedule_form,
@@ -244,57 +230,73 @@ def schedule_form_data(request , userauth=""):
     context.update(param)
 
     return context
-def get_search_data(schedule_form):
-     if schedule_form.is_valid():
-            application_status=schedule_form.cleaned_data['application_status']
-            status=schedule_form.cleaned_data['status']
-            application_year= schedule_form.cleaned_data['application_year']
-            approval_year=schedule_form.cleaned_data['approval_year']
-            special=schedule_form.cleaned_data['special']
-            college=schedule_form.cleaned_data['college']
-            conclude_year = schedule_form.cleaned_data['conclude_year']
-            other_search=schedule_form.cleaned_data['other_search']
-            if application_status=="-1":
-                application_status=''
-            elif application_status:
-                (application_first_status,application_last_status)=get_query_application_status(application_status)
-            if status=="-1":
-                status=''
-            elif status:
-                (first_status,last_status)=get_query_status(status)
-            if application_year=="-1":
-                application_year=''
-            if approval_year=="-1":
-                approval_year=''
-            if special=="-1":
-                special=''
-            if college=="-1":
-                college=''
-            if conclude_year == "-1":
-                conclude_year=''
-            q0=(application_status and Q(project_status__status__gte=application_first_status,project_status__status__lte=application_last_status)) or None
-            q1=(status and Q(project_status__status__gte=first_status,project_status__lte=last_status)) or None
-            q2=(application_year and Q(application_year=application_year)) or None
-            q3=(approval_year and Q(approval_year=approval_year)) or None
-            q4=(special and Q(project_special=special)) or None
-            q5=(college and Q(teacher__college=college)) or None
-            q7=(conclude_year and Q(conclude_year=conclude_year)) or None
-            if other_search:
-                sqlstr=other_search
-                q6_1=Q(project_code__contains=sqlstr)
-                q6_2=Q(project_application_code__contains=sqlstr)
-                q6_3=Q(title__contains=sqlstr)
-                q6_4=Q(teacher__teacherinfosetting__name__contains=sqlstr)
-                q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3,q6_4])
-            else:
-                q6=None
-            qset=filter(lambda x:x!=None,[q0,q1,q2,q3,q4,q5,q6,q7])
-            if qset:
-                qset=reduce(lambda x,y: x&y ,qset)
-                pro_list=ProjectSingle.objects.filter(qset)
-            else:
-                pro_list=ProjectSingle.objects.all()
-            return pro_list
+def get_project_list(request):
+    identity = request.session.get('auth_role', "")
+    if identity == ADMINSTAFF_USER:
+        pro_list = ProjectSingle.objects.all()
+    elif identity == SCHOOL_USER:
+        specials = Special.objects.filter(school_user__userid = request.user)
+        qset = reduce(lambda x,y:x&y,[Q(project_special = _special) for _special in specials])
+        loginfo(qset)
+        pro_list = ProjectSingle.objects.filter(qset)
+    elif identity == COLLEGE_USER:
+        colleges = College.objects.filter(college_user__userid = request.usr)
+    elif identity == TEACHER_USER:
+        pro_list = ProjectSingle.objects.filter(teacher__userid = request.user)
+    elif identity == EXPERT_USER:
+        pro_list = ProjectSingle.objects.all()
+    return pro_list
+def get_search_data(request,schedule_form):
+    if schedule_form.is_valid():
+        application_status=schedule_form.cleaned_data['application_status']
+        status=schedule_form.cleaned_data['status']
+        application_year= schedule_form.cleaned_data['application_year']
+        approval_year=schedule_form.cleaned_data['approval_year']
+        special=schedule_form.cleaned_data['special']
+        college=schedule_form.cleaned_data['college']
+        conclude_year = schedule_form.cleaned_data['conclude_year']
+        other_search=schedule_form.cleaned_data['other_search']
+        if application_status=="-1":
+            application_status=''
+        elif application_status:
+            (application_first_status,application_last_status)=get_query_application_status(application_status)
+        if status=="-1":
+            status=''
+        elif status:
+            (first_status,last_status)=get_query_status(status)
+        if application_year=="-1":
+            application_year=''
+        if approval_year=="-1":
+            approval_year=''
+        if special=="-1":
+            special=''
+        if college=="-1":
+            college=''
+        if conclude_year == "-1":
+            conclude_year=''
+        q0=(application_status and Q(project_status__status__gte=application_first_status,project_status__status__lte=application_last_status)) or None
+        q1=(status and Q(project_status__status__gte=first_status,project_status__lte=last_status)) or None
+        q2=(application_year and Q(application_year=application_year)) or None
+        q3=(approval_year and Q(approval_year=approval_year)) or None
+        q4=(special and Q(project_special=special)) or None
+        q5=(college and Q(teacher__college=college)) or None
+        q7=(conclude_year and Q(conclude_year=conclude_year)) or None
+        if other_search:
+            sqlstr=other_search
+            q6_1=Q(project_code__contains=sqlstr)
+            q6_2=Q(project_application_code__contains=sqlstr)
+            q6_3=Q(title__contains=sqlstr)
+            q6_4=Q(teacher__teacherinfosetting__name__contains=sqlstr)
+            q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3,q6_4])
+        else:
+            q6=None
+        qset=filter(lambda x:x!=None,[q0,q1,q2,q3,q4,q5,q6,q7])
+        if qset:
+            qset=reduce(lambda x,y: x&y ,qset)
+            pro_list=get_project_list(request).filter(qset)
+        else:
+            pro_list=get_project_list(request).all()
+        return pro_list
 
 
 def finalReportViewWork(request,pid,is_submited,redirect=False):
