@@ -256,7 +256,7 @@ def refresh_user_table(request,identity):
 
 @dajaxice_register
 def infoExport(request,eid):
-    proj_set = ProjectSingle.objects.filter(title = "电子竞技")
+    proj_set = ProjectSingle.objects.all()
     path = get_xls_path(request,eid,proj_set,"优秀人才")
     ret = {'path':path}
     return simplejson.dumps(ret)

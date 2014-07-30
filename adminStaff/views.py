@@ -167,5 +167,7 @@ def infoModifyView(request):
 @login_required
 @authority_required(ADMINSTAFF_USER)
 def infoExportView(request):
-    context = {}
+    context = {
+		'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
+	}
     return render(request, "adminStaff/infoexport.html", context)
