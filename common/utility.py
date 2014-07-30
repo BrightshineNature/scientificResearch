@@ -8,26 +8,131 @@ from teacher.models import TeacherInfoSetting
 from adminStaff.models import ProjectSingle,Re_Project_Expert
 from common.utils import getScoreTable
 from settings import TMP_FILES_PATH,MEDIA_URL
-from const import EXPERT_NUM
+from const import EXPERT_NUM,EXCELTYPE_DICT_OBJECT
 
 def get_xls_path(request,exceltype,proj_set,specialtype=""):
     """
-        exceltype = info_collection info_basesummary_preview info_humanity_preview              
-                    info_importantproject_preivew info_laboratory_preview
+        exceltype = EXCELTYPE_DICT 导出表类型
+        proj_set 筛选出导出的项目集
+        specialtype 基本科研业务经费科研专题项目的
     """
 
     loginfo(p=proj_set,label="get_xls_path")
-    if exceltype == "info_collection":
+    EXCELTYPE_DICT = EXCELTYPE_DICT_OBJECT()
+    if exceltype == EXCELTYPE_DICT.INFO_COLLECTION:
         file_path = xls_info_collection(request,proj_set)
-    elif exceltype == "info_basesummary_preview":
+    elif exceltype == EXCELTYPE_DICT.INFO_BASESUMMARY_PREVIEW:
         file_path = xls_info_basesummary_preview(request,proj_set,specialtype)
-    elif exceltype == "info_humanity_preview":
+    elif exceltype == EXCELTYPE_DICT.INFO_HUMANITY_PREVIEW:
         file_path = xls_info_humanity_preview(request,proj_set)
-    elif exceltype == "info_importantproject_preivew":
+    elif exceltype == EXCELTYPE_DICT.INFO_IMPORTANTPROJECT_PREVIEW:
         file_path = xls_info_importantproject_preivew(request,proj_set)
-    elif exceltype == "info_laboratory_preview":
-        file_path = xls_info_laboratory_preview(request,proj_set) 
+    elif exceltype == EXCELTYPE_DICT.INFO_LABORATORY_PREVIEW:
+        file_path = xls_info_laboratory_preview(request,proj_set)
+    elif exceltype == EXCELTYPE_DICT.INFO_FUNDSUMMARY:
+        file_path = xls_info_fundsummay(request,proj_set)
+    else:
+        file_path = xls_info_fundbudget(request,proj_set)
     return MEDIA_URL + "tmp" + file_path[len(TMP_FILES_PATH):]
+
+def xls_info_fundbudget_gen():
+    workbook = xlwt.Workbook(encoding='utf-8')
+    worksheet = workbook.add_sheet('sheet1')
+    style = cell_style(horizontal=True,vertical=True)
+    # generate header
+    worksheet.write_merge(0, 0, 0, 10, '项目预算支出总和表',style)
+
+    # generate body
+    worksheet.write_merge(1, 1, 0, 0, '项目编号')
+    worksheet.col(1).width = len('项目编号') * 400
+    worksheet.write_merge(1, 1, 1, 1, '项目名称')
+    worksheet.col(0).width = len('项目名称') * 800
+    worksheet.write_merge(1, 1, 2, 2, '项目负责人')
+    worksheet.write_merge(1, 1, 3, 3, '学院')
+    worksheet.write_merge(1, 1, 4, 4, '立项年度')
+    worksheet.write_merge(1, 1, 5, 5, '专题类型')
+    worksheet.write_merge(1, 1, 6, 6, '项目状态')
+    worksheet.write_merge(1, 1, 7, 7, '支出总和')
+
+    return worksheet, workbook
+
+def xls_info_fundbudget(request,proj_set):
+    """
+    """
+
+    xls_obj, workbook = xls_info_fundbudget_gen()
+
+    _number= 1
+    for proj_obj in proj_set:
+        teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
+        manager = teacher.teacherinfosetting
+        loginfo(p=manager,label="manager")
+        row = 1 + _number
+        xls_obj.write(row, 0, unicode(proj_obj.project_code)) 
+        xls_obj.write(row, 1, unicode(proj_obj.title)) 
+        xls_obj.write(row, 2, unicode(manager.name)) 
+        xls_obj.write(row, 3, unicode(proj_obj.teacher.college)) 
+        xls_obj.write(row, 4, unicode(proj_obj.approval_year))
+        xls_obj.write(row, 5, unicode(proj_obj.project_special))  
+        xls_obj.write(row, 6, unicode(proj_obj.project_status)) 
+        xls_obj.write(row, 7, unicode(proj_obj.projectfundsummary.total_expenditure))
+
+        _number+= 1
+    # write xls file
+    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学项目预算支出总和表"))
+    workbook.save(save_path)
+    return save_path
+
+
+def xls_info_fundsummay_gen():
+    workbook = xlwt.Workbook(encoding='utf-8')
+    worksheet = workbook.add_sheet('sheet1')
+    style = cell_style(horizontal=True,vertical=True)
+    # generate header
+    worksheet.write_merge(0, 0, 0, 10, '项目预算金额总和表',style)
+
+    # generate body
+    worksheet.write_merge(1, 1, 0, 0, '项目编号')
+    worksheet.col(1).width = len('项目编号') * 400
+    worksheet.write_merge(1, 1, 1, 1, '项目名称')
+    worksheet.col(0).width = len('项目名称') * 800
+    worksheet.write_merge(1, 1, 2, 2, '项目负责人')
+    worksheet.write_merge(1, 1, 3, 3, '学院')
+    worksheet.write_merge(1, 1, 4, 4, '立项年度')
+    worksheet.write_merge(1, 1, 5, 5, '专题类型')
+    worksheet.write_merge(1, 1, 6, 6, '项目状态')
+    worksheet.write_merge(1, 1, 7, 7, '金额总和')
+
+    return worksheet, workbook
+
+def xls_info_fundsummay(request,proj_set):
+    """
+    """
+
+    xls_obj, workbook = xls_info_fundsummay_gen()
+
+    _number= 1
+    for proj_obj in proj_set:
+        teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
+        manager = teacher.teacherinfosetting
+        loginfo(p=manager,label="manager")
+        row = 1 + _number
+        xls_obj.write(row, 0, unicode(proj_obj.project_code)) 
+        xls_obj.write(row, 1, unicode(proj_obj.title)) 
+        xls_obj.write(row, 2, unicode(manager.name)) 
+        xls_obj.write(row, 3, unicode(proj_obj.teacher.college)) 
+        xls_obj.write(row, 4, unicode(proj_obj.approval_year))
+        xls_obj.write(row, 5, unicode(proj_obj.project_special))  
+        xls_obj.write(row, 6, unicode(proj_obj.project_status)) 
+        xls_obj.write(row, 7, unicode(proj_obj.projectfundsummary.total_budget))
+
+        _number+= 1
+    # write xls file
+    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学项目预算金额总和表"))
+    workbook.save(save_path)
+    return save_path
+
+
 
 def xls_info_laboratory_preview_gen(request):
     workbook = xlwt.Workbook(encoding='utf-8')
@@ -226,13 +331,6 @@ def xls_info_humanity_preview(request,proj_set,specialtype=""):
     workbook.save(save_path)
     return save_path
 
-def delete_max_and_min(score_list):
-    max_score = max(score_list)
-    min_score = min(score_list)
-    score_list.remove(max_score)
-    score_list.remove(min_score)
-    return score_list
-
 def xls_info_basesummary_preview_gen(request,specialtype):
     workbook = xlwt.Workbook(encoding='utf-8')
     worksheet = workbook.add_sheet('sheet1')
@@ -378,4 +476,14 @@ def average(score_list):
 
 def set_float(num):
     return float('%.2f' % num)
+
+def delete_max_and_min(score_list):
+    """
+        删除最高分和最低分
+    """
+    max_score = max(score_list)
+    min_score = min(score_list)
+    score_list.remove(max_score)
+    score_list.remove(min_score)
+    return score_list
 
