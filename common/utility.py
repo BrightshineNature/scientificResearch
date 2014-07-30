@@ -10,13 +10,16 @@ from common.utils import getScoreTable
 from settings import TMP_FILES_PATH,MEDIA_URL
 from const import EXPERT_NUM
 
-def get_xls_path(request,exceltype):
-    proj_set = ProjectSingle.objects.filter(title = u"电子竞技")
+def get_xls_path(request,exceltype,proj_set,specialtype=""):
+    """
+        exceltype = info_collection info_basesummary_preview info_humanity_preview              
+                    info_importantproject_preivew info_laboratory_preview
+    """
+
     loginfo(p=proj_set,label="get_xls_path")
     if exceltype == "info_collection":
         file_path = xls_info_collection(request,proj_set)
     elif exceltype == "info_basesummary_preview":
-        specialtype = ""
         file_path = xls_info_basesummary_preview(request,proj_set,specialtype)
     elif exceltype == "info_humanity_preview":
         file_path = xls_info_humanity_preview(request,proj_set)
@@ -43,6 +46,7 @@ def xls_info_laboratory_preview_gen(request):
         worksheet.write_merge(1,1,4+add_col,4+add_col,'专家'+str(i + 1))
     worksheet.write_merge(1, 1, 4 + EXPERT_NUM, 4 + EXPERT_NUM, '平均分1')
     worksheet.write_merge(1, 1, 5 + EXPERT_NUM, 5 + EXPERT_NUM, '平均分2')
+    worksheet.write_merge(1, 1, 6 + EXPERT_NUM, 6 + EXPERT_NUM, '平均分3')
 
 
     return worksheet, workbook
@@ -54,13 +58,14 @@ def xls_info_laboratory_preview(request,proj_set,specialtype=""):
     xls_obj, workbook = xls_info_laboratory_preview_gen(request)
 
     _number= 1
+    index = 1
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         re_project_expert_list = Re_Project_Expert.objects.filter(project_id = proj_obj)
         
         row = 1 + _number
-        xls_obj.write(row, 0, unicode(_number)) 
+        xls_obj.write(row, 0, unicode(index)) 
         xls_obj.write(row, 1, unicode(proj_obj.title)) 
         xls_obj.write(row, 2, unicode(manager.name))
         xls_obj.write(row, 3, unicode(proj_obj.projectfundsummary.total_budget))
@@ -68,20 +73,23 @@ def xls_info_laboratory_preview(request,proj_set,specialtype=""):
         score_list = []
         average_score_1 = 0
         average_score_2 = 0
+        average_score_3 = 0
         for re_expert_temp in re_project_expert_list:
             score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
             xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
             score_list.append(score_table.get_total_score())
             i += 1
-        average_score_1 = sum(score_list)/len(score_list)
+        average_score_1 = average(score_list)
         if (len(score_list) > 4):
             score_list=delete_max_and_min(score_list)
+            average_score_2 = average(score_list)
             score_list=delete_max_and_min(score_list)
-            average_score_2 = sum(score_list)/len(score_list)
+            average_score_3 = average(score_list)
         xls_obj.write(row, 4+EXPERT_NUM,unicode(average_score_1))
         xls_obj.write(row, 5+EXPERT_NUM,unicode(average_score_2))
-
+        xls_obj.write(row, 6+EXPERT_NUM,unicode(average_score_3))
         _number+= 1
+        index += 1
 
     # write xls file
     save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年度大连理工大学基本科研业务费重点实验室科研专题项目申请评审结果汇总表"))
@@ -106,7 +114,7 @@ def xls_info_importantproject_preivew_gen(request):
         worksheet.write_merge(1,1,4+add_col,4+add_col,'专家'+str(i + 1))
     worksheet.write_merge(1, 1, 4 + EXPERT_NUM, 4 + EXPERT_NUM, '平均分1')
     worksheet.write_merge(1, 1, 5 + EXPERT_NUM, 5 + EXPERT_NUM, '平均分2')
-
+    worksheet.write_merge(1, 1, 6 + EXPERT_NUM, 6 + EXPERT_NUM, '平均分3')
 
     return worksheet, workbook
 
@@ -117,13 +125,14 @@ def xls_info_importantproject_preivew(request,proj_set,specialtype=""):
     xls_obj, workbook = xls_info_importantproject_preivew_gen(request)
 
     _number= 1
+    index = 1 
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         re_project_expert_list = Re_Project_Expert.objects.filter(project_id = proj_obj)
         
         row = 1 + _number
-        xls_obj.write(row, 0, unicode(_number)) 
+        xls_obj.write(row, 0, unicode(index)) 
         xls_obj.write(row, 1, unicode(proj_obj.title)) 
         xls_obj.write(row, 2, unicode(manager.name))
         xls_obj.write(row, 3, unicode(proj_obj.projectfundsummary.total_budget))
@@ -131,23 +140,26 @@ def xls_info_importantproject_preivew(request,proj_set,specialtype=""):
         score_list = []
         average_score_1 = 0
         average_score_2 = 0
+        average_score_3 = 0
         for re_expert_temp in re_project_expert_list:
             score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
             xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
             score_list.append(score_table.get_total_score())
             i += 1
-        average_score_1 = sum(score_list)/len(score_list)
+        average_score_1 = average(score_list)
         if (len(score_list) > 4):
             score_list=delete_max_and_min(score_list)
+            average_score_2 = average(score_list)
             score_list=delete_max_and_min(score_list)
-            average_score_2 = sum(score_list)/len(score_list)
+            average_score_3 = average(score_list)
         xls_obj.write(row, 4+EXPERT_NUM,unicode(average_score_1))
         xls_obj.write(row, 5+EXPERT_NUM,unicode(average_score_2))
+        xls_obj.write(row, 6+EXPERT_NUM,unicode(average_score_3))
 
         _number+= 1
-
+        index += 1
     # write xls file
-    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费人文社科科研专题项目申请评审结果汇总表"))
+    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费重大项目培育科研专题项目申请评审结果汇总表"))
     workbook.save(save_path)
     return save_path
 
@@ -180,13 +192,14 @@ def xls_info_humanity_preview(request,proj_set,specialtype=""):
     xls_obj, workbook = xls_info_humanity_preview_gen(request)
 
     _number= 1
+    index = 1
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         re_project_expert_list = Re_Project_Expert.objects.filter(project_id = proj_obj)
         
         row = 1 + _number
-        xls_obj.write(row, 0, unicode(_number)) 
+        xls_obj.write(row, 0, unicode(index)) 
         xls_obj.write(row, 1, unicode(proj_obj.title)) 
         xls_obj.write(row, 2, unicode(manager.name))
         xls_obj.write(row, 3, unicode(proj_obj.projectfundsummary.total_budget))
@@ -199,15 +212,15 @@ def xls_info_humanity_preview(request,proj_set,specialtype=""):
             xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
             score_list.append(score_table.get_total_score())
             i += 1
-        average_score_1 = sum(score_list)/len(score_list)
+        average_score_1 = average(score_list) 
         if (len(score_list) > 2):
             delete_max_and_min(score_list)
-            average_score_2 = sum(score_list)/len(score_list)
+            average_score_2 = average(score_list)
         xls_obj.write(row, 4+EXPERT_NUM,unicode(average_score_1))
         xls_obj.write(row, 5+EXPERT_NUM,unicode(average_score_2))
 
         _number+= 1
-
+        index += 1
     # write xls file
     save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费人文社科科研专题项目申请评审结果汇总表"))
     workbook.save(save_path)
@@ -245,13 +258,14 @@ def xls_info_basesummary_preview(request,proj_set,specialtype=""):
     xls_obj, workbook = xls_info_basesummary_preview_gen(request,specialtype)
 
     _number= 2
+    index = 1
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         re_project_expert_list = Re_Project_Expert.objects.filter(project_id = proj_obj)
         
         row = 1 + _number
-        xls_obj.write(row, 0, unicode(_number)) 
+        xls_obj.write(row, 0, unicode(index)) 
         xls_obj.write(row, 1, unicode(proj_obj.title)) 
         xls_obj.write(row, 2, unicode(manager.name))
         i = 0
@@ -262,6 +276,7 @@ def xls_info_basesummary_preview(request,proj_set,specialtype=""):
 
             i += 1
         _number+= 1
+        index += 1
 
     # write xls file
     save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务经费科研专题项目结题验收评审结果汇总表"))
@@ -357,4 +372,10 @@ def cell_style(horizontal,vertical):
     style.alignment = alignment # Add Alignment to Style
     return style
 
+def average(score_list):
+   average_score = set_float(sum(score_list))/len(score_list)
+   return set_float(average_score)
+
+def set_float(num):
+    return float('%.2f' % num)
 
