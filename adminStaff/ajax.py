@@ -1,12 +1,13 @@
 # coding: UTF-8
 import os, sys,pickle
+import time
 from django.shortcuts import get_object_or_404
 from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
 from django.utils import simplejson
 from django.template.loader import render_to_string
-
+from common.utility import get_xls_path
 from const import *
 from users.models import Special,ExpertProfile,TeacherProfile,SchoolProfile,CollegeProfile
 from adminStaff.models import ProjectSingle
@@ -16,13 +17,14 @@ from adminStaff.forms import TemplateNoticeMessageForm,DispatchForm,DispatchAddC
 from django.utils import simplejson
 from django.template.loader import render_to_string
 from dajaxice.utils import deserialize_form
-from adminStaff.models import TemplateNoticeMessage
+from adminStaff.models import TemplateNoticeMessage,ProjectSingle
 from backend.logging import loginfo
 
 from users.models import SchoolProfile,CollegeProfile,Special,College
 from teacher.models import TeacherInfoSetting
 from backend.logging import logger
 from   adminStaff.forms      import ObjectForm
+
 def getObject(object):
     if object == "special":
         return Special
@@ -247,6 +249,12 @@ def refresh_user_table(request,identity):
                             {"users":users})
 
 @dajaxice_register
+def infoExport(request,eid):
+    path = get_xls_path(request,eid)
+    ret = {'path':path}
+    return simplejson.dumps(ret)
+
+@dajaxice_register
 def getTeacherInfo(request, name):
     message = ""
     setting_list = TeacherInfoSetting.objects.filter(name = name)
@@ -278,7 +286,7 @@ def change_project_unique_code(request, project_id,project_unique_code):
     try:
         if ProjectSingle.objects.filter(project_code = project_unique_code).count():
             raise
-        project_obj.project_unique_code = project_unique_code
+        project_obj.project_code = project_unique_code
         project_obj.save()
         # if len(project_unique_code.strip()) == 0:
         #     project_unique_code = "无"

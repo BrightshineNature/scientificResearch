@@ -210,6 +210,7 @@ def fileUploadManage(request, pid):
 
 
 def scheduleManage(request, userauth):
+    loginfo(userauth["role"])
     context = schedule_form_data(request, userauth)
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
@@ -278,7 +279,7 @@ def get_search_data(schedule_form):
             q2=(application_year and Q(application_year=application_year)) or None
             q3=(approval_year and Q(approval_year=approval_year)) or None
             q4=(special and Q(project_special=special)) or None
-            q5=(college and Q(school=college)) or None
+            q5=(college and Q(teacher__college=college)) or None
             if other_search:
                 sqlstr=other_search
                 q6_1=Q(project_code__contains=sqlstr)

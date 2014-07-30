@@ -1,0 +1,33 @@
+<div class="well form">
+    <div class="row">
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-primary btn-lg btn-block" eid = "info_collection" name="btn_export">教育部项目信息采集填报表</button>
+            <br>
+            <button type="button" class="btn btn-primary btn-lg btn-block" eid = "info_basesummary_preview" name="btn_export">基本科研业务经费科研专题项目结题验收评审结果汇总表</button>
+            <br>
+            <button type="button" class="btn btn-primary btn-lg btn-block" eid = "info_humanity_preview" name="btn_export">人文社科科研专题项目申请评审结果汇总表</button>
+        </div>
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-primary btn-lg btn-block" eid = "info_importantproject_preivew" name="btn_export">重大项目培育科研专题项目申请评审结果汇总表</button>
+            <br>
+            <button type="button" class="btn btn-primary btn-lg btn-block" eid = "info_laboratory_preview" name="btn_export">重大实验室科研专题项目申请评审结果汇总表</button>
+        </div>
+    </div>
+</div>
+<div class="modal  fade in" id="excelprogress" >
+    <div class="modal-dialog" style="text-align:center;background-color:#f2dede;border: 1px solid #fc6;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" >
+                <img src="{{STATIC_URL}}images/loading.gif" style="width:100px;height:100px;">
+                <h4>正在生成统计表请耐心等待</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel_change">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="{{STATIC_URL}}js/infoexport/info_export.js"></script>

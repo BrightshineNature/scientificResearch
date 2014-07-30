@@ -2,8 +2,9 @@
 
 from django import forms
 from const import *
-from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice
+from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice,get_conclude_year_choices
 from common.models import ProjectMember, BasisContent, BaseCondition
+from users.models import Special,College
 class ScheduleBaseForm(forms.Form):
     status_choices = get_status_choice()
     application_status_choice =get_application_status_choice()
@@ -13,40 +14,34 @@ class ScheduleBaseForm(forms.Form):
     status =forms. ChoiceField(choices=status_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control', 
-            
             }),
         )
     application_status =forms. ChoiceField(choices=application_status_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control', 
-            
             }),
         )
-    
     application_year_choices = get_application_year_choice()
     application_year = forms.ChoiceField(choices =  application_year_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control' ,
-            
             }),)
     approval_year_choices = get_approval_year_choice()
     approval_year = forms.ChoiceField(choices =  approval_year_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control' ,
-            
             }),)
-
-
-    
-
-    special_choices = (('-1', '专题类型'), ('0', '理科'), ('1', '文科'))
+    conclude_year_choices=get_conclude_year_choices()
+    conclude_year = forms.ChoiceField(choices =  conclude_year_choices,required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control' ,
+            }),)
+    special_choices=tuple([("-1",u"专题类型")]+[(item.id,item.name) for item in Special.objects.all()])
     special = forms.ChoiceField(choices= special_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control ',
-            
             }),)
-
-    college_choices = (('-1', '学院'), ('0', '计算机'), ('1', '管经'))
+    college_choices =tuple ([('-1', '学院')]+ [(item.id,item.name)for item in College.objects.all()])
     college = forms.ChoiceField(choices = college_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control',
@@ -68,20 +63,17 @@ class ProjectJudgeForm(forms.Form):
     judgeresult =forms.ChoiceField(choices=result_choices,required=True,
         widget=forms.Select(attrs={
             'class':'form-control', 
-            
             }),
         )
     application_choice=((u"网上申请不合格",u"网上申请不合格"),(u"申报书不合格",u"申报书不合格"))
     application=forms.MultipleChoiceField(choices=application_choice,required=False,
                                           widget=forms.CheckboxSelectMultiple())
-   
     final_choice=((u"网上提交不合格",u"网上提交不合格"),(u"结题书不合格",u"结题书不合格"))
     final=forms.MultipleChoiceField(choices=final_choice,required=False,widget=forms.CheckboxSelectMultiple())
     reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
 from users.models import SchoolProfile
 from adminStaff.models import ProjectSingle
 class NoticeForm(forms.Form):
-    
     mail_content=forms.CharField(required=True,widget=forms.Textarea(attrs={'class':'form-control','row':'6'}))
     mail_title=forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control'}))
     special=forms.BooleanField(required=False)

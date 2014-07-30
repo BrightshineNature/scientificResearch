@@ -41,7 +41,7 @@ class ProjectSingle(models.Model):
     except:
         default_status = 1
     project_status=models.ForeignKey(ProjectStatus,blank=False,default=default_status,verbose_name=u"项目状态")
-    project_sendback_status = models.ForeignKey(ProjectStatus,blank=True,null=True,default=None,verbose_name=u"项目退回状态")
+    project_sendback_status = models.ForeignKey(ProjectStatus,verbose_name=u"项目退回状态",blank=True,null=True,default=None)
     # expert = models.ManyToManyField(ExpertProfile, through='Re_Project_Expert')
 
     project_special = models.ForeignKey(Special, verbose_name=u"专题类型", blank=True, null=True, default=None)
@@ -53,7 +53,7 @@ class ProjectSingle(models.Model):
     file_task = models.BooleanField(null=False, default=False,verbose_name=u"任务书")
     file_interimchecklist = models.BooleanField(null=False, default=False,verbose_name=u"进展报告")
     file_summary = models.BooleanField(null=False, default=False,verbose_name=u"结题书")
-    science_type = models.ForeignKey(ScienceActivityType,blank=True,null=True, verbose_name=u'科技活动类型')
+    science_type = models.ForeignKey(ScienceActivityType,verbose_name=u'科技活动类型',blank=True,null=True)
     trade_code = models.CharField(blank=True,null=True,max_length = 20, verbose_name= u'国民行业代码(国标)')
     subject_name = models.CharField(blank=True,null=True,max_length = 20, verbose_name = u'学科名称')
     subject_code = models.CharField(blank=True,null=True,max_length = 20, verbose_name=u'学科代码')

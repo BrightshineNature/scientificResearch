@@ -75,6 +75,12 @@ def get_approval_year_choice():
     for y in year_has:
         year.append((y,y))
     return tuple(year)
+def get_conclude_year_choices():
+    project_group=ProjectSingle.objects.all()
+    year=[("-1",u"结题年度")]
+    year_has=list(set([item.conclude_year for item in project_group]))
+    year=year+[(y,y) for y in year_has]
+    return tuple(year)
 def get_status_choice():
     status_choice=[
         (PROJECT_STATUS_TASK_SCHOOL_OVER,u"任务书审核阶段"),
