@@ -1,6 +1,6 @@
 
 var objects_table_pos;
-$(".saveObjectName").on("click", function(){
+$(document).on("click", ".saveObjectName",function(){
 
   var cnt = $(this).parents("[object]");
   objects_table_pos = cnt.find(".object_table_div")[0];
@@ -10,14 +10,14 @@ $(".saveObjectName").on("click", function(){
 })
 function saveObjectNameCallback(data){
 
-    if(data.status == "1")
+    if(data.status == 1)
     {
       $(objects_table_pos).html(data.objects_table);
-      selectAll();
+      // selectAll();
     }
 }
 
-$(".deleteObjectName").on("click", function(){
+$(document).on("click", ".deleteObjectName", function(){
 
   var cnt = $(this).parents("[object]");
   objects_table_pos = cnt.find(".object_table_div")[0];
@@ -36,13 +36,11 @@ function deleteObjectNameCallback(data) {
   if(data.status == '1')
   {
     $(objects_table_pos).html(data.objects_table);
-    selectAll();
   }
 }
 
-function selectAll(){
 
-$(".all_object_checkbox").on( "click", function(){
+$(document).on( "click", ".all_object_checkbox", function(){
     
     var box = $(this).parent().parent().parent().next().find("input");
     for(var i = 0; i < box.length; ++ i)
@@ -50,7 +48,6 @@ $(".all_object_checkbox").on( "click", function(){
       box[i].checked = this.checked;
     }
 });
-}
 
 function contain(arr, x) {
   for(var i = 0; i < arr.length; ++ i) 
@@ -63,7 +60,6 @@ function contain(arr, x) {
 
 var cnt_user;
 var object_alloc_pos;
-selectAll();
 
 
 function alloc() {
@@ -82,7 +78,7 @@ function alloc() {
     cnt = $(cnt).prev();
     cnt = $(cnt).find(".object_table_div");
     $("#object_modal").find(".modal-body").html($(cnt).html());
-    selectAll();
+    // selectAll();
 
     var p = $(this).parent().parent();
     cnt_user = p.children("td:eq(0)").text();  
@@ -136,7 +132,7 @@ function allocObjectCallback(data){
     alloc();
 
     $(objects_table_pos).html(data.object_table);
-    selectAll();
+    // selectAll();
 
   }
 
