@@ -272,7 +272,7 @@ def schedule_form_data(request , userauth=""):
 
     return context
 def get_search_data(schedule_form):
-     if schedule_form.is_valid():
+    if schedule_form.is_valid():
             application_status=schedule_form.cleaned_data['application_status']
             status=schedule_form.cleaned_data['status']
             application_year= schedule_form.cleaned_data['application_year']
