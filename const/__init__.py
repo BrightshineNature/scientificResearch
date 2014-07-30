@@ -94,8 +94,6 @@ FINAL_REVIEW_CONFIRM="final_review_confirm"
 PROJECT_OVER_CONFIRM="project_over_confirm"
 
 
-
-
 PROJECT_STATUS_CHOICES=(
     (PROJECT_STATUS_APPLY,u"项目申请"),
     (PROJECT_STATUS_APPLICATION_WEB_OVER,u"申请书网上提交"),
@@ -257,3 +255,12 @@ EXPERT_REVIEW_TABLE_CHOICES =(
 )
 
 EXPERT_NUM = 10
+
+FileList={
+    'show_application' : u"基本科研业务费专项项目申请书",
+    'show_task' : u"基本科研业务费专项项目任务书",
+    'show_progress' : u"基本科研业务费专项项目进展报告",
+    'show_summary' : u"基本科研业务费专项项目结题报告",
+    'show_other':u"其他",
+}
+
