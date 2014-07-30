@@ -2,8 +2,9 @@
 
 from django import forms
 from const import *
-from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice
+from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice,get_conclude_year_choices
 from common.models import ProjectMember, BasisContent, BaseCondition
+from users.models import Special,College
 class ScheduleBaseForm(forms.Form):
     status_choices = get_status_choice()
     application_status_choice =get_application_status_choice()
@@ -30,16 +31,17 @@ class ScheduleBaseForm(forms.Form):
         widget=forms.Select(attrs={
             'class':'form-control' ,
             }),)
-    conclude_year = forms.ChoiceField(choices =  application_year_choices,required=False,
+    conclude_year_choices=get_conclude_year_choices()
+    conclude_year = forms.ChoiceField(choices =  conclude_year_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control' ,
             }),)
-    special_choices = (('-1', '专题类型'), ('0', '理科'), ('1', '文科'))
+    special_choices=tuple([("-1",u"专题类型")]+[(item.id,item.name) for item in Special.objects.all()])
     special = forms.ChoiceField(choices= special_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control ',
             }),)
-    college_choices = (('-1', '学院'), ('0', '计算机'), ('1', '管经'))
+    college_choices =tuple ([('-1', '学院')]+ [(item.id,item.name)for item in College.objects.all()])
     college = forms.ChoiceField(choices = college_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control',
