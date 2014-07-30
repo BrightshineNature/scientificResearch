@@ -38,6 +38,7 @@ def addURL(project_list):
                 item.summary_url=UploadFile.objects.filter(project=item,file_type=FileList['file_summary'])[0].file_obj.url
             except:
                 item.file_summary=False
+    return project_list
 def getParam(pro_list, userauth,flag):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
@@ -247,6 +248,7 @@ def schedule_form_data(request , userauth=""):
         default=False
     else:
         pro_list=get_project_list(request)
+        loginfo(pro_list.count())
         default=True
     param=getParam(pro_list,userauth,default)
     context ={ 'schedule_form':schedule_form,
@@ -263,7 +265,7 @@ def get_project_list(request):
         pro_list = ProjectSingle.objects.all()
     elif identity == SCHOOL_USER:
         specials = Special.objects.filter(school_user__userid = request.user)
-        qset = reduce(lambda x,y:x&y,[Q(project_special = _special) for _special in specials])
+        qset = reduce(lambda x,y:x|y,[Q(project_special = _special) for _special in specials])
         loginfo(qset)
         pro_list = ProjectSingle.objects.filter(qset)
     elif identity == COLLEGE_USER:
