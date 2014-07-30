@@ -94,8 +94,6 @@ FINAL_REVIEW_CONFIRM="final_review_confirm"
 PROJECT_OVER_CONFIRM="project_over_confirm"
 
 
-
-
 PROJECT_STATUS_CHOICES=(
     (PROJECT_STATUS_APPLY,u"项目申请"),
     (PROJECT_STATUS_APPLICATION_WEB_OVER,u"申请书网上提交"),

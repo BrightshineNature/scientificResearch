@@ -102,32 +102,95 @@ import time
 #     print f.size
 #     # print f.url
 #     # print f.path
+FileType = [u"基本科研业务费专项项目申请书",
+            u"基本科研业务费专项项目进展报告",
+            u"基本科研业务费专项项目结题报告",
+            u"基本科研业务费专项项目任务书",
+            u"其他", ]
+def getType(fname):
+    for i in FileType:
+        if i == fname.split('.')[0]:
+            return i
+    return FileType[4]
+
+EntranceMapToType= {
+    "application_file":u"基本科研业务费专项项目申请书",
+    "process_file":u"基本科研业务费专项项目进展报告",
+    "final_file":u"基本科研业务费专项项目结题报告",
+    "task_file":u"基本科研业务费专项项目任务书",
+    "other_file":u"其他",
+}
+Entrance = [
+    "application_file",
+    "process_file",
+    "final_file",
+    "task_file",
+    "other_file",
+]
+AcceptedExtension = [
+    'doc', 'docx', 'DOC', 'DOCX',
+]
+def handleFileUpload(request, pid,  entrance):
+
+    f = request.FILES[entrance]
+    print "********CMP::"
+    print f.name
+    print getType(f.name)
+    print entrance
+    print EntranceMapToType[entrance]
+    ftype = getType(f.name) 
+    if(ftype != EntranceMapToType[entrance]):
+        return 0
+    
+    if ftype != FileType[4]:
+        if not AcceptedExtension.count(f.name.split('.')[1]):
+            return 0
+
+    
+    obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
+    if obj :
+        obj = obj[0] # assert only exist one    
+        path = obj.file_obj.path
+        obj.delete()
+        default_storage.delete(path)
+    else :
+        pass
+
+    obj = UploadFile()
+    obj.name = f.name
+    obj.project = ProjectSingle.objects.get(project_id = pid)
+    obj.file_obj = f
+    obj.upload_time = time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
+    obj.file_type = ftype
+    obj.file_size = f.size
+    obj.save()
+    return 1
+
+
 def fileUploadManage(request, pid):
 
     print "fileUploadManage**********"
     
+    error = 0
     if request.method == 'POST':
-        f = request.FILES['file']
-        print "find 'OK:: ' "
-        obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
-        if obj :            
-            obj = obj[0] # assert only exist one    
-            path = obj.file_obj.path
-            obj.delete()
-            default_storage.delete(path)
-            
-                
-        else :
-            pass
+        if request.POST.has_key("fid"):
+            obj = UploadFile.objects.get(id = request.POST['fid'])
+            if obj:
+                path = obj.file_obj.path
+                obj.delete()
+                default_storage.delete(path)
 
-        obj = UploadFile()
-        obj.name = f.name
-        obj.project = ProjectSingle.objects.get(project_id = pid)
-        obj.file_obj = f
-        obj.upload_time = time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
-        obj.file_type = f.name
-        obj.file_size = f.size
-        obj.save()
+
+
+
+
+
+        for i in Entrance:
+            if request.FILES.has_key(i):
+                if not handleFileUpload(request, pid, i):
+                    error = 1
+                
+            
 
     else :
         pass
@@ -140,12 +203,14 @@ def fileUploadManage(request, pid):
 
     context = {
         'files': files,
+        'error': error
     }
     return context
 
 
 
 def scheduleManage(request, userauth):
+    loginfo(userauth["role"])
     context = schedule_form_data(request, userauth)
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
@@ -157,7 +222,6 @@ def financeManage(request, userauth):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
     for item in context.get("not_pass_apply_project_group"):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
-            
     return render(request, userauth['role'] + '/financeProject.html', context)
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
@@ -188,11 +252,11 @@ def get_search_data(schedule_form):
      if schedule_form.is_valid():
             application_status=schedule_form.cleaned_data['application_status']
             status=schedule_form.cleaned_data['status']
-            conclude_year= schedule_form.cleaned_data['conclude_year']
+            application_year= schedule_form.cleaned_data['application_year']
             approval_year=schedule_form.cleaned_data['approval_year']
             special=schedule_form.cleaned_data['special']
             college=schedule_form.cleaned_data['college']
-            _year= schedule_form.cleaned_data['application_year']
+            conclude_year = schedule_form.cleaned_data['conclude_year']
             other_search=schedule_form.cleaned_data['other_search']
             if application_status=="-1":
                 application_status=''
@@ -210,15 +274,15 @@ def get_search_data(schedule_form):
                 special=''
             if college=="-1":
                 college=''
-            if conclude_year=="-1":
+            if conclude_year == "-1":
                 conclude_year=''
             q0=(application_status and Q(project_status__status__gte=application_first_status,project_status__status__lte=application_last_status)) or None
             q1=(status and Q(project_status__status__gte=first_status,project_status__lte=last_status)) or None
             q2=(application_year and Q(application_year=application_year)) or None
             q3=(approval_year and Q(approval_year=approval_year)) or None
             q4=(special and Q(project_special=special)) or None
-            q5=(college and Q(school=college)) or None
-            q7=(conclude_year and Q(conclude_year= conclude_year)) or None
+            q5=(college and Q(teacher__college=college)) or None
+            q7=(conclude_year and Q(conclude_year=conclude_year)) or None
             if other_search:
                 sqlstr=other_search
                 q6_1=Q(project_code__contains=sqlstr)
