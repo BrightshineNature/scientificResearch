@@ -102,32 +102,95 @@ import time
 #     print f.size
 #     # print f.url
 #     # print f.path
+FileType = [u"基本科研业务费专项项目申请书",
+            u"基本科研业务费专项项目进展报告",
+            u"基本科研业务费专项项目结题报告",
+            u"基本科研业务费专项项目任务书",
+            u"其他", ]
+def getType(fname):
+    for i in FileType:
+        if i == fname.split('.')[0]:
+            return i
+    return FileType[4]
+
+EntranceMapToType= {
+    "application_file":u"基本科研业务费专项项目申请书",
+    "process_file":u"基本科研业务费专项项目进展报告",
+    "final_file":u"基本科研业务费专项项目结题报告",
+    "task_file":u"基本科研业务费专项项目任务书",
+    "other_file":u"其他",
+}
+Entrance = [
+    "application_file",
+    "process_file",
+    "final_file",
+    "task_file",
+    "other_file",
+]
+AcceptedExtension = [
+    'doc', 'docx', 'DOC', 'DOCX',
+]
+def handleFileUpload(request, pid,  entrance):
+
+    f = request.FILES[entrance]
+    print "********CMP::"
+    print f.name
+    print getType(f.name)
+    print entrance
+    print EntranceMapToType[entrance]
+    ftype = getType(f.name) 
+    if(ftype != EntranceMapToType[entrance]):
+        return 0
+    
+    if ftype != FileType[4]:
+        if not AcceptedExtension.count(f.name.split('.')[1]):
+            return 0
+
+    
+    obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
+    if obj :
+        obj = obj[0] # assert only exist one    
+        path = obj.file_obj.path
+        obj.delete()
+        default_storage.delete(path)
+    else :
+        pass
+
+    obj = UploadFile()
+    obj.name = f.name
+    obj.project = ProjectSingle.objects.get(project_id = pid)
+    obj.file_obj = f
+    obj.upload_time = time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
+    obj.file_type = ftype
+    obj.file_size = f.size
+    obj.save()
+    return 1
+
+
 def fileUploadManage(request, pid):
 
     print "fileUploadManage**********"
     
+    error = 0
     if request.method == 'POST':
-        f = request.FILES['file']
-        print "find 'OK:: ' "
-        obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
-        if obj :            
-            obj = obj[0] # assert only exist one    
-            path = obj.file_obj.path
-            obj.delete()
-            default_storage.delete(path)
-            
-                
-        else :
-            pass
+        if request.POST.has_key("fid"):
+            obj = UploadFile.objects.get(id = request.POST['fid'])
+            if obj:
+                path = obj.file_obj.path
+                obj.delete()
+                default_storage.delete(path)
 
-        obj = UploadFile()
-        obj.name = f.name
-        obj.project = ProjectSingle.objects.get(project_id = pid)
-        obj.file_obj = f
-        obj.upload_time = time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
-        obj.file_type = f.name
-        obj.file_size = f.size
-        obj.save()
+
+
+
+
+
+        for i in Entrance:
+            if request.FILES.has_key(i):
+                if not handleFileUpload(request, pid, i):
+                    error = 1
+                
+            
 
     else :
         pass
@@ -140,6 +203,7 @@ def fileUploadManage(request, pid):
 
     context = {
         'files': files,
+        'error': error
     }
     return context
 
