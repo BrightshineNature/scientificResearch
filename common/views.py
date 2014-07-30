@@ -115,11 +115,8 @@ def fileUploadManage(request, pid):
             path = obj.file_obj.path
             obj.delete()
             default_storage.delete(path)
-            
-                
         else :
             pass
-
         obj = UploadFile()
         obj.name = f.name
         obj.project = ProjectSingle.objects.get(project_id = pid)
@@ -146,6 +143,7 @@ def fileUploadManage(request, pid):
 
 
 def scheduleManage(request, userauth):
+    loginfo(userauth["role"])
     context = schedule_form_data(request, userauth)
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
@@ -157,7 +155,6 @@ def financeManage(request, userauth):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
     for item in context.get("not_pass_apply_project_group"):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
-            
     return render(request, userauth['role'] + '/financeProject.html', context)
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
@@ -188,11 +185,11 @@ def get_search_data(schedule_form):
      if schedule_form.is_valid():
             application_status=schedule_form.cleaned_data['application_status']
             status=schedule_form.cleaned_data['status']
-            conclude_year= schedule_form.cleaned_data['conclude_year']
+            application_year= schedule_form.cleaned_data['application_year']
             approval_year=schedule_form.cleaned_data['approval_year']
             special=schedule_form.cleaned_data['special']
             college=schedule_form.cleaned_data['college']
-            application_year = schedule_form.cleaned_data['application_year']
+            conclude_year = schedule_form.cleaned_data['conclude_year']
             other_search=schedule_form.cleaned_data['other_search']
             if application_status=="-1":
                 application_status=''
@@ -210,15 +207,15 @@ def get_search_data(schedule_form):
                 special=''
             if college=="-1":
                 college=''
-            if conclude_year=="-1":
+            if conclude_year == "-1":
                 conclude_year=''
             q0=(application_status and Q(project_status__status__gte=application_first_status,project_status__status__lte=application_last_status)) or None
             q1=(status and Q(project_status__status__gte=first_status,project_status__lte=last_status)) or None
             q2=(application_year and Q(application_year=application_year)) or None
             q3=(approval_year and Q(approval_year=approval_year)) or None
             q4=(special and Q(project_special=special)) or None
-            q5=(college and Q(school=college)) or None
-            q7=(conclude_year and Q(conclude_year= conclude_year)) or None
+            q5=(college and Q(teacher__college=college)) or None
+            q7=(conclude_year and Q(conclude_year=conclude_year)) or None
             if other_search:
                 sqlstr=other_search
                 q6_1=Q(project_code__contains=sqlstr)

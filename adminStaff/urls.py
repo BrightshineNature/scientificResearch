@@ -41,5 +41,9 @@ urlpatterns = patterns('',
         r'infoModify$',
         adminStaff_views.infoModifyView,
     ),
+    url(
+        r'infoExport$',
+        adminStaff_views.infoExportView,
+    ),
  )
 urlpatterns += staticfiles_urlpatterns()
