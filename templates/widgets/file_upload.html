@@ -11,7 +11,7 @@
             <td scope="col">大小</td>
             <td scope="col">上传时间</td>
             <td scope="col">下载</td>
-            
+            <td scope= "col"> 删除 </td>            
         </tr>
     </thead>
     <tbody>
@@ -22,6 +22,17 @@
             <td>{{item.file_size}}</td>
             <td>{{item.upload_time}}</td>
             <td><span><a href="{{item.file_obj.url}}" class='btn btn-primary'>下载</a></span> </td>
+
+            <td>
+            {%ifequal item.file_type "其他" %} 
+                <form method="POST"  action="">
+                    {% csrf_token %}
+                    <input type= "hidden" name= "fid" value = "{{item.id}}">
+                    <button type="submit" class="btn btn-success"> 删除</button>
+                </form>
+            {%endifequal%}
+             </td>
+
         </tr>
         {%endfor%}
     </tbody>
@@ -35,6 +46,13 @@
     <h3>文件上传操作</h3>
 </div>
 <!--File upload operator-->
+{%if error%}
+<div class="alert alert-success" >
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <h3><strong>上传文件名不符和要求!</strong></h3>
+
+</div>
+{%endif%}
 
 <div class="row" > 
     <div class="col-lg-4">
@@ -44,9 +62,9 @@
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目申请书”</strong></p>
 
 
-            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="doc,docx" >
+            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="application_file" accept="doc,docx" >
 
-            <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
+            <button type="submit" class="btn btn-success submit_button"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
 
         </form>
     </div>
@@ -56,7 +74,7 @@
             {% csrf_token %}
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目进展报告上传</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目进展报告”</strong></p>
-            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="text/csv/doc/pdf/jpg/png"/ >
+            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="process_file" accept="doc,docx" >
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
         </form>
     </div>
@@ -66,7 +84,7 @@
             {% csrf_token %}
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目结题报告上传</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目结题报告”</strong></p>
-            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="text/csv/doc/pdf/jpg/png"/ >
+            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="final_file" accept="doc,docx" >
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
         </form>
     </div>
@@ -79,7 +97,7 @@
             {% csrf_token %}
             <span class="label label-info col-lg-12"><h4>基本科研业务费专项项目任务书</h4></span>
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目任务书”</strong></p>
-            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="text/csv/doc/pdf/jpg/png"/ >
+            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="task_file" accept="doc,docx" >
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
         </form>
     </div>
@@ -88,7 +106,7 @@
             {% csrf_token %}
             <span class="label label-info col-lg-12"><h4>其他文件上传</h4></span>
             <p class="tip">上传的文件不能命名为<strong>其他四个入口的名称</strong></p>
-            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="text/csv/doc/pdf/jpg/png"/ >
+            <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="other_file" accept="doc,docx" >
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
         </form>
     </div>
@@ -107,3 +125,5 @@
     </ul>
 </div>
 {%endif%}
+
+<script type='text/javascript' src= "{{STATIC_URL}}js/common/file_upload.js"> </script>
