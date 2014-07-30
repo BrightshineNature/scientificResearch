@@ -36,7 +36,7 @@
                     <td>{{item.project_special}}</td>
                     <td>
                         {% if item.file_application%}
-                        <a href="#"><span class="label label-success"> 申报书 </span></a>
+                        <a href={{item.application_year}}><span class="label label-success"> 申报书 </span></a>
                         {% else%}
                         <a href="#"><span class="label label-danger"> 申报书 </span></a>
                         {% endif%}
@@ -84,7 +84,11 @@
                     <td>201s-7-1 </td>
                     <td>{{item.project_special}}</td>
                     <td>
-                        <a href="#"><span class="label label-warning"> 申报书 </span></a>
+                        {% if item.file_application%}
+                        <a href={{item.application_year}}><span class="label label-success"> 申报书 </span></a>
+                        {% else%}
+                        <a href="#"><span class="label label-danger"> 申报书 </span></a>
+                        {% endif%}
                     </td>
                 </tr>
                 {% endfor%}
