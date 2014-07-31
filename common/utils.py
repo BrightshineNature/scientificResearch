@@ -326,7 +326,7 @@ def status_confirm(project, confirm):
         else:
             return False        
     
-    elif project.project_status.status==PROJECT_STATUS_SCHOOL_OVER:
+    elif project.project_status.status==PROJECT_STATUS_TASK_SCHOOL_OVER:
         if confirm==PROGRESS_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
         else:
