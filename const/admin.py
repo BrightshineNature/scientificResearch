@@ -16,6 +16,8 @@ RegisterClass = (
     NewsCategory,
     ScienceActivityType,
     ExpertReview,
+    ExecutivePosition,
+    ProfessionalTitle,
 )
 
 for temp in RegisterClass:

@@ -168,9 +168,9 @@ def statusRollBack(project,userrole,userstatus,form):
                 project.file_application=False
                 project.save()
             elif len(form_list)==1:
-                if form_list[0]=="网上提交不合格":
+                if form_list[0]==u"网上提交不合格":
                     set_status(project,PROJECT_STATUS_APPLY)
-                elif form_list[0]=="申报书不合格":
+                elif form_list[0]==u"申报书不合格":
                     set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
                     project.file_application=False
                     project.save()
@@ -194,9 +194,9 @@ def statusRollBack(project,userrole,userstatus,form):
                     project.file_task=False
                     project.save()
                 elif len(form_list==1):
-                    if form_list[0]=="网上提交不合格":
+                    if form_list[0]==u"网上提交不合格":
                         set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
-                    elif form_list[1]=="结题书不合格":
+                    elif form_list[1]==u"结题书不合格":
                         set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
                         project.file_summary=False;
                         project.save()
@@ -210,14 +210,16 @@ def statusRollBack(project,userrole,userstatus,form):
             return False
     elif userrole=="college":
         form_list=form.getlist("application")
+        print form_list
         if len(form_list)==2:
             set_status(project,PROJECT_STATUS_APPLY)
             project.file_application=False
             project.save()
         elif len(form_list)==1:
-            if form_list[0]=="网上提交不合格":
+            print form_list[0]
+            if form_list[0]==u"网上申请不合格":
                 set_status(project,PROJECT_STATUS_APPLY)
-            elif form_list[0]=="申报书不合格":
+            elif form_list[0]==u"申报书不合格":
                 set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
                 project.file_application=False
                 project.save()
@@ -247,9 +249,10 @@ def status_confirm(project, confirm):
         set_status(project,project.project_status.status+1)
         if project.project_status.status==project.project_sendback_status.status:
             set_status(project,project.project_status.status+1)
-    return True
+            return True
     if project.project_status.status==PROJECT_STATUS_APPLY:
         if confirm==APPLICATION_WEB_CONFIRM:
+            print project.file_application
             if project.file_application==True:
                 set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
             else:
