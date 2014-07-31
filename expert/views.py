@@ -25,7 +25,8 @@ from common.views import finalReportViewWork, appManage
 @csrf.csrf_protect
 @login_required
 @authority_required(EXPERT_USER)
-def homeView(request):
+@check_submit_status(SUBMIT_STATUS_REVIEW)
+def homeView(request, is_submited=False):
     is_first_round = request.GET.get("is_first_round", "1")
     expert = ExpertProfile.objects.get(userid = request.user)
     re_list_1 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)))
@@ -36,10 +37,8 @@ def homeView(request):
     for re_obj in re_list_2:
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
     context = {"is_first_round": is_first_round,}
-    
     re_list_1.sort(key = lambda x: x.score)
     re_list_2.sort(key = lambda x: x.score)
-    
     context.update(getContext(re_list_1, 1, "item", 0))
     context.update(getContext(re_list_2, 1, "item2", 0))
 

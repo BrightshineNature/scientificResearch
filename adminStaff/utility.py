@@ -2,12 +2,14 @@
 
 import os
 from users.models import Special,College
-
+from backend.decorators import check_auth
 def getSpecial(request):
-
-    ret = Special.objects.filter(school_user__userid = request.user)
-
-    return ret
+    specials = []
+    if check_auth(request.user,request.session.get('auth_role', "")):
+        specials = Special.objects.filter(school_user__userid = request.user)
+    request.session.get('auth_role', "")
 def getCollege(request):
-
-    return College.objects.filter(school_user__userid = request.user)
+    colleges = []
+    if check_auth(request.user,request.session.get('auth_role', "")):
+        colleges = College.objects.filter(school_user__userid = request.user)
+    return colleges
