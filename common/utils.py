@@ -255,6 +255,8 @@ def status_confirm(project, confirm):
             print project.file_application
             if project.file_application==True:
                 set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+                if project.project_sendback_status.status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
+                    set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
             else:
                 set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
         elif confirm==APPLICATION_SUBMIT_CONFIRM:
@@ -265,6 +267,8 @@ def status_confirm(project, confirm):
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_WEB_OVER:
         if confirm==APPLICATION_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+            if project.project_sendback_status.status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
+                set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_COMMIT_OVER:
@@ -296,6 +300,8 @@ def status_confirm(project, confirm):
         if confirm==TASK_BUDGET_CONFIRM:
             if project.file_task==True:
                 set_status(project,PROJECT_STATUS_TASK_COMMIT_OVER)
+                if project.project_sendback_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
+                    set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
             else:
                 set_status(project,PROJECT_STATUS_TASK_BUDGET_OVER)
         elif confirm==TASK_SUBMIT_CONFIRM:
@@ -305,6 +311,8 @@ def status_confirm(project, confirm):
     elif project.project_status.status==PROJECT_STATUS_TASK_BUDGET_OVER:
         if confirm==TASK_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_TASK_COMMIT_OVER)
+            if project.project_sendback_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
+                set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_TASK_COMMIT_OVER:
@@ -332,6 +340,8 @@ def status_confirm(project, confirm):
         if confirm==FINAL_WEB_CONFIRM:
             if project.file_summary==TRUE:
                 set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+                if project.project_sendback_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
+                    set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
             else:
                 set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
         elif confirm==FINAL_SUBMIT_CONFIRM:
@@ -341,6 +351,8 @@ def status_confirm(project, confirm):
     elif project.project_status.status==PROJECT_STATUS_FINAL_WEB_OVER:
         if confirm==FINAL_SUBMIT_CONFIRM:
                 set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+                if project.project_sendback_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
+                    set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
         else :
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
