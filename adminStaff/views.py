@@ -171,3 +171,15 @@ def infoExportView(request):
 		'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
 	}
     return render(request, "adminStaff/infoexport.html", context)
+
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
+def finalInfoView(request,pid):
+    project = ProjectSingle.objects.get()
+    context = {
+
+    }
+    return render(request, "adminStaff/finalinfo.html", context)
+

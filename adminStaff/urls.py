@@ -45,5 +45,9 @@ urlpatterns = patterns('',
         r'infoExport$',
         adminStaff_views.infoExportView,
     ),
+    url(
+        r'^finalinfo/(?P<pid>.{36})$',
+        adminStaff_views.finalInfoView,
+    ),
  )
 urlpatterns += staticfiles_urlpatterns()

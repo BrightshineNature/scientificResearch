@@ -1,0 +1,43 @@
+<div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>项目编号</th>
+        <th>项目名称</th>          
+        <th>项目状态</th>
+        <th>科技活动类型</th>                
+        <th>专题类型</th>
+        <th>立项年度</th>
+        <th>详&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp情</th>
+        <th>审核意见</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for project in project_list  %}
+      <tr>
+          <td >{{project.project_code}}</td>
+          <td >{{project.title}}</td>
+          <td >{{project.project_status}}</td>
+          <td >{{project.science_type}}</td>
+          <td >{{project.project_special}}</td>
+          <td >{{project.approval_year}}</td>
+        <td style="min-width:250px;" >
+          <a href="/teacher/fundbudget/{{project.project_id}}" class="btn btn-primary btn-sm">经费预算</a> 
+                <a href="/teacher/final/{{project.project_id}}" class="btn btn-primary btn-sm">结题报告</a>
+          <a href="/teacher/file_upload/{{project.project_id}}" class="btn btn-primary btn-sm">文件上传</a>
+        </td>
+        <td style="color:red">{{project.comment}}</td>
+    </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+<script>
+  $('#myTab a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  })
+$(function () {
+  $('#myTab a:first').tab('show');
+})
+</script>
+</div>
