@@ -154,6 +154,7 @@ def createProject(request, title, special):
     teacher = TeacherProfile.objects.get(userid = request.user)
     createNewProject(teacher, title, special)
     return simplejson.dumps({})
+@dajaxice_register
 def finalReportContent(request,pid,finalsubmitform,is_submited):
     final = FinalSubmit.objects.get( project_id = pid)
     final_form = FinalReportForm(deserialize_form(finalsubmitform),instance=final)
@@ -178,8 +179,18 @@ def refresh_finalsubmit_form(request,final_form,is_submited):
 def finalReportFinish(request,pid):
 
 	project = ProjectSingle.objects.get(project_id = pid)
-	status_confirm(project,FINAL_WEB_CONFIRM)
-	message = u"项目状态变为结题书网上提交"
+	finalsubmit = project.finalsubmit
+	fundsummary = project.projectfundsummary
+	loginfo(p=finalsubmit.project_summary,label="finalsubmit")
+	loginfo(p=fundsummary.total_budget,label="fundbudget")
+	if finalsubmit.project_summary:
+		if fundsummary.total_budget != '0':
+			status_confirm(project,FINAL_WEB_CONFIRM)
+			message = u"项目状态变为结题书网上提交"
+		else:
+			message = u"请完善经费决算表内容"
+	else:
+		message = u"请完善报告正文内容"
 
 	ret = {'message':message,}
 	return simplejson.dumps(ret)

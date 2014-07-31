@@ -120,6 +120,10 @@ def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
             comment= school.department+u"管理员"+school.userid.first_name+u":"
         elif identity == COLLEGE_USER:
             comment= u"学院管理员"+request.user.first_name+u":"
+        elif identity == FINANCE_USER:
+            comment= u"财务管理员"+request.user.first_name+u":"
+        else:
+            comment = u""
         for item in form.getlist('application'):
             comment+=item+u"、"
         for item in form.getlist("final"):

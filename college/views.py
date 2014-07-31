@@ -11,6 +11,7 @@ from backend.decorators import *
 from backend.logging import loginfo
 from const import *
 
+from adminStaff.utility import getCollege
 from common.views import scheduleManage, financialManage,researchConcludingManage
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm

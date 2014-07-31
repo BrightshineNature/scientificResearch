@@ -80,7 +80,7 @@
                         {% ifequal item.project_status.status review%}
                         <button class="btn btn-primary btn-sm" href="#">结题</button>
                         {%else%}
-                        <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" id="judge">审核</button>
+                        <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" name="judge">审核</button>
                         {%endifequal%}
                     </td>
                     {% endifequal%}

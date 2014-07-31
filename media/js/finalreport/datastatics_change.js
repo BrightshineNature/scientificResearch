@@ -68,8 +68,8 @@ function delete_datastatics_callback(data){
 }
 
 $("#datastatics_change_table ").on("click",".btn-success",function(){
-    $(".modal-title").html("修改研究成果信息");
-    $("#save_change").html("确认保存");
+    $(".modal-title").html("修改数据信息");
+    $("#datastatics_save_change").html("确认保存");
     $("#datastatics_profile_info").modal();
     tr=$(this).closest("tr");
     datastaticsid=$(tr).attr("value")

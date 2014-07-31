@@ -167,7 +167,7 @@ def financialView(request):
 @authority_required(TEACHER_USER)
 def finalInfoView(request):
     teacher = TeacherProfile.objects.get(userid = request.user)
-    project_list = ProjectSingle.objects.filter(teacher = teacher)
+    project_list = ProjectSingle.objects.filter(teacher = teacher).filter(project_status__status__gte = PROJECT_STATUS_APPROVAL )
     context = {
 		'project_list':project_list,
     }
