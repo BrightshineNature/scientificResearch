@@ -14,7 +14,7 @@ from backend.utility import getContext
 from const import *
 from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
 
-from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase
+from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase, get_project_list
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm,SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
@@ -72,8 +72,8 @@ def progressReportView(requset):
 @authority_required(SCHOOL_USER)
 def allocView(request):
     expert_list = ExpertProfile.objects.all()
-    unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
-    alloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+    unalloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+    alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
     form = FilterForm(request = request)
     expert_form = FilterForm()
     
@@ -104,8 +104,8 @@ def researchConcludingView(request):
 @authority_required(SCHOOL_USER)
 def finalAllocView(request):
     expert_list = ExpertProfile.objects.all()
-    unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
-    alloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
+    unalloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
+    alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
     form = FilterForm(request = request)
     expert_form = FilterForm()
     

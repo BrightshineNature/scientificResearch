@@ -19,7 +19,7 @@ from backend.logging import loginfo
 from django.conf import settings
 from const import *
 from adminStaff.models import ProjectSingle
-from common.utils import status_confirm
+from common.utils import status_confirm, statusRollBack
 from const.models import ScienceActivityType
 from common.views import schedule_form_data
 from adminStaff.models import ProjectSingle
@@ -115,13 +115,13 @@ def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
             finance_summary.finance_comment=form.get("reason")
             finance_summary.save()
     else:
-    
+        print form.getlist('application')
         comment={
-            "Judger":request.user.last_name,
-            "Article":form.getlist('application').extend(form.getlist("final")),
+            "Judger":request.user.first_name,
+            "Article":form.getlist('application')+form.getlist("final"),
             "description":form["reason"]
         }
-        project.comment=eval(comment)
+        project.comment=str(comment)
         project.save()
         statusRollBack(project,userrole,userstatus,form)
     context=schedule_form_data(request,{
