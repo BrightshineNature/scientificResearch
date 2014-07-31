@@ -168,9 +168,9 @@ def statusRollBack(project,userrole,userstatus,form):
                 project.file_application=False
                 project.save()
             elif len(form_list)==1:
-                if form_list[0]=="网上提交不合格":
+                if form_list[0]==u"网上提交不合格":
                     set_status(project,PROJECT_STATUS_APPLY)
-                elif form_list[0]=="申报书不合格":
+                elif form_list[0]==u"申报书不合格":
                     set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
                     project.file_application=False
                     project.save()
@@ -184,7 +184,7 @@ def statusRollBack(project,userrole,userstatus,form):
                 project.file_task=False
                 project.save()
             elif project.project_status.status==PROJECT_STATUS_PROGRESS_COMMIT_OVER:
-                set_status(project,PROJECT_STATUS_SCHOOL_OVER)
+                set_status(project,PROJECT_STATUS_TASK_SCHOOL_OVER)
                 project.file_interimachecklist=False
                 project.save()
             elif project.project_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
@@ -194,9 +194,9 @@ def statusRollBack(project,userrole,userstatus,form):
                     project.file_task=False
                     project.save()
                 elif len(form_list==1):
-                    if form_list[0]=="网上提交不合格":
+                    if form_list[0]==u"网上提交不合格":
                         set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
-                    elif form_list[1]=="结题书不合格":
+                    elif form_list[1]==u"结题书不合格":
                         set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
                         project.file_summary=False;
                         project.save()
@@ -210,14 +210,16 @@ def statusRollBack(project,userrole,userstatus,form):
             return False
     elif userrole=="college":
         form_list=form.getlist("application")
+        print form_list
         if len(form_list)==2:
             set_status(project,PROJECT_STATUS_APPLY)
             project.file_application=False
             project.save()
         elif len(form_list)==1:
-            if form_list[0]=="网上提交不合格":
+            print form_list[0]
+            if form_list[0]==u"网上申请不合格":
                 set_status(project,PROJECT_STATUS_APPLY)
-            elif form_list[0]=="申报书不合格":
+            elif form_list[0]==u"申报书不合格":
                 set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
                 project.file_application=False
                 project.save()
@@ -247,11 +249,14 @@ def status_confirm(project, confirm):
         set_status(project,project.project_status.status+1)
         if project.project_status.status==project.project_sendback_status.status:
             set_status(project,project.project_status.status+1)
-    return True
+            return True
     if project.project_status.status==PROJECT_STATUS_APPLY:
         if confirm==APPLICATION_WEB_CONFIRM:
+            print project.file_application
             if project.file_application==True:
                 set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+                if project.project_sendback_status.status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
+                    set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
             else:
                 set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
         elif confirm==APPLICATION_SUBMIT_CONFIRM:
@@ -262,6 +267,8 @@ def status_confirm(project, confirm):
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_WEB_OVER:
         if confirm==APPLICATION_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+            if project.project_sendback_status.status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
+                set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_COMMIT_OVER:
@@ -293,6 +300,8 @@ def status_confirm(project, confirm):
         if confirm==TASK_BUDGET_CONFIRM:
             if project.file_task==True:
                 set_status(project,PROJECT_STATUS_TASK_COMMIT_OVER)
+                if project.project_sendback_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
+                    set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
             else:
                 set_status(project,PROJECT_STATUS_TASK_BUDGET_OVER)
         elif confirm==TASK_SUBMIT_CONFIRM:
@@ -302,6 +311,8 @@ def status_confirm(project, confirm):
     elif project.project_status.status==PROJECT_STATUS_TASK_BUDGET_OVER:
         if confirm==TASK_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_TASK_COMMIT_OVER)
+            if project.project_sendback_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
+                set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_TASK_COMMIT_OVER:
@@ -315,7 +326,7 @@ def status_confirm(project, confirm):
         else:
             return False        
     
-    elif project.project_status.status==PROJECT_STATUS_SCHOOL_OVER:
+    elif project.project_status.status==PROJECT_STATUS_TASK_SCHOOL_OVER:
         if confirm==PROGRESS_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
         else:
@@ -330,6 +341,8 @@ def status_confirm(project, confirm):
             loginfo(confirm)
             if project.file_summary==True:
                 set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+                if project.project_sendback_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
+                    set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
             else:
                 set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
         elif confirm==FINAL_SUBMIT_CONFIRM:
@@ -339,6 +352,8 @@ def status_confirm(project, confirm):
     elif project.project_status.status==PROJECT_STATUS_FINAL_WEB_OVER:
         if confirm==FINAL_SUBMIT_CONFIRM:
                 set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+                if project.project_sendback_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
+                    set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
         else :
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:

@@ -221,13 +221,13 @@ def scheduleManage(request, userauth):
     loginfo(userauth["role"])
     context = schedule_form_data(request, userauth)
     context.update({
-        "approve":PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT
+        "approve":PROJECT_STATUS_APPLICATION_REVIEW_OVER
     })
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
     context = schedule_form_data(request , userauth)
     context.update({
-        "review":PROJECT_STATUS_FINAL_EXPERT_SUBJECT
+        "review":PROJECT_STATUS_FINAL_REVIEW_OVER
     })
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financeManage(request, userauth):
@@ -263,6 +263,57 @@ def schedule_form_data(request , userauth=""):
     context.update(param)
 
     return context
+def get_search_data(schedule_form):
+    if schedule_form.is_valid():
+            application_status=schedule_form.cleaned_data['application_status']
+            status=schedule_form.cleaned_data['status']
+            application_year= schedule_form.cleaned_data['application_year']
+            approval_year=schedule_form.cleaned_data['approval_year']
+            special=schedule_form.cleaned_data['special']
+            college=schedule_form.cleaned_data['college']
+            conclude_year = schedule_form.cleaned_data['conclude_year']
+            other_search=schedule_form.cleaned_data['other_search']
+            if application_status=="-1":
+                application_status=''
+            elif application_status:
+                (application_first_status,application_last_status)=get_query_application_status(application_status)
+            if status=="-1":
+                status=''
+            elif status:
+                (first_status,last_status)=get_query_status(status)
+            if application_year=="-1":
+                application_year=''
+            if approval_year=="-1":
+                approval_year=''
+            if special=="-1":
+                special=''
+            if college=="-1":
+                college=''
+            if conclude_year == "-1":
+                conclude_year=''
+            q0=(application_status and Q(project_status__status__gte=application_first_status,project_status__status__lte=application_last_status)) or None
+            q1=(status and Q(project_status__status__gte=first_status,project_status__lte=last_status)) or None
+            q2=(application_year and Q(application_year=application_year)) or None
+            q3=(approval_year and Q(approval_year=approval_year)) or None
+            q4=(special and Q(project_special=special)) or None
+            q5=(college and Q(teacher__college=college)) or None
+            q7=(conclude_year and Q(conclude_year=conclude_year)) or None
+            if other_search:
+                sqlstr=other_search
+                q6_1=Q(project_code__contains=sqlstr)
+                q6_2=Q(project_application_code__contains=sqlstr)
+                q6_3=Q(title__contains=sqlstr)
+                q6_4=Q(teacher__teacherinfosetting__name__contains=sqlstr)
+                q6=reduce(lambda x,y:x|y,[q6_1,q6_2,q6_3,q6_4])
+            else:
+                q6=None
+            qset=filter(lambda x:x!=None,[q0,q1,q2,q3,q4,q5,q6,q7])
+            if qset:
+                qset=reduce(lambda x,y: x&y ,qset)
+                pro_list=ProjectSingle.objects.filter(qset)
+            else:
+                pro_list=ProjectSingle.objects.all()
+            return pro_list
 def get_project_list(request):
     identity = request.session.get('auth_role', "")
     if identity == ADMINSTAFF_USER:
@@ -280,6 +331,8 @@ def get_project_list(request):
     elif identity == TEACHER_USER:
         pro_list = ProjectSingle.objects.filter(teacher__userid = request.user)
     elif identity == EXPERT_USER:
+        pro_list = ProjectSingle.objects.all()
+    else:
         pro_list = ProjectSingle.objects.all()
     return pro_list
 def get_search_data(request,schedule_form):

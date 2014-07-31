@@ -38,6 +38,9 @@ $(document).on("click", "#addNewProjectMember", function(){
     $(member_info_modal).attr("mid", "");
 
     $(member_info_modal).find("h4").text("添加项目成员");
+    
+    $('#project_member_form_error').hide();
+
 
 })
 
@@ -45,11 +48,10 @@ $(document).on("click", "#saveProjectMember", function(){
     var pid = $(this).parents("[pid]").attr("pid");
     var form = $("#project_member_form").serialize();
 
-    
 
     // alert($(""));
     // alert(form);
-    $('#saveProjectMember').modal("toggle");
+    // $('#saveProjectMember').modal("toggle");
     Dajaxice.common.saveProjectMember(saveProjectMemberCallback, {
         'form':form,
         'pid':pid,
@@ -63,18 +65,21 @@ function saveProjectMemberCallback(data){
     // alert(data.project_member_table);
     if(data.status == 1)
     {
+        // alert("OK");
         $('#project_member_table_div').html(data.project_member_table);
         $('#project_member_form_error').hide();
 
         // $('#saveProjectMember').addClass('data-dismiss');
-        $('#saveProjectMember').modal("hide");
+        $('#member_info_modal').attr('data-dismiss', 'modal');
+        $('#member_info_modal').modal("hide");
+
     }
     else if(data.status == 0)
     {
         $('#project_member_form_error').html('您有字段没有被填写。');
         $('#project_member_form_error').show();
 
-        data-dismiss
+        $('#member_info_modal').attr('data-dismiss', '');
     }
 
 }
@@ -192,7 +197,6 @@ $(document).on("click", ".save_button",function(){
     else if($(cnt_content).attr("id") == "basis_content")
     {
         cnt_tab = $(this).parent().parent().prev().children("li:eq(2)");
-        jump();
 
         Dajaxice.common.saveBasisContent(saveBasisContentCallback,{
             'form': $("#basis_content_form").serialize(),
@@ -244,9 +248,34 @@ function saveProjectInfoFormCallback(data)
 
 }
 function saveBasisContentCallback(data) {
+    if(data.status == 1)
+    {
+        jump();    
+        $("#basis_content_form_error").hide();
+    }
+    else if(data.status == 0)
+    {
+        // alert(data.error);
+
+        $("#basis_content_form_error").html("您有字段没有被填写。");
+        $("#basis_content_form_error").show();
+    }
 
 }
 function saveBaseConditionCallback(data){
+
+    if(data.status == 1)
+    {
+        $("#base_condition_form_error").hide();
+    }
+    else if(data.status == 0)
+    {
+        // alert(data.error);
+
+        $("#base_condition_form_error").html("您有字段没有被填写。");
+        $("#base_condition_form_error").show();
+    }
+
 
 }
 

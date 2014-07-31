@@ -2,7 +2,7 @@
 <ul class="nav nav-pills">
     <li class="active"><a href="#not_pass" data-toggle="tab">待处理<span class="badge">{{not_pass_apply_project_group.count}}</span></a>
     </li>
-    <li><a href="#pass" data-toggle="tab">已处理</a>
+    <li><a href="#pass" data-toggle="tab">项目列表</a>
     </li>
 </ul>
 
@@ -36,7 +36,7 @@
                     <td>{{item.project_special}}</td>
                     <td>
                         {% if item.file_application%}
-                        <a href={{item.application_year}}><span class="label label-success"> 申报书 </span></a>
+                        <span class="label label-success"><a href={{item.application_url}}> 申报书 </a></span>
                         {% else%}
                         <a href="#"><span class="label label-danger"> 申报书 </span></a>
                         {% endif%}
@@ -85,7 +85,7 @@
                     <td>{{item.project_special}}</td>
                     <td>
                         {% if item.file_application%}
-                        <a href={{item.application_year}}><span class="label label-success"> 申报书 </span></a>
+                        <span class="label label-success"><a href={{item.application_url}}> 申报书</a></span>
                         {% else%}
                         <a href="#"><span class="label label-danger"> 申报书 </span></a>
                         {% endif%}

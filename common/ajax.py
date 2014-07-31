@@ -19,7 +19,7 @@ from backend.logging import loginfo
 from django.conf import settings
 from const import *
 from adminStaff.models import ProjectSingle
-from common.utils import status_confirm
+from common.utils import status_confirm, statusRollBack
 from const.models import ScienceActivityType
 from common.views import schedule_form_data
 from adminStaff.models import ProjectSingle
@@ -115,13 +115,13 @@ def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
             finance_summary.finance_comment=form.get("reason")
             finance_summary.save()
     else:
-    
+        print form.getlist('application')
         comment={
-            "Judger":request.user.last_name,
-            "Article":form.getlist('application').extend(form.getlist("final")),
+            "Judger":request.user.first_name,
+            "Article":form.getlist('application')+form.getlist("final"),
             "description":form["reason"]
         }
-        project.comment=eval(comment)
+        project.comment=str(comment)
         project.save()
         statusRollBack(project,userrole,userstatus,form)
     context=schedule_form_data(request,{
@@ -236,6 +236,10 @@ def deleteProjectMember(request, mid):
 @dajaxice_register
 def saveBasisContent(request, form, pid, bid):
 
+
+    context = {
+        'status':1,
+    }
     if bid :
         basis_content = BasisContent.objects.get(id = bid)
         form = BasisContentForm(deserialize_form(form), instance = basis_content)
@@ -250,9 +254,8 @@ def saveBasisContent(request, form, pid, bid):
     else:
         print form.errors
         print "error in saveBasisContent"
-    context = {
-        'status':1,
-    }
+        context['status'] = 0
+    
     return simplejson.dumps(context)
 
 @dajaxice_register
