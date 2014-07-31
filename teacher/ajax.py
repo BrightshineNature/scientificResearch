@@ -154,6 +154,7 @@ def createProject(request, title, special):
     teacher = TeacherProfile.objects.get(userid = request.user)
     createNewProject(teacher, title, special)
     return simplejson.dumps({})
+@dajaxice_register
 def finalReportContent(request,pid,finalsubmitform,is_submited):
     final = FinalSubmit.objects.get( project_id = pid)
     final_form = FinalReportForm(deserialize_form(finalsubmitform),instance=final)
