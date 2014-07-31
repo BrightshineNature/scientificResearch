@@ -16,14 +16,16 @@ from const import *
 from common.utils import status_confirm, getScoreTable
 from const.models import ProjectStatus
 from school.forms import ExpertReviewForm
+from common.views import get_project_list
+
 @dajaxice_register
 def getUnallocProjectPagination(request, page, college_id, special_id, path):
     message = ""
     page = int(page)
     if path == FIRST_ROUND_PATH:
-        project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+        project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
     else:
-        project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
+        project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
 
     if college_id != "-1":
         project_list = project_list.filter(teacher__college = college_id)
@@ -39,9 +41,9 @@ def getAllocProjectPagination(request, page, college_id, special_id, path):
     message = ""
     page = int(page)
     if path == FIRST_ROUND_PATH:
-        project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+        project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
     else:
-        project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
+        project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
 
     if college_id != "-1":
         project_list = project_list.filter(teacher__college = college_id)
@@ -82,18 +84,18 @@ def getExpertList(request, id, path):
 @dajaxice_register
 def getProjectList(request, college_id, special_id, path):
     if path == FIRST_ROUND_PATH:
-        alloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+        alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
     else:
-        alloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
+        alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
 
     if college_id != "-1":
         alloc_project_list = alloc_project_list.filter(teacher__college = college_id)
     if special_id != "-1":
         alloc_project_list = alloc_project_list.filter(project_special = special_id)
     if path == FIRST_ROUND_PATH:
-        unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
+        unalloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
     else:
-        unalloc_project_list = ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
+        unalloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_FINAL_SCHOOL_OVER)
     if college_id != "-1":
         unalloc_project_list = unalloc_project_list.filter(teacher__college = college_id)
     if special_id != "-1":
