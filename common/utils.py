@@ -19,6 +19,8 @@ def createNewProject(teacher, title, special):
     project.project_special = Special.objects.get(id = special)
     project.teacher = teacher
     project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLY)
+    project.project_sendback_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLY)
+
     project.application_year = year
     project.save()
 
@@ -125,11 +127,11 @@ def create_Q(start,end):
 def get_qset(userauth):
     if userauth['role']=="school" :
         if userauth['status']=="application":
-            pending=create_QE(PROJECT_STATUS_APPLICATION_COLLEGE_OVER)|create_QE(PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+            pending=create_QE(PROJECT_STATUS_APPLICATION_COLLEGE_OVER)|create_QE(PROJECT_STATUS_APPLICATION_REVIEW_OVER)
             default=create_QE(PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
         else:
-            pending=create_QE(PROJECT_STATUS_TASK_FINANCE_OVER)|create_QE(PROJECT_STATUS_PROGRESS_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_FINANCE_OVER)|create_QE(PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
+            pending=create_QE(PROJECT_STATUS_TASK_FINANCE_OVER)|create_QE(PROJECT_STATUS_PROGRESS_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_FINANCE_OVER)|create_QE(PROJECT_STATUS_FINAL_REVIEW_OVER)
             default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     elif userauth['role']=="college":

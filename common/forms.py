@@ -131,7 +131,7 @@ class ProjectInfoForm(forms.Form):
             'class':'form-control ',            
             'placeholder':u"项目名称"}), )
 
-    science_type_choices = (("-1", "科技活动类型"),) + SCIENCE_ACTIVITY_TYPE_CHOICES
+    science_type_choices = (("-1", "---------"),) + SCIENCE_ACTIVITY_TYPE_CHOICES
     science_type = forms.ChoiceField(
         choices= science_type_choices,
         required = True,
@@ -184,6 +184,18 @@ class ProjectInfoForm(forms.Form):
             attrs={
             'class':'form-control ',
             'placeholder':u"项目类型"}), )
+
+    def clean_science_type(self):
+        i = self.cleaned_data['science_type'] 
+        # print "*" * 100
+        try:        
+            if i == "-1":
+                raise
+        except:
+            raise forms.ValidationError("SB")
+        return i
+
+
 
 
 

@@ -70,16 +70,26 @@ function saveProjectMemberCallback(data){
         $('#project_member_form_error').hide();
 
         // $('#saveProjectMember').addClass('data-dismiss');
-        $('#member_info_modal').attr('data-dismiss', 'modal');
+        // $('#member_info_modal').attr('data-dismiss', 'modal');
         $('#member_info_modal').modal("hide");
 
     }
     else if(data.status == 0)
     {
-        $('#project_member_form_error').html('您有字段没有被填写。');
-        $('#project_member_form_error').show();
+        $('#project_member_form_error').html('<h3>您有字段没有被填写。</h3>');
+        $('#project_member_form_error').hide();
+        $('#project_member_form_error').show(500);
 
-        $('#member_info_modal').attr('data-dismiss', '');
+        var error = data.error.split(",");
+        // alert("SB");
+        // alert(error);
+        for(var i = 0; i < error.length; ++ i)
+        {
+            if(error[i] == "") continue;
+            // cnt = "#id_" + error[i];
+            $(cnt).css("background","red");
+        }
+        // $('#member_info_modal').attr('data-dismiss', '');
     }
 
 }
@@ -240,10 +250,18 @@ function saveProjectInfoFormCallback(data)
     }
     else if(data.status == 0)
     {
-        // alert(data.error);
+        var error = data.error.split(",");
+        alert(error);
+        for(var i = 0; i < error.length; ++ i)
+        {
+            if(error[i] == "") continue;
+            var cnt = $("#id_" + error[i]);            
+            $(cnt).css("background","red");
+        }
 
-        $("#project_info_form_error").html("您有字段没有被填写。");
-        $("#project_info_form_error").show();
+        $("#project_info_form_error").html("<h3>您有字段没有被填写。</h3>");
+        $("#project_info_form_error").hide();
+        $("#project_info_form_error").show(500);
     }
 
 }
@@ -257,7 +275,7 @@ function saveBasisContentCallback(data) {
     {
         // alert(data.error);
 
-        $("#basis_content_form_error").html("您有字段没有被填写。");
+        $("#basis_content_form_error").html("<h3>您有字段没有被填写。</h3>");
         $("#basis_content_form_error").show();
     }
 
@@ -272,7 +290,7 @@ function saveBaseConditionCallback(data){
     {
         // alert(data.error);
 
-        $("#base_condition_form_error").html("您有字段没有被填写。");
+        $("#base_condition_form_error").html("<h3>您有字段没有被填写。</h3>");
         $("#base_condition_form_error").show();
     }
 

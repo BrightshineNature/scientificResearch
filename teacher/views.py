@@ -31,6 +31,7 @@ def appView(request, pid, is_submited = False):
     userauth = {
         'role':"teacher",
     }
+    
     context = appManage(request, pid)
     context['user'] = "teacher"    
     context['is_submited'] = is_submited
@@ -44,7 +45,7 @@ def fileUploadManageView(request, pid, is_submited = False):
 
     context = fileUploadManage(request, pid)
     context['user'] = "teacher"
-    is_submited = False
+    # is_submited = False
     context['is_submited'] = is_submited
     return render(request, "teacher/file_upload.html", context)
 
