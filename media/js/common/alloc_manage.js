@@ -5,15 +5,26 @@ $(document).on("click", ".saveObjectName",function(){
   var cnt = $(this).parents("[object]");
   objects_table_pos = cnt.find(".object_table_div")[0];
 
-  Dajaxice.adminStaff.saveObjectName(saveObjectNameCallback, { 'object': $(cnt[0]).attr('object'), 'form':$(cnt).find('.object_name').serialize(false) });
+  Dajaxice.adminStaff.saveObjectName(saveObjectNameCallback, { 'object': $(cnt[0]).attr('object'), 'form':$(cnt).find('.object_name').serialize() });
 
 })
 function saveObjectNameCallback(data){
 
+    alert("SSF");
+    $("#alert_info_modal").attr("data-dismiss", "modal");
     if(data.status == 1)
     {
       $(objects_table_pos).html(data.objects_table);
-      // selectAll();
+
+      $("#alert_info_modal").find(".modal-body").html("<h3>添加成功！<h3>");
+      $("#alert_info_modal").modal('show');
+
+    }
+    else if(data.status == 0)
+    {
+      alert("SB");
+      $("#alert_info_modal").find(".modal-body").html("<h3>添加不成功！所添加名字为空或者已存在！<h3>");
+      $("#alert_info_modal").modal('show');
     }
 }
 
@@ -33,10 +44,26 @@ $(document).on("click", ".deleteObjectName", function(){
 });
 
 function deleteObjectNameCallback(data) {
-  if(data.status == '1')
-  {
-    $(objects_table_pos).html(data.objects_table);
+  if(data.status == 1)
+  {    
+    $("#alert_info_modal").find(".modal-body").html("<h3>删除成功！<h3>");
+    $("#alert_info_modal").modal('show');
   }
+  else 
+  {
+    var error;
+    if(data.alloced == "")
+    {
+      error = "<h3>删除不成功！没有选定所要删除的项！"
+    }
+    else 
+    {
+      error = "<h3>删除不成功！" + data.alloced + "已被分配到项目中，不可被删除！"
+    }
+    $("#alert_info_modal").find(".modal-body").html(error);
+    $("#alert_info_modal").modal('show');
+  }
+  $(objects_table_pos).html(data.objects_table);
 }
 
 
@@ -62,49 +89,49 @@ var cnt_user;
 var object_alloc_pos;
 
 
-function alloc() {
+// function alloc() {
 
-  $(".object_alloc").on("click", function() {
+$(document).on("click", ".object_alloc", function() {
 
-    var cnt = $(this).parents("[object]")[0]
+  var cnt = $(this).parents("[object]")[0]
 
-    object_alloc_pos = cnt;
-    objects_table_pos = $(cnt).prev().find(".object_table_div");
-    // alert($(objects_table_pos).html())
+  object_alloc_pos = cnt;
+  objects_table_pos = $(cnt).prev().find(".object_table_div");
+  // alert($(objects_table_pos).html())
 
-    $("#object_modal").attr("object", $(cnt).attr('object'));
+  $("#object_modal").attr("object", $(cnt).attr('object'));
 
-    
-    cnt = $(cnt).prev();
-    cnt = $(cnt).find(".object_table_div");
-    $("#object_modal").find(".modal-body").html($(cnt).html());
-    // selectAll();
+  
+  cnt = $(cnt).prev();
+  cnt = $(cnt).find(".object_table_div");
+  $("#object_modal").find(".modal-body").html($(cnt).html());
+  // selectAll();
 
-    var p = $(this).parent().parent();
-    cnt_user = p.children("td:eq(0)").text();  
-    // alert(cnt_user)
+  var p = $(this).parent().parent();
+  cnt_user = p.children("td:eq(0)").text();  
+  // alert(cnt_user)
 
-    $("#object_modal").find("h4").html("当前用户:" + cnt_user )
+  $("#object_modal").find("h4").html("当前用户:" + cnt_user )
 
-    var box = $("#object_modal").find(".object_checkbox");
-    var s = p.children("td:eq(1)").text();
-    s = s.split(',');
-    for(var i = 0; i < box.length; ++ i) 
+  var box = $("#object_modal").find(".object_checkbox");
+  var s = p.children("td:eq(1)").text();
+  s = s.split(',');
+  for(var i = 0; i < box.length; ++ i) 
+  {
+    if(contain(s, box[i].name)) 
     {
-      if(contain(s, box[i].name)) 
-      {
-        box[i].checked = true;
-      }
-      else box[i].checked = false;
+      box[i].checked = true;
     }
+    else box[i].checked = false;
+  }
 
-  });
+});
 
-};
+// };
 
-alloc();
+// alloc();
 
-$("#saveObjectAlloc").on("click",function() 
+$(document).on("click","#saveObjectAlloc", function() 
 {
   var box = $("#object_modal").find(".object_checkbox");
   var cnt = $(this).parents("[object]")[0];
@@ -129,7 +156,7 @@ function allocObjectCallback(data){
   if(data.status == '1')
   {
     $(object_alloc_pos).html(data.object_alloc);
-    alloc();
+    // alloc();
 
     $(objects_table_pos).html(data.object_table);
     // selectAll();

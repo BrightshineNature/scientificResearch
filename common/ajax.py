@@ -192,8 +192,8 @@ def saveProjectInfoForm(request, form, pid):
     return simplejson.dumps(context)
 
 
-def refreshMemberTabel():
-    project_member_list = ProjectMember.objects.all()
+def refreshMemberTabel(pid):
+    project_member_list = ProjectMember.objects.filter(project__project_id= pid)
     return render_to_string( "widgets/project_member_table.html", {
         'project_member_list':project_member_list,
 
@@ -216,7 +216,7 @@ def saveProjectMember(request, form, pid, mid):
         temp.project = ProjectSingle.objects.get(project_id = pid)
         temp.save()
         context['status'] = 1
-        context['project_member_table'] = refreshMemberTabel()
+        context['project_member_table'] = refreshMemberTabel(pid)
     else:
         context['status'] = 0
         print form.errors

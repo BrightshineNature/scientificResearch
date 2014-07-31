@@ -44,6 +44,7 @@ def refreshObjectTable(request, object):
             object_list.append({'name':i.name, 'user':i.college_user, })
 
     instance = {
+        'object_name':object,
         'object_list': object_list
     }
     return render_to_string("adminStaff/widgets/objects_table.html", {'instance': instance})
@@ -60,6 +61,7 @@ def refreshObjectAlloc(request, object):
             if i.school_user:
                 user_special_info[i.school_user].append(i.name)
         instance = {
+            'object_name':object,    
             'object_chinese_name':'专题',
             'user_object_info':user_special_info,
         }
@@ -74,6 +76,7 @@ def refreshObjectAlloc(request, object):
             if i.college_user:
                 user_college_info[i.college_user].append(i.name)
         instance = {
+            'object': object,
             'object_chinese_name':'学院',
             'user_object_info':user_college_info,
         }
@@ -106,6 +109,7 @@ def saveObjectName(request, object, form):
             p = Object(name = form.cleaned_data['name'])
             p.save()
     else :
+        context['status'] = 0
         pass
 
     context['objects_table'] = refreshObjectTable(request, object)
@@ -116,14 +120,50 @@ def saveObjectName(request, object, form):
 def deleteObjectName(request, object, deleted):
 
 
-    Object = getObject(object)
 
-    for i in deleted:
-        cnt = Object.objects.filter(name = i)
-        Object.objects.filter(name = i).delete()
-    return simplejson.dumps({'status':'1' ,
-        'objects_table': refreshObjectTable(request, object)
-        })
+    context = {
+        'status':0 ,
+        'objects_table': None,
+        'object':object,
+        'alloced':"",
+    }
+
+
+    if not deleted: 
+        context['status']  = 0
+    else:
+
+        alloced = "["
+        for i in deleted:
+            if object == "special":
+                cnt = Special.objects.get(name = i)
+                if ProjectSingle.objects.filter(project_special = cnt):
+                    if alloced != "[": alloced += ','
+                    alloced += unicode(cnt.name)
+            else:
+                cnt = College.objects.get(name = i)
+                if ProjectSingle.objects.filter(teacher__college = cnt):
+                    if alloced != "[": alloced += ','
+                    alloced += unicode(cnt.name)
+
+        if alloced != "[":
+            alloced += "]"
+            context['status'] = 0
+            context['alloced'] = alloced
+            # print "***********()()"
+            # print context['alloced']
+        else :
+            context['status'] = 1
+            for i in deleted:
+                if object == "special": 
+                    cnt = Special.objects.filter(name = i)
+                else:
+                    cnt = College.objects.filter(name = i)
+                cnt.delete()
+
+
+    context['objects_table'] = refreshObjectTable(request, object)
+    return simplejson.dumps(context)
 
 @dajaxice_register
 def allocObject(request, object, user, alloced):
