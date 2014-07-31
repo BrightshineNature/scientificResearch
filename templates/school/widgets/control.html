@@ -1,47 +1,57 @@
+<fieldset id= "project_control">
+  <legend>项目控制管理</legend>
+  <input type="button" id="finish_button"   class="btn btn-primary" value="打开申请">
+  <input type="button" id="finish_button"   class="btn btn-warning" value="关闭申请">
+  <br> <br>
+  <input type="button" id="finish_button"   class="btn btn-primary" value="打开任务">
+  <input type="button" id="finish_button"   class="btn btn-warning" value="关闭任务">
+  <br> <br>
+  <input type="button" id="finish_button"   class="btn btn-primary" value="打开进展报告">
+  <input type="button" id="finish_button"   class="btn btn-warning" value="关闭进展报告">
+  <br> <br>
+  <input type="button" id="finish_button"   class="btn btn-primary" value="打开结题">
+  <input type="button" id="finish_button"   class="btn btn-warning" value="关闭结题">
+</fieldset>
+
 <fieldset>
-    <legend>项目结题管理</legend>
-
-
-
-    {% if 1 %}
-
-      
-      <span class="help-block">请先选择结题项目年份（可以多选）</span>
-
-      {% for year in item.year_list %}
-        <label class="checkbox">
-          <input type="checkbox" value="{{year}}" name="check_box_list">
-          {{year}}  
-          (已打开结题,已关闭申请)
-        </label>
-      {% endfor%}
-      <br> 
-      <input type="button" id="finish_button"  onclick="finish_control()" class="btn btn-primary" value="打开所选年份申请">
-
-      <input type="button" id="finish_button"  onclick="finish_control()" class="btn btn-warning" value="关闭所选年份申请">
-
-
-      <br> <br> 
-
-
-      <input type="button" id="finish_button"  onclick="finish_control()" class="btn btn-primary" value="打开所选年份结题">
-
-      <input type="button" id="finish_button"  onclick="finish_control()" class="btn btn-warning" value="关闭所选年份结题">
-
-    
-    {% else %}
-      目前没有未结题项目或未到结题阶段
-    {% endif %}
-  </fieldset>
-
-
-  <fieldset>
-    <legend>项目自动编号</legend>
-    <div class="alert alert-success" style="display:none" id="success_bar_2">
-        <button type="button" class="close" data-dismiss="alert">x</button>
-        编号成功！
+  <legend>专家评审控制管理</legend>
+  <div class="alert alert-success" style="display:none" id="expert_review_manage_success" >
+      <a class="close" id="alert_close1">×</a>
+      专家评审管理修改成功
     </div>
+    <div class="alert alert-danger" style="display:none" id="expert_review_manage_fail" >
+      <a class="close" id="alert_close1">×</a>
+      专家评审管理修改失败
+    </div>
+  <input type="button" id="alloc"   class="btn {%if item.alloc_status%}btn-warning{%else%}btn-primary{%endif%}" value="{%if item.alloc_status%}关闭项目专家初审{%else%}打开项目专家初审{%endif%}">
+  <span id="alloc_span" class="label {%if item.alloc_status%}label-success{%else%}label-danger{%endif%}">{%if item.alloc_status%}项目专家初审为打开状态{%else%}项目专家初审为关闭状态{%endif%}</span>
+  <br> <br>
+  <input type="button" id="final_alloc"   class="btn {%if item.final_alloc_status%}btn-warning{%else%}btn-primary{%endif%}" value="{%if item.final_alloc_status%}关闭项目专家终审{%else%}打开项目专家终审{%endif%}">
+  <span id="final_alloc_span" class="label {%if item.final_alloc_status%}label-success{%else%}label-danger{%endif%}">{%if item.final_alloc_status%}项目专家终审为打开状态{%else%}项目专家终审为关闭状态{%endif%}<span>
+</fieldset>
+<fieldset>
+  <legend>专家评分表选择</legend>
+  <form id="expert_review_form" class= "form-inline" role="form" method="POST" action="." >
+    {% csrf_token%}
+    <div class="alert alert-success" style="display:none" id="expert_review_success" >
+      <a class="close" id="alert_close1">×</a>
+      专家评分表修改成功
+    </div>
+    <div class="alert alert-danger" style="display:none" id="expert_review_fail" >
+      <a class="close" id="alert_close1">×</a>
+      专家评分表修失败
+    </div>
+    <div class="form-group">
+      {{expert_review_form.expert_review}} 
+    </div>
+  </form>
+</fieldset>
 
-  </fieldset>
-    <input type="button" class="btn btn-warning" value="自动编号" onclick="auto_ranking();">
-  </fieldset>
+<fieldset>
+  <legend>项目自动编号</legend>
+  <div class="alert alert-success" style="display:none" id="success_bar_2">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    编号成功！
+  </div>
+  <input type="button" class="btn btn-warning" value="自动编号" onclick="auto_ranking();">
+</fieldset>

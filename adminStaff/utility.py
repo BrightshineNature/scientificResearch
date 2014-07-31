@@ -3,13 +3,11 @@
 import os
 from users.models import Special,College
 
-def getSpecial(user):
+def getSpecial(request):
 
-    ret = Special.objects.filter(school_user__userid = user)
+    ret = Special.objects.filter(school_user__userid = request.user)
 
-    print "in getSpecial"
-    # print ret
     return ret
-def getCollege(user):
+def getCollege(request):
 
-    return College.objects.filter(school_user__userid = user)
+    return College.objects.filter(school_user__userid = request.user)

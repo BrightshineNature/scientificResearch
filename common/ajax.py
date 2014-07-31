@@ -11,8 +11,7 @@ from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
 from django.utils import simplejson
 from django.template.loader import render_to_string
-
-#from adminStaff.forms import NumLimitForm, TimeSettingForm, SubjectCategoryForm, ExpertDispatchForm,SchoolDispatchForm,TemplateNoticeForm,FundsChangeForm,StudentNameForm, SchoolDictDispatchForm
+from backend.logging import loginfo
 
 from django.db.models import Q
 from backend.logging import loginfo
@@ -28,7 +27,7 @@ from common.models import ProjectMember, BasisContent, BaseCondition
 from teacher.models import ProjectFundBudget,ProjectFundSummary
 from adminStaff.models import ProjectSingle,Re_Project_Expert
 from django.core.mail import send_mail
-from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile
+from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile,SchoolProfile,CollegeProfile
 OVER_STATUS_NOTOVER = "notover"
 OVER_STATUS_OPENCHECK = "opencheck"
 OVER_STATUS_MIDCHECK = "midcheck"
@@ -37,14 +36,13 @@ OVER_STATUS_NORMAL = "normal"
 
 OVER_STATUS_CHOICES = (
     ('no', u"未结题"),
-    ('yes', u"已结题"),    
+    ('yes', u"已结题"),
 )
 
 @dajaxice_register
 def SendMail(request,form):
     form=deserialize_form(form)
     loginfo(form)
-    
     #send_mail(form["mail_title"],form["mail_content"],"zhc1009@163.com",["347096491@qq.com","369385153@qq.com"])
     if form["mail_title"]=="":
         status=1
@@ -116,12 +114,19 @@ def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
             finance_summary.save()
     else:
         print form.getlist('application')
-        comment={
-            "Judger":request.user.first_name,
-            "Article":form.getlist('application')+form.getlist("final"),
-            "description":form["reason"]
-        }
-        project.comment=str(comment)
+        identity = request.session.get("auth_role","")
+        if identity == SCHOOL_USER:
+            school = SchoolProfile.objects.get(userid = request.user)
+            comment= school.department+u"管理员"+school.userid.first_name+u":"
+        elif identity == COLLEGE_USER:
+            comment= u"学院管理员"+request.user.first_name+u":"
+        for item in form.getlist('application'):
+            comment+=item+u"、"
+        for item in form.getlist("final"):
+            comment+=item+u"、"
+        comment+=u"，原因"+form["reason"]
+        loginfo(comment)
+        project.comment = comment
         project.save()
         statusRollBack(project,userrole,userstatus,form)
     context=schedule_form_data(request,{
@@ -157,8 +162,6 @@ def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
 @dajaxice_register
 def saveProjectInfoForm(request, form, pid):
     form = ProjectInfoForm(deserialize_form(form))
-
-
     p = ProjectSingle.objects.get(project_id = pid)
     context = {
         'status': 1,
@@ -179,13 +182,9 @@ def saveProjectInfoForm(request, form, pid):
         pass
     else :
         print "error in saveProjectInfoForm"
-        
-        # for i in form.errors:
-
         context['status'] = 0
         # context['error'] = str(form.errors)        
     # print context['error']
-    
     return simplejson.dumps(context)
 
 
@@ -203,7 +202,6 @@ def saveProjectMember(request, form, pid, mid):
         form = ProjectMemberForm(deserialize_form(form),instance = mem)
     else :
         form = ProjectMemberForm(deserialize_form(form))
-    
     context = {
         'status':0,
         'project_member_table': "",
@@ -215,13 +213,10 @@ def saveProjectMember(request, form, pid, mid):
         temp.save()
         context['status'] = 1
         context['project_member_table'] = refreshMemberTabel()
-
     else:
         context['status'] = 0
         print form.errors
         print "error in saveProjectMember"
-
-
     return simplejson.dumps(context)
 @dajaxice_register
 def deleteProjectMember(request, mid):
@@ -235,8 +230,6 @@ def deleteProjectMember(request, mid):
 
 @dajaxice_register
 def saveBasisContent(request, form, pid, bid):
-
-
     context = {
         'status':1,
     }

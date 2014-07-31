@@ -13,12 +13,13 @@ from backend.logging import loginfo
 from backend.utility import getContext
 from const import *
 from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
+from adminStaff.utility import getSpecial
 
 from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm,SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
-from school.forms import FilterForm
+from school.forms import FilterForm,ExpertReviewForm
 
 from users.models import ExpertProfile, SchoolProfile
 
@@ -134,19 +135,14 @@ def noticeMessageSettingView(request):
 @login_required
 @authority_required(SCHOOL_USER)
 def controlView(request):
-    special = [     
-              {
-                'year_list': [2015,],
-                'special_name': 'science',
-    },
-              {
-                'year_list': [2011,2012,2013,2014,],
-                'special_name': 'liberal',
-    },
-        
-    ]
+    expert_review_forms=[]
+    specials =  getSpecial(request)
+    for special in specials:
+        expert_review_form = ExpertReviewForm(instance=special)
+        expert_review_forms.append(expert_review_form)
+    spec_list = zip(specials,expert_review_forms)
     context = {
-        'special' :special,
+        'spec_list' :spec_list,
     }
     return render(request, "school/control.html", context);
 
