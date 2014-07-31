@@ -160,6 +160,10 @@ def saveProjectInfoForm(request, form, pid):
 
 
     p = ProjectSingle.objects.get(project_id = pid)
+    context = {
+        'status': 1,
+        'error': None,
+    }
     if form.is_valid():        
         p.title = form.cleaned_data['project_name']
         science_type =form.cleaned_data['science_type']
@@ -175,7 +179,14 @@ def saveProjectInfoForm(request, form, pid):
         pass
     else :
         print "error in saveProjectInfoForm"
-    return simplejson.dumps({'status':'1'})
+        
+        # for i in form.errors:
+
+        context['status'] = 0
+        # context['error'] = str(form.errors)        
+    # print context['error']
+    
+    return simplejson.dumps(context)
 
 
 def refreshMemberTabel():
@@ -206,6 +217,7 @@ def saveProjectMember(request, form, pid, mid):
         context['project_member_table'] = refreshMemberTabel()
 
     else:
+        context['status'] = 0
         print form.errors
         print "error in saveProjectMember"
 
