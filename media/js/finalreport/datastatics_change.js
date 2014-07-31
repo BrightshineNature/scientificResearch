@@ -130,10 +130,9 @@ function staticschange_callback(data){
 
 $('#finalreport_finish').click(function(){
     var pid =$(this).attr("pid");
-	alert(pid);
 	Dajaxice.teacher.finalReportFinish(finalreportfinish_callback,{'pid':pid,});
 });
 
 function finalreportfinish_callback(data){
-
+	alert(data.message);
 }

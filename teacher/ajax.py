@@ -178,9 +178,8 @@ def refresh_finalsubmit_form(request,final_form,is_submited):
 def finalReportFinish(request,pid):
 
 	project = ProjectSingle.objects.get(project_id = pid)
-	loginfo(p=project.project_status,label="before finish")
 	status_confirm(project,FINAL_WEB_CONFIRM)
-	loginfo(p=project.project_status,label="after finish")
+	message = u"项目状态变为结题书网上提交"
 
-	ret = {}
+	ret = {'message':message,}
 	return simplejson.dumps(ret)

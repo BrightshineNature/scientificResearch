@@ -338,7 +338,6 @@ def status_confirm(project, confirm):
             return False
     elif project.project_status.status==PROJECT_STATUS_PROGRESS_SCHOOL_OVER:
         if confirm==FINAL_WEB_CONFIRM:
-            loginfo(confirm)
             if project.file_summary==True:
                 set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
                 if project.project_sendback_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:

@@ -425,12 +425,15 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
 
 def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     fundbudget = ProjectFundBudget.objects.get(project_id = pid)
+    project = ProjectSingle.objects.get(project_id = pid)
     print request.method
     if request.method == "POST":
         fundbudget_form = ProFundBudgetForm(request.POST, instance=fundbudget)
         if fundbudget_form.is_valid():
             fundbudget_form.save()
             redirect = True
+            status_confirm(project,TASK_BUDGET_CONFIRM)
+            loginfo(p=project.project_status,label="status")
         else:
             logger.info("ProFundBudgetForm Valid Failed"+"**"*10)
             logger.info(fundbudget_form.errors)
