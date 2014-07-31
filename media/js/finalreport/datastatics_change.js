@@ -135,4 +135,5 @@ $('#finalreport_finish').click(function(){
 
 function finalreportfinish_callback(data){
 	alert(data.message);
+    location.href = "/teacher/file_upload/"+data.pid;
 }
