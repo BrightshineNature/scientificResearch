@@ -15,3 +15,10 @@ function fundSummary_callback(data){
     $('#li_achivement').addClass('active');        
     $('#achivement').addClass('active in');
 }
+
+$('#fundsummary_next').click(function(){
+    $('#li_auditing').removeClass('active');        
+    $('#auditing').removeClass('active in');
+    $('#li_achivement').addClass('active');        
+    $('#achivement').addClass('active in');
+});

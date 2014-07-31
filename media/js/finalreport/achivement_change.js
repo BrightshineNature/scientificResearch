@@ -54,3 +54,10 @@ function add_or_update_achivement_callback(data){
     alert(data.message);
 }
 
+$('#achivement_next').click(function(){
+    $('#li_achivement').removeClass('active');        
+    $('#achivement').removeClass('active in');
+    $('#li_datastatics').addClass('active');        
+    $('#datastatics').addClass('active in');
+});
+
