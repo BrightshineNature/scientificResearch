@@ -236,6 +236,10 @@ def deleteProjectMember(request, mid):
 @dajaxice_register
 def saveBasisContent(request, form, pid, bid):
 
+
+    context = {
+        'status':1,
+    }
     if bid :
         basis_content = BasisContent.objects.get(id = bid)
         form = BasisContentForm(deserialize_form(form), instance = basis_content)
@@ -250,9 +254,8 @@ def saveBasisContent(request, form, pid, bid):
     else:
         print form.errors
         print "error in saveBasisContent"
-    context = {
-        'status':1,
-    }
+        context['status'] = 0
+    
     return simplejson.dumps(context)
 
 @dajaxice_register
