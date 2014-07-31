@@ -80,7 +80,6 @@ class CollegeProfile(models.Model):
         self.userid.identities.add(auth)
 
 class Special(models.Model):
-
     school_user = models.ForeignKey(SchoolProfile, blank=True, null=True, verbose_name=u"专题管理员")
     try:
         default_status = ExpertReview.objects.get(status = EXPERT_REVIEW_BASICSCIENTIFIC)
@@ -88,6 +87,8 @@ class Special(models.Model):
         default_status = 1
     expert_review = models.ForeignKey(ExpertReview, blank=False, null=False, default=default_status,verbose_name=u"专家评审表")
     name = models.CharField(blank=False,max_length=30)
+    alloc_status = models.BooleanField(blank=True,default= False)
+    final_alloc_status = models.BooleanField(blank=True,default= False)
     class Meta:
         verbose_name = "专题"
         verbose_name_plural = "专题"

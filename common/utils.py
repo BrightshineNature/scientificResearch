@@ -13,8 +13,6 @@ import datetime
 
 def createNewProject(teacher, title, special):
     year = datetime.datetime.now().year
-
-
     project = ProjectSingle()
     project.project_application_code = "%d%04d" % (year, ProjectSingle.objects.all().count())
     project.title = title
@@ -22,7 +20,6 @@ def createNewProject(teacher, title, special):
     project.teacher = teacher
     project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLY)
     project.application_year = year
-
     project.save()
 
     BasisContent(project = project).save()
@@ -31,7 +28,7 @@ def createNewProject(teacher, title, special):
     FinalSubmit(project_id = project).save()   
     ProjectFundSummary(project_id = project).save()
     ProjectFundBudget(project_id = project).save()
-
+    
 def getScoreTable(project):
     category = project.project_special.expert_review.category      
     if category == EXPERT_REVIEW_BASICSCIENTIFIC:
@@ -61,7 +58,6 @@ def get_application_year_choice():
     for item in project_group:
         year_has.append(item.application_year)
     year_has=list(set(year_has))
-    
     for y in year_has:
         year.append((y,y))
     return tuple(year)
@@ -124,7 +120,6 @@ def get_query_application_status(status):
 def create_QE(status):
     return Q(project_status__status=status)
 def create_Q(start,end):
-
     return Q(project_status__status__gte=start,project_status__status__lte=end)
 
 def get_qset(userauth):
@@ -163,7 +158,6 @@ def statusRollBack(project,userrole,userstatus,form):
         if userstatus=="application":
             form_list=form.getlist("application")
             if len(form_list)==2:
-               
                 set_status(project,PROJECT_STATUS_APPLY)
                 project.file_application=False
                 project.save()
@@ -175,7 +169,7 @@ def statusRollBack(project,userrole,userstatus,form):
                     project.file_application=False
                     project.save()
                 else:
-                    return False 
+                    return False
             else:
                 return False
         elif userstatus=="research_concluding":
@@ -338,7 +332,7 @@ def status_confirm(project, confirm):
             return False
     elif project.project_status.status==PROJECT_STATUS_PROGRESS_SCHOOL_OVER:
         if confirm==FINAL_WEB_CONFIRM:
-            if project.file_summary==TRUE:
+            if project.file_summary==True:
                 set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
                 if project.project_sendback_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
                     set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)

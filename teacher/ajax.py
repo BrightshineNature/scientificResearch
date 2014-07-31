@@ -8,6 +8,8 @@ from django.utils import simplejson
 from teacher.forms import *
 from teacher.models import *
 from const.models import *
+from const import FINAL_WEB_CONFIRM 
+from common.utils import  status_confirm
 from backend.logging import logger, loginfo
 from django.template.loader import render_to_string
 @dajaxice_register
@@ -171,3 +173,13 @@ def refresh_finalsubmit_form(request,final_form,is_submited):
                                 'is_submited':is_submited,
                                 'final':final_form,
         })
+
+@dajaxice_register
+def finalReportFinish(request,pid):
+
+	project = ProjectSingle.objects.get(project_id = pid)
+	status_confirm(project,FINAL_WEB_CONFIRM)
+	message = u"项目状态变为结题书网上提交"
+
+	ret = {'message':message,}
+	return simplejson.dumps(ret)
