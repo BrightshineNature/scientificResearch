@@ -40,7 +40,7 @@
                 {% for item in not_pass_apply_project_group%}
                 <tr iid={{item.project_id}} status={{item.project_status.status}}>
                     <td>{{item.project_code}}</td>
-                    <td>{{item.title}}</td>
+                    <td><a href=/college/finalinfo/{{item.project_id}}>{{item.title}}</a></td>
                     <td>{{item.teacher.teacherinfosetting.name}}</td>
                     <td>{{item.teacher.college}}</td>
                     <td> {{item.approval_year}}</td>
@@ -138,7 +138,7 @@
                     {% for item in pass_apply_project_group%}
                     <tr>
                         <td>{{item.project_code}}</td>
-                        <td>{{item.title}}</td>
+                        <td><a href=/college/finalinfo/{{item.project_id}}>{{item.title}}</a></td>
                         <td>{{item.teacher.teacherinfosetting.name}}</td>
                         <td>{{item.teacher.college}}</td>
                         <td> {{item.approval_year}}</td>

@@ -47,6 +47,7 @@ def fileUploadManageView(request, pid, is_submited = False):
     context['user'] = "teacher"
     # is_submited = False
     context['is_submited'] = is_submited
+
     return render(request, "teacher/file_upload.html", context)
 
     
@@ -170,6 +171,7 @@ def finalInfoView(request):
     project_list = ProjectSingle.objects.filter(teacher = teacher).filter(project_status__status__gte = PROJECT_STATUS_APPROVAL )
     context = {
 		'project_list':project_list,
+        'role':'teacher',
     }
     return render(request,"teacher/finalinfo.html",context)
 
@@ -181,4 +183,5 @@ def fundBudgetView(request,pid,is_submited=False):
     context = fundBudgetViewWork(request,pid,is_submited)
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
+    context['role'] = 'teacher'
     return render(request,"teacher/fundbudget.html",context)
