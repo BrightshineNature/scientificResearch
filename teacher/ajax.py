@@ -192,5 +192,5 @@ def finalReportFinish(request,pid):
 	else:
 		message = u"请完善报告正文内容"
 
-	ret = {'message':message,}
+	ret = {'message':message,'pid':pid,}
 	return simplejson.dumps(ret)
