@@ -94,7 +94,7 @@ def getStatus(request):
     return simplejson.dumps({
         "application_c":PROJECT_STATUS_APPLICATION_COMMIT_OVER,
         "application_s":PROJECT_STATUS_APPLICATION_COLLEGE_OVER,
-        "final":PROJECT_STATUS_FINAL_COMMIT_OVER,
+        "final":PROJECT_STATUS_FINAL_FINANCE_OVER,
     })
 @dajaxice_register
 def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
