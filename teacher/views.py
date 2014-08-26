@@ -12,7 +12,7 @@ from backend.decorators import *
 from backend.logging import loginfo
 from const import *
 
-from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage 
+from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage,get_project_list
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
@@ -32,7 +32,7 @@ def appView(request, pid, is_submited = False):
         'role':"teacher",
     }
     context = appManage(request, pid)
-    context['user'] = "teacher"    
+    context['user'] = "teacher" 
     context['is_submited'] = is_submited
     return render(request, "teacher/application.html", context)
 
@@ -47,21 +47,26 @@ def fileUploadManageView(request, pid, is_submited = False):
     is_submited = False
     context['is_submited'] = is_submited
     return render(request, "teacher/file_upload.html", context)
-
-    
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
 def homeView(request):
-
-    project_list = ProjectSingle.objects.all();
+    project_list = get_project_list(request).filter(project_status__status__lt = PROJECT_STATUS_APPROVAL);
     creationForm = ProjectCreationForm()
     context = {
         'project_list':project_list,
         'form': creationForm,
     }
     return render(request,"teacher/project_info.html",context)
-
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
+def finalInfoView(request):
+    project_list = get_project_list(request).filter(project_status__status__gte = PROJECT_STATUS_APPROVAL);
+    context = {
+		'project_list':project_list,
+    }
+    return render(request,"teacher/finalinfo.html",context)
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
@@ -160,17 +165,6 @@ def financialView(request):
         'budgetannuform':budgetannuform,
     }
     return render(request,"teacher/financial.html",context)
-
-@csrf.csrf_protect
-@login_required
-@authority_required(TEACHER_USER)
-def finalInfoView(request):
-    teacher = TeacherProfile.objects.get(userid = request.user)
-    project_list = ProjectSingle.objects.filter(teacher = teacher).filter(project_status__status__gte = PROJECT_STATUS_APPROVAL )
-    context = {
-		'project_list':project_list,
-    }
-    return render(request,"teacher/finalinfo.html",context)
 
 @csrf.csrf_protect
 @login_required

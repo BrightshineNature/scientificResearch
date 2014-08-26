@@ -326,7 +326,6 @@ def get_project_list(request):
     elif identity == COLLEGE_USER:
         colleges = College.objects.filter(college_user__userid = request.user)
         qset = reduce(lambda x,y:x|y,[Q(teacher__college = _college) for _college in colleges])
-        
         pro_list = ProjectSingle.objects.filter(qset)
     elif identity == TEACHER_USER:
         pro_list = ProjectSingle.objects.filter(teacher__userid = request.user)

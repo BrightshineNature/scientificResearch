@@ -7,7 +7,6 @@ def getSpecial(request):
     specials = []
     if check_auth(request.user,request.session.get('auth_role', "")):
         specials = Special.objects.filter(school_user__userid = request.user)
-    request.session.get('auth_role', "")
     return specials
 
 def getCollege(request):
