@@ -16,9 +16,9 @@ from adminStaff.forms import NewsForm,ObjectForm,TemplateNoticeMessageForm,Dispa
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import NoticeForm
 
-from common.views import scheduleManage, financialManage,noticeMessageSettingBase,scheduleManage
+from common.views import scheduleManage, financialManage,noticeMessageSettingBase,scheduleManage,finalReportViewWork,fundBudgetViewWork,fileUploadManage
 
-from adminStaff.models import TemplateNoticeMessage,News
+from adminStaff.models import TemplateNoticeMessage,News,ProjectSingle
 from users.models import SchoolProfile,CollegeProfile,ExpertProfile,Special,College
 
 @csrf.csrf_protect
@@ -171,3 +171,51 @@ def infoExportView(request):
 		'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
 	}
     return render(request, "adminStaff/infoexport.html", context)
+
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
+def finalInfoView(request,pid):
+    project = ProjectSingle.objects.filter(project_id = pid)
+    context = {
+        'project_list':project,
+        'role':'adminStaff',
+    }
+    return render(request, "adminStaff/finalinfo.html", context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
+@check_submit_status(SUBMIT_STATUS_FINAL)
+def finalReportView(request,pid,is_submited=False):
+    context = finalReportViewWork(request,pid,is_submited)
+    loginfo(p=is_submited,label="is_submited")
+    # if context['redirect']:
+    #     return HttpResponseRedirect('/teacher/finalinfo')
+    return render(request,"adminStaff/final.html",context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
+@check_submit_status(SUBMIT_STATUS_FINAL)
+def fundBudgetView(request,pid,is_submited=False):
+    context = fundBudgetViewWork(request,pid,is_submited)
+    context['role'] = 'adminStaff'
+    if context['redirect']:
+        return HttpResponseRedirect('/adminStaff/finalinfo/'+str(pid))
+    return render(request,"adminStaff/fundbudget.html",context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
+@check_submit_status(SUBMIT_STATUS_APPLICATION)
+def fileUploadManageView(request, pid, is_submited = False):
+
+    context = fileUploadManage(request, pid)
+    context['user'] = "adminStaff"
+    # is_submited = False
+    context['is_submited'] = is_submited
+
+    return render(request, "adminStaff/file_upload.html", context)
+

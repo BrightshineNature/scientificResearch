@@ -94,7 +94,7 @@ def getStatus(request):
     return simplejson.dumps({
         "application_c":PROJECT_STATUS_APPLICATION_COMMIT_OVER,
         "application_s":PROJECT_STATUS_APPLICATION_COLLEGE_OVER,
-        "final":PROJECT_STATUS_FINAL_COMMIT_OVER,
+        "final":PROJECT_STATUS_FINAL_FINANCE_OVER,
     })
 @dajaxice_register
 def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
@@ -185,8 +185,16 @@ def saveProjectInfoForm(request, form, pid):
         p.save()            
         pass
     else :
-        print "error in saveProjectInfoForm"
         context['status'] = 0
+        error = ""
+        # print "ERROR |||||"
+        for i in form.errors:
+            # print i, form.errors[i]
+            error += str(i) + ","
+        context['error'] = error
+
+        print "error in saveProjectInfoForm"
+        
         # context['error'] = str(form.errors)        
     # print context['error']
     return simplejson.dumps(context)
@@ -209,6 +217,7 @@ def saveProjectMember(request, form, pid, mid):
     context = {
         'status':0,
         'project_member_table': "",
+        'error':"",
     }
 
     if form.is_valid():
@@ -219,6 +228,10 @@ def saveProjectMember(request, form, pid, mid):
         context['project_member_table'] = refreshMemberTabel(pid)
     else:
         context['status'] = 0
+        error = ""
+        for i in form.errors:
+            error += str(i) + ","
+        context['error'] = error
         print form.errors
         print "error in saveProjectMember"
     return simplejson.dumps(context)

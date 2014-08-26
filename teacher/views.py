@@ -31,6 +31,7 @@ def appView(request, pid, is_submited = False):
     userauth = {
         'role':"teacher",
     }
+    
     context = appManage(request, pid)
     context['user'] = "teacher" 
     context['is_submited'] = is_submited
@@ -44,8 +45,9 @@ def fileUploadManageView(request, pid, is_submited = False):
 
     context = fileUploadManage(request, pid)
     context['user'] = "teacher"
-    is_submited = False
+    # is_submited = False
     context['is_submited'] = is_submited
+
     return render(request, "teacher/file_upload.html", context)
 @csrf.csrf_protect
 @login_required
@@ -169,9 +171,22 @@ def financialView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
+def finalInfoView(request):
+    teacher = TeacherProfile.objects.get(userid = request.user)
+    project_list = ProjectSingle.objects.filter(teacher = teacher).filter(project_status__status__gte = PROJECT_STATUS_APPROVAL )
+    context = {
+		'project_list':project_list,
+        'role':'teacher',
+    }
+    return render(request,"teacher/finalinfo.html",context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
 @check_submit_status(SUBMIT_STATUS_FINAL)
 def fundBudgetView(request,pid,is_submited=False):
     context = fundBudgetViewWork(request,pid,is_submited)
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
+    context['role'] = 'teacher'
     return render(request,"teacher/fundbudget.html",context)

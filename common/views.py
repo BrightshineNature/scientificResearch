@@ -206,6 +206,7 @@ def fileUploadManage(request, pid):
         # form = UploadFileForm()
 
     files = UploadFile.objects.filter(project__project_id = pid)
+    loginfo(p=files,label="files")
 
     for i in files:
         i.file_size = '%.3f KB' % (float(i.file_size) / 1024)
@@ -396,15 +397,7 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     projdatastaticsform = ProjectDatastaticsForm()
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
 
-    # if request.method == "POST":
-    #     final_form = FinalReportForm(request.POST, instance=final)
-    #     if final_form.is_valid():
-    #         final_form.save()
-    #         redirect = True
-    #     else:
-    #         logger.info("Final Form Valid Failed"+"**"*10)
-    #         logger.info(final_form.errors)
-    # else:
+
     final_form = FinalReportForm(instance=final)
 
     loginfo(p=redirect, label="redirect")
