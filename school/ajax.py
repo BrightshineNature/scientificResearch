@@ -134,7 +134,6 @@ def allocProjectToExpert(request, project_list, expert_list, path):
                 project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
             project.save()
         message = "ok"
-    
     return simplejson.dumps({"message": message, })
 
 @dajaxice_register
@@ -184,6 +183,7 @@ def ChangeExpertReview(request,form,special_id):
     return simplejson.dumps({'status':'0'})
 TYPE_ALLOC  = "alloc"
 TYPE_FINAL_ALLOC = "final_alloc"
+
 @dajaxice_register
 def ChangeAllocStatus(request,special_id,type):
     special = getSpecial(request).get(id = special_id)
@@ -211,3 +211,16 @@ def ChangeAllocStatus(request,special_id,type):
             return simplejson.dumps({'status':'0'})
         return simplejson.dumps({'status':'1','type':type,'value':bvalue})
     return simplejson.dumps({'status':'0'})
+@dajaxice_register
+def ChangeControlStatus(request,special_id,type):
+    special = getSpecial(request).get(id = special_id)
+    if special:
+        if type== TYPE_APPLICATION:
+            bStatus = special.application_status
+        elif type== TYPE_TASK:
+            bStatus = special.task_status
+        elif type== TYPE_PROGRESS:
+            bStatus = special.progress_status
+        elif type== TYPE_FINAL:
+            bStatus = special.final_status
+    return ""

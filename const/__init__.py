@@ -16,6 +16,11 @@ TEACHER_USER = "teacher"
 FINANCE_USER = "finance"
 VISITOR_USER = "visitor"
 
+TYPE_APPLICATION = "application"
+TYPE_TASK = "task"
+TYPE_PROGRESS = "progress"
+TYPE_FINAL = "final"
+
 AUTH_CHOICES = (
     (ADMINSTAFF_USER, u"管理员"),
     (SCHOOL_USER, u"专题管理员"),

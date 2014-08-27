@@ -9,11 +9,12 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators import csrf
 from backend.decorators import *
 from backend.logging import loginfo
+from django.db.models import Q
 from const import *
 
 from adminStaff.utility import getCollege
 from common.views import scheduleManage, financialManage,researchConcludingManage,finalReportViewWork,fundBudgetViewWork,fileUploadManage
-
+from adminStaff.utility import getCollege
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from adminStaff.forms import DispatchAddCollegeForm
 from college.forms import TeacherDispatchForm
@@ -79,7 +80,9 @@ def researchConcludingView(request):
 @authority_required(COLLEGE_USER)
 def dispatchView(request):
     dispatchAddCollege_form=DispatchAddCollegeForm(user=request.user)
-    teacher_users = TeacherProfile.objects.all()
+    colleges = getCollege(request)
+    qset = reduce(lambda x,y:x|y,[Q(college = _college) for _college in colleges])
+    teacher_users = TeacherProfile.objects.filter(qset)
     context = {
                "dispatchAddCollege_form":dispatchAddCollege_form,
                "users":teacher_users,

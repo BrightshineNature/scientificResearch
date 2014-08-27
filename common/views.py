@@ -10,6 +10,8 @@ from backend.logging import logger, loginfo
 from adminStaff.models import ProjectSingle,TemplateNoticeMessage
 from django.db.models import Q
 from backend.utility import getContext
+
+from adminStaff.utility import getCollege,getSpecial
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
@@ -70,7 +72,6 @@ def appManage(request, pid):
     else :
         base_condition_id = ""
         base_condition_form = BaseConditionForm()
-    
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
         'project_name': p.title,
@@ -87,12 +88,6 @@ def appManage(request, pid):
 
 
     project_member_list = ProjectMember.objects.filter(project__project_id = pid)
-
-    # for i in project_member_list:
-    #     i.professional_title_id = i.professional_title.category
-    #     i.executive_position_id = i.executive_position.category
-
-
 
     print "UUUUUU***************"
 
@@ -115,11 +110,6 @@ def appManage(request, pid):
 
 from django.core.files.storage import default_storage
 import time
-# def handle_uploaded_file(f):
-#     print f.name
-#     print f.size
-#     # print f.url
-#     # print f.path
 
 def getType(fname):
     for i in FileList:
@@ -320,12 +310,12 @@ def get_project_list(request):
     if identity == ADMINSTAFF_USER:
         pro_list = ProjectSingle.objects.all()
     elif identity == SCHOOL_USER:
-        specials = Special.objects.filter(school_user__userid = request.user)
+        specials = getSpecial(request)
         qset = reduce(lambda x,y:x|y,[Q(project_special = _special) for _special in specials])
         loginfo(qset)
         pro_list = ProjectSingle.objects.filter(qset)
     elif identity == COLLEGE_USER:
-        colleges = College.objects.filter(college_user__userid = request.user)
+        colleges = getCollege(request)
         qset = reduce(lambda x,y:x|y,[Q(teacher__college = _college) for _college in colleges])
         pro_list = ProjectSingle.objects.filter(qset)
     elif identity == TEACHER_USER:

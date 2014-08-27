@@ -12,5 +12,5 @@ def getSpecial(request):
 def getCollege(request):
     colleges = []
     if check_auth(request.user,request.session.get('auth_role', "")):
-        colleges = College.objects.filter(school_user__userid = request.user)
+        colleges = College.objects.filter(college_user__userid = request.user)
     return colleges
