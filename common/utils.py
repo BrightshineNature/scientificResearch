@@ -282,7 +282,7 @@ def status_confirm(project, confirm):
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
-        if confirm==APPLICATION_EXPERT_START_CONFIRM:
+        if confirm==APPLICATION_REVIEW_START_CONFIRM:
             set_status(project,PROJECT_STATUS_APPLICATION_REVIEW_START)
         else:
             return False
@@ -370,11 +370,11 @@ def status_confirm(project, confirm):
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
-        if confirm==FINAL_REVIEW_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_EXPERT_START)
+        if confirm==FINAL_REVIEW_START_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_REVIEW_START)
         else:
             return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_EXPERT_START:
+    elif project.project_status.status==PROJECT_STATUS_FINAL_REVIEW_START:
         if confirm==FINAL_REVIEW_CONFIRM:
             set_status(project,PROJECT_STATUS_FINAL_REVIEW_OVER)
         else:
