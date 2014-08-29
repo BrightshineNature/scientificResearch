@@ -137,9 +137,16 @@ def noticeMessageSettingView(request):
 def controlView(request):
     expert_review_forms=[]
     specials =  getSpecial(request)
+    loginfo(specials)
     for special in specials:
         expert_review_form = ExpertReviewForm(instance=special)
         expert_review_forms.append(expert_review_form)
+        control_types = []
+        for t in CONTROL_TYPE_CHOICES:
+            t = list(t)
+            t.append(getattr(special,t[0]+"_status"))
+            control_types.append(t)
+        special.control_types = control_types
     spec_list = zip(specials,expert_review_forms)
     context = {
         'spec_list' :spec_list,

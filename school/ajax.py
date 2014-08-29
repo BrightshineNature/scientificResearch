@@ -181,46 +181,32 @@ def ChangeExpertReview(request,form,special_id):
             loginfo("success")
             return simplejson.dumps({'status':'1'})
     return simplejson.dumps({'status':'0'})
-TYPE_ALLOC  = "alloc"
-TYPE_FINAL_ALLOC = "final_alloc"
-
 @dajaxice_register
-def ChangeAllocStatus(request,special_id,type):
+def ChangeControlStatus(request,special_id,type_id,type_name):
     special = getSpecial(request).get(id = special_id)
     if special:
-        if type== TYPE_ALLOC:
-            special.alloc_status = not special.alloc_status
-            bvalue = special.alloc_status
-            if not bvalue:
-                pro_list = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
-                loginfo(pro_list)
-                for pro in pro_list:
-                    loginfo(pro)
-                    status_confirm(pro,APPLICATION_REVIEW_CONFIRM)
+        type=(type_id,type_name)
+        if type in CONTROL_TYPE_CHOICES:
+            bValue = not getattr(special,type_id+"_status")
+            if type_id == TYPE_ALLOC[0]:
+                if not bvalue:
+                    pro_list = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
+                    for pro in pro_list:
+                        status_confirm(pro,APPLICATION_REVIEW_CONFIRM)
+            elif type_id == TYPE_FINAL_ALLOC[0]:
+                if not bvalue:
+                   pro_list = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT))
+                   for pro in pro_list:
+                       status_confirm(pro,FINAL_REVIEW_CONFIRM) 
+            elif type_id == TYPE_APPLICATION[0]:
+                pass
+            elif type_id == TYPE_TASK[0]:
+                pass
+            elif type_id == TYPE_PROGRESS[0]:
+                pass
+            elif type_id == TYPE_FINAL[0]:
+                pass
+            setattr(special,type_id+"_status",bValue)
             special.save()
-        elif type == TYPE_FINAL_ALLOC:
-            special.final_alloc_status = not special.final_alloc_status
-            bvalue = special.final_alloc_status
-            if not bvalue:
-                pro_list = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT))
-                for pro in pro_list:
-                    loginfo(pro)
-                    status_confirm(pro,FINAL_REVIEW_CONFIRM)
-            special.save()
-        else:
-            return simplejson.dumps({'status':'0'})
-        return simplejson.dumps({'status':'1','type':type,'value':bvalue})
+        return simplejson.dumps({'status':'1','type_id':type_id,'type_name':type_name,'value':bValue})
     return simplejson.dumps({'status':'0'})
-@dajaxice_register
-def ChangeControlStatus(request,special_id,type):
-    special = getSpecial(request).get(id = special_id)
-    if special:
-        if type== TYPE_APPLICATION:
-            bStatus = special.application_status
-        elif type== TYPE_TASK:
-            bStatus = special.task_status
-        elif type== TYPE_PROGRESS:
-            bStatus = special.progress_status
-        elif type== TYPE_FINAL:
-            bStatus = special.final_status
-    return ""

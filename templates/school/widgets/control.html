@@ -1,34 +1,22 @@
-<fieldset id= "project_control">
+<br><br>
+<fieldset id= "project_control_field">
   <legend>项目控制管理</legend>
-  <input type="button" id="finish_button"   class="btn btn-primary" value="打开申请">
-  <input type="button" id="finish_button"   class="btn btn-warning" value="关闭申请">
-  <br> <br>
-  <input type="button" id="finish_button"   class="btn btn-primary" value="打开任务">
-  <input type="button" id="finish_button"   class="btn btn-warning" value="关闭任务">
-  <br> <br>
-  <input type="button" id="finish_button"   class="btn btn-primary" value="打开进展报告">
-  <input type="button" id="finish_button"   class="btn btn-warning" value="关闭进展报告">
-  <br> <br>
-  <input type="button" id="finish_button"   class="btn btn-primary" value="打开结题">
-  <input type="button" id="finish_button"   class="btn btn-warning" value="关闭结题">
-</fieldset>
-
-<fieldset>
-  <legend>专家评审控制管理</legend>
   <div class="alert alert-success" style="display:none" id="expert_review_manage_success" >
       <a class="close" id="alert_close1">×</a>
-      专家评审管理修改成功
+      项目控制管理修改成功
     </div>
     <div class="alert alert-danger" style="display:none" id="expert_review_manage_fail" >
       <a class="close" id="alert_close1">×</a>
-      专家评审管理修改失败
+      项目控制管理修改失败
     </div>
-  <input type="button" id="alloc"   class="btn {%if item.alloc_status%}btn-warning{%else%}btn-primary{%endif%}" value="{%if item.alloc_status%}关闭项目专家初审{%else%}打开项目专家初审{%endif%}">
-  <span id="alloc_span" class="label {%if item.alloc_status%}label-success{%else%}label-danger{%endif%}">{%if item.alloc_status%}项目专家初审为打开状态{%else%}项目专家初审为关闭状态{%endif%}</span>
-  <br> <br>
-  <input type="button" id="final_alloc"   class="btn {%if item.final_alloc_status%}btn-warning{%else%}btn-primary{%endif%}" value="{%if item.final_alloc_status%}关闭项目专家终审{%else%}打开项目专家终审{%endif%}">
-  <span id="final_alloc_span" class="label {%if item.final_alloc_status%}label-success{%else%}label-danger{%endif%}">{%if item.final_alloc_status%}项目专家终审为打开状态{%else%}项目专家终审为关闭状态{%endif%}<span>
+  {%for type in item.control_types%}
+  <input type="button" id={{type.0}} name={{type.1}}  class="btn {%if type.2 %}btn-warning{%else%}btn-primary{%endif%}" value="{%if type.2%}关闭{{type.1}}{%else%}打开{{type.1}}{%endif%}">
+  <span id="{{type.0}}_span" class="label {%if type.2 %}label-success{%else%}label-danger{%endif%}">{%if type.2%}{{type.1}}为打开状态{%else%}{{type.1}}为关闭状态{%endif%}</span>
+      <br> <br>
+  {%endfor%}
 </fieldset>
+
+
 <fieldset>
   <legend>专家评分表选择</legend>
   <form id="expert_review_form" class= "form-inline" role="form" method="POST" action="." >
