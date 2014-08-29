@@ -68,8 +68,8 @@ function delete_datastatics_callback(data){
 }
 
 $("#datastatics_change_table ").on("click",".btn-success",function(){
-    $(".modal-title").html("修改研究成果信息");
-    $("#save_change").html("确认保存");
+    $(".modal-title").html("修改数据信息");
+    $("#datastatics_save_change").html("确认保存");
     $("#datastatics_profile_info").modal();
     tr=$(this).closest("tr");
     datastaticsid=$(tr).attr("value")
@@ -125,4 +125,18 @@ function staticschange_callback(data){
         s+="<option value=" + value + ">" + STATICS_DATA_TYPE[value] + "</option>";
     });
     $("#id_staticsdatatype").html(s);
+}
+
+
+$('#finalreport_finish').click(function(){
+    var pid =$(this).attr("pid");
+	Dajaxice.teacher.finalReportFinish(finalreportfinish_callback,{'pid':pid,});
+});
+
+function finalreportfinish_callback(data){
+	alert(data.message);
+    if(data.status == '1')
+    {    
+        location.href = "/teacher/file_upload/"+data.pid;
+    }
 }

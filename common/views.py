@@ -10,6 +10,8 @@ from backend.logging import logger, loginfo
 from adminStaff.models import ProjectSingle,TemplateNoticeMessage
 from django.db.models import Q
 from backend.utility import getContext
+
+from adminStaff.utility import getCollege,getSpecial
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
@@ -69,7 +71,6 @@ def appManage(request, pid):
     else :
         base_condition_id = ""
         base_condition_form = BaseConditionForm()
-    
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
         'project_name': p.title,
@@ -86,12 +87,6 @@ def appManage(request, pid):
 
 
     project_member_list = ProjectMember.objects.filter(project__project_id = pid)
-
-    # for i in project_member_list:
-    #     i.professional_title_id = i.professional_title.category
-    #     i.executive_position_id = i.executive_position.category
-
-
 
     print "UUUUUU***************"
 
@@ -114,11 +109,6 @@ def appManage(request, pid):
 
 from django.core.files.storage import default_storage
 import time
-# def handle_uploaded_file(f):
-#     print f.name
-#     print f.size
-#     # print f.url
-#     # print f.path
 
 def getType(fname):
     for i in FileList:
@@ -199,6 +189,7 @@ def fileUploadManage(request, pid):
         # form = UploadFileForm()
 
     files = UploadFile.objects.filter(project__project_id = pid)
+    loginfo(p=files,label="files")
 
     for i in files:
         i.file_size = '%.3f KB' % (float(i.file_size) / 1024)
@@ -311,14 +302,13 @@ def get_project_list(request):
     if identity == ADMINSTAFF_USER:
         pro_list = ProjectSingle.objects.all()
     elif identity == SCHOOL_USER:
-        specials = Special.objects.filter(school_user__userid = request.user)
+        specials = getSpecial(request)
         qset = reduce(lambda x,y:x|y,[Q(project_special = _special) for _special in specials])
         loginfo(qset)
         pro_list = ProjectSingle.objects.filter(qset)
     elif identity == COLLEGE_USER:
-        colleges = College.objects.filter(college_user__userid = request.user)
+        colleges = getCollege(request)
         qset = reduce(lambda x,y:x|y,[Q(teacher__college = _college) for _college in colleges])
-        
         pro_list = ProjectSingle.objects.filter(qset)
     elif identity == TEACHER_USER:
         pro_list = ProjectSingle.objects.filter(teacher__userid = request.user)
@@ -389,15 +379,7 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     projdatastaticsform = ProjectDatastaticsForm()
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
 
-    # if request.method == "POST":
-    #     final_form = FinalReportForm(request.POST, instance=final)
-    #     if final_form.is_valid():
-    #         final_form.save()
-    #         redirect = True
-    #     else:
-    #         logger.info("Final Form Valid Failed"+"**"*10)
-    #         logger.info(final_form.errors)
-    # else:
+
     final_form = FinalReportForm(instance=final)
 
     loginfo(p=redirect, label="redirect")
@@ -417,12 +399,15 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
 
 def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     fundbudget = ProjectFundBudget.objects.get(project_id = pid)
+    project = ProjectSingle.objects.get(project_id = pid)
     print request.method
     if request.method == "POST":
         fundbudget_form = ProFundBudgetForm(request.POST, instance=fundbudget)
         if fundbudget_form.is_valid():
             fundbudget_form.save()
             redirect = True
+            status_confirm(project,TASK_BUDGET_CONFIRM)
+            loginfo(p=project.project_status,label="status")
         else:
             logger.info("ProFundBudgetForm Valid Failed"+"**"*10)
             logger.info(fundbudget_form.errors)

@@ -107,12 +107,10 @@
       </div>
     </blockquote><!--end project content-->
   {% if is_submited %}
-  <center>
-    <button class="btn btn-large btn-block btn-success" id="finalsubmitform_btn" style="width:40%;" pid={{pid}} is_submited={{is_submited}} type="button">信息填写无误后，提交报告</button>
-    <br/>
-    <small class="pull-center">Tips: 截止日期前可以修改</small>
-    <a class="btn btn-primary" href="#auditing" data-toggle="tab">下一步</a>
-  </center>
+
+    <button class="btn btn-primary" id="finalsubmitform_btn"  pid={{pid}} is_submited={{is_submited}} type="button">提交结题报告正文</button>
+    <a class="btn btn-primary" href="#auditing" data-toggle="tab" id="finalcontent_next">下一步</a>
+
   {% endif %}
 </form>
 <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/finalcontent.js"></script>

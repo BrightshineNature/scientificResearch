@@ -17,3 +17,11 @@ function final_content_callback(data){
         $('#final_content').html(data.finalsubmitform);
     }
 }
+
+$('#finalcontent_next').click(function(){
+	    $('#li_content').removeClass('active');        
+        $('#content').removeClass('active in');
+        $('#li_auditing').addClass('active');        
+        $('#auditing').addClass('active in');
+
+});

@@ -4,7 +4,12 @@
         <th scope="col" class="action-checkbox-column">  
           <input type="checkbox"  class="all_object_checkbox" >
         </th>
-        <th scope="col">专业列表</th>
+
+        <th scope="col">
+
+          {%ifequal instance.object_name "special"%} 专题{%else%}
+          学院{%endifequal%}列表
+        </th>
         <th>是否被分配 </th>
     </tr>
   </thead>

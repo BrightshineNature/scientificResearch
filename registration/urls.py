@@ -11,7 +11,6 @@ from django.contrib.auth import views as auth_views
 from registration.views import active,login_redirect,logout_redirect
 urlpatterns = patterns('',
           url(r'^active/(?P<activation_key>\w+)/$',active,name='registration_avtive'),
-          url(r'^login/$',auth_views.login,{'template_name':'registration/login.html'},name='auth_login'),
           url(r'^logout/$',auth_views.logout,{'next_page':'/accounts/logoutredirect'},name='auth_logout'),
           url(r'^password/change/$',auth_views.password_change,name='auth_password_change'),
           url(r'^password/change/done/$',auth_views.password_change_done, name='auth_password_change_done'),

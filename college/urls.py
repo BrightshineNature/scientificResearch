@@ -40,5 +40,21 @@ urlpatterns = patterns('',
         r'dispatch$',
         college_views.dispatchView,
     ),
+    url(
+        r'^finalinfo/(?P<pid>.{36})$',
+        college_views.finalInfoView,
+    ),
+    url(
+        r'^final/(?P<pid>.{36})$',
+        college_views.finalReportView,
+    ),
+    url(
+        r'^fundbudget/(?P<pid>.{36})$',
+        college_views.fundBudgetView,
+    ),
+    url(
+        r'file_upload/(?P<pid>.{36})$',
+        college_views.fileUploadManageView,
+    ),
 )
 urlpatterns += staticfiles_urlpatterns()

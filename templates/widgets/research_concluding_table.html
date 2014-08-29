@@ -40,7 +40,7 @@
                 {% for item in item_list%}
                 <tr iid={{item.project_id}} status={{item.project_status.status}}>
                     <td>{{item.project_code}}</td>
-                    <td>{{item.title}}</td>
+                    <td><a href=/college/finalinfo/{{item.project_id}}>{{item.title}}</a></td>
                     <td>{{item.teacher.teacherinfosetting.name}}</td>
                     <td>{{item.teacher.college}}</td>
                     <td> {{item.approval_year}}</td>
@@ -80,7 +80,7 @@
                         {% ifequal item.project_status.status review%}
                         <button class="btn btn-primary btn-sm" href="#">结题</button>
                         {%else%}
-                        <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" id="judge">审核</button>
+                        <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" name="judge">审核</button>
                         {%endifequal%}
                     </td>
                     {% endifequal%}
@@ -141,7 +141,7 @@
                     {% for item in item2_list%}
                     <tr>
                         <td>{{item.project_code}}</td>
-                        <td>{{item.title}}</td>
+                        <td><a href=/college/finalinfo/{{item.project_id}}>{{item.title}}</a></td>
                         <td>{{item.teacher.teacherinfosetting.name}}</td>
                         <td>{{item.teacher.college}}</td>
                         <td> {{item.approval_year}}</td>

@@ -34,7 +34,7 @@ Dajaxice.common.getStatus(function(data){
     finalstatus=data.final;
 },{});
 
-$("#judge").click(function(){
+$("[name='judge']").click(function(){
     judgeid=$(this).closest("tr").attr("iid");
     projectstatus=$(this).closest("tr").attr("status");
 });
