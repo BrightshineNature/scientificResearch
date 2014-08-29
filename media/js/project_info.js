@@ -1,4 +1,5 @@
 var judgeid,userrole,userstatus,projectstatus,applicationstatus_s,applicationstatus_c,finalstatus;
+var search=0;
 var glo_project_id;
 $("#not_pass_reason").hide();
 $("#not_pass_article").hide();
@@ -35,19 +36,23 @@ Dajaxice.common.getStatus(function(data){
 
 $("#judge").click(function(){
     judgeid=$(this).closest("tr").attr("iid");
-    userrole=$(this).closest("table").attr("userrole");
-    userstatus=$(this).closest("table").attr("userstatus");
     projectstatus=$(this).closest("tr").attr("status");
 });
 $("#commit").click(function(){
 
     var value=$("#id_judgeresult").val();
+    userrole=$(".tab-content").attr("userrole");
+    userstatus=$(".tab-content").attr("userstatus");
     if(value!=-1){
         Dajaxice.common.LookThroughResult(look_through_call_back,{
             "judgeid":judgeid,
             "userrole":userrole,
             "userstatus":userstatus,
-            "look_through_form":$("#lookThroughForm").serialize(true)
+            "page":$("#not_pass_paginator .disabled").attr("value"),
+            "page2":$("pass_paginator .disabled").attr("value"),
+            "search":search,
+            "look_through_form":$("#lookThroughForm").serialize(true),
+            "searchForm":$("#searchForm").serialize(true)
         });
     }
     
@@ -57,7 +62,7 @@ function look_through_call_back(data){
         $("#applicationTable").html(data.table_html);
     } 
     else{
-        $("#researchTable").html(data.table_html)
+        $("#researchTable").html(data.table_html);
     }
 
 }
@@ -79,3 +84,29 @@ function change_projectuniquecode_callback(data){
         $(target).html(data.res);
     }
 }
+function getPagination(page,page2){
+    userrole=$(".tab-content").attr("userrole");
+    userstatus=$(".tab-content").attr("userstatus");
+    Dajaxice.common.getPagination(getPaginationCallBack,{
+        "page":page,
+        "page2":page2,
+        "userrole":userrole,
+        "userstatus":userstatus,
+        "search":search,
+        "form":$("#searchForm").serialize(true)
+    });  
+}
+function getPaginationCallBack(data){
+    if (userstatus=="application"){
+        $("#not_pass").html(data.table_not_pass);
+        $("#pass").html(data.table_pass);
+    }
+}
+
+   
+
+$(document).on("click","#not_pass_paginator .item_page",function(){
+    page=$(this).attr("arg");
+    page2=-1;
+    getPagination(page,page2); 
+});

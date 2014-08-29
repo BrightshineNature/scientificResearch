@@ -96,10 +96,10 @@ def getStatus(request):
     return simplejson.dumps({
         "application_c":PROJECT_STATUS_APPLICATION_COMMIT_OVER,
         "application_s":PROJECT_STATUS_APPLICATION_COLLEGE_OVER,
-        "final":PROJECT_STATUS_FINAL_COMMIT_OVER,
+        "final":PROJECT_STATUS_FINAL_FINANCE_OVER,
     })
 @dajaxice_register
-def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
+def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look_through_form,searchForm):
     project=ProjectSingle.objects.get(pk=judgeid)
     loginfo(look_through_form)
     form=deserialize_form(look_through_form)
@@ -127,13 +127,31 @@ def LookThroughResult(request,judgeid,userrole,userstatus,look_through_form):
     context=schedule_form_data(request,{
         "role":userrole,
         "status":userstatus
-    })
+    },searchForm,page,page2,search)
     loginfo(userstatus)
     if userstatus=="application":
         table_html=render_to_string("widgets/project_info.html",context)
     else:
         table_html=render_to_string("widgets/research_concluding_table.html",context)
-    return simplejson.dumps({"table_html":table_html})   
+    return simplejson.dumps({"table_html":table_html}) 
+
+@dajaxice_register
+def getPagination(request,page,page2,userrole,userstatus,search,form):
+    userauth={
+        "role":userrole,
+        "status":userstatus
+    }
+    context=schedule_form_data(request,userauth,form,page,page2,search)
+    if userstatus=="application":
+        table_not_pass=render_to_string("widgets/project_info_not_pass_table.html",context)
+        table_pass=render_to_string("widgets/project_info_pass_table.html",context)
+    else:
+        table_not_pass=""
+        table_pass=""
+        return simplejson.dumps({
+            "table_not_pass":table_not_pass,
+            "table_pass":table_pass
+        })
 # @dajaxice_register
 # def change_project_overstatus(request, project_id, changed_overstatus):
 #     '''

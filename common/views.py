@@ -39,7 +39,7 @@ def addURL(project_list):
             except:
                 item.file_summary=False
     return project_list
-def getParam(pro_list, userauth,flag):
+def getParam(pro_list, userauth,flag,page,page2):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
     if flag:
@@ -48,10 +48,9 @@ def getParam(pro_list, userauth,flag):
         pass_apply_project_group=pro_list.filter(search_q)
     pass_apply_project_group=addURL(pass_apply_project_group)
     not_pass_apply_project_group=addURL(not_pass_apply_project_group)
-    param={
-        "not_pass_apply_project_group":not_pass_apply_project_group,
-        "pass_apply_project_group":pass_apply_project_group,
-    }
+    param={}
+    param.update(getContext(pass_apply_project_group,page2,"item2",0))
+    param.update(getContext(not_pass_apply_project_group,page,"item",0))
     return param
 
 def appManage(request, pid):
@@ -191,12 +190,6 @@ def fileUploadManage(request, pid):
                 path = obj.file_obj.path
                 obj.delete()
                 default_storage.delete(path)
-
-
-
-
-
-
         for i in FileList:
             if request.FILES.has_key(i):
                 if not handleFileUpload(request, pid, i):
@@ -218,7 +211,6 @@ def fileUploadManage(request, pid):
     return context
 
 def scheduleManage(request, userauth):
-    loginfo(userauth["role"])
     context = schedule_form_data(request, userauth)
     context.update({
         "approve":PROJECT_STATUS_APPLICATION_REVIEW_OVER
@@ -241,12 +233,12 @@ def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
 
     return render(request, userauth['role'] + '/financial.html', context)
-def schedule_form_data(request , userauth=""):
-
+def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
     schedule_form = ScheduleBaseForm(request=request)
     ProjectJudge_form=ProjectJudgeForm()
     has_data = False
-    if request.method == 'POST':
+    
+    if search == 1:
         schedule_form = ScheduleBaseForm(request.POST)
         pro_list=get_search_data(request,schedule_form)
         default=False
@@ -254,7 +246,7 @@ def schedule_form_data(request , userauth=""):
         pro_list=get_project_list(request)
         loginfo(pro_list.count())
         default=True
-    param=getParam(pro_list,userauth,default)
+    param=getParam(pro_list,userauth,default,page,page2)
     context ={ 'schedule_form':schedule_form,
                'has_data': has_data,
                'usercontext': userauth,

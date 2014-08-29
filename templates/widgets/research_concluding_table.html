@@ -37,7 +37,7 @@
 
             <tbody>
                 {% if not_pass_apply_project_group%}
-                {% for item in not_pass_apply_project_group%}
+                {% for item in item_list%}
                 <tr iid={{item.project_id}} status={{item.project_status.status}}>
                     <td>{{item.project_code}}</td>
                     <td>{{item.title}}</td>
@@ -99,6 +99,9 @@
                 {% endif%}
             </tbody>
         </table>
+        <div id="not_pass_paginator">
+            {%include "widgets/paginator.html"%}
+        </div>
     </div>
 
     <div class="tab fade" id="pass">
@@ -135,7 +138,7 @@
 
                 <tbody>
                     {% if pass_apply_project_group%}
-                    {% for item in pass_apply_project_group%}
+                    {% for item in item2_list%}
                     <tr>
                         <td>{{item.project_code}}</td>
                         <td>{{item.title}}</td>
@@ -178,6 +181,9 @@
                     {% endif%}
                 </tbody>
             </table>
+            <div>
+                {% include "widgets/paginator2.html"%}
+            </div>
         </div>
     </div>
 
