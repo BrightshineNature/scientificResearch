@@ -259,7 +259,6 @@ def status_confirm(project, confirm):
             pass
         else:
             return False
-
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_WEB_OVER:
         if confirm==APPLICATION_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
@@ -283,6 +282,11 @@ def status_confirm(project, confirm):
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
+        if confirm==APPLICATION_EXPERT_START_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_REVIEW_START)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_REVIEW_START:
         if confirm==APPLICATION_REVIEW_CONFIRM:
             set_status(project,PROJECT_STATUS_APPLICATION_REVIEW_OVER)
         else:
@@ -320,8 +324,7 @@ def status_confirm(project, confirm):
         if confirm==TASK_SCHOOL_CONFIRM:
             set_status(project,PROJECT_STATUS_SCHOOL_OVER)
         else:
-            return False        
-    
+            return False
     elif project.project_status.status==PROJECT_STATUS_TASK_SCHOOL_OVER:
         if confirm==PROGRESS_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
@@ -368,6 +371,11 @@ def status_confirm(project, confirm):
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
         if confirm==FINAL_REVIEW_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_EXPERT_START)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_EXPERT_START:
+        if confirm==FINAL_REVIEW_CONFIRM:
             set_status(project,PROJECT_STATUS_FINAL_REVIEW_OVER)
         else:
             return False
@@ -379,5 +387,3 @@ def status_confirm(project, confirm):
     else:
         return False
     return True
-
-        
