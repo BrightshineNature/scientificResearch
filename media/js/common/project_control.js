@@ -18,7 +18,6 @@ function ChangeControlStatus_callback(data){
     $(text_div).find("#expert_review_manage_fail").hide();
     btn= $(text_div).find("input[id='"+data.type_id+"']");
     span = $(text_div).find("#"+data.type_id+"_span");
-    alert($(span).val());
     if(data.value){
       $(btn).attr("class","btn btn-warning");
       $(btn).val("关闭"+data.type_name);

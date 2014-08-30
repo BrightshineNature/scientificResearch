@@ -37,12 +37,12 @@ def show(request):
     else:
         pro_list=ProjectSingle.objects.all()
     context = getContext(pro_list,project_page,'project',page_elems = 9)
-    # for project in context["project_list"]:
-    #     # imgs = project.uploadedfiles_set.filter( \
-    #     #     Q(file_obj__iendswith="jpg") | \
-    #     #         Q(file_obj__iendswith="png") )
-    #     project.img = (imgs.count() and convert2media_url(imgs[0].file_obj.url)) or \
-    #         DEFAULT_IMG_URL
+    for project in context["project_list"]:
+        imgs = project.uploadedfiles_set.filter( \
+            Q(file_obj__iendswith="jpg") | \
+                Q(file_obj__iendswith="png") )
+        project.img = (imgs.count() and convert2media_url(imgs[0].file_obj.url)) or \
+            DEFAULT_IMG_URL
     context.update({
                'schedule_form':schedule_form,
              })
@@ -58,7 +58,7 @@ def newsListByCate(request, news_cate):
             news_list = News.objects.filter(news_category__category=news_cate).order_by('-news_date')
     except:
         raise Http404
-    context = getContext(news_list,1, 'news')
+    context = getContext(news_list,1, 'item')
     context["news_cate"] = news_cate
     context['%s_active' % news_cate] = 'active'
     return render(request, 'home/newsContentByCate.html', \

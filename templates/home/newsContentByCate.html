@@ -19,7 +19,10 @@
            </div>
          </form>
        </div>
-       {% include "widgets/news/_newsList.html" %}
+       <div id="news-section">
+         {% include "widgets/news/_newsList.html" %}
+       </div>
      </div> <!-- news-list -->
    </div> <!-- news-main -->
+   <script type='text/javascript' src="{{STATIC_URL}}js/home/news_list.js"></script>
 {% endblock %}

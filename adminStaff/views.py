@@ -105,8 +105,9 @@ def newsRelease(request):
         if form.is_valid():
             form.save()
     newsList = News.objects.all()
-    context={"newsform":NewsForm,
-             "newsList":newsList}
+    context = getContext(newsList,1,"item",page_elems=7)
+    context.update({"newsform":NewsForm,
+                  })
     return render(request,"adminStaff/news_release.html",context)
 
 @csrf.csrf_protect

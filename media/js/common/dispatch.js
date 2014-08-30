@@ -28,5 +28,5 @@ function Dispatch_callback(data){
        object.css("background","red");
     });
   }
-  $("#dispatch_error_message").append("<strong>"+data.message+"</strong>");
+  alert(data.message);
 }
