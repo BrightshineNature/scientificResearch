@@ -18,6 +18,7 @@ from const.models import ScienceActivityType
 from teacher.models import ProjectFundBudget
 from users.models import College,Special
 from common.models import ProjectMember,BasisContent , BaseCondition, UploadFile
+from dajaxice.utils import deserialize_form
 def addURL(project_list):
     for item in project_list:
         if item.file_application:
@@ -51,8 +52,8 @@ def getParam(pro_list, userauth,flag,page,page2):
     pass_apply_project_group=addURL(pass_apply_project_group)
     not_pass_apply_project_group=addURL(not_pass_apply_project_group)
     param={}
-    param.update(getContext(pass_apply_project_group,page2,"item2",0))
-    param.update(getContext(not_pass_apply_project_group,page,"item",0))
+    param.update(getContext(pass_apply_project_group,page2,"item2",0,page_elems=3))
+    param.update(getContext(not_pass_apply_project_group,page,"item",0,page_elems=3))
     return param
 
 def appManage(request, pid):
@@ -212,6 +213,7 @@ def researchConcludingManage(request , userauth):
     context.update({
         "review":PROJECT_STATUS_FINAL_REVIEW_OVER
     })
+    loginfo(context['item_list'])
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financeManage(request, userauth):
     context = schedule_form_data(request, userauth)
@@ -225,17 +227,16 @@ def financialManage(request, userauth):
 
     return render(request, userauth['role'] + '/financial.html', context)
 def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
-    schedule_form = ScheduleBaseForm(request=request)
     ProjectJudge_form=ProjectJudgeForm()
     has_data = False
+    schedule_form=ScheduleBaseForm(request=request)
     
     if search == 1:
-        schedule_form = ScheduleBaseForm(request.POST)
+        schedule_form = ScheduleBaseForm(deserialize_form(form))
         pro_list=get_search_data(request,schedule_form)
         default=False
     else:
         pro_list=get_project_list(request)
-        loginfo(pro_list.count())
         default=True
     param=getParam(pro_list,userauth,default,page,page2)
     context ={ 'schedule_form':schedule_form,
@@ -246,7 +247,7 @@ def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
     context.update(param)
 
     return context
-def get_search_data(schedule_form):
+def get_search_data(request,schedule_form):
     if schedule_form.is_valid():
             application_status=schedule_form.cleaned_data['application_status']
             status=schedule_form.cleaned_data['status']
@@ -296,6 +297,7 @@ def get_search_data(schedule_form):
                 pro_list=ProjectSingle.objects.filter(qset)
             else:
                 pro_list=ProjectSingle.objects.all()
+            loginfo(pro_list.count)
             return pro_list
 def get_project_list(request):
     identity = request.session.get('auth_role', "")

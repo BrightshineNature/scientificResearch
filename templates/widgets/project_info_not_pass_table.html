@@ -1,4 +1,4 @@
-<table class="table table-hover" userrole={{usercontext.role}} userstatus={{usercontext.status}}>
+<table class="table table-hover">
     <thead>
         <tr>
             <th>申请代码</th>
@@ -35,7 +35,7 @@
                 {% ifequal item.project_status.status approve%}
                 <button class="btn btn-primary btn-sm" href="#">立项</button>
                 {% else%}
-                <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" id="judge">审核 </button>
+                <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" name="judge">审核 </button>
                 {%endifequal%}
             </td>
         </tr>

@@ -34,7 +34,7 @@ Dajaxice.common.getStatus(function(data){
     finalstatus=data.final;
 },{});
 
-$("[name='judge']").click(function(){
+$(document).on("click","[name='judge']",function(){
     judgeid=$(this).closest("tr").attr("iid");
     projectstatus=$(this).closest("tr").attr("status");
 });
@@ -49,10 +49,10 @@ $("#commit").click(function(){
             "userrole":userrole,
             "userstatus":userstatus,
             "page":$("#not_pass_paginator .disabled").attr("value"),
-            "page2":$("pass_paginator .disabled").attr("value"),
+            "page2":$("#pass_paginator .disabled").attr("value"),
             "search":search,
             "look_through_form":$("#lookThroughForm").serialize(true),
-            "searchForm":$("#searchForm").serialize(true)
+            "searchForm":$("#schedule_form").serialize(true)
         });
     }
     
@@ -87,26 +87,36 @@ function change_projectuniquecode_callback(data){
 function getPagination(page,page2){
     userrole=$(".tab-content").attr("userrole");
     userstatus=$(".tab-content").attr("userstatus");
+    
     Dajaxice.common.getPagination(getPaginationCallBack,{
         "page":page,
         "page2":page2,
         "userrole":userrole,
         "userstatus":userstatus,
         "search":search,
-        "form":$("#searchForm").serialize(true)
+        "form":$("#schedule_form").serialize(true)
     });  
 }
 function getPaginationCallBack(data){
-    if (userstatus=="application"){
         $("#not_pass").html(data.table_not_pass);
         $("#pass").html(data.table_pass);
-    }
 }
 
    
-
 $(document).on("click","#not_pass_paginator .item_page",function(){
     page=$(this).attr("arg");
-    page2=-1;
+    page2=$("#pass_paginator .disabled").attr("value");
     getPagination(page,page2); 
+});
+
+$(document).on("click","#pass_paginator .item_page",function(){
+    page2=$(this).attr("arg");
+    
+    page=$("#not_pass_paginator .disabled").attr("value");
+    getPagination(page,page2); 
+});
+$("#filter_button").click(function(){
+    search=1;
+    getPagination(1,1);
+
 });

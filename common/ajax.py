@@ -11,7 +11,8 @@ from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
 from django.utils import simplejson
 from django.template.loader import render_to_string
-from backend.logging import loginfo
+
+#from adminStaff.forms import NumLimitForm, TimeSettingForm, SubjectCategoryForm, ExpertDispatchForm,SchoolDispatchForm,TemplateNoticeForm,FundsChangeForm,StudentNameForm, SchoolDictDispatchForm
 
 from django.db.models import Q
 from backend.logging import loginfo
@@ -27,7 +28,7 @@ from common.models import ProjectMember, BasisContent, BaseCondition
 from teacher.models import ProjectFundBudget,ProjectFundSummary
 from adminStaff.models import ProjectSingle,Re_Project_Expert
 from django.core.mail import send_mail
-from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile,SchoolProfile,CollegeProfile
+from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile
 OVER_STATUS_NOTOVER = "notover"
 OVER_STATUS_OPENCHECK = "opencheck"
 OVER_STATUS_MIDCHECK = "midcheck"
@@ -36,13 +37,14 @@ OVER_STATUS_NORMAL = "normal"
 
 OVER_STATUS_CHOICES = (
     ('no', u"未结题"),
-    ('yes', u"已结题"),
+    ('yes', u"已结题"),    
 )
 
 @dajaxice_register
 def SendMail(request,form):
     form=deserialize_form(form)
     loginfo(form)
+    
     #send_mail(form["mail_title"],form["mail_content"],"zhc1009@163.com",["347096491@qq.com","369385153@qq.com"])
     if form["mail_title"]=="":
         status=1
@@ -114,23 +116,12 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
             finance_summary.save()
     else:
         print form.getlist('application')
-        identity = request.session.get("auth_role","")
-        if identity == SCHOOL_USER:
-            school = SchoolProfile.objects.get(userid = request.user)
-            comment= school.department+u"管理员"+school.userid.first_name+u":"
-        elif identity == COLLEGE_USER:
-            comment= u"学院管理员"+request.user.first_name+u":"
-        elif identity == FINANCE_USER:
-            comment= u"财务管理员"+request.user.first_name+u":"
-        else:
-            comment = u""
-        for item in form.getlist('application'):
-            comment+=item+u"、"
-        for item in form.getlist("final"):
-            comment+=item+u"、"
-        comment+=u"，原因"+form["reason"]
-        loginfo(comment)
-        project.comment = comment
+        comment={
+            "Judger":request.user.first_name,
+            "Article":form.getlist('application')+form.getlist("final"),
+            "description":form["reason"]
+        }
+        project.comment=str(comment)
         project.save()
         statusRollBack(project,userrole,userstatus,form)
     context=schedule_form_data(request,{
@@ -150,14 +141,20 @@ def getPagination(request,page,page2,userrole,userstatus,search,form):
         "role":userrole,
         "status":userstatus
     }
+    page=int(page)
+    page2=int(page2)
+    search=int(search)
+    loginfo(userrole)
+    loginfo(form)
+    loginfo(userstatus)
     context=schedule_form_data(request,userauth,form,page,page2,search)
     if userstatus=="application":
         table_not_pass=render_to_string("widgets/project_info_not_pass_table.html",context)
         table_pass=render_to_string("widgets/project_info_pass_table.html",context)
     else:
-        table_not_pass=""
-        table_pass=""
-        return simplejson.dumps({
+        table_not_pass=render_to_string("widgets/research_concluding_table_not_pass.html",context)
+        table_pass=render_to_string("widgets/research_concluding_table_pass.html",context)
+    return simplejson.dumps({
             "table_not_pass":table_not_pass,
             "table_pass":table_pass
         })
@@ -184,6 +181,8 @@ def getPagination(request,page,page2,userrole,userstatus,search,form):
 @dajaxice_register
 def saveProjectInfoForm(request, form, pid):
     form = ProjectInfoForm(deserialize_form(form))
+
+
     p = ProjectSingle.objects.get(project_id = pid)
     context = {
         'status': 1,
@@ -203,23 +202,19 @@ def saveProjectInfoForm(request, form, pid):
         p.save()            
         pass
     else :
-        context['status'] = 0
-        error = ""
-        # print "ERROR |||||"
-        for i in form.errors:
-            # print i, form.errors[i]
-            error += str(i) + ","
-        context['error'] = error
-
         print "error in saveProjectInfoForm"
         
+        # for i in form.errors:
+
+        context['status'] = 0
         # context['error'] = str(form.errors)        
     # print context['error']
+    
     return simplejson.dumps(context)
 
 
-def refreshMemberTabel(pid):
-    project_member_list = ProjectMember.objects.filter(project__project_id= pid)
+def refreshMemberTabel():
+    project_member_list = ProjectMember.objects.all()
     return render_to_string( "widgets/project_member_table.html", {
         'project_member_list':project_member_list,
 
@@ -232,10 +227,10 @@ def saveProjectMember(request, form, pid, mid):
         form = ProjectMemberForm(deserialize_form(form),instance = mem)
     else :
         form = ProjectMemberForm(deserialize_form(form))
+    
     context = {
         'status':0,
         'project_member_table': "",
-        'error':"",
     }
 
     if form.is_valid():
@@ -243,15 +238,14 @@ def saveProjectMember(request, form, pid, mid):
         temp.project = ProjectSingle.objects.get(project_id = pid)
         temp.save()
         context['status'] = 1
-        context['project_member_table'] = refreshMemberTabel(pid)
+        context['project_member_table'] = refreshMemberTabel()
+
     else:
         context['status'] = 0
-        error = ""
-        for i in form.errors:
-            error += str(i) + ","
-        context['error'] = error
         print form.errors
         print "error in saveProjectMember"
+
+
     return simplejson.dumps(context)
 @dajaxice_register
 def deleteProjectMember(request, mid):
@@ -265,6 +259,8 @@ def deleteProjectMember(request, mid):
 
 @dajaxice_register
 def saveBasisContent(request, form, pid, bid):
+
+
     context = {
         'status':1,
     }
