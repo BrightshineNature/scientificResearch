@@ -1,10 +1,10 @@
 var judgeid,userrole,userstatus,projectstatus,applicationstatus_s,applicationstatus_c,finalstatus;
 var search=0;
 var glo_project_id;
-$("#not_pass_reason").hide();
+$("[name='not_pass_reason']").hide();
 $("#not_pass_article").hide();
-$("#id_judgeresult").css("color","gray");
-$("#id_judgeresult").change(function(){
+$("[name='judgeresult']").css("color","gray");
+$("[name='judgeresult']").change(function(){
     if($(this).val()=="-1")
     {
         $(this).css("color","gray");
@@ -15,7 +15,7 @@ $("#id_judgeresult").change(function(){
     }
     if($(this).val()=="0")
     {
-        $("#not_pass_reason").show(500);
+        $("[name='not_pass_reason']").show(500);
         if(projectstatus==applicationstatus_s||projectstatus==applicationstatus_c||projectstatus==finalstatus){
         $("#not_pass_article").show(500);
         }   
@@ -23,7 +23,7 @@ $("#id_judgeresult").change(function(){
     }
     else
     {
-        $("#not_pass_reason").hide(500);
+        $("[name='not_pass_reason']").hide(500);
         $("#not_pass_article").hide(500);
     }
 
@@ -38,9 +38,9 @@ $(document).on("click","[name='judge']",function(){
     judgeid=$(this).closest("tr").attr("iid");
     projectstatus=$(this).closest("tr").attr("status");
 });
-$("#commit").click(function(){
-
-    var value=$("#id_judgeresult").val();
+$("[name='commit']").click(function(){
+    var value=$(this).closest(".modal").find("#id_judgeresult").val();
+    var lookThroughForm=$(this).closest(".modal").find("#lookThroughForm").serialize(true);
     userrole=$(".tab-content").attr("userrole");
     userstatus=$(".tab-content").attr("userstatus");
     if(value!=-1){
@@ -51,7 +51,7 @@ $("#commit").click(function(){
             "page":$("#not_pass_paginator .disabled").attr("value"),
             "page2":$("#pass_paginator .disabled").attr("value"),
             "search":search,
-            "look_through_form":$("#lookThroughForm").serialize(true),
+            "look_through_form":lookThroughForm,
             "searchForm":$("#schedule_form").serialize(true)
         });
     }

@@ -204,15 +204,9 @@ def fileUploadManage(request, pid):
 
 def scheduleManage(request, userauth):
     context = schedule_form_data(request, userauth)
-    context.update({
-        "approve":PROJECT_STATUS_APPLICATION_REVIEW_OVER
-    })
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
     context = schedule_form_data(request , userauth)
-    context.update({
-        "review":PROJECT_STATUS_FINAL_REVIEW_OVER
-    })
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financeManage(request, userauth):
     context = schedule_form_data(request, userauth)
@@ -242,6 +236,8 @@ def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
                'has_data': has_data,
                'usercontext': userauth,
                'ProjectJudge_form':ProjectJudge_form,
+               "approve":PROJECT_STATUS_APPLICATION_REVIEW_OVER,
+               "review":PROJECT_STATUS_FINAL_REVIEW_OVER
     }
     context.update(param)
 

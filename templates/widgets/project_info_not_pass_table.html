@@ -33,7 +33,7 @@
             </td>
             <td>
                 {% ifequal item.project_status.status approve%}
-                <button class="btn btn-primary btn-sm" href="#">立项</button>
+                <button data-toggle="modal" data-target="#approve_modal"  class="btn btn-primary btn-sm" name="judge">立项</button>
                 {% else%}
                 <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" name="judge">审核 </button>
                 {%endifequal%}
