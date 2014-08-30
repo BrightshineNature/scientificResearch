@@ -12,11 +12,11 @@ urlpatterns = patterns('',
 
     url( r'^$', school_views.scheduleView,  ),
 	url(
-		r'final$',
+        r'^final/(?P<pid>.{36})$',
 		school_views.finalReportView,
 	),
     url(
-        r'application$',
+        r'^application/(?P<pid>.{36})$',
         school_views.appView,
     ),
     url(

@@ -4,5 +4,7 @@
 <input type="button" class="btn btn-primary" id="{{auth_choices.college}}"   value="给学院秘书发送邮件"/>
 {%endblock%}
 {%block users-table%}
-{%include "widgets/dispatch/college_user_table.html" %}
+<div id="dispatch_college_section" >
+  {%include "widgets/dispatch/college_user_table.html" %}
+</div>
 {%endblock %}

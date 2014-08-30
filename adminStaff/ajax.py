@@ -5,8 +5,10 @@ from django.shortcuts import get_object_or_404
 from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
+from django.db.models import Q
 from backend.utility import getContext
 
+from adminStaff.utility import getCollege
 from django.utils import simplejson
 from django.template.loader import render_to_string
 from common.utility import get_xls_path
@@ -251,7 +253,7 @@ def TemplateNoticeDelete(request,deleteID,page):
     return simplejson.dumps(ret)
 
 @dajaxice_register
-def Dispatch(request,form,identity):
+def Dispatch(request,form,identity,page):
     if identity == SCHOOL_USER or identity ==COLLEGE_USER:
         dispatchForm = DispatchForm(deserialize_form(form))
     elif identity == EXPERT_USER or identity == TEACHER_USER:
@@ -273,28 +275,41 @@ def Dispatch(request,form,identity):
             flag = sendemail(request, username, password,email,identity, person_name,college=college)
         if flag:
             message = u"发送邮件成功"
-            table = refresh_user_table(request,identity)
+            table = refresh_user_table(request,identity,page)
             return simplejson.dumps({'field':dispatchForm.data.keys(), 'status':'1', 'message':message,'table':table})
         else:
             message = u"用户名已存在"
             return simplejson.dumps({'field':dispatchForm.data.keys(), 'status':'1', 'message':message})
     else:
         return simplejson.dumps({'field':dispatchForm.data.keys(),'error_id':dispatchForm.errors.keys(),'message':u"输入有误"})
-def refresh_user_table(request,identity):
+@dajaxice_register
+def DispatchPagination(request,page,identity):
+    html = refresh_user_table(request,identity,page)
+    return simplejson.dumps({'html':html})
+
+def refresh_user_table(request,identity,page=1):
     if identity == SCHOOL_USER:
         school_users = SchoolProfile.objects.all()
+        context=getContext(school_users, page, "item")
         return render_to_string("widgets/dispatch/school_user_table.html",
-                            {"school_users":school_users})
+                                context)
     elif identity == COLLEGE_USER:
         college_users = CollegeProfile.objects.all()
+        context=getContext(college_users, page, "item2")
         return render_to_string("widgets/dispatch/college_user_table.html",
-                            {"college_users":college_users})
+                                context)
     elif identity == TEACHER_USER:
-         users = TeacherProfile.objects.all()
+         colleges = getCollege(request)
+         qset = reduce(lambda x,y:x|y,[Q(college = _college) for _college in colleges])
+         users = TeacherProfile.objects.filter(qset)
+         context=getContext(users, page, "item")
+         return render_to_string("widgets/dispatch/teacher_user_table.html",
+                                context)
     elif identity == EXPERT_USER:
         users = ExpertProfile.objects.all()
-    return render_to_string("widgets/dispatch/user_addcollege_table.html",
-                            {"users":users})
+        context=getContext(users, page, "item3")
+        return render_to_string("widgets/dispatch/expert_user_table.html",
+                                context)
 
 @dajaxice_register
 def infoExport(request,eid):

@@ -124,15 +124,13 @@ def dispatchView(request):
     college_users = CollegeProfile.objects.all()
     expert_users = ExpertProfile.objects.all()
     school_users = SchoolProfile.objects.all()
-    loginfo(college_users.count())
-    loginfo(school_users.count())
     context = {
                "dispatch_form":dispatch_form,
                "dispatchAddCollege_form":dispatchAddCollege_form,
-               "college_users":college_users,
-               "school_users":school_users,
-               "users":expert_users,
     }
+    context.update(getContext(school_users, 1, "item"))
+    context.update(getContext(college_users, 1, "item2"))
+    context.update(getContext(expert_users, 1, "item3"))
     return render(request, "adminStaff/dispatch.html", context)
 
 @csrf.csrf_protect

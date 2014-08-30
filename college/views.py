@@ -11,6 +11,7 @@ from backend.decorators import *
 from backend.logging import loginfo
 from django.db.models import Q
 from const import *
+from backend.utility import getContext
 
 from adminStaff.utility import getCollege
 from common.views import scheduleManage, financialManage,researchConcludingManage,finalReportViewWork,fundBudgetViewWork,fileUploadManage
@@ -85,8 +86,8 @@ def dispatchView(request):
     teacher_users = TeacherProfile.objects.filter(qset)
     context = {
                "dispatchAddCollege_form":dispatchAddCollege_form,
-               "users":teacher_users,
     }
+    context.update(getContext(teacher_users, 1, "item"))
     return render(request, "college/dispatch.html", context)
 
 @csrf.csrf_protect

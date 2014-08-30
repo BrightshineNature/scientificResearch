@@ -51,12 +51,20 @@ def fileUploadManageView(request, pid, is_submited = False):
     context['is_submited'] = is_submited
 
     return render(request, "teacher/file_upload.html", context)
+
+def firstLoginChecker(request):
+    setting = TeacherInfoSetting.objects.get(teacher__userid = request.user)
+    if setting.name == None:
+        return False
+    return True
+
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
 def homeView(request):
+    if not firstLoginChecker(request):
+        return HttpResponseRedirect(reverse("teacher.views.settingView"))
 
-    project_list = get_project_list(request).filter(project_status__status__lt=PROJECT_STATUS_APPLICATION_REVIEW_OVER);
     project_list = get_project_list(request).filter(project_status__status__lt = PROJECT_STATUS_APPROVAL);
     creationForm = ProjectCreationForm()
     context = {
@@ -140,7 +148,10 @@ def settingView(request):
     message = ""
     teacher = TeacherProfile.objects.get(userid = request.user)
     setting = TeacherInfoSetting.objects.get(teacher = teacher)
+    is_first = firstLoginChecker(request)
+
     if request.method == "GET":
+        setting.name = teacher.userid.first_name
         form = SettingForm(instance = setting)
     else:
         form = SettingForm(request.POST, instance = setting)
@@ -149,6 +160,7 @@ def settingView(request):
             message = "ok"
     context = {"form": form,
                "message": message,
+               "is_first": is_first,
                }
     return render(request, "teacher/setting.html", context)
 
