@@ -490,3 +490,4 @@ def delete_max_and_min(score_list):
     score_list.remove(min_score)
     return score_list
 
+\

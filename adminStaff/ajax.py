@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
+from backend.utility import getContext
+
 from django.utils import simplejson
 from django.template.loader import render_to_string
 from common.utility import get_xls_path
@@ -17,7 +19,7 @@ from adminStaff.forms import TemplateNoticeMessageForm,DispatchForm,DispatchAddC
 from django.utils import simplejson
 from django.template.loader import render_to_string
 from dajaxice.utils import deserialize_form
-from adminStaff.models import TemplateNoticeMessage,ProjectSingle
+from adminStaff.models import TemplateNoticeMessage,ProjectSingle,News
 from backend.logging import loginfo
 
 from users.models import SchoolProfile,CollegeProfile,Special,College
@@ -341,3 +343,11 @@ def change_project_unique_code(request, project_id,project_unique_code):
         loginfo(e)
         project_unique_code = "error"
     return simplejson.dumps({'status':'1', 'res':project_unique_code})
+@dajaxice_register
+def getNewsReleasePagination(request,page):
+    message=""
+    page =int(page)
+    newsList = News.objects.all()
+    context = getContext(newsList,page,"item",page_elems=7)
+    html = render_to_string("adminStaff/widgets/newslist.html",context)
+    return simplejson.dumps({"message":message,"html":html})
