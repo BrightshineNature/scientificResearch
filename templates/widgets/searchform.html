@@ -1,4 +1,4 @@
-<div class="form-inline" role="form">
+<div class="form-inline" role="form" id="searchForm">
     {% ifnotequal usercontext.status "application"%}
     <div class="form-group">
         {{schedule_form.status}}
@@ -10,27 +10,16 @@
         {{schedule_form.application_year}} 
     </div>
     {% endifnotequal%}
-
-
     <div class="form-group">              
         {{schedule_form.special}}
     </div>
-
-
     <div class="form-group">              
         {{schedule_form.college}}
     </div>
-
-
     <div class="form-group">              
         {{schedule_form.other_search}}
     </div>
     <div class="form-group">                    
-        <button type="submit" class="btn btn-primary" id="filter_button">检索</button>
+        <button type="button" class="btn btn-primary" id="filter_button">检索</button>
     </div>
 </div>
-
-
-
-
-

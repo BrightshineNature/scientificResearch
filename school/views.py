@@ -15,7 +15,7 @@ from const import *
 from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
 from adminStaff.utility import getSpecial
 
-from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase, get_project_list
+from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase, get_project_list, finalReportViewWork, appManage
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm,SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
@@ -26,9 +26,10 @@ from users.models import ExpertProfile, SchoolProfile
 @csrf.csrf_protect
 @login_required
 @authority_required(SCHOOL_USER)
-def appView(request):
-    context = {}
-    return render(request,"school/application.html",context)
+@check_submit_status(SUBMIT_STATUS_APPLICATION)
+def appView(request, pid, is_submited = False):
+    context = appManage(request, pid)
+    return render(request, "school/application.html", context)
 
 @csrf.csrf_protect
 @login_required
@@ -57,9 +58,14 @@ def financialInfoView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(SCHOOL_USER)
-def finalReportView(request):
-    context = {}
+@check_submit_status(SUBMIT_STATUS_FINAL)
+def finalReportView(request,pid,is_submited=False):
+    context = finalReportViewWork(request,pid,is_submited)
+    loginfo(p=is_submited,label="is_submited")
+    if context['redirect']:
+		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"school/final.html",context)
+
 
 @csrf.csrf_protect
 @login_required
