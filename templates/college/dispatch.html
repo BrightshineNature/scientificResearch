@@ -1,7 +1,9 @@
 {% extends "college/base/_content.html" %}
 
 {% block inner_content %}
-    {% include "widgets/dispatch/teacher_dispatch_form.html" %}
+<div id="dispatch-div">
+  {% include "widgets/dispatch/teacher_dispatch_form.html" %}
+</div>
 {% endblock %}
 {%block bottom_js %}
 {{ block.super }}

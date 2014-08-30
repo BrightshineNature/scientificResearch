@@ -5,5 +5,7 @@
 <input type="button" class="btn btn-primary" id="{{auth_choices.teacher}}"  value="给教师发送邮件"/>
 {%endblock%}
 {%block users-table%}
-{%include "widgets/dispatch/user_addcollege_table.html" %}
+<div id="dispatch_teacher_section" class="dispatch_paginator">
+  {%include "widgets/dispatch/teacher_user_table.html" %}
+</div>
 {%endblock %}

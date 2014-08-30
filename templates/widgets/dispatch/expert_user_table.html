@@ -4,15 +4,17 @@
       <td><strong>用户名</strong></td>
       <td><strong>邮箱</strong></td>
       <td><strong>负责人</strong></td>
+      <td><strong>学院</strong></td>
       <td><strong>用户状态</strong></td>
     </tr>
   </thead>
   <tbody>
-    {%for user in item_list %}
+    {%for user in item3_list %}
     <tr>
       <td>{{user.userid.username}}</td>
       <td>{{user.userid.email}}</td>
       <td>{{user.userid.first_name}}</td>
+      <td>{{user.college}}</td>
       {%if user.userid.is_active %}
       <td><button class="btn btn-success">已经激活</button></td>
       {%else%}
@@ -20,8 +22,9 @@
       {%endif%}
     </tr>
     {%endfor %}
+
   </tbody>
 </table>
-<div id="dispatch_school_paginator">
-  {%include "widgets/paginator.html"%}
+<div id="dispatch_expert_paginator">
+  {%include "widgets/paginator3.html"%}
 </div>
