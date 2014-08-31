@@ -213,13 +213,12 @@ def researchConcludingManage(request , userauth):
     context.update({
         "review":PROJECT_STATUS_FINAL_REVIEW_OVER
     })
-    loginfo(context['item_list'])
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financeManage(request, userauth):
     context = schedule_form_data(request, userauth)
-    for item in context.get("pass_apply_project_group"):
+    for item in context.get("item2_list"):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
-    for item in context.get("not_pass_apply_project_group"):
+    for item in context.get("item_list"):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
     return render(request, userauth['role'] + '/financeProject.html', context)
 def financialManage(request, userauth):
