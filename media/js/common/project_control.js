@@ -43,3 +43,14 @@ function ExpertReview_callback(data){
     $(text_div).find("#expert_review_success").hide();
   }
 }
+$("[name = 'btn_export']").click(function(){
+    var eid = $(this).attr("eid");
+    text_div = $(this).parents(".active");
+    $('#excelprogress').modal('show');
+    Dajaxice.school.ExpertinfoExport(releaseexcel_callback,{'special_id':$(text_div).attr('id'),'eid':eid,});
+});
+
+function releaseexcel_callback(data){
+  location.href = data.path;
+  $('#excelprogress').modal('hide');
+}

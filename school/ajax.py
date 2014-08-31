@@ -8,6 +8,7 @@ from django.db.models import Q
 from dajaxice.utils import deserialize_form
 from backend.logging import loginfo
 from common.utils import status_confirm
+from common.utility import get_xls_path
 from adminStaff.utility import getSpecial
 from adminStaff.models import ProjectSingle, Re_Project_Expert
 from backend.utility import getContext
@@ -221,4 +222,17 @@ def ChangeControlStatus(request,special_id,type_id,type_name):
             setattr(special,type_id+"_status",bValue)
             special.save()
         return simplejson.dumps({'status':'1','type_id':type_id,'type_name':type_name,'value':bValue})
+    return simplejson.dumps({'status':'0'})
+@dajaxice_register
+def ExpertinfoExport(request,special_id,eid):
+    special = getSpecial(request).get(id = special_id)
+    if special:
+        if eid==TYPE_ALLOC[0]:
+            proj_set = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status__gte = PROJECT_STATUS_APPLICATION_REVIEW_OVER,project_status__status__lte = PROJECT_STATUS_APPROVAL))
+        elif eid == TYPE_FINAL_ALLOC[0]:
+            proj_set = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status__gte = PROJECT_STATUS_FINAL_REVIEW_OVER,project_status__status__lte = PROJECT_STATUS_OVER))
+        loginfo(proj_set.count())
+        path = get_xls_path(request,special.expert_review.category,proj_set,special.expert_review.category)
+        ret = {'path':path}
+        return simplejson.dumps(ret)
     return simplejson.dumps({'status':'0'})
