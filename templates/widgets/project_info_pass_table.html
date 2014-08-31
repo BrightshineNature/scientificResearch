@@ -20,7 +20,7 @@
         {% for item in item2_list%}
         <tr iid={{item.project_id}}>
             <td>{{item.project_application_code}}</td>
-            <td>{{item.title}}</td>
+            <td><a href=/school/application/{{item.project_id}}>{{item.title}}</a></td>
             <td>{{item.teacher.teacherinfosetting.name}}</td>
             <td>{{item.teacher.college}}</td> 
             <td> {{item.application_year}}</td>
