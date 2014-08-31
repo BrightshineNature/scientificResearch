@@ -1,6 +1,13 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/member_change.css" >
 
-<form class="well form" id="member_change_form" method="POST" action="/teacher/setting">
+<form arg="{{is_first}}" class="well form" id="member_change_form" method="POST" action="/teacher/setting">
+    <div class="alert alert-success">
+        <button class="close" data-dismiss="alert">x</button>
+        <h4>提示：</h4>
+        <p>1. 首次登录后请立刻填写教师注册信息</p>
+        <p>2. 姓名，身份证号一经提交，即无法在本页面修改，如需修改请联系管理员</p>
+    </div>
+
     {% if form.errors %}
         <div class="alert alert-danger" id="alert-bar">
         <button class="close" data-dismiss="alert">x</button>
@@ -14,6 +21,7 @@
         </div>
     {% endif %}
     {% csrf_token %}
+
     <div class="row">
         <div class="col-lg-3">
             <div class="input-group">
