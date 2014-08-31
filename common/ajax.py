@@ -105,6 +105,7 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
     form=deserialize_form(look_through_form)
     loginfo(form)
     if form["judgeresult"]=="1":
+        loginfo("JJJJJJJ")
         status_confirm(project,-1)
         if userstatus=="budget":
             finance_budget=ProjectFundBudget.objects.get(project_id=project)
