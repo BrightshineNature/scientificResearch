@@ -22,6 +22,8 @@ from teacher.models import TeacherInfoSetting
 from adminStaff.models import ProjectSingle
 from forms import ProjectCreationForm
 from common.utils import createNewProject
+from common.views import get_project_list
+from const import PROJECT_STATUS_APPLICATION_REVIEW_OVER
 
 @csrf.csrf_protect
 @login_required
@@ -186,6 +188,7 @@ def financialView(request):
 @login_required
 @authority_required(TEACHER_USER)
 def finalInfoView(request):
+    project_list = get_project_list(request).filter(project_status__status__gte=PROJECT_STATUS_APPLICATION_REVIEW_OVER)
     teacher = TeacherProfile.objects.get(userid = request.user)
     project_list = ProjectSingle.objects.filter(teacher = teacher).filter(project_status__status__gte = PROJECT_STATUS_APPROVAL )
     context = {

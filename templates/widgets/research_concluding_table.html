@@ -7,180 +7,19 @@
 </ul>
 
 {%endifnotequal%}
-<div class="tab-content">
+
+<div class="tab-content" userrole={{usercontext.role}} userstatus={{usercontext.status}}>
     {% ifnotequal usercontext.role 'college'%}
     <div class="tab-pane fade in active" id="not_pass">
-        <table class="table table-hover" userrole={{usercontext.role}} userstatus={{usercontext.status}}>
-            <thead>
-                <tr>
-                    <th>项目编号</th>
-                    <th>项目名称</th>          
-                    <th>项目负责人</th>          
-                    <th>学院</th>         
-                    <th>立项年度</th>   
-                    <th>专题类型</th>
-                    <th>项目状态</th>
-                    {%ifnotequal usercontext.role "finance"%}
-                    <th>附件</th>
-                    {%endifnotequal%}
-                    {% ifequal usercontext.status "budget"%}
-                    <th>立项金额</th>
-                    {% endifequal%}
-                    {%ifequal usercontext.status "final"%}
-                    <th>预算</th>
-                    <th>决算</th>
-                    <th>结余</th>
-                    {%endifequal%}
-                    <th>审核</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% if not_pass_apply_project_group%}
-                {% for item in not_pass_apply_project_group%}
-                <tr iid={{item.project_id}} status={{item.project_status.status}}>
-                    <td>{{item.project_code}}</td>
-                    <td><a href=/college/finalinfo/{{item.project_id}}>{{item.title}}</a></td>
-                    <td>{{item.teacher.teacherinfosetting.name}}</td>
-                    <td>{{item.teacher.college}}</td>
-                    <td> {{item.approval_year}}</td>
-                    <td>{{item.project_special}}</td>
-                    <td>{{item.project_status}}</td>
-                    {% ifnotequal usercontext.role "finance"%}                   
-                    <td>
-                        {%if item.file_task%}
-                        <span  class="label label-success"><a href={{item.task_url}}>任务书</a></span>
-                        {%else%}
-                        <span class="label label-danger">任务书</span>
-
-                        {%endif%}
-                        {%if item.file_interimchecklist%}
-                        <span class="label label-success"><a  href={{item.progress_url}}>进展报告</a></span>
-                        {%else%}
-
-                        <span class="label label-danger">进展报告</span>
-                        {%endif%}
-                        {% if item.file_summary%}
-                        <span  class="label label-success"><a href={{item.summary_url}}>结题书</a></span>
-                        {%else%}
-                        <span class="label label-danger">结题书</span>
-                        {%endif%}
-                    </td>
-                    {% endifnotequal%}
-                    {% ifequal usercontext.status "budget"%}
-                    <td>{{item.projectfundbudget.total_budget}}</td>
-                    {% endifequal%}
-                    {% ifequal usercontext.status "final"%}
-                    <td>{{item.projectfundsummary.total_budget}}</td>
-                    <td>{{item.projectfundsummary.total_expenditure}}</td>
-                    <td>{{item.remain}}</td>
-                    {% endifequal%}
-                    {% ifequal usercontext.role 'school'%}
-                    <td>
-                        {% ifequal item.project_status.status review%}
-                        <button class="btn btn-primary btn-sm" href="#">结题</button>
-                        {%else%}
-                        <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" name="judge">审核</button>
-                        {%endifequal%}
-                    </td>
-                    {% endifequal%}
-                    {% ifequal usercontext.status 'budget'%}
-                    <td>
-                        <a href="/finance/financeBudget/{{item.project_id}}" class="btn btn-primary btn-sm">审核</a>
-                    </td>
-                    {% endifequal%}
-                    {%ifequal usercontext.status 'final'%}
-                    <td>
-                        <a href="/finance/financeAuditing/{{item.project_id}}" class="btn btn-primary btn-sm">审核</a>
-                    </td>
-                    {%endifequal%}
-                </tr>
-                {% endfor%}
-                {% endif%}
-            </tbody>
-        </table>
+        {%include "widgets/research_concluding_table_not_pass.html"%}
     </div>
-
     <div class="tab fade" id="pass">
-        {%else%}
-        <div class="tab" id="pass">
-            {%endifnotequal%}
-
-            <h4>
-                符合搜索条件的项目数量为 {{pass_apply_project_group.count}}.
-            </h4>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>项目编号</th>
-                        <th>项目名称</th>          
-                        <th>项目负责人</th>          
-                        <th>学院</th>         
-                        <th>立项年度</th>   
-                        <th>专题类型</th>
-                        <th>项目状态</th>
-                        {%ifnotequal usercontext.role "finance"%}
-                        <th>附件</th>
-                        {%endifnotequal%}
-                        {% ifequal usercontext.status "budget"%}
-                        <th>立项金额</th>
-                        {% endifequal%}
-                        {%ifequal usercontext.status "final"%}
-                        <th>预算</th>
-                        <th>决算</th>
-                        <th>结余</th>
-                        {%endifequal%}
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% if pass_apply_project_group%}
-                    {% for item in pass_apply_project_group%}
-                    <tr>
-                        <td>{{item.project_code}}</td>
-                        <td><a href=/college/finalinfo/{{item.project_id}}>{{item.title}}</a></td>
-                        <td>{{item.teacher.teacherinfosetting.name}}</td>
-                        <td>{{item.teacher.college}}</td>
-                        <td> {{item.approval_year}}</td>
-                        <td>{{item.project_special}}</td>
-                        <td>{{item.project_status}}</td>
-                        {% ifnotequal usercontext.role "finance"%}                   
-                        <td>
-                            {%if item.file_task%}
-                            <span  class="label label-success"><a href={{item.task_url}}>任务书</a></span>
-                            {%else%}
-                            <span class="label label-danger">任务书</span>
-
-                            {%endif%}
-                            {%if item.file_interimchecklist%}
-                            <span class="label label-success"><a  href={{item.progress_url}}>进展报告</a></span>
-                            {%else%}
-
-                            <span class="label label-danger">进展报告</span>
-                            {%endif%}
-                            {% if item.file_summary%}
-                            <span  class="label label-success"><a href={{item.summary_url}}>结题书</a></span>
-                            {%else%}
-                            <span class="label label-danger">结题书</span>
-                            {%endif%}
-                        </td>
-                        {% endifnotequal%}
-                        {% ifequal usercontext.status "budget"%}
-                        <td>{{item.projectfundbudget.total_budget}}</td>
-                        {% endifequal%}
-                        {% ifequal usercontext.status "final"%}
-                        <td>{{item.projectfundsummary.total_budget}}</td>
-                        <td>{{item.projectfundsummary.total_expenditure}}</td>
-                        <td>{{item.remain}}</td>
-                        {% endifequal%}
-                    </tr>
-                    {% endfor%}
-                    {% endif%}
-                </tbody>
-            </table>
-        </div>
+    {% else%}
+    <div class="tab" id="pass">
+    {% endifnotequal%}
+        <h4>
+            符合搜索条件的项目数量为 {{item2_list.count}}。
+        </h4>
+        {%include "widgets/research_concluding_table_pass.html"%}
     </div>
-
-
-
 </div>
