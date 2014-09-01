@@ -1,0 +1,32 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            {% for field in form %}
+                <th>{{ field.label_tag }}</th>
+            {% endfor %}
+            <th>总分</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>平均</td>
+            {% for field in ave_score %}
+                <td>{{ field|floatformat:"1" }}</td>
+            {% endfor %}
+        </tr>
+        {% for item in scoreList %}
+            <tr class="expert_score_list_item">
+                <td>{{item.expert_name}}</td>
+                {% for field in item %}
+                    <td>
+                    {{ field.value }}
+                    </td>
+                {% endfor %}
+                <td>{{item.total_score }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a class="btn btn-primary" href="javascript:void(0)" id="detail_btn" name="detail_show_btn">显示具体得分</a>
+<hr \>

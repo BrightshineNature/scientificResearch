@@ -83,10 +83,8 @@ def allocView(request):
     alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
     form = FilterForm(request = request)
     expert_form = FilterForm()
-    
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
-    
     context = {"form": form,
                "expert_form": expert_form,
                "page_info": "alloc",}
@@ -115,10 +113,8 @@ def finalAllocView(request):
     alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
     form = FilterForm(request = request)
     expert_form = FilterForm()
-    
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = False)).count()
-    
     context = {"form": form,
                "expert_form": expert_form,
                "page_info": "finalalloc",}
@@ -156,6 +152,8 @@ def controlView(request):
     spec_list = zip(specials,expert_review_forms)
     context = {
         'spec_list' :spec_list,
+        'alloc_excel':TYPE_ALLOC[0],
+        'final_alloc_excel':TYPE_FINAL_ALLOC[0],
     }
     return render(request, "school/control.html", context);
 

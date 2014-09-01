@@ -69,7 +69,9 @@
       <div class="modal-body">
         <form class="well" id="lookThroughForm">
             <div class="form-group">
-            {%include "widgets/concluding_data.html"%}
+            <label>评审分数</label>
+            <div id="score_tables_part">
+            </div>
             <label for="review_select">审核结果</label>
             {{ProjectJudge_form.judgeresult}}
           </div>

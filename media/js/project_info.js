@@ -36,8 +36,26 @@ Dajaxice.common.getStatus(function(data){
 
 $(document).on("click","[name='judge']",function(){
     judgeid=$(this).closest("tr").attr("iid");
+    Dajaxice.school.getScore(getScoreCallBack, {"pid": judgeid,});
     projectstatus=$(this).closest("tr").attr("status");
 });
+function getScoreCallBack(data){
+    $("#score_tables_part").html(data.html);  
+    $(".expert_score_list_item").hide();
+    $("#detail_btn").attr("name", "detail_show_btn");
+    $("#detail_btn").html("显示具体得分");
+}
+$(document).on("click", "[name='detail_show_btn']", function(){
+    $(".expert_score_list_item").show();
+    $("#detail_btn").attr("name", "detail_hide_btn");
+    $("#detail_btn").html("隐藏具体得分");
+});
+$(document).on("click", "[name='detail_hide_btn']", function(){
+    $(".expert_score_list_item").hide();
+    $("#detail_btn").attr("name", "detail_show_btn");
+    $("#detail_btn").html("显示具体得分");
+});
+
 $("[name='commit']").click(function(){
     var value=$(this).closest(".modal").find("#id_judgeresult").val();
     var lookThroughForm=$(this).closest(".modal").find("#lookThroughForm").serialize(true);
@@ -121,3 +139,7 @@ $("#filter_button").click(function(){
     getPagination(1,1);
 
 });
+
+
+
+
