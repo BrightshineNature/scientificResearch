@@ -61,16 +61,12 @@ $(document).on("click", "#saveProjectMember", function(){
 
 function saveProjectMemberCallback(data){
 
-    // alert("SB");
-    // alert(data.project_member_table);
     if(data.status == 1)
     {
-        // alert("OK");
+
         $('#project_member_table_div').html(data.project_member_table);
         $('#project_member_form_error').hide();
 
-        // $('#saveProjectMember').addClass('data-dismiss');
-        // $('#member_info_modal').attr('data-dismiss', 'modal');
         $('#member_info_modal').modal("hide");
 
     }
@@ -81,12 +77,11 @@ function saveProjectMemberCallback(data){
         $('#project_member_form_error').show(500);
 
         var error = data.error.split(",");
-        // alert("SB");
-        // alert(error);
+
         for(var i = 0; i < error.length; ++ i)
         {
             if(error[i] == "") continue;
-            // cnt = "#id_" + error[i];
+            cnt = "#id_" + error[i];
             $(cnt).css("background","red");
         }
         // $('#member_info_modal').attr('data-dismiss', '');
@@ -214,7 +209,7 @@ $(document).on("click", ".save_button",function(){
     // alert(pid);
     if($(cnt_content).attr("id") == "project_info")
     {
-        cnt_tab = $(this).parent().parent().prev().children("li:eq(0)");        
+        // cnt_tab = $(this).parent().parent().prev().children("li:eq(0)");        
         
         
 
@@ -227,12 +222,12 @@ $(document).on("click", ".save_button",function(){
     }
     else if($(cnt_content).attr("id") == "project_member")
     {
-        cnt_tab = $(this).parent().parent().prev().children("li:eq(1)");
+        // cnt_tab = $(this).parent().parent().prev().children("li:eq(1)");
         
     }
     else if($(cnt_content).attr("id") == "basis_content")
     {
-        cnt_tab = $(this).parent().parent().prev().children("li:eq(2)");
+        // cnt_tab = $(this).parent().parent().prev().children("li:eq(2)");
 
         Dajaxice.common.saveBasisContent(saveBasisContentCallback,{
             'form': $("#basis_content_form").serialize(),
@@ -272,7 +267,9 @@ function saveProjectInfoFormCallback(data)
     if(data.status == 1)
     {
         // jump();    
+        $("#project_info_form_error").html("<h3>保存成功！</h3>");
         $("#project_info_form_error").hide();
+        $("#project_info_form_error").show(500);
 
         // alert("!OK");
     }
@@ -299,7 +296,10 @@ function saveBasisContentCallback(data) {
     if(data.status == 1)
     {
         // jump();    
-        $("#basis_content_form_error").hide();
+
+        $("#basis_content_form_error").html("<h3>保存成功!</h3>");
+        $("#basis_content_form_error").show();
+        window.scrollTo(0,0);
     }
     else if(data.status == 0)
     {
@@ -314,7 +314,10 @@ function saveBaseConditionCallback(data){
 
     if(data.status == 1)
     {
-        $("#base_condition_form_error").hide();
+        
+        $("#base_condition_form_error").html("<h3>保存成功!</h3>");
+        $("#base_condition_form_error").show();
+        window.scrollTo(0,0);
     }
     else if(data.status == 0)
     {

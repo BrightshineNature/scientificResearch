@@ -37,6 +37,7 @@ def appView(request, pid, is_submited = False):
     context = appManage(request, pid)
     context['user'] = "teacher" 
     context['is_submited'] = is_submited
+    context['is_submited'] = True
     return render(request, "teacher/application.html", context)
 
 @csrf.csrf_protect
