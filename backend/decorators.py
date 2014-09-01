@@ -89,13 +89,13 @@ class check_submit_status(object):
         self.phase = phase
     def get_submit_status(self,pro):
         if self.phase == SUBMIT_STATUS_APPLICATION:
-            return pro.special.application_status and ()
+            return pro.project_special.application_status and (pro.project_status.status < PROJECT_STATUS_APPLICATION_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPLY)
         elif self.phase == SUBMIT_STATUS_TASK:
-            return po.special.task_status and ()
+            return po.project_special.task_status and (pro.project_status.status < PROJECT_STATUS_TASK_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPROVAL)
         elif self.phase == SUBMIT_STATUS_PROGRESS:
-            return pro.special.progress_status and ()
+            return pro.project_special.progress_status and (pro.project_status.status < PROJECT_STATUS_PROGRESS_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_TASK_SCHOOL_OVER)
         elif self.phase == SUBMIT_STATUS_FINAL:
-            return pro.special.final_status and ()
+            return pro.project_special.final_status and (pro.project_status.status < PROJECT_STATUS_FINAL_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
         elif self.phase == SUBMIT_STATUS_REVIEW:
             pass
         return True
