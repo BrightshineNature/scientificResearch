@@ -73,6 +73,8 @@ def financialInfoView(request):
 @authority_required(FINANCE_USER)
 def exportFinanceView(request):
     schedule_form = ScheduleBaseForm()
-    context={'schedule_form':schedule_form
+    context={'schedule_form':schedule_form,
+             'type_budget':EXCELTYPE_INFO_FUNDBUDGET,
+             'type_summary':EXCELTYPE_INFO_FUNDSUMMARY
     }
     return render(request,"finance/exportFinance.html",context)

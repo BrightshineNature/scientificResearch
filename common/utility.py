@@ -89,7 +89,7 @@ def xls_info_fundsummay_gen():
     worksheet = workbook.add_sheet('sheet1')
     style = cell_style(horizontal=True,vertical=True)
     # generate header
-    worksheet.write_merge(0, 0, 0, 10, '项目预算金额总和表',style)
+    worksheet.write_merge(0, 0, 0, 10, '项目决算金额总和表',style)
 
     # generate body
     worksheet.write_merge(1, 1, 0, 0, '项目编号')
@@ -101,7 +101,9 @@ def xls_info_fundsummay_gen():
     worksheet.write_merge(1, 1, 4, 4, '立项年度')
     worksheet.write_merge(1, 1, 5, 5, '专题类型')
     worksheet.write_merge(1, 1, 6, 6, '项目状态')
-    worksheet.write_merge(1, 1, 7, 7, '金额总和')
+    worksheet.write_merge(1, 1, 7, 7, '预算金额')
+    worksheet.write_merge(1, 1, 8, 8, '决算金额')
+    worksheet.write_merge(1, 1, 9, 9, '结余金额')
 
     return worksheet, workbook
 
@@ -125,10 +127,11 @@ def xls_info_fundsummay(request,proj_set):
         xls_obj.write(row, 5, unicode(proj_obj.project_special))  
         xls_obj.write(row, 6, unicode(proj_obj.project_status)) 
         xls_obj.write(row, 7, unicode(proj_obj.projectfundsummary.total_budget))
-
+        xls_obj.write(row, 8, unicode(proj_obj.projectfundsummary.total_expenditure))
+        xls_obj.write(row, 9, unicode(int(proj_obj.projectfundsummary.total_budget)-int(proj_obj.projectfundsummary.total_expenditure)))
         _number+= 1
     # write xls file
-    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学项目预算金额总和表"))
+    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学项目决金额总和表"))
     workbook.save(save_path)
     return save_path
 

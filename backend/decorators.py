@@ -27,6 +27,7 @@ from django.contrib.auth.decorators import login_required
 
 from const import *
 from const.models import *
+from adminStaff.models import ProjectSingle
 from backend.logging import loginfo
 
 
@@ -86,15 +87,15 @@ class check_submit_status(object):
     """
     def __init__(self, phase):
         self.phase = phase
-    def get_submit_status(self):
+    def get_submit_status(self,pro):
         if self.phase == SUBMIT_STATUS_APPLICATION:
-            pass
+            return pro.project_special.application_status and (pro.project_status.status < PROJECT_STATUS_APPLICATION_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPLY)
         elif self.phase == SUBMIT_STATUS_TASK:
-            pass
+            return po.project_special.task_status and (pro.project_status.status < PROJECT_STATUS_TASK_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPROVAL)
         elif self.phase == SUBMIT_STATUS_PROGRESS:
-            pass
+            return pro.project_special.progress_status and (pro.project_status.status < PROJECT_STATUS_PROGRESS_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_TASK_SCHOOL_OVER)
         elif self.phase == SUBMIT_STATUS_FINAL:
-            pass
+            return pro.project_special.final_status and (pro.project_status.status < PROJECT_STATUS_FINAL_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
         elif self.phase == SUBMIT_STATUS_REVIEW:
             pass
         return True
@@ -102,6 +103,8 @@ class check_submit_status(object):
         def wrappered_method(request, *args, **kwargs):
             #check time control
             identity = request.session.get('auth_role', "")
+            pro = ProjectSingle.objects.get(project_id = kwargs["pid"])
+            loginfo(pro)
             is_submited = False
             if identity == ADMINSTAFF_USER and check_auth(user=request.user, authority=ADMINSTAFF_USER):
                 is_submited = True
@@ -115,7 +118,7 @@ class check_submit_status(object):
                 pass
             elif identity == TEACHER_USER and check_auth(user=request.user, authority=TEACHER_USER):
                 pid = kwargs.get("pid", None)
-                is_submited = self.get_submit_status();
+                is_submited = self.get_submit_status(pro);
             loginfo(p=is_submited, label="check_submit_status decorator, is_submited")
             kwargs["is_submited"] = is_submited
             response = method(request, *args, **kwargs)
