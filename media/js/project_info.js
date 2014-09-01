@@ -113,6 +113,7 @@ $(document).on("click","#pass_paginator .item_page",function(){
     page2=$(this).attr("arg");
     
     page=$("#not_pass_paginator .disabled").attr("value");
+    if(!page)page=-1;
     getPagination(page,page2); 
 });
 $("#filter_button").click(function(){

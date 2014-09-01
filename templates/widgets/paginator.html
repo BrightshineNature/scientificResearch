@@ -3,7 +3,7 @@
 		<li><a href="javascript:void(0)" class="item_page" arg="{{item_page.previous_page_number}}"><上一页</a></li>
 	{% endif %}
 	{% if not item_contain_begin %}
-		<li><a arg="1">1</a></li>
+		<li><a href="javascript:void(0)" arg="1" class="item_page">1</a></li>
     	<li><span>...</span></li>
 	{% endif %}
 	{% for index in item_index_list %}

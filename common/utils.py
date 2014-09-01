@@ -143,6 +143,10 @@ def get_qset(userauth):
             pending=Q()
             default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
+    elif userauth['role']=="adminStaff":
+        pending=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_OVER)
+        default=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_OVER)
+        search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_OVER)
     else:
         if userauth['status']=="budget":
             pending=create_QE(PROJECT_STATUS_TASK_COMMIT_OVER)

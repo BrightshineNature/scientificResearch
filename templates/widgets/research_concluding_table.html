@@ -1,4 +1,4 @@
-{% ifnotequal usercontext.role 'college'%}
+{% if show%}
 <ul class="nav nav-pills">
     <li class="active"><a href="#not_pass" data-toggle="tab">未处理<span class="badge">{{not_pass_apply_project_group.count}}</span></a>
     </li>
@@ -6,17 +6,17 @@
     </li>
 </ul>
 
-{%endifnotequal%}
+{%endif%}
 
 <div class="tab-content" userrole={{usercontext.role}} userstatus={{usercontext.status}}>
-    {% ifnotequal usercontext.role 'college'%}
+    {% if show%}
     <div class="tab-pane fade in active" id="not_pass">
         {%include "widgets/research_concluding_table_not_pass.html"%}
     </div>
     <div class="tab fade" id="pass">
     {% else%}
     <div class="tab" id="pass">
-    {% endifnotequal%}
+    {% endif%}
         <h4>
             符合搜索条件的项目数量为 {{item2_list.count}}。
         </h4>
