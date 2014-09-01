@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    {%for user in users %}
+    {%for user in item3_list %}
     <tr>
       <td>{{user.userid.username}}</td>
       <td>{{user.userid.email}}</td>
@@ -25,3 +25,6 @@
 
   </tbody>
 </table>
+<div id="dispatch_expert_paginator">
+  {%include "widgets/paginator3.html"%}
+</div>

@@ -1,4 +1,4 @@
-<table class="well table" id="newscontent">
+<table class="well table" id="ewscontent">
   <thead>
     <tr>
       <td><strong>新闻标题</strong></td>
@@ -8,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-    {%for news in newsList%}
+    {%for news in item_list%}
     <tr id="{{news.id}}">
       <td>{{news.news_title|truncatechars:25}}</td>
       <td>{{news.news_category}}</td>
@@ -23,3 +23,6 @@
     {%endfor%}
   </tbody>
 </table>
+<div id="news_release_paginator">
+  {%include "widgets/paginator.html"%}
+</div>

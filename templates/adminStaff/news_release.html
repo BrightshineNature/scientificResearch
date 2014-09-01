@@ -59,7 +59,9 @@
 </form>
 <div id="newstable">
     <h3>新闻管理</h3>
-    {% include "adminStaff/widgets/newslist.html" %}
+    <div id="news-section">
+      {% include "adminStaff/widgets/newslist.html" %}
+    </div>
 </div>
 <!-- ajax_csrf-->
 <script type='text/javascript' src="{{STATIC_URL}}bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>

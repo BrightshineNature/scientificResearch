@@ -4,5 +4,7 @@
 <input type="button" class="btn btn-primary" id="{{auth_choices.school}}"  value="给专题管理员发送邮件"/>
 {%endblock%}
 {%block users-table%}
-{%include "widgets/dispatch/school_user_table.html" %}
+<div id="dispatch_school_section" class="dispatch_paginator">
+  {%include "widgets/dispatch/school_user_table.html" %}
+</div>
 {%endblock %}

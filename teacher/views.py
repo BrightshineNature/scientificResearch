@@ -12,7 +12,7 @@ from backend.decorators import *
 from backend.logging import loginfo
 from const import *
 
-from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage 
+from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage,get_project_list
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
@@ -22,6 +22,8 @@ from teacher.models import TeacherInfoSetting
 from adminStaff.models import ProjectSingle
 from forms import ProjectCreationForm
 from common.utils import createNewProject
+from common.views import get_project_list
+from const import PROJECT_STATUS_APPLICATION_REVIEW_OVER
 
 @csrf.csrf_protect
 @login_required
@@ -33,7 +35,7 @@ def appView(request, pid, is_submited = False):
     }
     
     context = appManage(request, pid)
-    context['user'] = "teacher"    
+    context['user'] = "teacher" 
     context['is_submited'] = is_submited
     return render(request, "teacher/application.html", context)
 
@@ -47,22 +49,38 @@ def fileUploadManageView(request, pid, is_submited = False):
     context['user'] = "teacher"
     # is_submited = False
     context['is_submited'] = is_submited
+
     return render(request, "teacher/file_upload.html", context)
 
-    
+def firstLoginChecker(request):
+    setting = TeacherInfoSetting.objects.get(teacher__userid = request.user)
+    if setting.name == None:
+        return False
+    return True
+
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
 def homeView(request):
+    if not firstLoginChecker(request):
+        return HttpResponseRedirect(reverse("teacher.views.settingView"))
 
-    project_list = ProjectSingle.objects.all();
+    project_list = get_project_list(request).filter(project_status__status__lt = PROJECT_STATUS_APPROVAL);
     creationForm = ProjectCreationForm()
     context = {
         'project_list':project_list,
         'form': creationForm,
     }
     return render(request,"teacher/project_info.html",context)
-
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
+def finalInfoView(request):
+    project_list = get_project_list(request).filter(project_status__status__gte = PROJECT_STATUS_APPROVAL);
+    context = {
+		'project_list':project_list,
+    }
+    return render(request,"teacher/finalinfo.html",context)
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
@@ -130,7 +148,10 @@ def settingView(request):
     message = ""
     teacher = TeacherProfile.objects.get(userid = request.user)
     setting = TeacherInfoSetting.objects.get(teacher = teacher)
+    is_first = firstLoginChecker(request)
+
     if request.method == "GET":
+        setting.name = teacher.userid.first_name
         form = SettingForm(instance = setting)
     else:
         form = SettingForm(request.POST, instance = setting)
@@ -139,6 +160,7 @@ def settingView(request):
             message = "ok"
     context = {"form": form,
                "message": message,
+               "is_first": is_first,
                }
     return render(request, "teacher/setting.html", context)
 
@@ -166,10 +188,12 @@ def financialView(request):
 @login_required
 @authority_required(TEACHER_USER)
 def finalInfoView(request):
+    project_list = get_project_list(request).filter(project_status__status__gte=PROJECT_STATUS_APPLICATION_REVIEW_OVER)
     teacher = TeacherProfile.objects.get(userid = request.user)
     project_list = ProjectSingle.objects.filter(teacher = teacher).filter(project_status__status__gte = PROJECT_STATUS_APPROVAL )
     context = {
 		'project_list':project_list,
+        'role':'teacher',
     }
     return render(request,"teacher/finalinfo.html",context)
 
@@ -181,4 +205,5 @@ def fundBudgetView(request,pid,is_submited=False):
     context = fundBudgetViewWork(request,pid,is_submited)
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
+    context['role'] = 'teacher'
     return render(request,"teacher/fundbudget.html",context)

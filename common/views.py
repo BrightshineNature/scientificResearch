@@ -10,12 +10,15 @@ from backend.logging import logger, loginfo
 from adminStaff.models import ProjectSingle,TemplateNoticeMessage
 from django.db.models import Q
 from backend.utility import getContext
+
+from adminStaff.utility import getCollege,getSpecial
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
 from teacher.models import ProjectFundBudget
 from users.models import College,Special
 from common.models import ProjectMember,BasisContent , BaseCondition, UploadFile
+from dajaxice.utils import deserialize_form
 def addURL(project_list):
     for item in project_list:
         if item.file_application:
@@ -39,7 +42,7 @@ def addURL(project_list):
             except:
                 item.file_summary=False
     return project_list
-def getParam(pro_list, userauth,flag):
+def getParam(pro_list, userauth,flag,page,page2):
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
     if flag:
@@ -48,10 +51,9 @@ def getParam(pro_list, userauth,flag):
         pass_apply_project_group=pro_list.filter(search_q)
     pass_apply_project_group=addURL(pass_apply_project_group)
     not_pass_apply_project_group=addURL(not_pass_apply_project_group)
-    param={
-        "not_pass_apply_project_group":not_pass_apply_project_group,
-        "pass_apply_project_group":pass_apply_project_group,
-    }
+    param={}
+    param.update(getContext(pass_apply_project_group,page2,"item2",0,page_elems=3))
+    param.update(getContext(not_pass_apply_project_group,page,"item",0,page_elems=3))
     return param
 
 def appManage(request, pid):
@@ -70,7 +72,6 @@ def appManage(request, pid):
     else :
         base_condition_id = ""
         base_condition_form = BaseConditionForm()
-    
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
         'project_name': p.title,
@@ -87,12 +88,6 @@ def appManage(request, pid):
 
 
     project_member_list = ProjectMember.objects.filter(project__project_id = pid)
-
-    # for i in project_member_list:
-    #     i.professional_title_id = i.professional_title.category
-    #     i.executive_position_id = i.executive_position.category
-
-
 
     print "UUUUUU***************"
 
@@ -115,11 +110,6 @@ def appManage(request, pid):
 
 from django.core.files.storage import default_storage
 import time
-# def handle_uploaded_file(f):
-#     print f.name
-#     print f.size
-#     # print f.url
-#     # print f.path
 
 def getType(fname):
     for i in FileList:
@@ -191,12 +181,6 @@ def fileUploadManage(request, pid):
                 path = obj.file_obj.path
                 obj.delete()
                 default_storage.delete(path)
-
-
-
-
-
-
         for i in FileList:
             if request.FILES.has_key(i):
                 if not handleFileUpload(request, pid, i):
@@ -206,6 +190,7 @@ def fileUploadManage(request, pid):
         # form = UploadFileForm()
 
     files = UploadFile.objects.filter(project__project_id = pid)
+    loginfo(p=files,label="files")
 
     for i in files:
         i.file_size = '%.3f KB' % (float(i.file_size) / 1024)
@@ -218,48 +203,45 @@ def fileUploadManage(request, pid):
     return context
 
 def scheduleManage(request, userauth):
-    loginfo(userauth["role"])
     context = schedule_form_data(request, userauth)
-    context.update({
-        "approve":PROJECT_STATUS_APPLICATION_REVIEW_OVER
-    })
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
     context = schedule_form_data(request , userauth)
-    context.update({
-        "review":PROJECT_STATUS_FINAL_REVIEW_OVER
-    })
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financeManage(request, userauth):
     context = schedule_form_data(request, userauth)
-    for item in context.get("pass_apply_project_group"):
+    for item in context.get("item2_list"):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
-    for item in context.get("not_pass_apply_project_group"):
+    for item in context.get("item_list"):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
     return render(request, userauth['role'] + '/financeProject.html', context)
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
 
     return render(request, userauth['role'] + '/financial.html', context)
-def schedule_form_data(request , userauth=""):
-
-    schedule_form = ScheduleBaseForm(request=request)
+def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
     ProjectJudge_form=ProjectJudgeForm()
     has_data = False
-    if request.method == 'POST':
-        schedule_form = ScheduleBaseForm(request.POST)
+    schedule_form=ScheduleBaseForm(request=request)
+    
+    if search == 1:
+        schedule_form = ScheduleBaseForm(deserialize_form(form))
         pro_list=get_search_data(request,schedule_form)
+        loginfo(pro_list)
         default=False
     else:
         pro_list=get_project_list(request)
-        loginfo(pro_list.count())
         default=True
-    param=getParam(pro_list,userauth,default)
+    param=getParam(pro_list,userauth,default,page,page2)
     context ={ 'schedule_form':schedule_form,
                'has_data': has_data,
                'usercontext': userauth,
                'ProjectJudge_form':ProjectJudge_form,
+               "approve":PROJECT_STATUS_APPLICATION_REVIEW_OVER,
+               "review":PROJECT_STATUS_FINAL_REVIEW_OVER
     }
+    if userauth['role']!="college" and userauth['role']!="adminStaff":
+        context.update({'show':1})
     context.update(param)
 
     return context
@@ -319,14 +301,13 @@ def get_project_list(request):
     if identity == ADMINSTAFF_USER:
         pro_list = ProjectSingle.objects.all()
     elif identity == SCHOOL_USER:
-        specials = Special.objects.filter(school_user__userid = request.user)
+        specials = getSpecial(request)
         qset = reduce(lambda x,y:x|y,[Q(project_special = _special) for _special in specials])
         loginfo(qset)
         pro_list = ProjectSingle.objects.filter(qset)
     elif identity == COLLEGE_USER:
-        colleges = College.objects.filter(college_user__userid = request.user)
+        colleges = getCollege(request)
         qset = reduce(lambda x,y:x|y,[Q(teacher__college = _college) for _college in colleges])
-        
         pro_list = ProjectSingle.objects.filter(qset)
     elif identity == TEACHER_USER:
         pro_list = ProjectSingle.objects.filter(teacher__userid = request.user)
@@ -397,15 +378,7 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     projdatastaticsform = ProjectDatastaticsForm()
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
 
-    # if request.method == "POST":
-    #     final_form = FinalReportForm(request.POST, instance=final)
-    #     if final_form.is_valid():
-    #         final_form.save()
-    #         redirect = True
-    #     else:
-    #         logger.info("Final Form Valid Failed"+"**"*10)
-    #         logger.info(final_form.errors)
-    # else:
+
     final_form = FinalReportForm(instance=final)
 
     loginfo(p=redirect, label="redirect")

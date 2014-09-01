@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/editTable.css" >
 
 <div class="hero-unit">
-    <form class="form" id="project_fundbudget_form" method="POST" action="/teacher/fundbudget/{{pid}}">
+    <form class="form" id="project_fundbudget_form" method="POST" action="/{{role}}/fundbudget/{{pid}}">
         {% csrf_token  %}
         <table id="mainTable" class="table table-striped" value={{finalreportid}}>
             <thead><tr><th>科目</th><th>预算经费</th><th>说明</th></tr></thead>

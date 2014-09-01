@@ -61,7 +61,10 @@ def login_redirect(request,identity):
     elif check_auth(request.user,identity):
         pass
     else:
-        del request.session['auth_role']
+        try:
+            del request.session['auth_role']
+        except:
+            pass
         logout(request)
         return render_to_response('registration/logentry_error.html', context_instance=RequestContext(request))
     redirect_url = '/'+identity+'/'

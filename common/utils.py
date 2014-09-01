@@ -143,6 +143,10 @@ def get_qset(userauth):
             pending=Q()
             default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
+    elif userauth['role']=="adminStaff":
+        pending=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_OVER)
+        default=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_OVER)
+        search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_OVER)
     else:
         if userauth['status']=="budget":
             pending=create_QE(PROJECT_STATUS_TASK_COMMIT_OVER)
@@ -187,12 +191,12 @@ def statusRollBack(project,userrole,userstatus,form):
                 form_list=form.getlist("final")
                 if len(form_list)==2:
                     set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
-                    project.file_task=False
+                    project.file_summary=False
                     project.save()
-                elif len(form_list==1):
+                elif len(form_list)==1:
                     if form_list[0]==u"网上提交不合格":
                         set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
-                    elif form_list[1]==u"结题书不合格":
+                    elif form_list[0]==u"结题书不合格":
                         set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
                         project.file_summary=False;
                         project.save()
@@ -259,7 +263,6 @@ def status_confirm(project, confirm):
             pass
         else:
             return False
-
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_WEB_OVER:
         if confirm==APPLICATION_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
@@ -283,6 +286,11 @@ def status_confirm(project, confirm):
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
+        if confirm==APPLICATION_REVIEW_START_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_REVIEW_START)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_APPLICATION_REVIEW_START:
         if confirm==APPLICATION_REVIEW_CONFIRM:
             set_status(project,PROJECT_STATUS_APPLICATION_REVIEW_OVER)
         else:
@@ -320,8 +328,7 @@ def status_confirm(project, confirm):
         if confirm==TASK_SCHOOL_CONFIRM:
             set_status(project,PROJECT_STATUS_SCHOOL_OVER)
         else:
-            return False        
-    
+            return False
     elif project.project_status.status==PROJECT_STATUS_TASK_SCHOOL_OVER:
         if confirm==PROGRESS_SUBMIT_CONFIRM:
             set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
@@ -336,8 +343,8 @@ def status_confirm(project, confirm):
         if confirm==FINAL_WEB_CONFIRM:
             if project.file_summary==True:
                 set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
-                if project.project_sendback_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
-                    set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+                if project.project_sendback_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
+                    set_status(project,PROJECT_STATUS_FINAL_FINANCE_OVER)
             else:
                 set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
         elif confirm==FINAL_SUBMIT_CONFIRM:
@@ -347,8 +354,8 @@ def status_confirm(project, confirm):
     elif project.project_status.status==PROJECT_STATUS_FINAL_WEB_OVER:
         if confirm==FINAL_SUBMIT_CONFIRM:
                 set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
-                if project.project_sendback_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
-                    set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
+                if project.project_sendback_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
+                    set_status(project,PROJECT_STATUS_FINAL_FINANCE_OVER)
         else :
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
@@ -367,7 +374,12 @@ def status_confirm(project, confirm):
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
-        if confirm==PROJECT_OVER_CONFIRM:
+        if confirm==FINAL_REVIEW_START_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_REVIEW_START)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_REVIEW_START:
+        if confirm==FINAL_REVIEW_CONFIRM:
             set_status(project,PROJECT_STATUS_FINAL_REVIEW_OVER)
         else:
             return False
@@ -379,5 +391,3 @@ def status_confirm(project, confirm):
     else:
         return False
     return True
-
-        

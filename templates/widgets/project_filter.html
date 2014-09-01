@@ -3,18 +3,7 @@
     项目列表
 </h3>
 
-{% ifequal usercontext.status 'application'%}
-  <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{usercontext.role}}/" >
-{%endifequal%}
-{%ifequal usercontext.status 'research_concluding'%}
- <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{usercontext.role}}/researchconcluding" >
-{%endifequal%}
-{%ifequal usercontext.status 'budget'%}
- <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{usercontext.role}}/" >
-{%endifequal%}
-{%ifequal usercontext.status 'final'%}
- <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{usercontext.role}}/concludingProject" >
-{%endifequal%}
+  <form id="schedule_form" class= "form-inline" role="form" >
     {% csrf_token %}
     {% include "widgets/searchform.html" %}
 

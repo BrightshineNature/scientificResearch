@@ -59,3 +59,10 @@ $(".form-date").datetimepicker({
     forceParse:0,
     minView:2
 });
+$(document).on("click","#news_release_paginator .item_page",function(){
+  page = $(this).attr("arg");
+  Dajaxice.adminStaff.getNewsReleasePagination(getNewsReleaseCallback,{"page":page});
+})
+function getNewsReleaseCallback(data){
+  $("#news-section").html(data.html);
+}

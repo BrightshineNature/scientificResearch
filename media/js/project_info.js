@@ -1,9 +1,10 @@
 var judgeid,userrole,userstatus,projectstatus,applicationstatus_s,applicationstatus_c,finalstatus;
+var search=0;
 var glo_project_id;
-$("#not_pass_reason").hide();
+$("[name='not_pass_reason']").hide();
 $("#not_pass_article").hide();
-$("#id_judgeresult").css("color","gray");
-$("#id_judgeresult").change(function(){
+$("[name='judgeresult']").css("color","gray");
+$("[name='judgeresult']").change(function(){
     if($(this).val()=="-1")
     {
         $(this).css("color","gray");
@@ -14,7 +15,7 @@ $("#id_judgeresult").change(function(){
     }
     if($(this).val()=="0")
     {
-        $("#not_pass_reason").show(500);
+        $("[name='not_pass_reason']").show(500);
         if(projectstatus==applicationstatus_s||projectstatus==applicationstatus_c||projectstatus==finalstatus){
         $("#not_pass_article").show(500);
         }   
@@ -22,7 +23,7 @@ $("#id_judgeresult").change(function(){
     }
     else
     {
-        $("#not_pass_reason").hide(500);
+        $("[name='not_pass_reason']").hide(500);
         $("#not_pass_article").hide(500);
     }
 
@@ -33,21 +34,43 @@ Dajaxice.common.getStatus(function(data){
     finalstatus=data.final;
 },{});
 
-$("[name='judge']").click(function(){
+$(document).on("click","[name='judge']",function(){
     judgeid=$(this).closest("tr").attr("iid");
-    userrole=$(this).closest("table").attr("userrole");
-    userstatus=$(this).closest("table").attr("userstatus");
+    Dajaxice.school.getScore(getScoreCallBack, {"pid": judgeid,});
     projectstatus=$(this).closest("tr").attr("status");
 });
-$("#commit").click(function(){
+function getScoreCallBack(data){
+    $("#score_tables_part").html(data.html);  
+    $(".expert_score_list_item").hide();
+    $("#detail_btn").attr("name", "detail_show_btn");
+    $("#detail_btn").html("显示具体得分");
+}
+$(document).on("click", "[name='detail_show_btn']", function(){
+    $(".expert_score_list_item").show();
+    $("#detail_btn").attr("name", "detail_hide_btn");
+    $("#detail_btn").html("隐藏具体得分");
+});
+$(document).on("click", "[name='detail_hide_btn']", function(){
+    $(".expert_score_list_item").hide();
+    $("#detail_btn").attr("name", "detail_show_btn");
+    $("#detail_btn").html("显示具体得分");
+});
 
-    var value=$("#id_judgeresult").val();
+$("[name='commit']").click(function(){
+    var value=$(this).closest(".modal").find("#id_judgeresult").val();
+    var lookThroughForm=$(this).closest(".modal").find("#lookThroughForm").serialize(true);
+    userrole=$(".tab-content").attr("userrole");
+    userstatus=$(".tab-content").attr("userstatus");
     if(value!=-1){
         Dajaxice.common.LookThroughResult(look_through_call_back,{
             "judgeid":judgeid,
             "userrole":userrole,
             "userstatus":userstatus,
-            "look_through_form":$("#lookThroughForm").serialize(true)
+            "page":$("#not_pass_paginator .disabled").attr("value"),
+            "page2":$("#pass_paginator .disabled").attr("value"),
+            "search":search,
+            "look_through_form":lookThroughForm,
+            "searchForm":$("#schedule_form").serialize(true)
         });
     }
     
@@ -57,7 +80,7 @@ function look_through_call_back(data){
         $("#applicationTable").html(data.table_html);
     } 
     else{
-        $("#researchTable").html(data.table_html)
+        $("#researchTable").html(data.table_html);
     }
 
 }
@@ -79,3 +102,44 @@ function change_projectuniquecode_callback(data){
         $(target).html(data.res);
     }
 }
+function getPagination(page,page2){
+    userrole=$(".tab-content").attr("userrole");
+    userstatus=$(".tab-content").attr("userstatus");
+    
+    Dajaxice.common.getPagination(getPaginationCallBack,{
+        "page":page,
+        "page2":page2,
+        "userrole":userrole,
+        "userstatus":userstatus,
+        "search":search,
+        "form":$("#schedule_form").serialize(true)
+    });  
+}
+function getPaginationCallBack(data){
+        $("#not_pass").html(data.table_not_pass);
+        $("#pass").html(data.table_pass);
+}
+
+   
+$(document).on("click","#not_pass_paginator .item_page",function(){
+    page=$(this).attr("arg");
+    page2=$("#pass_paginator .disabled").attr("value");
+    getPagination(page,page2); 
+});
+
+$(document).on("click","#pass_paginator .item_page",function(){
+    page2=$(this).attr("arg");
+    
+    page=$("#not_pass_paginator .disabled").attr("value");
+    if(!page)page=-1;
+    getPagination(page,page2); 
+});
+$("#filter_button").click(function(){
+    search=1;
+    getPagination(1,1);
+
+});
+
+
+
+

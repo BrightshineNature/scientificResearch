@@ -89,6 +89,10 @@ class Special(models.Model):
     name = models.CharField(blank=False,max_length=30)
     alloc_status = models.BooleanField(blank=True,default= False)
     final_alloc_status = models.BooleanField(blank=True,default= False)
+    application_status = models.BooleanField(blank=True,default= False)
+    task_status = models.BooleanField(blank=True,default= False)
+    progress_status = models.BooleanField(blank=True,default= False)
+    final_status = models.BooleanField(blank=True,default= False)
     class Meta:
         verbose_name = "专题"
         verbose_name_plural = "专题"

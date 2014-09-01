@@ -8,62 +8,65 @@
       <tr>
         <th>申请代码</th>
         <th>项目名称</th>
+        <th>项目进度情况</th>
+        <th>项目下一步工作</th>
         <th>专题类型</th>
-        <th>项目类型</th>
+        <th>申请年度</th>
         <th>详&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp情</th>
         <th>审核意见</th>
       </tr>
     </thead>
     <tbody>
-
       {%for p in project_list %}
       <tr>
         <td >{{p.project_application_code}}</td>
         <td >{{p.title}}</td>
+        <td >{{project.project_status}}</td>
+        <td >{{project.project_status}}</td>
         <td >{{p.project_special}}</td>
-        <td >{{p.project_tpye}}</td>
+        <td >{{p.application_year}}</td>
         <td >
           <a href="/teacher/application/{{p.project_id}}" class="btn btn-primary btn-sm">申请表</a>
           <a href="/teacher/file_upload/{{p.project_id}}" class="btn btn-primary btn-sm">文件上传</a>
         </td>
-        <td style="color:red">{{p.comment}}</td>
+        <td style="color:red">{%ifnotequal project.comment None%}{{project.comment}}{%endifnotequal%}</td>
       </tr>
       {%endfor%}
     </tbody>
   </table>
 </div>
 <div class="modal fade" id="create_project_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-	  <div class="modal-content">
-	    <div class="modal-header">
-	      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	      <h3 class="modal-title">新建项目信息</h3>
-	    </div>
-	    <div class="modal-body">
-            <form id="create-form" class="well form" method="POST" action="/teacher/create">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                            	{{ form.title }}
-                            </div> 
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                            	{{ form.special }}
-                            </div> 
-                        </div>
-                    </div>
-                </form>
-        </div>
-    <div class="modal-footer">
-				<button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
-	      <button type="submit" id="button_create_project" class="btn btn-primary">新建项目</button>
-	   </div>
-	  </div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 class="modal-title">新建项目信息</h3>
+      </div>
+      <div class="modal-body">
+        <form id="create-form" class="well form" method="POST" action="/teacher/create">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-lg-5">
+              <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                {{ form.title }}
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                {{ form.special }}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+        <button type="submit" id="button_create_project" class="btn btn-primary">新建项目</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script type="text/javascript" src="{{STATIC_URL}}js/teacher/create_project.js"></script>
 {% endblock %}

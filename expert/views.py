@@ -29,11 +29,15 @@ from common.views import finalReportViewWork, appManage
 def homeView(request, is_submited=False):
     is_first_round = request.GET.get("is_first_round", "1")
     expert = ExpertProfile.objects.get(userid = request.user)
-    re_list_1 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)))
+    re_list_1 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & \
+                                                      Q(is_first_round = True) & \
+                                                      Q(project__project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)))
     for re_obj in re_list_1:
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
 
-    re_list_2 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = False)))
+    re_list_2 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & \
+                                                      Q(is_first_round = False) & \
+                                                      Q(project__project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)))
     for re_obj in re_list_2:
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
     context = {"is_first_round": is_first_round,}

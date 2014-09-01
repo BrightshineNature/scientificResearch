@@ -15,7 +15,7 @@ from const import *
 from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
 from adminStaff.utility import getSpecial
 
-from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase, get_project_list
+from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase, get_project_list, finalReportViewWork, appManage
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm,SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
@@ -26,9 +26,10 @@ from users.models import ExpertProfile, SchoolProfile
 @csrf.csrf_protect
 @login_required
 @authority_required(SCHOOL_USER)
-def appView(request):
-    context = {}
-    return render(request,"school/application.html",context)
+@check_submit_status(SUBMIT_STATUS_APPLICATION)
+def appView(request, pid, is_submited = False):
+    context = appManage(request, pid)
+    return render(request, "school/application.html", context)
 
 @csrf.csrf_protect
 @login_required
@@ -57,9 +58,14 @@ def financialInfoView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(SCHOOL_USER)
-def finalReportView(request):
-    context = {}
+@check_submit_status(SUBMIT_STATUS_FINAL)
+def finalReportView(request,pid,is_submited=False):
+    context = finalReportViewWork(request,pid,is_submited)
+    loginfo(p=is_submited,label="is_submited")
+    if context['redirect']:
+		return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"school/final.html",context)
+
 
 @csrf.csrf_protect
 @login_required
@@ -77,10 +83,8 @@ def allocView(request):
     alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
     form = FilterForm(request = request)
     expert_form = FilterForm()
-    
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
-    
     context = {"form": form,
                "expert_form": expert_form,
                "page_info": "alloc",}
@@ -109,10 +113,8 @@ def finalAllocView(request):
     alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
     form = FilterForm(request = request)
     expert_form = FilterForm()
-    
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = False)).count()
-    
     context = {"form": form,
                "expert_form": expert_form,
                "page_info": "finalalloc",}
@@ -137,12 +139,21 @@ def noticeMessageSettingView(request):
 def controlView(request):
     expert_review_forms=[]
     specials =  getSpecial(request)
+    loginfo(specials)
     for special in specials:
         expert_review_form = ExpertReviewForm(instance=special)
         expert_review_forms.append(expert_review_form)
+        control_types = []
+        for t in CONTROL_TYPE_CHOICES:
+            t = list(t)
+            t.append(getattr(special,t[0]+"_status"))
+            control_types.append(t)
+        special.control_types = control_types
     spec_list = zip(specials,expert_review_forms)
     context = {
         'spec_list' :spec_list,
+        'alloc_excel':TYPE_ALLOC[0],
+        'final_alloc_excel':TYPE_FINAL_ALLOC[0],
     }
     return render(request, "school/control.html", context);
 

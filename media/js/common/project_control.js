@@ -6,38 +6,27 @@ $("select[name='expert_review']").each(function(){
   })
 })
 
-$("#project_control_div #alloc").each(function(){
-  $(this).click(function(){
-    text_div = $(this).parents(".active")
-    Dajaxice.school.ChangeAllocStatus(ChangeAllocStatus_callback,{'special_id':$(text_div).attr('id'),'type':"alloc"});
-  })
+$("#project_control_field input").click(function(){
+  text_div = $(this).parents(".active");
+  Dajaxice.school.ChangeControlStatus(ChangeControlStatus_callback,{'special_id':$(text_div).attr('id'),'type_id':$(this).attr('id'),'type_name':$(this).attr('name')});
 })
-$("#project_control_div #final_alloc").each(function(){
-  $(this).click(function(){
-    text_div = $(this).parents(".active")
-    Dajaxice.school.ChangeAllocStatus(ChangeAllocStatus_callback,{'special_id':$(text_div).attr('id'),'type':"final_alloc"});
-  })
-})
-function ChangeAllocStatus_callback(data){
+
+
+function ChangeControlStatus_callback(data){
   if (data.status == "1"){
     $(text_div).find("#expert_review_manage_success").show();
     $(text_div).find("#expert_review_manage_fail").hide();
-    btn= $(text_div).find("#"+data.type);
-    span = $(text_div).find("#"+data.type+"_span");
-    if(data.type=="alloc"){
-        status_value = "初审";
-    }else if(data.type =="final_alloc"){
-        status_value = "终审";
-    }
+    btn= $(text_div).find("input[id='"+data.type_id+"']");
+    span = $(text_div).find("#"+data.type_id+"_span");
     if(data.value){
       $(btn).attr("class","btn btn-warning");
-      $(btn).val("关闭项目专家"+status_value);
-      $(span).text("项目专家"+status_value+"为打开状态");
+      $(btn).val("关闭"+data.type_name);
+      $(span).text(data.type_name+"为打开状态");
       $(span).attr("class","label label-success");
     }else{
       $(btn).attr("class","btn btn-primary");
-      $(btn).val("打开项目专家"+status_value);
-      $(span).text("项目专家"+status_value+"为关闭状态");
+      $(btn).val("打开"+data.type_name);
+      $(span).text(data.type_name+"为关闭状态");
       $(span).attr("class","label label-danger");
     }
   }else{
@@ -53,4 +42,15 @@ function ExpertReview_callback(data){
     $(text_div).find("#expert_review_fail").show();
     $(text_div).find("#expert_review_success").hide();
   }
+}
+$("[name = 'btn_export']").click(function(){
+    var eid = $(this).attr("eid");
+    text_div = $(this).parents(".active");
+    $('#excelprogress').modal('show');
+    Dajaxice.school.ExpertinfoExport(releaseexcel_callback,{'special_id':$(text_div).attr('id'),'eid':eid,});
+});
+
+function releaseexcel_callback(data){
+  location.href = data.path;
+  $('#excelprogress').modal('hide');
 }

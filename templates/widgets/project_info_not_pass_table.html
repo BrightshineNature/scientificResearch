@@ -1,0 +1,48 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>申请代码</th>
+            <th>项目名称</th>          
+            <th>项目申请人</th>          
+            <th>学院</th>         
+            <th>申请年度</th>          
+            <th>提交日期</th>
+            <th>专题类型</th>          
+            <th>附件</th>
+            <th>评审</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% if item_list %}
+        {% for item in item_list%}
+        <tr iid={{item.project_id}} status={{item.project_status.status}}>
+            <td>{{item.project_application_code}}</td>
+            <td><a href=/school/application/{{item.project_id}}>{{item.title}}</a></td>
+            <td>{{item.teacher.teacherinfosetting.name}}</td>
+            <td>{{item.teacher.college}}</td>
+            <td> {{item.application_year}}</td>
+            <td>201s-7-1 </td>
+            <td>{{item.project_special}}</td>
+            <td>
+                {% if item.file_application%}
+                <span class="label label-success"><a href={{item.application_url}}> 申报书 </a></span>
+                {% else%}
+                <a href="#"><span class="label label-danger"> 申报书 </span></a>
+                {% endif%}
+            </td>
+            <td>
+                {% ifequal item.project_status.status approve%}
+                <button data-toggle="modal" data-target="#approve_modal"  class="btn btn-primary btn-sm" name="judge">立项</button>
+                {% else%}
+                <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" name="judge">审核 </button>
+                {%endifequal%}
+            </td>
+        </tr>
+        {% endfor%}
+        {% endif%}
+    </tbody>
+</table>
+<div id="not_pass_paginator">
+    {%include "widgets/paginator.html"%}
+</div>
