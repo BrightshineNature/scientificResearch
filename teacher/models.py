@@ -205,12 +205,9 @@ class ProjectFundSummary(models.Model):
    										verbose_name="合计经费支出")
     total_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="合计说明")
-   
-   
     class Meta:
    	 verbose_name = "经费决算表"
    	 verbose_name_plural = "经费决算表"
-   
     def __unicode__(self):
    	 return self.project_id.__unicode__()
 
