@@ -87,6 +87,10 @@ def get_status_choice():
         (PROJECT_STATUS_OVER,u"结题")
     ]
     return status_choice
+def get_all_status_choice():
+    status_choice=get_status_choice()
+    status_choice=[(PROJECT_STATUS_APPROVAL,u"项目申请阶段")]+status_choice
+    return status_choice
 def get_application_status_choice():
     application_status_choice=[
         (PROJECT_STATUS_APPLY,u"网上申请未提交"),
@@ -98,6 +102,8 @@ def get_application_status_choice():
     return application_status_choice
 def get_query_status(status):
     status=int(status)
+    if status==PROJECT_STATUS_APPROVAL:
+        return (PROJECT_STATUS_APPLY,PROJECT_STATUS_APPROVAL)
     if status==PROJECT_STATUS_TASK_SCHOOL_OVER:
         return (PROJECT_STATUS_APPROVAL,status)
     elif status==PROJECT_STATUS_PROGRESS_SCHOOL_OVER:
