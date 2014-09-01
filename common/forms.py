@@ -3,11 +3,11 @@
 from django import forms
 from const import *
 from backend.logging import loginfo
-from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice,get_conclude_year_choices
+from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice,get_conclude_year_choices,get_all_status_choice
 from common.models import ProjectMember, BasisContent, BaseCondition
 from users.models import Special,College
 class ScheduleBaseForm(forms.Form):
-    status_choices = get_status_choice()
+    status_choices = get_all_status_choice()
     application_status_choice =get_application_status_choice()
     status_choices = tuple( [(-1, u"项目状态")] + status_choices)
     application_status_choices=get_application_status_choice()
@@ -78,7 +78,11 @@ class ScheduleBaseForm(forms.Form):
                 for obj in obj_list:
                     choice_list.append((obj.id, obj.name))
                 obj_choice = tuple(choice_list)
-                self.fields["college"].choices = obj_choice 
+                self.fields["college"].choices = obj_choice
+                college_status_choices=get_status_choice()
+                college_status_choices = tuple( [(-1, u"项目状态")] + college_status_choices)
+                self.fields["status"].choices=college_status_choices
+
 
 class ProjectJudgeForm(forms.Form):
     result_choices=(("-1","请审核"),("1","通过"),("0","不通过"))
