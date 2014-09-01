@@ -12,7 +12,7 @@ TEMPLATE_DEBUG = DEBUG
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'ScientificResearch',             # Or path to database file if using sqlite3.
+        'NAME': 'ScienceResearch',             # Or path to database file if using sqlite3.
         'USER': 'root',                       # Not used with sqlite3.
         'PASSWORD': 'root',                   # Not used with sqlite3.
         'HOST': '192.168.2.90',                           # Set to empty string for localhost. Not used with sqlite3.
