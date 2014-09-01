@@ -205,10 +205,12 @@ def saveProjectInfoForm(request, form, pid):
     else :
         print "error in saveProjectInfoForm"
         
-        # for i in form.errors:
-
+        error = ""
+        for i in form.errors:
+            error += i + ","
+        print form.errors
         context['status'] = 0
-        # context['error'] = str(form.errors)        
+        context['error'] = error
     # print context['error']
     
     return simplejson.dumps(context)
@@ -313,7 +315,7 @@ def checkValid(request, pid):
 
     project = ProjectSingle.objects.get(project_id = pid)
     context = {
-        'status':1,
+        'status': 1,
     }
     if not project.title :
         context['status'] = 0

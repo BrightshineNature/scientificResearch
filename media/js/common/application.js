@@ -177,7 +177,33 @@ function jump(){
     next_tab.addClass("active");
     next_tab.addClass("in");
 }
+$(document).on("click", ".next_step",function(){
+    cnt_content = $(this).parent();
+    
+    var pid = $(this).parents("[pid]").attr("pid");
+    if($(cnt_content).attr("id") == "project_info")
+    {
+        cnt_tab = $(this).parent().parent().prev().children("li:eq(0)");        
+        jump();
+        
 
+    }
+    else if($(cnt_content).attr("id") == "project_member")
+    {
+        cnt_tab = $(this).parent().parent().prev().children("li:eq(1)");
+        jump();
+    }
+    else if($(cnt_content).attr("id") == "basis_content")
+    {
+        cnt_tab = $(this).parent().parent().prev().children("li:eq(2)");
+        jump();
+    }
+    else
+    {
+       
+    }
+    
+});
 $(document).on("click", ".save_button",function(){
     // alert("TT");
     
@@ -202,7 +228,7 @@ $(document).on("click", ".save_button",function(){
     else if($(cnt_content).attr("id") == "project_member")
     {
         cnt_tab = $(this).parent().parent().prev().children("li:eq(1)");
-        jump();
+        
     }
     else if($(cnt_content).attr("id") == "basis_content")
     {
@@ -233,7 +259,7 @@ $(document).on("click", ".save_button",function(){
 
 var pid;
 $(document).on("click", ".submit_button", function(){
-
+    // alert("SB");
     pid = $(this).parents("[pid]").attr("pid");
 
     Dajaxice.common.checkValid(checkValidCallback, {
@@ -245,13 +271,17 @@ function saveProjectInfoFormCallback(data)
 {
     if(data.status == 1)
     {
-        jump();    
+        // jump();    
         $("#project_info_form_error").hide();
+
+        // alert("!OK");
     }
     else if(data.status == 0)
     {
+        // alert("OK");
+        // alert(data.error);
         var error = data.error.split(",");
-        alert(error);
+        // alert(error);
         for(var i = 0; i < error.length; ++ i)
         {
             if(error[i] == "") continue;
@@ -268,7 +298,7 @@ function saveProjectInfoFormCallback(data)
 function saveBasisContentCallback(data) {
     if(data.status == 1)
     {
-        jump();    
+        // jump();    
         $("#basis_content_form_error").hide();
     }
     else if(data.status == 0)

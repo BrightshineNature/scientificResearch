@@ -29,6 +29,8 @@ from users.models import ExpertProfile, SchoolProfile
 @check_submit_status(SUBMIT_STATUS_APPLICATION)
 def appView(request, pid, is_submited = False):
     context = appManage(request, pid)
+    context['is_submited'] = is_submited
+    context['user'] = "school"
     return render(request, "school/application.html", context)
 
 @csrf.csrf_protect
