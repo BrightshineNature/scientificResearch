@@ -227,6 +227,7 @@ def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
     if search == 1:
         schedule_form = ScheduleBaseForm(deserialize_form(form))
         pro_list=get_search_data(request,schedule_form)
+        loginfo(pro_list)
         default=False
     else:
         pro_list=get_project_list(request)
@@ -239,10 +240,12 @@ def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
                "approve":PROJECT_STATUS_APPLICATION_REVIEW_OVER,
                "review":PROJECT_STATUS_FINAL_REVIEW_OVER
     }
+    if userauth['role']!="college" and userauth['role']!="adminStaff":
+        context.update({'show':1})
     context.update(param)
 
     return context
-def get_search_data(request,schedule_form):
+def get_search_data(schedule_form):
     if schedule_form.is_valid():
             application_status=schedule_form.cleaned_data['application_status']
             status=schedule_form.cleaned_data['status']
@@ -292,7 +295,6 @@ def get_search_data(request,schedule_form):
                 pro_list=ProjectSingle.objects.filter(qset)
             else:
                 pro_list=ProjectSingle.objects.all()
-            loginfo(pro_list.count)
             return pro_list
 def get_project_list(request):
     identity = request.session.get('auth_role', "")

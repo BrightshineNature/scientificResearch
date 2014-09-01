@@ -16,7 +16,7 @@ from adminStaff.forms import NewsForm,ObjectForm,TemplateNoticeMessageForm,Dispa
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import NoticeForm
 
-from common.views import scheduleManage, financialManage,noticeMessageSettingBase,scheduleManage,finalReportViewWork,fundBudgetViewWork,fileUploadManage
+from common.views import scheduleManage, financialManage,noticeMessageSettingBase,scheduleManage,finalReportViewWork,fundBudgetViewWork,fileUploadManage,researchConcludingManage
 
 from adminStaff.models import TemplateNoticeMessage,News,ProjectSingle
 from users.models import SchoolProfile,CollegeProfile,ExpertProfile,Special,College
@@ -90,7 +90,7 @@ def scheduleView(request):
 
     userauth = {
         'role': 'adminStaff',
-        'status':'application'
+        'status':'all'
     }
     return scheduleManage(request, userauth)
 

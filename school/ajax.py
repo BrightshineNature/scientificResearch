@@ -14,7 +14,7 @@ from adminStaff.models import ProjectSingle, Re_Project_Expert
 from backend.utility import getContext
 from users.models import ExpertProfile
 from const import *
-from common.utils import status_confirm, getScoreTable
+from common.utils import status_confirm, getScoreTable, getScoreForm
 from const.models import ProjectStatus
 from school.forms import ExpertReviewForm
 from common.views import get_project_list
@@ -223,6 +223,37 @@ def ChangeControlStatus(request,special_id,type_id,type_name):
             special.save()
         return simplejson.dumps({'status':'1','type_id':type_id,'type_name':type_name,'value':bValue})
     return simplejson.dumps({'status':'0'})
+
+@dajaxice_register
+def getScore(request, pid):
+    message = ""
+    project = ProjectSingle.objects.get(project_id = pid)
+    is_first_round = True
+    if project.project_status.status == PROJECT_STATUS_FINAL_REVIEW_OVER:
+        is_first_round = False
+
+    scoreTableType = getScoreTable(project)
+    scoreFormType = getScoreForm(project)
+    scoreList = []
+    ave_score = {}
+    for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round)):
+        table = scoreTableType.objects.get(re_obj = re_obj)
+        score_row = scoreFormType(instance = table)
+
+        for i, field in enumerate(score_row):
+            ave_score[i] = ave_score.get(i, 0) + int(field.value())
+
+        score_row.expert_name = re_obj.expert
+        score_row.total_score = table.get_total_score()
+
+        ave_score["total"] = ave_score.get("total", 0) + score_row.total_score
+
+        scoreList.append(score_row)
+    if len(scoreList):
+        for item in ave_score.items():
+            ave_score[item[0]] = 1.0 * item[1] / len(scoreList)
+    html = render_to_string("widgets/concluding_data.html", {"scoreList": scoreList, "ave_score": ave_score.values(), "form": scoreFormType,})
+    return simplejson.dumps({"message": message, "html": html,})
 @dajaxice_register
 def ExpertinfoExport(request,special_id,eid):
     special = getSpecial(request).get(id = special_id)
