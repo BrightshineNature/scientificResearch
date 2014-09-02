@@ -19,18 +19,18 @@ class FinalSubmit(models.Model):
                                   verbose_name="结题报告唯一ID")
     project_id = models.OneToOneField(ProjectSingle)
 
-    project_keyword = models.CharField(max_length=100, blank=True, null=True,
+    project_keyword = models.CharField(max_length=100, blank=False, null=True,
                                            verbose_name="关键词")
 
     project_summary = models.CharField(max_length=500, blank=False, null=True,
                                            verbose_name="项目摘要")
-    project_plan = models.TextField(blank=True, null=True,
+    project_plan = models.TextField(blank=False, null=True,
                                            verbose_name="研究计划要点及执行情况概述")
-    project_progress = models.TextField(blank=True, null=True,
+    project_progress = models.TextField(blank=False, null=True,
                                           verbose_name="研究工作主要进展和所取得的成果")
     academic_exchange = models.TextField(blank=True, null=True,
                                        verbose_name="国内外学术合作交流与人才培养情况")
-    existing_problems = models.TextField(blank=True, null=True,
+    existing_problems = models.TextField(blank=False, null=True,
                                        verbose_name="存在的问题、建议")
 
 
