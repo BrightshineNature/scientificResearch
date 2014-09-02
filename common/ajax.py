@@ -205,24 +205,29 @@ def saveProjectInfoForm(request, form, pid):
     else :
         print "error in saveProjectInfoForm"
         
-        # for i in form.errors:
-
+        error = ""
+        for i in form.errors:
+            error += i + ","
+        print form.errors
         context['status'] = 0
-        # context['error'] = str(form.errors)        
+        context['error'] = error
     # print context['error']
     
     return simplejson.dumps(context)
 
 
-def refreshMemberTabel():
-    project_member_list = ProjectMember.objects.all()
+def refreshMemberTabel(pid):
+    project_member_list = ProjectMember.objects.filter(project__project_id = pid)
+
     return render_to_string( "widgets/project_member_table.html", {
         'project_member_list':project_member_list,
 
         })
 
+
 @dajaxice_register
-def saveProjectMember(request, form, pid, mid):
+def saveProjectMember(request, form, pid, mid): 
+    # save member info into the  member that mid is "mid"
     if mid:
         mem = ProjectMember.objects.get(id = mid)
         form = ProjectMemberForm(deserialize_form(form),instance = mem)
@@ -231,6 +236,7 @@ def saveProjectMember(request, form, pid, mid):
     
     context = {
         'status':0,
+        'error': "",
         'project_member_table': "",
     }
 
@@ -239,12 +245,14 @@ def saveProjectMember(request, form, pid, mid):
         temp.project = ProjectSingle.objects.get(project_id = pid)
         temp.save()
         context['status'] = 1
-        context['project_member_table'] = refreshMemberTabel()
+        context['project_member_table'] = refreshMemberTabel(pid)
 
     else:
         context['status'] = 0
-        print form.errors
-        print "error in saveProjectMember"
+        error = ""
+        for i in form.errors:
+            error += i + ","
+        context['error'] = error
 
 
     return simplejson.dumps(context)
@@ -254,7 +262,7 @@ def deleteProjectMember(request, mid):
 
     context = {
         'status':1,
-        'project_member_table':refreshMemberTabel(),
+        'project_member_table':refreshMemberTabel(pid),
     }
     return simplejson.dumps(context)
 
@@ -313,7 +321,7 @@ def checkValid(request, pid):
 
     project = ProjectSingle.objects.get(project_id = pid)
     context = {
-        'status':1,
+        'status': 1,
     }
     if not project.title :
         context['status'] = 0

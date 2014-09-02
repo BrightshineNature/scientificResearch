@@ -25,10 +25,11 @@ from users.models import ExpertProfile, SchoolProfile
 
 @csrf.csrf_protect
 @login_required
-@authority_required(SCHOOL_USER)
 @check_submit_status(SUBMIT_STATUS_APPLICATION)
 def appView(request, pid, is_submited = False):
     context = appManage(request, pid)
+    context['is_submited'] = is_submited
+    context['user'] = "school"
     return render(request, "school/application.html", context)
 
 @csrf.csrf_protect
@@ -57,7 +58,6 @@ def financialInfoView(request):
 
 @csrf.csrf_protect
 @login_required
-@authority_required(SCHOOL_USER)
 @check_submit_status(SUBMIT_STATUS_FINAL)
 def finalReportView(request,pid,is_submited=False):
     context = finalReportViewWork(request,pid,is_submited)

@@ -89,9 +89,6 @@ def appManage(request, pid):
 
     project_member_list = ProjectMember.objects.filter(project__project_id = pid)
 
-    print "UUUUUU***************"
-
-
 
     context = {
         'project_info_form': ProjectInfoForm(project_info_data),
@@ -106,7 +103,6 @@ def appManage(request, pid):
     }
 
     return context
-    return render(request, userauth['role'] + "/application.html", context)
 
 from django.core.files.storage import default_storage
 import time

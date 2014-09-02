@@ -103,8 +103,6 @@ class check_submit_status(object):
         def wrappered_method(request, *args, **kwargs):
             #check time control
             identity = request.session.get('auth_role', "")
-            pro = ProjectSingle.objects.get(project_id = kwargs["pid"])
-            loginfo(pro)
             is_submited = False
             if identity == ADMINSTAFF_USER and check_auth(user=request.user, authority=ADMINSTAFF_USER):
                 is_submited = True
@@ -117,7 +115,8 @@ class check_submit_status(object):
             elif identity == EXPERT_USER and check_auth(user=request.user, authority=EXPERT_USER):
                 pass
             elif identity == TEACHER_USER and check_auth(user=request.user, authority=TEACHER_USER):
-                pid = kwargs.get("pid", None)
+                pro = ProjectSingle.objects.get(project_id = kwargs["pid"])
+                loginfo(pro)
                 is_submited = self.get_submit_status(pro);
             loginfo(p=is_submited, label="check_submit_status decorator, is_submited")
             kwargs["is_submited"] = is_submited

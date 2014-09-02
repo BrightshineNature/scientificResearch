@@ -25,19 +25,18 @@ from common.views import finalReportViewWork, appManage
 @csrf.csrf_protect
 @login_required
 @authority_required(EXPERT_USER)
-@check_submit_status(SUBMIT_STATUS_REVIEW)
 def homeView(request, is_submited=False):
     is_first_round = request.GET.get("is_first_round", "1")
     expert = ExpertProfile.objects.get(userid = request.user)
     re_list_1 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & \
                                                       Q(is_first_round = True) & \
-                                                      Q(project__project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)))
+                                                      Q(project__project_status__status = PROJECT_STATUS_APPLICATION_REVIEW_START)))
     for re_obj in re_list_1:
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
 
     re_list_2 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & \
                                                       Q(is_first_round = False) & \
-                                                      Q(project__project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)))
+                                                      Q(project__project_status__status = PROJECT_STATUS_FINAL_REVIEW_START)))
     for re_obj in re_list_2:
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
     context = {"is_first_round": is_first_round,}
@@ -57,7 +56,6 @@ def finalReportView(request, is_submited = False):
     re_obj = Re_Project_Expert.objects.get(id = re_id)
     pid = re_obj.project
     score_table = getScoreTable(re_obj.project).objects.get(re_obj = re_obj)
-    
     context = finalReportViewWork(request, pid, is_submited)
     if request.method == "GET":
         score_form = getScoreForm(re_obj.project)(instance = score_table)
