@@ -66,7 +66,7 @@
             {% ifequal usercontext.role 'school'%}
             <td>
                 {% ifequal item.project_status.status review%}
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#concluding_modal" name="judge">结题</button>
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#concluding_modal" name="judge" arg="{{item.project_id}}">结题</button>
                 {%else%}
                 <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" name="judge">审核</button>
                 {%endifequal%}
