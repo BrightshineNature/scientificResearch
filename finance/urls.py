@@ -14,6 +14,15 @@ urlpatterns = patterns('',
         finance_views.applicationProjectView,
     ),
     url(
+        r'^final/(?P<pid>.{36})$',
+		finance_views.finalReportView,
+	),
+    url(
+        r'^application/(?P<pid>.{36})$',
+        finance_views.appView,
+    ),
+
+    url(
         r'concludingProject$',
         finance_views.concludingProjectView,
     ),

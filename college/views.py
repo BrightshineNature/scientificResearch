@@ -14,7 +14,7 @@ from const import *
 from backend.utility import getContext
 
 from adminStaff.utility import getCollege
-from common.views import scheduleManage, financialManage,researchConcludingManage,finalReportViewWork,fundBudgetViewWork,fileUploadManage
+from common.views import scheduleManage, financialManage,researchConcludingManage,finalReportViewWork,fundBudgetViewWork,fileUploadManage, appManage
 from adminStaff.utility import getCollege
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from adminStaff.forms import DispatchAddCollegeForm
@@ -23,13 +23,15 @@ from college.forms import TeacherDispatchForm
 from users.models import TeacherProfile
 from adminStaff.models import ProjectSingle
 
-
 @csrf.csrf_protect
 @login_required
-@authority_required(COLLEGE_USER)
-def appView(request):
-    context = {}
-    return render(request, "college/application.html", context)
+@check_submit_status(SUBMIT_STATUS_APPLICATION)
+def appView(request, pid, is_submited = False):
+    context = appManage(request, pid)
+    context['is_submited'] = is_submited
+    context['user'] = "school"
+    return render(request, "school/application.html", context)
+
 
 @csrf.csrf_protect
 @login_required
@@ -63,12 +65,6 @@ def financialInfoView(request):
     }
     return render(request,"college/project_financial_info.html",context)
 
-@csrf.csrf_protect
-@login_required
-@authority_required(COLLEGE_USER)
-def finalReportView(request):
-    context = {}
-    return render(request,"college/final.html",context)
 def researchConcludingView(request):
     userauth={
         'role':'college',
@@ -117,7 +113,6 @@ def finalInfoView(request,pid):
 
 @csrf.csrf_protect
 @login_required
-@authority_required(COLLEGE_USER)
 @check_submit_status(SUBMIT_STATUS_FINAL)
 def finalReportView(request,pid,is_submited=False):
     context = finalReportViewWork(request,pid,is_submited)

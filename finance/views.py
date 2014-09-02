@@ -11,9 +11,29 @@ from backend.decorators import *
 from backend.logging import loginfo
 from const import *
 
-from common.views import  financeManage,fundBudgetViewWork,finalReportViewWork
+from common.views import  financeManage,fundBudgetViewWork,finalReportViewWork, appManage
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm
 from common.forms import ScheduleBaseForm
+
+@csrf.csrf_protect
+@login_required
+@check_submit_status(SUBMIT_STATUS_APPLICATION)
+def appView(request, pid, is_submited = False):
+    context = appManage(request, pid)
+    context['is_submited'] = is_submited
+    context['user'] = "finance"
+    return render(request, "finance/application.html", context)
+
+@csrf.csrf_protect
+@login_required
+@check_submit_status(SUBMIT_STATUS_FINAL)
+def finalReportView(request,pid,is_submited=False):
+    context = finalReportViewWork(request,pid,is_submited)
+    loginfo(p=is_submited,label="is_submited")
+    return render(request,"finance/final.html",context)
+
+
+
 @csrf.csrf_protect
 @login_required
 @authority_required(FINANCE_USER)
