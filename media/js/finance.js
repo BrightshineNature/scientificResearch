@@ -7,6 +7,10 @@ $("#budgetjudge").click(function(){
     if(value!="-1"){
         Dajaxice.common.LookThroughResult(look_through_call_back,{
             "judgeid":pid,
+            "page":-1,
+            "page2":-1,
+            "search":0,
+            "searchForm":"",
             "userrole":"finance",
             "userstatus":"budget",
             "look_through_form":$("#budgetForm").serialize(true)
@@ -21,7 +25,10 @@ $("#finaljudge").click(function(){
     if(value!="-1"){
         Dajaxice.common.LookThroughResult(look_through_call_back,{
             "judgeid":pid,
-            "userrole":"finance",
+             "page":-1,
+            "page2":-1,
+            "search":0,
+            "searchForm":"","userrole":"finance",
             "userstatus":"final",
             "look_through_form":$("#finalForm").serialize(true)
         });
