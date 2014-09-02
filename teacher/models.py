@@ -118,90 +118,90 @@ class ProjectFundSummary(models.Model):
    							   verbose_name="经费决算表唯一ID")
     project_id = models.OneToOneField(ProjectSingle)
    
-    finance_comment = models.CharField(max_length=50, blank=True, null=True,default="",
+    finance_comment = models.CharField(max_length=100, blank=True, null=True,default="",
    										verbose_name="财务评审意见")
  
-    equcosts_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equcosts_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="设备费预算经费")
-    equcosts_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equcosts_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="设备费经费支出")
     equcosts_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="设备费说明")
-    equacquisition_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equacquisition_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="设备购置费经费")
-    equacquisition_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equacquisition_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="设备购置费支出")
     equacquisition_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="设备购置费说明")
-    equtrial_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equtrial_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="试制改造费经费")
-    equtrial_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equtrial_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="试制改造费支出")
     equtrial_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="试制改造费说明")
-    equrent_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equrent_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="设备改造与租赁费预算经费")
-    equrent_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equrent_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="设备改造与租赁费经费支出")
-    equrent_remark = models.CharField(max_length=100, blank=True, null=True,
+    equrent_remark = models.CharField(max_length=100,blank=True, null=True,
    										verbose_name="设备改造与租赁费说明")
-    material_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    material_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="材料费预算经费")
-    material_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    material_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="材料费经费支出")
     material_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="材料费说明")
-    testcosts_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    testcosts_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="测试化验加工费预算经费")
-    testcosts_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    testcosts_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="测试化验加工费经费支出")
     testcosts_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="测试化验加工费说明")
-    fuelpower_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    fuelpower_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="燃料动力费预算经费")
-    fuelpower_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    fuelpower_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="燃料动力费经费支出")
     fuelpower_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="燃料动力费说明")
-    travel_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    travel_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="差旅费预算经费")
-    travel_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    travel_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="差旅费经费支出")
     travel_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="差旅费说明")
-    conference_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    conference_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="会议费预算经费")
-    conference_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    conference_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="会议费经费支出")
     conference_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="会议费说明")
-    cooperation_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    cooperation_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="国际合作与交流费预算经费")
-    cooperation_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    cooperation_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="国际合作与交流费经费支出")
     cooperation_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="国际合作与交流费说明")
-    publish_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    publish_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="出版费预算经费")
-    publish_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    publish_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="出版费经费支出")
     publish_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="出版费说明")
-    laborcosts_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    laborcosts_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="劳务费预算经费")
-    laborcosts_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    laborcosts_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="劳务费经费支出")
     laborcosts_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="劳务费说明")
-    expertadvice_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    expertadvice_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="专家咨询费预算经费")
-    expertadvice_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    expertadvice_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="专家咨询费经费支出")
     expertadvice_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="专家咨询费说明")
-    total_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    total_budget = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="合计预算经费")
-    total_expenditure = models.CharField(max_length=50, blank=False, null=True,default="0",
+    total_expenditure = models.IntegerField(blank=False, null=True,default="0",
    										verbose_name="合计经费支出")
     total_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="合计说明")
@@ -217,63 +217,63 @@ class ProjectFundBudget(models.Model):
                                   verbose_name="经费预算表唯一ID")
     project_id = models.OneToOneField(ProjectSingle)
    
-    equcosts_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equcosts_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="设备费预算经费")
     equcosts_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="设备费说明")
-    equacquisition_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equacquisition_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="设备购置费经费")
     equacquisition_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="设备购置费说明")
-    equtrial_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equtrial_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="试制改造费经费")
     equtrial_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="试制改造费说明")
-    equrent_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    equrent_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="设备改造与租赁费预算经费")
     equrent_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="设备改造与租赁费说明")
-    material_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    material_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="材料费预算经费")
     material_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="材料费说明")
-    testcosts_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    testcosts_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="测试化验加工费预算经费")
     testcosts_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="测试化验加工费说明")
-    fuelpower_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    fuelpower_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="燃料动力费预算经费")
     fuelpower_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="燃料动力费说明")
-    travel_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    travel_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="差旅费预算经费")
     travel_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="差旅费说明")
-    conference_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    conference_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="会议费预算经费")
     conference_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="会议费说明")
-    cooperation_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    cooperation_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="国际合作与交流费预算经费")
     cooperation_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="国际合作与交流费说明")
-    publish_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    publish_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="出版费预算经费")
     publish_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="出版费说明")
-    laborcosts_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    laborcosts_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="劳务费预算经费")
     laborcosts_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="劳务费说明")
-    expertadvice_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    expertadvice_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="专家咨询费预算经费")
     expertadvice_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="专家咨询费说明")
-    total_budget = models.CharField(max_length=50, blank=False, null=True,default="0",
+    total_budget = models.IntegerField(blank=False, null=True,default="0",
                                            verbose_name="合计预算经费")
     total_remark = models.CharField(max_length=100, blank=True, null=True,
                                            verbose_name="合计说明")
-    finance_comment = models.CharField(max_length=50, blank=True, null=True,default="",
+    finance_comment = models.CharField(max_length=100, blank=True, null=True,default="",
                                            verbose_name="财务评审意见")
    
    
