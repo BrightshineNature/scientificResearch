@@ -8,6 +8,7 @@ from django.db.models import Q
 from dajaxice.utils import deserialize_form
 from backend.logging import loginfo
 from common.utils import status_confirm
+from common.utility import get_xls_path
 from adminStaff.utility import getSpecial
 from adminStaff.models import ProjectSingle, Re_Project_Expert
 from backend.utility import getContext
@@ -253,3 +254,16 @@ def getScore(request, pid):
             ave_score[item[0]] = 1.0 * item[1] / len(scoreList)
     html = render_to_string("widgets/concluding_data.html", {"scoreList": scoreList, "ave_score": ave_score.values(), "form": scoreFormType,})
     return simplejson.dumps({"message": message, "html": html,})
+@dajaxice_register
+def ExpertinfoExport(request,special_id,eid):
+    special = getSpecial(request).get(id = special_id)
+    if special:
+        if eid==TYPE_ALLOC[0]:
+            proj_set = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status__gte = PROJECT_STATUS_APPLICATION_REVIEW_OVER,project_status__status__lte = PROJECT_STATUS_APPROVAL))
+        elif eid == TYPE_FINAL_ALLOC[0]:
+            proj_set = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status__gte = PROJECT_STATUS_FINAL_REVIEW_OVER,project_status__status__lte = PROJECT_STATUS_OVER))
+        loginfo(proj_set.count())
+        path = get_xls_path(request,special.expert_review.category,proj_set,special.expert_review.category)
+        ret = {'path':path}
+        return simplejson.dumps(ret)
+    return simplejson.dumps({'status':'0'})

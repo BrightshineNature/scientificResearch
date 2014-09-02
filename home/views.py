@@ -37,12 +37,12 @@ def show(request):
     else:
         pro_list=ProjectSingle.objects.all()
     context = getContext(pro_list,project_page,'project',page_elems = 9)
-    for project in context["project_list"]:
-        imgs = project.uploadedfiles_set.filter( \
-            Q(file_obj__iendswith="jpg") | \
-                Q(file_obj__iendswith="png") )
-        project.img = (imgs.count() and convert2media_url(imgs[0].file_obj.url)) or \
-            DEFAULT_IMG_URL
+    # for project in context["project_list"]:
+    #     imgs = project.uploadFile_set.filter( \
+    #         Q(file_obj__iendswith="jpg") | \
+    #             Q(file_obj__iendswith="png") )
+    #     project.img = (imgs.count() and convert2media_url(imgs[0].file_obj.url)) or \
+    #         DEFAULT_IMG_URL
     context.update({
                'schedule_form':schedule_form,
              })
