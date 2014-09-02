@@ -14,16 +14,15 @@ urlpatterns = patterns('',
         r'dispatch$',
         college_views.dispatchView,
     ),
-
+	url(
+        r'^final/(?P<pid>.{36})$',
+		college_views.finalReportView,
+	),
     url(
-        r'application$',
+        r'^application/(?P<pid>.{36})$',
         college_views.appView,
     ),
 
-    url(
-        r'final$',
-        college_views.finalReportView,
-    ),
     url(
         r'financial$',
         college_views.financialView,
@@ -43,10 +42,6 @@ urlpatterns = patterns('',
     url(
         r'^finalinfo/(?P<pid>.{36})$',
         college_views.finalInfoView,
-    ),
-    url(
-        r'^final/(?P<pid>.{36})$',
-        college_views.finalReportView,
     ),
     url(
         r'^fundbudget/(?P<pid>.{36})$',

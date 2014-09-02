@@ -27,7 +27,19 @@
         {% for item in item2_list%}
         <tr>
             <td>{{item.project_code}}</td>
-            <td><a href=/school/final/{{item.project_id}}>{{item.title}}</a></td>
+            {% if usercontext.role == 'school' %}
+                <td><a href=/school/final/{{item.project_id}}>{{item.title}}</a></td>
+            {% endif %}
+            {% if usercontext.role == 'college' %}
+                <td><a href=/college/final/{{item.project_id}}>{{item.title}}</a></td>
+            {% endif %}
+            {% if usercontext.role == 'finance' %}
+                <td><a href=/finance/final/{{item.project_id}}>{{item.title}}</a></td>
+            {% endif %}
+            {% if usercontext.role == 'adminStaff' %}
+                <td><a href=/adminStaff/final/{{item.project_id}}>{{item.title}}</a></td>
+            {% endif %}
+
             <td>{{item.teacher.teacherinfosetting.name}}</td>
             <td>{{item.teacher.college}}</td>
             <td> {{item.approval_year}}</td>

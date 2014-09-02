@@ -92,6 +92,31 @@ class ProfessionalTitle(models.Model):
         verbose_name_plural = "职称"
     def __unicode__(self):
         return self.get_category_display()
+
+class Subject(models.Model):
+    """
+    Project Title:
+    """
+    category = models.CharField(max_length=30, blank=False, unique=True,
+                                choices=PROFESSIONAL_TITLE_CHOICES,
+                                verbose_name="学科代码")
+    class Meta:
+        verbose_name = "学科"
+        verbose_name_plural = "学科"
+    def __unicode__(self):
+        return self.get_category_display()
+class NationalTradeCode(models.Model):
+    """
+    Project Title:
+    """
+    category = models.CharField(max_length=30, blank=False, unique=True,
+                                choices=PROFESSIONAL_TITLE_CHOICES,
+                                verbose_name="国民行业代码")
+    class Meta:
+        verbose_name = "国民行业代码"
+        verbose_name_plural = "国民行业代码"
+    def __unicode__(self):
+        return self.get_category_display()
 class ExecutivePosition(models.Model):
     """
     Executive Position:

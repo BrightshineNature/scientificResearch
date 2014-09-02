@@ -20,7 +20,21 @@
         {% for item in item2_list%}
         <tr iid={{item.project_id}}>
             <td>{{item.project_application_code}}</td>
-            <td><a href=/school/application/{{item.project_id}}>{{item.title}}</a></td>
+            {% if usercontext.role == 'school' %}
+                <td><a href=/school/application/{{item.project_id}}>{{item.title}}</a></td>
+            {% endif %}
+            {% if usercontext.role == 'college' %}
+                <td><a href=/college/application/{{item.project_id}}>{{item.title}}</a></td>
+            {% endif %}
+            {% if usercontext.role == 'finance' %}
+                {% if usercontext.status == 'budget' %}
+                    <td><a href=/finance/application/{{item.project_id}}>{{item.title}}</a></td>
+                {% else %}
+                    <td><a href=/finance/final/{{item.project_id}}>{{item.title}}</a></td>
+                {% endif %}
+
+            {% endif %}
+
             <td>{{item.teacher.teacherinfosetting.name}}</td>
             <td>{{item.teacher.college}}</td> 
             <td> {{item.application_year}}</td>
