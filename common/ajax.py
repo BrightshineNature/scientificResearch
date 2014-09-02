@@ -221,6 +221,7 @@ def refreshMemberTabel(pid):
 
     return render_to_string( "widgets/project_member_table.html", {
         'project_member_list':project_member_list,
+        'is_submited':True, 
 
         })
 
