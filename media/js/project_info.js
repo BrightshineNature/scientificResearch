@@ -3,6 +3,7 @@ var search=0;
 var glo_project_id;
 $("[name='not_pass_reason']").hide();
 $("#not_pass_article").hide();
+$("#budget").hide();
 $("[name='judgeresult']").css("color","gray");
 $("[name='judgeresult']").change(function(){
     if($(this).val()=="-1")
@@ -19,10 +20,11 @@ $("[name='judgeresult']").change(function(){
         if(projectstatus==applicationstatus_s||projectstatus==applicationstatus_c||projectstatus==finalstatus){
         $("#not_pass_article").show(500);
         }   
-
+        $("#budget").hide(500);
     }
     else
     {
+        $("#budget").show(500);
         $("[name='not_pass_reason']").hide(500);
         $("#not_pass_article").hide(500);
     }

@@ -200,20 +200,13 @@ $(document).on("click", ".next_step",function(){
     
 });
 $(document).on("click", ".save_button",function(){
-    // alert("TT");
     
     cnt_content = $(this).parent();
-    // alert(cnt_content.html());
     
     var pid = $(this).parents("[pid]").attr("pid");
-    // alert(pid);
     if($(cnt_content).attr("id") == "project_info")
     {
-        // cnt_tab = $(this).parent().parent().prev().children("li:eq(0)");        
-        
-        
-
-        // alert($("#project_info_form").children("form").serialize());
+    
         Dajaxice.common.saveProjectInfoForm(saveProjectInfoFormCallback,{
             'form': $("#project_info_form").serialize(),
             'pid': pid,
@@ -222,27 +215,21 @@ $(document).on("click", ".save_button",function(){
     }
     else if($(cnt_content).attr("id") == "project_member")
     {
-        // cnt_tab = $(this).parent().parent().prev().children("li:eq(1)");
         
     }
     else if($(cnt_content).attr("id") == "basis_content")
     {
-        // cnt_tab = $(this).parent().parent().prev().children("li:eq(2)");
-
         Dajaxice.common.saveBasisContent(saveBasisContentCallback,{
             'form': $("#basis_content_form").serialize(),
-            'pid': pid,
-            'bid': $("#basis_content_form").attr("bid"),
+            'pid':  pid,
+            'bid':  $("#basis_content_form").attr("bid"),
         })
     }
     else
     {
-        // cnt_tab = $(this).parent().parent().prev().children("li:eq(3)");
         
         user = $("[user]").attr("user");
-        // alert(user);
 
-        // alert($("#base_condition_form").attr("bid"));
         Dajaxice.common.saveBaseCondition(saveBaseConditionCallback,{
             'form': $("#base_condition_form").serialize(),
             'pid': pid,
@@ -254,7 +241,6 @@ $(document).on("click", ".save_button",function(){
 
 var pid;
 $(document).on("click", ".submit_button", function(){
-    // alert("SB");
     pid = $(this).parents("[pid]").attr("pid");
 
     Dajaxice.common.checkValid(checkValidCallback, {

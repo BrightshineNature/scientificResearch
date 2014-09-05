@@ -105,8 +105,12 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
     form=deserialize_form(look_through_form)
     loginfo(form)
     if form["judgeresult"]=="1":
-        loginfo("JJJJJJJ")
         status_confirm(project,-1)
+        if userstatus=="application":
+            if form.get("max_budget"):
+                project.project_budget_max=int(form.get("max_budget"))
+                project.save()
+                loginfo(project.project_budget_max)
         if userstatus=="budget":
             finance_budget=ProjectFundBudget.objects.get(project_id=project)
             finance_budget.comment=form.get("reason")
@@ -221,6 +225,7 @@ def refreshMemberTabel(pid):
 
     return render_to_string( "widgets/project_member_table.html", {
         'project_member_list':project_member_list,
+        'is_submited':True, 
 
         })
 

@@ -8,7 +8,7 @@
       
     <li><a href="#basis_content" data-toggle="tab">立项依据与研究内容</a></li>
       
-    <li><a href="#base_condition" data-toggle="tab">研究基础与工作条件</a></li>
+    <!-- <li><a href="#base_condition" data-toggle="tab">研究基础与工作条件</a></li> -->
     
     {% if userauth.is_experter %}
     <li {% if error %}class="active" {% endif %}><a href="#score_board" data-toggle="tab">项目评价</a></li>     
@@ -26,7 +26,8 @@
 
     <div class="tab-pane fade" id="project_member">
       {%include "widgets/member_change.html"%}
-      {%include "widgets/save_button.html"%}
+      
+      {#{%include "widgets/save_button.html"%}#}
     </div>
 
 
@@ -37,22 +38,22 @@
 
     </div>
 
-    <div class="tab-pane fade" id="base_condition">
-      {% include "widgets/base_condition.html"%}
+    <!-- <div class="tab-pane fade" id="base_condition"> -->
+      {# {% include "widgets/base_condition.html"%} #}
        
-      {% if is_submited %}
+      {#{% if is_submited %}#}
 
-      <div class="">
-            <button class="btn btn-primary save_button" >当前页面信息</button>
+      <!-- <div class=""> -->
+            <!-- <button class="btn btn-primary save_button" >当前页面信息</button> -->
 
-            <button class="btn btn-primary submit_button" >提交</button>
-      </div>
-
-
-      {% endif %}
+            <!-- <button class="btn btn-primary submit_button" >提交</button> -->
+      <!-- </div> -->
 
 
-    </div>
+      {#{% endif %}#}
+
+
+    <!-- </div> -->
 
     <div class="tab-pane fade {% if error %} active in {% endif %}" id="score_board">
       {% include "widgets/score_board.html" %}
