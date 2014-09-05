@@ -51,9 +51,9 @@ elif [ $1 = 'restart' ];then
     echo "*_* Restart uwsgi and nginx [OK] *_* "
 
 elif [ $1 = 'deploy' ];then
-    sudo cp ScientificResearch_server /etc/nginx/sites-available/ScientificResearch_server
-    sudo ln -s /etc/nginx/sites-available/ScientificResearch_server /etc/nginx/sites-enabled/ScientificResearch_server
-    sudo cp ScientificResearch.ini /etc/uwsgi/apps-available/
+    sudo cp scientificResearch_server /etc/nginx/sites-available/scientificResearch_server
+    sudo ln -s /etc/nginx/sites-available/scientificResearch_server /etc/nginx/sites-enabled/scientificResearch_server
+    sudo cp scientificResearch.ini /etc/uwsgi/apps-available/
     sudo chmod 777 /var/run/nginx.pid
     echo "*_* Deploy and copy scipts *_*"
 
