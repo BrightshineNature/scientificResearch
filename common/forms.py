@@ -97,6 +97,7 @@ class ProjectJudgeForm(forms.Form):
     final_choice=((u"网上提交不合格",u"网上提交不合格"),(u"结题书不合格",u"结题书不合格"))
     final=forms.MultipleChoiceField(choices=final_choice,required=False,widget=forms.CheckboxSelectMultiple())
     reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
+    max_budget = forms.IntegerField(max_value=50,required=False,widget=forms.DateInput(attrs={'class':'form-control',"onkeyup":"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" ,'onafterpaste':"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"}))
 from users.models import SchoolProfile
 from adminStaff.models import ProjectSingle
 class NoticeForm(forms.Form):
