@@ -7,6 +7,7 @@
             <th><strong>邮箱</strong></th>
             <th><strong>职称</strong></th>
             <th><strong>行政职务</strong></th>
+            <th><strong>身份证</strong></th>
 
             {%if is_submited%} <th><strong>修改</strong></th> {%endif%}
             {%if is_submited%} <th><strong>删除</strong></th>{%endif%}
@@ -25,7 +26,7 @@
 
             <td value = "{{item.executive_position.id }}">{{item.executive_position }}</td>
 
-
+            <td>{{item.card}}</td>
             {%if is_submited%} 
             <td><button class = "btn btn-success modifyProjectMember" data-toggle="modal"
                 data-target="#member_info_modal">修改</button> </td>
