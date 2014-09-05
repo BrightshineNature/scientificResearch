@@ -12,7 +12,7 @@ from django.db.models import Q
 from backend.utility import getContext
 
 from adminStaff.utility import getCollege,getSpecial
-from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
+from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm,AllStatusForm
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
 from teacher.models import ProjectFundBudget
@@ -200,6 +200,8 @@ def fileUploadManage(request, pid):
 
 def scheduleManage(request, userauth):
     context = schedule_form_data(request, userauth)
+    statusform=AllStatusForm()
+    context.update({'allstatusform':statusform})
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
     context = schedule_form_data(request , userauth)
