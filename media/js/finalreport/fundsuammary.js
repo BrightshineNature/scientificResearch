@@ -32,15 +32,15 @@ $('#fundsummary_next').click(function(){
     $('#li_achivement').addClass('active');        
     $('#achivement').addClass('active in');
 });
-var totalbudget = 0;
-var totalexpenditure = 0;
+var totalbudget = 0.0;
+var totalexpenditure = 0.0;
 $("#mainTable").find("input").bind('change',function(){
     totalbudget = 0;
     totalexpenditure = 0
     $("#mainTable tbody tr").each(function(){
-        totalbudget += parseInt($(this).find("td").eq(1).children().val());
-        totalexpenditure += parseInt($(this).find("td").eq(2).children().val());
+        totalbudget += parseFloat($(this).find("td").eq(1).children().val());
+        totalexpenditure += parseFloat($(this).find("td").eq(2).children().val());
     });
-    $("#id_total_budget").val(parseInt(totalbudget));
-    $("#id_total_expenditure").val(parseInt(totalexpenditure));
+    $("#id_total_budget").val(parseFloat(totalbudget));
+    $("#id_total_expenditure").val(parseFloat(totalexpenditure));
 });
