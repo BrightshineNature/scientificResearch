@@ -200,8 +200,9 @@ def fileUploadManage(request, pid):
 
 def scheduleManage(request, userauth):
     context = schedule_form_data(request, userauth)
-    statusform=AllStatusForm()
-    context.update({'allstatusform':statusform})
+    if userauth['role']=="adminStaff":
+        statusform=AllStatusForm()
+        context.update({'allstatusform':statusform})
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
     context = schedule_form_data(request , userauth)
