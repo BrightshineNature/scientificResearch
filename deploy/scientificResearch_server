@@ -30,7 +30,7 @@ server {
 
 	location / {
         root /home/sie/mysites/scientificResearch;
-        uwsgi_pass 192.168.20.100:8086;
+        uwsgi_pass 192.168.20.100:9096;
         include uwsgi_params;
         access_log off;
 	}
