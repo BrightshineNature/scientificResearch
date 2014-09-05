@@ -18,10 +18,10 @@ function final_content_callback(data){
     }
 }
 
-$('#finalcontent_next').click(function(){
-	    $('#li_content').removeClass('active');        
-        $('#content').removeClass('active in');
-        $('#li_auditing').addClass('active');        
-        $('#auditing').addClass('active in');
+function finalcontent_next(){
+    $('#li_content').removeClass('active');        
+    $('#content').removeClass('active in');
+    $('#li_auditing').addClass('active');        
+    $('#auditing').addClass('active in');
 
-});
+}

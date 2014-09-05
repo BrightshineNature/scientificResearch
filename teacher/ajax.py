@@ -7,6 +7,7 @@ from django.http import Http404
 from django.utils import simplejson
 from teacher.forms import *
 from teacher.models import *
+from teacher.utility import copyFundsummaryToBudget
 from const.models import *
 from const import FINAL_WEB_CONFIRM 
 from common.utils import  status_confirm
@@ -131,15 +132,29 @@ def staticsChange(request,statics_type):
 def fundSummary(request, form, pid):
     profundsummary = ProjectFundSummary.objects.get(project_id = pid) 
     profundsummaryform = ProFundSummaryForm(deserialize_form(form),instance = profundsummary)
+    project = ProjectSingle.objects.get(project_id = pid )
     if profundsummaryform.is_valid():
-        profundsummaryform.save()
-        message = u"保存成功"
+        total_budget = float(profundsummaryform.cleaned_data["total_budget"])
+        laborcosts_budget = float(profundsummaryform.cleaned_data["laborcosts_budget"])
+        if laborcosts_budget < total_budget * 0.3:
+            if total_budget < project.project_budget_max:
+                profundsummaryform.save()
+                copyFundsummaryToBudget(pid)    
+                message = u"保存成功"
+                flag = True
+            else:
+                message = u"经费决算表总结额应低于项目最大预算金额,请仔细核实"
+                flag = False
+        else:
+            message = u"劳务费应低于总结额的30%,请仔细核实"
+            flag = False
     else:
         loginfo(p=profundsummaryform.errors,label='profundsummaryform.errors')
         message = u"保存失败"
+        flag = False
 
-    table = refresh_fundsummary_table(request,profundsummaryform,pid)
-    ret = {'message':message,'table':table}
+    # table = refresh_fundsummary_table(request,profundsummaryform,pid)
+    ret = {'message':message,'flag':flag}
     return simplejson.dumps(ret)
 
 def refresh_fundsummary_table(request, profundsummaryform,pid):
