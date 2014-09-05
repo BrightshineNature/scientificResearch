@@ -23,8 +23,15 @@ $(".form-year").datetimepicker({
 });
 
 
-
-
+var Members = new Array('name', 'birth_year', 'tel', 'mail', 'professional_title', 'executive_position', 'card');
+function clear(list) 
+{
+    for(var i = 0; i < list.length; ++ i)
+    {
+        var u = "#id_" + list[i];
+        $(u).css("background", "white");
+    }    
+}
 $(document).on("click", "#addNewProjectMember", function(){
 
     $("input[name='name']").val("");
@@ -41,23 +48,24 @@ $(document).on("click", "#addNewProjectMember", function(){
     
     $('#project_member_form_error').hide();
 
+        
+    clear(Members);
+    
+
 
 })
 
 $(document).on("click", "#saveProjectMember", function(){
     var pid = $(this).parents("[pid]").attr("pid");
     var form = $("#project_member_form").serialize();
-
-
-    // alert($(""));
-    // alert(form);
-    // $('#saveProjectMember').modal("toggle");
+    clear(Members);
     Dajaxice.common.saveProjectMember(saveProjectMemberCallback, {
         'form':form,
         'pid':pid,
         'mid':$(member_info_modal).attr("mid"),
     })
 });
+
 
 function saveProjectMemberCallback(data){
 
@@ -72,7 +80,14 @@ function saveProjectMemberCallback(data){
     }
     else if(data.status == 0)
     {
-        $('#project_member_form_error').html('<h3>您有字段没有被填写。</h3>');
+        if(data.error.indexOf(",") == -1)
+        {
+            $('#project_member_form_error').html(data.error);
+            $('#project_member_form_error').hide();
+            $('#project_member_form_error').show(500);
+            return ;
+        }
+        $('#project_member_form_error').html('<h3>您有字段没有填写。</h3>');
         $('#project_member_form_error').hide();
         $('#project_member_form_error').show(500);
 
@@ -84,7 +99,6 @@ function saveProjectMemberCallback(data){
             cnt = "#id_" + error[i];
             $(cnt).css("background","red");
         }
-        // $('#member_info_modal').attr('data-dismiss', '');
     }
 
 }
@@ -108,15 +122,21 @@ $(document).on("click", ".modifyProjectMember", function(){
     $("select[name='professional_title']").val($(cnt).children("td:eq(4)").attr("value"));
     $("select[name='executive_position']").val($(cnt).children("td:eq(5)").attr("value"));
 
+    $("input[name='card']").val($(cnt).children("td:eq(6)").html());
+    clear(Members);
+    
+
+
 
 });
 
 $(document).on("click", ".deleteProjectMember", function(){
     var cnt = $(this).parent().parent();
 
+    var pid = $(this).parents("[pid]").attr("pid");
     Dajaxice.common.deleteProjectMember(deleteProjectMemberCallback,{
         'mid' : $(cnt).attr("mid"),
-         
+        'pid':pid,
         })
 
 
@@ -242,29 +262,39 @@ $(document).on("click", ".save_button",function(){
 var pid;
 $(document).on("click", ".submit_button", function(){
     pid = $(this).parents("[pid]").attr("pid");
-
     Dajaxice.common.checkValid(checkValidCallback, {
         'pid': pid,
     });
 })
+function checkValidCallback(data) {
+    if(data.status == 1)
+    {
+        user = $("[user]").attr("user");
+        location.href = "/" + user + "/file_upload/" + pid;
+    }
+
+
+}
 
 function saveProjectInfoFormCallback(data) 
 {
+    $("#id_project_name").css("background","white");
+    $("#id_science_type").css("background","white");
+    $("#id_trade_code").css("background","white");
+    $("#id_subject").css("background","white");
+    $("#id_start_time").css("background","white");
+    $("#id_end_time").css("background","white");
+
+
     if(data.status == 1)
     {
-        // jump();    
         $("#project_info_form_error").html("<h3>保存成功！</h3>");
         $("#project_info_form_error").hide();
         $("#project_info_form_error").show(500);
-
-        // alert("!OK");
     }
     else if(data.status == 0)
     {
-        // alert("OK");
-        // alert(data.error);
         var error = data.error.split(",");
-        // alert(error);
         for(var i = 0; i < error.length; ++ i)
         {
             if(error[i] == "") continue;
@@ -281,16 +311,12 @@ function saveProjectInfoFormCallback(data)
 function saveBasisContentCallback(data) {
     if(data.status == 1)
     {
-        // jump();    
-
         $("#basis_content_form_error").html("<h3>保存成功!</h3>");
         $("#basis_content_form_error").show();
         window.scrollTo(0,0);
     }
     else if(data.status == 0)
     {
-        // alert(data.error);
-
         $("#basis_content_form_error").html("<h3>您有字段没有被填写。</h3>");
         $("#basis_content_form_error").show();
     }
@@ -307,8 +333,6 @@ function saveBaseConditionCallback(data){
     }
     else if(data.status == 0)
     {
-        // alert(data.error);
-
         $("#base_condition_form_error").html("<h3>您有字段没有被填写。</h3>");
         $("#base_condition_form_error").show();
     }
@@ -316,15 +340,3 @@ function saveBaseConditionCallback(data){
 
 }
 
-function checkValidCallback(data) {
-    // // alert("KK");
-    // alert(data.status)
-    if(data.status == 1)
-    {
-        // alert("")
-        user = $("[user]").attr("user");
-        location.href = "/" + user + "/file_upload/" + pid;
-    }
-
-
-}

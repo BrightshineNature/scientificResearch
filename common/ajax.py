@@ -20,7 +20,7 @@ from django.conf import settings
 from const import *
 from adminStaff.models import ProjectSingle
 from common.utils import status_confirm, statusRollBack
-from const.models import ScienceActivityType
+from const.models import ScienceActivityType, NationalTradeCode, Subject
 from common.views import schedule_form_data
 from adminStaff.models import ProjectSingle
 from common.forms import ProjectInfoForm, ProjectMemberForm,BasisContentForm, BaseConditionForm
@@ -191,15 +191,19 @@ def saveProjectInfoForm(request, form, pid):
     }
     if form.is_valid():        
         p.title = form.cleaned_data['project_name']
+
         science_type =form.cleaned_data['science_type']
-        scienceType = ScienceActivityType.objects.get(category=science_type)
-        p.science_type = scienceType
-        p.trade_code = form.cleaned_data['trade_code']
-        p.subject_name = form.cleaned_data['subject_name']
-        p.subject_code = form.cleaned_data['subject_code']
+        p.science_type = ScienceActivityType.objects.get(category=science_type)
+
+        trade_code = form.cleaned_data['trade_code']
+        p.trade_code = NationalTradeCode.objects.get(category = trade_code)
+
+        subject = form.cleaned_data['subject']
+        p.subject = Subject.objects.get(category = subject)
+        
         p.start_time = form.cleaned_data['start_time']
         p.end_time = form.cleaned_data['end_time']
-        p.project_tpye = form.cleaned_data['project_tpye']
+        p.project_tpye = None
         p.save()            
         pass
     else :
@@ -242,23 +246,41 @@ def saveProjectMember(request, form, pid, mid):
     }
 
     if form.is_valid():
-        temp = form.save(commit = False)
-        temp.project = ProjectSingle.objects.get(project_id = pid)
-        temp.save()
-        context['status'] = 1
-        context['project_member_table'] = refreshMemberTabel(pid)
+        icard = form.cleaned_data['card']
+        member = ProjectMember.objects.filter(card = icard)
+
+        ok = True        
+        if not member : pass
+        else:
+            print 'SB'
+            print member
+            member = member[0]
+            status = member.project.project_status.status
+            
+            if status == PROJECT_STATUS_OVER or status == PROJECT_STATUS_STOP :
+               pass
+            else : ok = False
+
+        if ok: 
+            temp = form.save(commit = False)
+            temp.project = ProjectSingle.objects.get(project_id = pid)
+            temp.save()
+            context['status'] = 1
+            context['project_member_table'] = refreshMemberTabel(pid)
+        else :
+            context['status'] = 0
+            context['error'] = "此成员已被添加到其他为结题项目中 不可添加到本项目中"
 
     else:
         context['status'] = 0
         error = ""
-        for i in form.errors:
-            error += i + ","
+        for i in form.errors: error += i + ","
         context['error'] = error
 
 
     return simplejson.dumps(context)
 @dajaxice_register
-def deleteProjectMember(request, mid):
+def deleteProjectMember(request, mid, pid):
     ProjectMember.objects.get(id = mid).delete()
 
     context = {
@@ -333,20 +355,17 @@ def checkValid(request, pid):
     elif not project.trade_code :
         context['status'] = 0
         # print '2'
-    elif not project.subject_name :
+    elif not project.subject :
         context['status'] = 0
         # print '3'
-    elif not project.subject_code :
-        context['status'] = 0
-        # print '4'
     elif not project.start_time :
         context['status'] = 0
         # print '5'
     elif not project.end_time :
         context['status'] = 0
         # print '6'
-    elif not project.project_tpye :
-        context['status'] = 0
+    # elif not project.project_tpye :
+    #     context['status'] = 0
         # print '7'
 
     if not BasisContent.objects.filter(project__project_id = pid):

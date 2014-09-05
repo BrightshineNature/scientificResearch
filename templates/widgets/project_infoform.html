@@ -9,6 +9,7 @@ style= "display:none">
 
 
 <form class="well form" id = "project_info_form">
+
     <div class="row">
         <div class="col-lg-3 ">
             <div class="input-group"> 
@@ -20,7 +21,7 @@ style= "display:none">
             </div> 
         </div>
 
-        <div class="col-lg-3">
+        <div class="col-lg-3 ">
             <div class="input-group">
                 <span class="input-group-addon">
                     科技活动类型:
@@ -29,7 +30,10 @@ style= "display:none">
                 {{ project_info_form.science_type }}
             </div>
         </div>
-        <div class="col-lg-4">
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
             <div class="input-group">
                 <span class="input-group-addon">
                     国民行业代码（国标）:
@@ -38,41 +42,16 @@ style= "display:none">
                 {{ project_info_form.trade_code }}
             </div>
         </div>
-    </div>
-
-
-    <div class="row">
         <div class="col-lg-3">
-            <div class="input-group">
-                <span class="input-group-addon">
-                    学科名称:
-                    <!-- <span class="glyphicon glyphicon-user"></span> -->
-                </span>
-                {{ project_info_form.subject_name }}
-            </div> 
-        </div>
-                <div class="col-lg-3">
             <div class="input-group">
                 <span class="input-group-addon">
                     学科代码:
                     <!-- <span class="glyphicon glyphicon-list-alt"></span> -->
                 </span>
-                {{ project_info_form.subject_code }}
+                {{ project_info_form.subject }}
             </div>
         </div>
-
-        <div class="col-lg-3">
-            <div class="input-group">
-                <span class="input-group-addon">
-                    项目类型:
-                    <!-- <span class="glyphicon glyphicon-list-alt"></span> -->
-                </span>
-                {{ project_info_form.project_tpye }}
-            </div>
-        </div>
-        
     </div>
-
 
     <div class="row">
         <div class="col-lg-3">
@@ -89,7 +68,6 @@ style= "display:none">
             </div>
         </div>
         <div class="col-lg-3 ">
-
             <div class="input-group date form-date" data-date="" data-date-format="yyyy-mm-dd">  
 
                 <span class="input-group-addon"> 
@@ -98,19 +76,13 @@ style= "display:none">
                 {{ project_info_form.end_time }}
                 <span class="input-group-addon">                    
                     <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-                
+                </span>                
             </div>
-
-
-
         </div>
 
-        
-
-
-
     </div>
+
+
 
 
 </form>

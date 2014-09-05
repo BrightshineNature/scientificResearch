@@ -95,10 +95,10 @@ class ProfessionalTitle(models.Model):
 
 class Subject(models.Model):
     """
-    Project Title:
+    Subject
     """
     category = models.CharField(max_length=30, blank=False, unique=True,
-                                choices=PROFESSIONAL_TITLE_CHOICES,
+                                choices=SUBJECT_CHOICES,
                                 verbose_name="学科代码")
     class Meta:
         verbose_name = "学科"
@@ -107,10 +107,10 @@ class Subject(models.Model):
         return self.get_category_display()
 class NationalTradeCode(models.Model):
     """
-    Project Title:
+    National Trade Code:
     """
     category = models.CharField(max_length=30, blank=False, unique=True,
-                                choices=PROFESSIONAL_TITLE_CHOICES,
+                                choices=NATIONAL_TRADE_CODE_CHOICES,
                                 verbose_name="国民行业代码")
     class Meta:
         verbose_name = "国民行业代码"

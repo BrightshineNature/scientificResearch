@@ -54,10 +54,14 @@ class ProjectSingle(models.Model):
     file_interimchecklist = models.BooleanField(null=False, default=False,verbose_name=u"进展报告")
     file_summary = models.BooleanField(null=False, default=False,verbose_name=u"结题书")
     science_type = models.ForeignKey(ScienceActivityType,verbose_name=u'科技活动类型',blank=True,null=True)
-    trade_code = models.ForeignKey(NationalTradeCode,verbose_name= u'国民行业代码(国标)')
-    subject = models.ForeignKey(Subject,verbose_name = u'学科')
-    start_time = models.DateField(blank=True,null=True,default=lambda: datetime.datetime.today(),verbose_name=u'研究开始时间')
-    end_time = models.DateField(blank=True,null =True,default=lambda: datetime.datetime.today(),verbose_name=u'研究结束时间')
+    trade_code = models.ForeignKey(NationalTradeCode,verbose_name= u'国民行业代码(国标)',blank=True,null=True)
+    subject = models.ForeignKey(Subject,verbose_name = u'学科',blank=True,null=True)
+    start_time = models.DateField(blank=True,null=True,
+        # default=lambda: datetime.datetime.today(),
+        verbose_name=u'研究开始时间')
+    end_time = models.DateField(blank=True,null =True,
+        # default=lambda: datetime.datetime.today(),
+        verbose_name=u'研究结束时间')
     project_tpye =models.CharField(blank=True,null=True,max_length = 20, verbose_name = u'项目类型')
     project_budget_max = models.IntegerField(blank = False, default = 0, verbose_name = u"项目最大预算金额")
     class Meta:
