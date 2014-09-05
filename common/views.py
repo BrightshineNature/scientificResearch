@@ -72,14 +72,14 @@ def appManage(request, pid):
     else :
         base_condition_id = ""
         base_condition_form = BaseConditionForm()
+
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
         'project_name': p.title,
-        'science_type': p.science_type.category if p.science_type else None,
+        'science_type': p.science_type.category if p.science_type else '-1',
 
-        'trade_code': p.trade_code,
-        'subject_name': p.subject_name,
-        'subject_code': p.subject_code,
+        'trade_code': p.trade_code.category if p.trade_code else '-1',
+        'subject': p.subject.category if p.subject else '-1',
         'start_time': p.start_time,
         'end_time': p.end_time,
         'project_tpye': p.project_tpye,
