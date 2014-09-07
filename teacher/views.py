@@ -11,6 +11,7 @@ from django.views.decorators import csrf
 from backend.decorators import *
 from backend.logging import loginfo
 from const import *
+from django.db.models import Q
 
 from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage,get_project_list
 
@@ -24,6 +25,8 @@ from forms import ProjectCreationForm
 from common.utils import createNewProject
 from common.views import get_project_list
 from const import PROJECT_STATUS_APPLICATION_REVIEW_OVER
+
+import datetime
 
 @csrf.csrf_protect
 @login_required
@@ -67,10 +70,13 @@ def homeView(request):
         return HttpResponseRedirect(reverse("teacher.views.settingView"))
 
     project_list = get_project_list(request).filter(project_status__status__lt = PROJECT_STATUS_APPROVAL);
+    year = datetime.datetime.now().year   
+    projectCreationForbidCheck = (get_project_list(request).filter(Q(application_year = year) | Q(approval_year = year)).count() > 0)
     creationForm = ProjectCreationForm()
     context = {
         'project_list':project_list,
         'form': creationForm,
+        'projectCreationForbidCheck': projectCreationForbidCheck,
     }
     return render(request,"teacher/project_info.html",context)
 @csrf.csrf_protect
@@ -158,6 +164,7 @@ def settingView(request):
         form = SettingForm(request.POST, instance = setting)
         if form.is_valid():
             form.save()
+            is_first = True
             message = "ok"
     context = {"form": form,
                "message": message,
