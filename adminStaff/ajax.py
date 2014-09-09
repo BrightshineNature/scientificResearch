@@ -253,6 +253,23 @@ def TemplateNoticeDelete(request,deleteID,page):
     return simplejson.dumps(ret)
 
 @dajaxice_register
+def get_news_list(request, uid):
+    logger.info("sep delete news"+"**"*10)
+    # check mapping relation
+    try:
+        delnews=News.objects.get(id=uid)
+        logger.info(delnews.id)
+        if request.method == "POST":
+            delnews.delete()
+            return simplejson.dumps({"is_deleted": True,
+                    "message": "delete it successfully!",
+                    "uid": str(uid)})
+        else:
+            return simplejson.dumps({"is_deleted": False,
+                                     "message": "Warning! Only POST accepted!"})
+    except Exception, err:
+        logger.info(err)
+@dajaxice_register
 def Dispatch(request,form,identity,page):
     if identity == SCHOOL_USER or identity ==COLLEGE_USER:
         dispatchForm = DispatchForm(deserialize_form(form))
