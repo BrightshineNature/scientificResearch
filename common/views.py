@@ -12,7 +12,7 @@ from django.db.models import Q
 from backend.utility import getContext
 
 from adminStaff.utility import getCollege,getSpecial
-from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm
+from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm,NoticeForm,AllStatusForm
 from adminStaff.forms import TemplateNoticeMessageForm
 from const.models import ScienceActivityType
 from teacher.models import ProjectFundBudget
@@ -72,14 +72,14 @@ def appManage(request, pid):
     else :
         base_condition_id = ""
         base_condition_form = BaseConditionForm()
+
     p = ProjectSingle.objects.get(project_id = pid)
     project_info_data = { 
         'project_name': p.title,
-        'science_type': p.science_type.category if p.science_type else None,
+        'science_type': p.science_type.category if p.science_type else '-1',
 
-        'trade_code': p.trade_code,
-        'subject_name': p.subject_name,
-        'subject_code': p.subject_code,
+        'trade_code': p.trade_code.category if p.trade_code else '-1',
+        'subject': p.subject.category if p.subject else '-1',
         'start_time': p.start_time,
         'end_time': p.end_time,
         'project_tpye': p.project_tpye,
@@ -200,6 +200,9 @@ def fileUploadManage(request, pid):
 
 def scheduleManage(request, userauth):
     context = schedule_form_data(request, userauth)
+    if userauth['role']=="adminStaff":
+        statusform=AllStatusForm()
+        context.update({'allstatusform':statusform})
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
     context = schedule_form_data(request , userauth)

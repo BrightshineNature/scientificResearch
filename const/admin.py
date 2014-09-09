@@ -18,6 +18,8 @@ RegisterClass = (
     ExpertReview,
     ExecutivePosition,
     ProfessionalTitle,
+    NationalTradeCode,
+    Subject,
 )
 
 for temp in RegisterClass:
