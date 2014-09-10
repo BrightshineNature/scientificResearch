@@ -38,6 +38,9 @@ class ProjectStatus(models.Model):
     status = models.IntegerField(blank=False, unique=True,
                               choices=PROJECT_STATUS_CHOICES,
                                verbose_name="项目状态")
+    next_status = models.IntegerField(blank=False, unique=True,
+                              choices=PROJECT_STATUS_PENDDING,
+                               verbose_name="项目下一个状态")
     class Meta:
         verbose_name = "项目状态"
         verbose_name_plural = "项目状态"
