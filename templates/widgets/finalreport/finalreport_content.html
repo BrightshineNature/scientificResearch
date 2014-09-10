@@ -15,6 +15,7 @@
       </p>
     </div>
     {%endif%}
+    {% comment %}
 	<div class="page-header">
         <h3>关键词</h3>
     </div>
@@ -31,6 +32,7 @@
     </blockquote><!--end project content-->
 
     <br/>
+    {% endcomment  %}
     <div class="page-header">
         <h3>项目摘要</h3>
     </div>
@@ -47,6 +49,7 @@
     </blockquote><!--end project content-->
 
     <br/>
+    {% comment %}
     <div class="page-header">
       <h3>研究计划要点及执行情况概述</h3>
     </div>
@@ -105,7 +108,8 @@
 		  </div>
 		  {% endif %}
       </div>
-    </blockquote><!--end project content-->
+  </blockquote><!--end project content-->
+  {% endcomment  %}
   {% if is_submited %}
 
     <button class="btn btn-primary" id="finalsubmitform_btn"  pid={{pid}} is_submited={{is_submited}} type="button">提交结题报告正文</button>

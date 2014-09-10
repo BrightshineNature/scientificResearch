@@ -9,8 +9,6 @@ $(document).on("click", ".saveObjectName",function(){
 
 })
 function saveObjectNameCallback(data){
-
-    alert("SSF");
     $("#alert_info_modal").attr("data-dismiss", "modal");
     if(data.status == 1)
     {
@@ -22,7 +20,6 @@ function saveObjectNameCallback(data){
     }
     else if(data.status == 0)
     {
-      alert("SB");
       $("#alert_info_modal").find(".modal-body").html("<h3>添加不成功！所添加名字为空或者已存在！<h3>");
       $("#alert_info_modal").modal('show');
     }

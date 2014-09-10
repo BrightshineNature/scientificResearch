@@ -223,7 +223,7 @@ LOGGING = {
 
 # project original file
 PROCESS_FILE_PATH = join("tmp", "process_file")
-
+HOMEPAGE_PIC_PATH = join(MEDIA_ROOT, "homepage_pic")
 # news documents path
 NEWS_DOCUMENTS_PATH = "news-documents/%Y/%m/%d"
 

@@ -19,13 +19,16 @@
             <th>决算</th>
             <th>结余</th>
             {%endifequal%}
+            {%ifequal usercontext.role "adminStaff"%}
+            <th>操作</th>
+            {%endifequal%}
         </tr>
     </thead>
 
     <tbody>
         {% if item2_list%}
         {% for item in item2_list%}
-        <tr>
+        <tr iid={{item.project_id}} status={{item.project_status.status}}>
             <td>{{item.project_code}}</td>
             {% if usercontext.role == 'school' %}
                 <td><a href=/school/final/{{item.project_id}}>{{item.title}}</a></td>
@@ -74,6 +77,11 @@
             <td>{{item.projectfundsummary.total_expenditure}}</td>
             <td>{{item.remain}}</td>
             {% endifequal%}
+            {% ifequal usercontext.role "adminStaff"%}
+            <td>
+                <button data-toggle="modal" data-target="#status_modal" class="btn btn-primary btn-sm" name="changestatus">修改状态</button>
+            </td>
+            {% endifequal %}
         </tr>
         {% endfor%}
         {% endif%}
