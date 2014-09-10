@@ -148,18 +148,22 @@ def handleFileUpload(request, pid,  entrance):
     obj.file_type = ftype
     obj.file_size = f.size
     obj.save()
-
+    timenow=time.strftime('%Y-%m-%d',time.localtime(time.time()))
     if entrance == 'file_application':
         project.file_application = True
+        project.submit_date=timenow
         status_confirm(project, APPLICATION_SUBMIT_CONFIRM)
     elif entrance == 'file_task':
         project.file_task = True
+        project.submit_date=timenow
         status_confirm(project, TASK_SUBMIT_CONFIRM)
     elif entrance == 'file_interimchecklist':
         project.file_interimchecklist = True
+        project.submit_date=timenow
         status_confirm(project, PROGRESS_SUBMIT_CONFIRM)
     elif entrance == 'file_summary':
         project.file_summary = True
+        project.submit_date=timenow
         status_confirm(project, FINAL_SUBMIT_CONFIRM)
         
     project.save()
