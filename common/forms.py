@@ -134,7 +134,7 @@ class ProjectInfoForm(forms.Form):
         required=True,
         widget=forms.TextInput(attrs={
             'class':'form-control ', 
-                      
+
             'placeholder':u"项目名称"}), )
 
     science_type_choices = (("-1", "---------"),) + SCIENCE_ACTIVITY_TYPE_CHOICES
@@ -143,17 +143,21 @@ class ProjectInfoForm(forms.Form):
         required = True,
         widget=forms.Select(attrs={
             'class':'form-control',
-            'style':'margin: 0px!important',
+            'style':'width:170px',
             'placeholder':u"科技活动类型",
             }),
         )
+
+
+
     trade_code_choices = (("-1", "---------"),) + NATIONAL_TRADE_CODE_CHOICES
     trade_code = forms.ChoiceField(
         choices= trade_code_choices,
         required = True,
         widget=forms.Select(attrs={
             'class':'form-control',
-            'style':'margin: 0px!important',
+            # 'style':'margin: 0px!important',
+            'style':'width:170px',
             'placeholder':u"国民行业代码（国标）",
             }),
         )
@@ -163,8 +167,9 @@ class ProjectInfoForm(forms.Form):
         required = True,
         widget=forms.Select(attrs={
             'class':'form-control',
-            'style':'margin: 0px!important',
+            # 'style':'margin: 0px!important',
             'placeholder':u"学科代码",
+            'style':'width:170px',
             }),
         )
 
