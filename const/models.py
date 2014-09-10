@@ -46,6 +46,8 @@ class ProjectStatus(models.Model):
         verbose_name_plural = "项目状态"
     def __unicode__(self):
         return self.get_status_display()
+    def get_next_status(self):
+        return self.get_next_status_display()
 
 class Sex(models.Model):
     """
