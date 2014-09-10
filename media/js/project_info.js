@@ -35,10 +35,14 @@ Dajaxice.common.getStatus(function(data){
     applicationstatus_c=data.application_c;
     finalstatus=data.final;
 },{});
-
+$(document).on("click","[name='changestatus']",function(){
+    judgeid=$(this).closest("tr").attr("iid");
+    projectstatus=$(this).closest("tr").attr("status");
+    $("#id_allstatus").val(projectstatus);
+});
 $(document).on("click","[name='judge']",function(){
     judgeid=$(this).closest("tr").attr("iid");
-    Dajaxice.school.getScore(getScoreCallBack, {"pid": judgeid,});
+    Dajaxice.school.getScore(getScoreCallBack, {"pid": judgeid});
     projectstatus=$(this).closest("tr").attr("status");
 });
 function getScoreCallBack(data){
@@ -57,7 +61,15 @@ $(document).on("click", "[name='detail_hide_btn']", function(){
     $("#detail_btn").attr("name", "detail_show_btn");
     $("#detail_btn").html("显示具体得分");
 });
-
+$("#status_submit").click(function(){
+    var value=$("#id_allstatus").val();
+    Dajaxice.common.StatusChange(getPaginationCallBack,{
+        "judgeid":judgeid,
+        "status":value,
+        "page2":$("#pass_paginator .disabled").attr("value"),
+        "searchForm":$("#schedule_form").serialize(true)
+    });
+});
 $("[name='commit']").click(function(){
     var value=$(this).closest(".modal").find("#id_judgeresult").val();
     var lookThroughForm=$(this).closest(".modal").find("#lookThroughForm").serialize(true);

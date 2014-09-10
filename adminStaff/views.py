@@ -4,6 +4,7 @@ Created on 2014-06-07
 
 Desc: adminStaff' view, includes home(manage), review report view
 '''
+import time
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators import csrf
@@ -16,9 +17,9 @@ from adminStaff.forms import NewsForm,ObjectForm,TemplateNoticeMessageForm,Dispa
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import NoticeForm
 
-from common.views import scheduleManage, financialManage,noticeMessageSettingBase,scheduleManage,finalReportViewWork,fundBudgetViewWork,fileUploadManage,researchConcludingManage
+from common.views import scheduleManage, financialManage,noticeMessageSettingBase,scheduleManage,finalReportViewWork,fundBudgetViewWork,fileUploadManage,researchConcludingManage,getType
 
-from adminStaff.models import TemplateNoticeMessage,News,ProjectSingle
+from adminStaff.models import TemplateNoticeMessage,News,ProjectSingle,HomePagePic
 from users.models import SchoolProfile,CollegeProfile,ExpertProfile,Special,College
 
 @csrf.csrf_protect
@@ -218,3 +219,27 @@ def fileUploadManageView(request, pid, is_submited = False):
 
     return render(request, "adminStaff/file_upload.html", context)
 
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
+def homepic_import_view(request):
+    """
+    project group member change
+    """
+    if request.method == "POST":
+        loginfo("sssss")
+        f = request.FILES["file"]
+        ftype = getType(f.name)
+
+        new_pic = HomePagePic()
+        new_pic.pic_obj = f
+        new_pic.name = f.name
+        new_pic.file_type = ftype
+        new_pic.uploadtime = time.strftime('%Y-%m-%d %X', time.localtime(time.time()))
+        new_pic.file_size = f.size
+        new_pic.save()
+    file_history = HomePagePic.objects.all()
+    loginfo(file_history.count())
+    data = {'files': file_history,
+    }
+    return render(request, 'adminStaff/home_pic_import.html', data)

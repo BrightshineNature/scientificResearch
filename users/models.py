@@ -87,6 +87,7 @@ class Special(models.Model):
         default_status = 1
     expert_review = models.ForeignKey(ExpertReview, blank=False, null=False, default=default_status,verbose_name=u"专家评审表")
     name = models.CharField(blank=False,max_length=30)
+    is_review = models.BooleanField(blank=True,default=True)
     alloc_status = models.BooleanField(blank=True,default= False)
     final_alloc_status = models.BooleanField(blank=True,default= False)
     application_status = models.BooleanField(blank=True,default= False)

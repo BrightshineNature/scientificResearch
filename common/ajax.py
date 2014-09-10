@@ -101,9 +101,7 @@ def getStatus(request):
 @dajaxice_register
 def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look_through_form,searchForm):
     project=ProjectSingle.objects.get(pk=judgeid)
-    loginfo(look_through_form)
     form=deserialize_form(look_through_form)
-    loginfo(form)
     if form["judgeresult"]=="1":
         status_confirm(project,-1)
         if userstatus=="application":
@@ -139,6 +137,14 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
     else:
         table_html=render_to_string("widgets/research_concluding_table.html",context)
     return simplejson.dumps({"table_html":table_html}) 
+from common.utils import set_status
+@dajaxice_register
+def StatusChange(request,judgeid,status,page2,searchForm):
+    project=ProjectSingle.objects.get(pk=judgeid)
+    set_status(project,int(status))
+    project.save()
+    loginfo(status)
+    return getPagination(request,-1,page2,"adminStaff","researchConcluding",0,searchForm)
 
 @dajaxice_register
 def getPagination(request,page,page2,userrole,userstatus,search,form):

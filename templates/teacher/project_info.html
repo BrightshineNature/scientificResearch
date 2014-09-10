@@ -43,6 +43,7 @@
         <h3 class="modal-title">新建项目信息</h3>
       </div>
       <div class="modal-body">
+        {% if not projectCreationForbidCheck %}
         <form id="create-form" class="well form" method="POST" action="/teacher/create">
           {% csrf_token %}
           <div class="row">
@@ -60,10 +61,15 @@
             </div>
           </div>
         </form>
+        {% else %}
+        <p>您本年度已有申请或在研的项目存在，无法新建项目！</p>
+        {% endif %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+        {% if not projectCreationForbidCheck %}
         <button type="submit" id="button_create_project" class="btn btn-primary">新建项目</button>
+        {% endif %}
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

@@ -12,10 +12,8 @@ $(function (){
 
 
 $('[rel="news_delete"]').click(function(){
-
   var uid = $(this).attr("uid");
-  Dajaxice.adminStaff.get_news_list(news_delete_callback,
-                                         {'uid':uid});
+  Dajaxice.adminStaff.get_news_list(news_delete_callback,{'uid':uid});
 });
 function check_news_is_void(){
   if($('#news_title').val()=='' || $('#id_news_date').val()==''){
