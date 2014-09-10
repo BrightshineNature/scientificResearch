@@ -2,6 +2,7 @@
 import uuid,datetime, os
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+import settings
 
 from backend.utility import make_uuid
 from settings import MEDIA_ROOT
@@ -157,3 +158,24 @@ class KeyLaboratoryProjectScoreTable(models.Model):
         verbose_name_plural = u"重点实验室专题项目评审表"
     def get_total_score(self):
         return self.significance + self.innovation + self.feasibility + self.base + self.funds_report
+class HomePagePic(models.Model):
+    """
+    """
+    pic_obj = models.FileField(upload_to=settings.HOMEPAGE_PIC_PATH,
+                               verbose_name="文件对象")
+    name = models.CharField(max_length=100, blank=False,
+                            verbose_name="文件名称")
+    uploadtime = models.DateTimeField(blank=True, null=True,
+                                      verbose_name="上传时间")
+    file_size = models.CharField(max_length=50, blank=True, null=True,
+                                 default=None, verbose_name="文件大小")
+    file_type = models.CharField(max_length=50, blank=True, null=True,
+                                 default=None, verbose_name="文件类型")
+    class Meta:
+        verbose_name = "首页图片上传"
+        verbose_name_plural = "首页图片上传"
+
+    def __unicode__(self):
+        return self.name
+    def file_name(self):
+        return os.path.basename(self.file_obj.name)

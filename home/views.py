@@ -10,9 +10,10 @@ from django.shortcuts import render
 from django.template import Context
 from django.http import HttpResponse, Http404
 from const import *
-from adminStaff.models import News,ProjectSingle
+from adminStaff.models import News,ProjectSingle,HomePagePic
 from common.forms import ScheduleBaseForm
 from backend.utility import getContext
+from settings import STATIC_URL, MEDIA_URL
 from backend.logging import loginfo
 from common.views import schedule_form_data
 def index(request):
@@ -20,6 +21,20 @@ def index(request):
     news_docs = News.objects.exclude(news_document=u'').order_by('-news_date')
     context = getContext(news_announcement, 1, "news_announcement",page_elems=7)
     context.update(getContext(news_docs,1,"news_docs",page_elems = 7))
+    def convert_url(raw_url):
+        return STATIC_URL + raw_url[raw_url.find(MEDIA_URL)+len(MEDIA_URL):]
+    homepage_pic = HomePagePic.objects.all()
+    flag = True
+    for pic in homepage_pic:
+        pic.url = convert_url(pic.pic_obj.url)
+        print pic.url
+        if flag:
+            pic.active = True
+            flag = False
+        else: pic.active = False
+    context.update({
+        'homepage_pic': homepage_pic,
+    })
     return render(request,"home/home.html",context)
 
 def show(request):

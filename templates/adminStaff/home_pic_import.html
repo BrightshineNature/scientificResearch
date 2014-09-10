@@ -1,0 +1,55 @@
+{% extends "adminStaff/base/_content.html" %}
+
+{%block inner_content%}
+<div class="page-header">
+  <h3>文件列表</h3>
+</div>
+<table class="table table-bordered" >
+  <thead>
+    <tr>
+      <td>名称</td>
+      <td>类型</td>
+      <td>大小</td>
+      <td>上传时间</td>
+    </tr>
+  </thead>
+  <tbody>
+    {%for item in files%}
+    <tr id="{{item.id}}">
+      <td>{{item.name}}</td>
+      <td>{{item.file_type}}</td>
+      <td>{{item.file_size}}</td>
+      <td>{{item.uploadtime}}</td>
+      <td>
+        <span><a href="{{item.pic_obj.url}}" class='btn btn-primary'>下载</a></span>
+        <button class="btn btn-danger" rel="file_delete" fid="{{item.id}}">
+          <i class="icon-trash icon-white"></i>
+          <span>删除</span>
+        </button>
+      </td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table><!--end history list table-->
+{% if show_other %}
+<div class="alert alert-error">
+  <a class="close" data-dismiss="alert">x</a>
+  <h4 class="alert-heading">系统提示！</h4>
+  <p>你上传的文件名不符合要求，请确认后再上传</p>
+</div>
+{%endif%}
+<div class="row">
+  <div class="col-lg-4">
+    <form method="POST"  action="" enctype="multipart/form-data">
+      {% csrf_token %}
+      <span class="label label-info col-lg-12"><h4>图片上传</h4></span>
+      <p class="tip">上传的文件请命名为<strong>上传首页轮播图片</strong></p>
+      <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file" accept="doc,docx" >
+      <button type= "submit" class="btn btn-success submit_button"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
+    </form>
+  </div>
+</div>
+<br/>
+<link rel="stylesheet" href="{{STATIC_URL}}style/teacher/fileupload.css">
+<script type='text/javascript' src="{{STATIC_URL}}js/home/home_pic_import.js"></script>
+{%endblock%}

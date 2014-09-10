@@ -60,6 +60,10 @@ urlpatterns = patterns('',
     url(
         r'file_upload/(?P<pid>.{36})$',
         adminStaff_views.fileUploadManageView,
-    ),  
+    ),
+   url(
+       r'homepic_import$',
+       adminStaff_views.homepic_import_view,
+   )
 )
 urlpatterns += staticfiles_urlpatterns()

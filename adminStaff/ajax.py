@@ -14,7 +14,7 @@ from django.template.loader import render_to_string
 from common.utility import get_xls_path
 from const import *
 from users.models import Special,ExpertProfile,TeacherProfile,SchoolProfile,CollegeProfile
-from adminStaff.models import ProjectSingle
+from adminStaff.models import ProjectSingle,HomePagePic
 from adminStaff.forms import TemplateNoticeMessageForm
 from django import  forms
 from adminStaff.forms import TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
@@ -383,3 +383,23 @@ def getNewsReleasePagination(request,page):
     context = getContext(newsList,page,"item",page_elems=7)
     html = render_to_string("adminStaff/widgets/newslist.html",context)
     return simplejson.dumps({"message":message,"html":html})
+@dajaxice_register
+def FileDeleteConsistence(request, fid):
+    """
+    Delete files in history file list
+    """
+    logger.info("sep delete files"+"**"*10)
+    # check mapping relation
+    f = get_object_or_404(HomePagePic, id=fid)
+
+    if request.method == "POST":
+        try:
+            os.remove(f.pic_obj.url)
+            f.delete()
+        except: pass
+        return simplejson.dumps({"is_deleted": True,
+                                 "message": "delete it successfully!",
+                                 "fid": str(fid)})
+    else:
+        return simplejson.dumps({"is_deleted": False,
+                                 "message": "Warning! Only POST accepted!"})
