@@ -39,11 +39,11 @@
                 {% endif%}
             </td>
             <td>
-                {% ifequal item.project_status.status approve%}
+                {% if item.project_status.status == approve or not item.project_special.is_review  %}
                 <button data-toggle="modal" data-target="#approve_modal"  class="btn btn-primary btn-sm" name="judge">立项</button>
                 {% else%}
                 <button data-toggle="modal" data-target="#review_modal"  class="btn btn-primary btn-sm" name="judge">审核 </button>
-                {%endifequal%}
+                {%endif%}
             </td>
         </tr>
         {% endfor%}

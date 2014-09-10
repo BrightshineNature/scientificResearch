@@ -103,7 +103,10 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
     project=ProjectSingle.objects.get(pk=judgeid)
     form=deserialize_form(look_through_form)
     if form["judgeresult"]=="1":
-        status_confirm(project,-1)
+        if userstatus=="application" and userrole=="school" and not project.project_special.is_review:
+            set_status(project,PROJECT_STATUS_APPROVAL)
+        else:
+            status_confirm(project,-1)
         if userstatus=="application":
             if form.get("max_budget"):
                 project.project_budget_max=int(form.get("max_budget"))
