@@ -133,7 +133,8 @@ class ProjectInfoForm(forms.Form):
         max_length = 20,
         required=True,
         widget=forms.TextInput(attrs={
-            'class':'form-control ',            
+            'class':'form-control ', 
+                      
             'placeholder':u"项目名称"}), )
 
     science_type_choices = (("-1", "---------"),) + SCIENCE_ACTIVITY_TYPE_CHOICES
