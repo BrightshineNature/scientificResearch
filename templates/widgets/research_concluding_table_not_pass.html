@@ -29,16 +29,16 @@
         <tr iid={{item.project_id}} status={{item.project_status.status}}>
             <td>{{item.project_code}}</td>
             {% if usercontext.role == 'school' %}
-                <td><a href=/school/final/{{item.project_id}}>{{item.title}}</a></td>
+            <td><a href=/school/final/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
             {% endif %}
             {% if usercontext.role == 'college' %}
-                <td><a href=/college/final/{{item.project_id}}>{{item.title}}</a></td>
+            <td><a href=/college/final/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
             {% endif %}
             {% if usercontext.role == 'finance' %}
                 {% if usercontext.status == 'budget' %}
-                    <td><a href=/finance/application/{{item.project_id}}>{{item.title}}</a></td>
+            <td><a href=/finance/application/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
                 {% else %}
-                    <td><a href=/finance/final/{{item.project_id}}>{{item.title}}</a></td>
+            <td><a href=/finance/final/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
                 {% endif %}
             {% endif %}
              {% if usercontext.role == 'adminStaff' %}
@@ -48,7 +48,7 @@
             <td>{{item.teacher.teacherinfosetting.name}}</td>
             <td>{{item.teacher.college}}</td>
             <td> {{item.approval_year}}</td>
-            <td>{{item.project_special}}</td>
+            <td><span data-toggle="tooltip" data-placement="top" title={{item.project_special}}>{{item.project_special|truncatechars:10}}</span></td>
             <td>{{item.project_status}}</td>
             {% ifnotequal usercontext.role "finance"%}                   
             <td>
