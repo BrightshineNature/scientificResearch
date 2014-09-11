@@ -103,6 +103,8 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
     project=ProjectSingle.objects.get(pk=judgeid)
     form=deserialize_form(look_through_form)
     if form["judgeresult"]=="1":
+        project.comment=''
+        project.save()
         if userstatus=="application" and userrole=="school" and not project.project_special.is_review:
             set_status(project,PROJECT_STATUS_APPROVAL)
         else:

@@ -29,7 +29,7 @@
           <a href="/teacher/application/{{p.project_id}}" class="btn btn-primary btn-sm">申请表</a>
           <a href="/teacher/file_upload/{{p.project_id}}" class="btn btn-primary btn-sm">文件上传</a>
         </td>
-        <td style="color:red">{{p.comment}}</td>
+        <td style="color:red"><span data-toggle="tooltip" data-placement="top" title={{p.comment}}>{{p.comment|truncatechars:15}}</span></td>
       </tr>
       {%endfor%}
     </tbody>

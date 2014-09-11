@@ -8,7 +8,7 @@ from expert.forms import *
 from users.models import Special
 from common.models import BasisContent, BaseCondition
 from teacher.models import FinalSubmit, ProjectFundSummary, ProjectFundBudget
-
+import time
 import datetime
 
 def createNewProject(teacher, title, special):
@@ -249,6 +249,8 @@ def statusRollBack(project,userrole,userstatus,form):
 
 def set_status(project,status):
     project.project_status=ProjectStatus.objects.get(status=status)
+    if project.project_status.status==PROJECT_STATUS_APPROVAL:
+        project.approval_year=str(time.strftime('%Y',time.localtime(time.time())))
     project.save()
 def status_confirm(project, confirm):
     if confirm==-1:
@@ -256,7 +258,6 @@ def status_confirm(project, confirm):
         return True
     if project.project_status.status==PROJECT_STATUS_APPLY:
         if confirm==APPLICATION_WEB_CONFIRM:
-            print project.file_application
             if project.file_application==True:
                 set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
             else:

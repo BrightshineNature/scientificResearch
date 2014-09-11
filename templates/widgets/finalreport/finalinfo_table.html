@@ -26,7 +26,7 @@
                 <a href="/{{role}}/final/{{project.project_id}}" class="btn btn-primary btn-sm">结题报告</a>
           <a href="/{{role}}/file_upload/{{project.project_id}}" class="btn btn-primary btn-sm">文件上传</a>
         </td>
-        <td style="color:red">{{project.comment}}</td>
+        <td style="color:red"><span data-toggle="tooltip" data-placement="top" title={{project.comment}}>{{project.comment|truncatechars:15}}</span></td>
     </tr>
       {% endfor %}
     </tbody>
