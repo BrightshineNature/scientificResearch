@@ -122,12 +122,23 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
             finance_summary.save()
     else:
         print form.getlist('application')
-        comment={
-            "Judger":request.user.first_name,
-            "Article":form.getlist('application')+form.getlist("final"),
-            "description":form["reason"]
-        }
-        project.comment=str(comment)
+        identity = request.session.get("auth_role","")
+        if identity == SCHOOL_USER:
+            school = SchoolProfile.objects.get(userid = request.user)
+            comment= school.department+u"管理员"+school.userid.first_name+u":"
+        elif identity == COLLEGE_USER:
+            comment= u"学院管理员"+request.user.first_name+u":"
+        elif identity == FINANCE_USER:
+            comment= u"财务管理员"+request.user.first_name+u":"
+        else:
+            comment = u""
+        for item in form.getlist('application'):
+            comment+=item+u" "
+        for item in form.getlist("final"):
+            comment+=item+u"、"
+        comment+=u"，原因"+form["reason"]
+        loginfo(comment)
+        project.comment=comment
         project.save()
         statusRollBack(project,userrole,userstatus,form)
     context=schedule_form_data(request,{
