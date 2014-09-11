@@ -208,7 +208,7 @@ def finalInfoView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-@check_submit_status(SUBMIT_STATUS_FINAL)
+@check_submit_status(SUBMIT_STATUS_TASK)
 def fundBudgetView(request,pid,is_submited=False):
     context = fundBudgetViewWork(request,pid,is_submited)
     if context['redirect']:

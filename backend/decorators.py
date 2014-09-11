@@ -91,7 +91,7 @@ class check_submit_status(object):
         if self.phase == SUBMIT_STATUS_APPLICATION:
             return pro.project_special.application_status and (pro.project_status.status < PROJECT_STATUS_APPLICATION_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPLY)
         elif self.phase == SUBMIT_STATUS_TASK:
-            return po.project_special.task_status and (pro.project_status.status < PROJECT_STATUS_TASK_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPROVAL)
+            return pro.project_special.task_status and (pro.project_status.status < PROJECT_STATUS_TASK_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPROVAL)
         elif self.phase == SUBMIT_STATUS_PROGRESS:
             return pro.project_special.progress_status and (pro.project_status.status < PROJECT_STATUS_PROGRESS_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_TASK_SCHOOL_OVER)
         elif self.phase == SUBMIT_STATUS_FINAL:

@@ -32,12 +32,14 @@ def homeView(request, is_submited=False):
                                                       Q(is_first_round = True) & \
                                                       Q(project__project_status__status = PROJECT_STATUS_APPLICATION_REVIEW_START)))
     for re_obj in re_list_1:
+        loginfo(re_obj.project)
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
 
     re_list_2 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & \
                                                       Q(is_first_round = False) & \
                                                       Q(project__project_status__status = PROJECT_STATUS_FINAL_REVIEW_START)))
     for re_obj in re_list_2:
+        loginfo(re_obj.project)
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
     context = {"is_first_round": is_first_round,}
     re_list_1.sort(key = lambda x: x.score)
