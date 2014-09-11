@@ -123,6 +123,10 @@ class ProjectCreationForm(forms.Form):
                             required=True,
                             widget=forms.TextInput(attrs={"class":'form-control', "placeholder": "项目名称", }),)
     special = forms.ChoiceField(required = True, choices = SPECIAL_CHOICE, widget = forms.Select(attrs = {"class": "form-control",}))
+    def __init__(self, *args, **kwargs):
+        super(ProjectCreationForm, self).__init__(*args, **kwargs)
+        SPECIAL_CHOICE = tuple((special.id, special.name) for special in Special.objects.filter(application_status = True))
+        self.fields["special"].choices = SPECIAL_CHOICE
 
 
 
