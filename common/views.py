@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
 from common.forms import  ScheduleBaseForm,ProjectJudgeForm, ProjectMemberForm
 from common.utils import get_query_status,get_qset,get_query_application_status,status_confirm
+from common.utility import get_single_project_average_score
 from const import *
 from teacher.forms import *
 from teacher.models import *
@@ -234,6 +235,7 @@ def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
         default=False
     else:
         pro_list=get_project_list(request)
+
         default=True
     param=getParam(pro_list,userauth,default,page,page2)
     context ={ 'schedule_form':schedule_form,
@@ -318,6 +320,8 @@ def get_project_list(request):
         pro_list = ProjectSingle.objects.all()
     else:
         pro_list = ProjectSingle.objects.all()
+
+    
     return pro_list
 def get_search_data(request,schedule_form):
     if schedule_form.is_valid():
