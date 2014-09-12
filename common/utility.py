@@ -1,4 +1,6 @@
 # coding: UTF-8
+from django.db.models import Q
+
 import xlwt
 import os,sys
 import datetime
@@ -8,7 +10,8 @@ from teacher.models import TeacherInfoSetting
 from adminStaff.models import ProjectSingle,Re_Project_Expert
 from common.utils import getScoreTable
 from settings import TMP_FILES_PATH,MEDIA_URL
-from const import EXPERT_NUM,EXCELTYPE_DICT_OBJECT
+from const import *
+from common.utils import getScoreTable, getScoreForm
 
 def get_xls_path(request,exceltype,proj_set,specialtype=""):
     """
@@ -472,6 +475,27 @@ def cell_style(horizontal,vertical):
     style = xlwt.XFStyle() # Create Style
     style.alignment = alignment # Add Alignment to Style
     return style
+
+def get_single_project_average_score(project):
+    is_first_round = True
+    if project.project_status.status == PROJECT_STATUS_FINAL_REVIEW_OVER:
+        is_first_round = False
+
+    scoreTableType = getScoreTable(project)
+    scoreFormType = getScoreForm(project)
+    
+    ave_score = 0
+    item_count = 0
+
+    for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round)):
+        table = scoreTableType.objects.get(re_obj = re_obj)
+        score_row = scoreFormType(instance = table)
+        ave_score += sum(field.value() for field in score_row)
+        item_count += 1
+
+    if item_count:
+        ave_score /= 1.0 * item_count
+    return ave_score
 
 def average(score_list):
     if len(score_list):
