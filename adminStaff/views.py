@@ -87,8 +87,6 @@ def allocManageView(request):
 @login_required
 @authority_required(ADMINSTAFF_USER)
 def scheduleView(request):
-
-
     userauth = {
         'role': 'adminStaff',
         'status':'all'

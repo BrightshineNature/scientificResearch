@@ -9,14 +9,12 @@ $(function(){
       Dajaxice.adminStaff.Dispatch(Dispatch_callback,{'form':$(dispatch_form).serialize(true),'identity':$(this).attr("id"),'page':page});
     })
   })
-  $('#dispatch-div .item_page').each(function(){
-    $(this).click(function(){
+})
+$(document).on("click",".dispatch_paginator .item_page",function(){
       dispatch_div = $(this).parents(".dispatch_paginator");
       page = $(this).attr("arg");
       ids = $(dispatch_div).attr("id").split('_');
       Dajaxice.adminStaff.DispatchPagination(DispatchPaginationCallback,{'page':page,'identity':ids[1]});
-    })
-  })
 })
 function DispatchPaginationCallback(data){
     $(dispatch_div).html(data.html);
