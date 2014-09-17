@@ -27,5 +27,5 @@ function modifyTeacherInfoCallback(data){
         alert("修改成功");
         Dajaxice.adminStaff.getTeacherInfo(getTeacherInfoCallback, {'name': glob_name});
     }
-    else alert("有非法输入，请重新输入");
+    else alert(data.message);
 }
