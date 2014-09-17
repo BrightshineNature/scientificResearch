@@ -29,8 +29,8 @@ from adminStaff.models import ProjectSingle
 def appView(request, pid, is_submited = False):
     context = appManage(request, pid)
     context['is_submited'] = is_submited
-    context['user'] = "school"
-    return render(request, "school/application.html", context)
+    context['user'] = "college"
+    return render(request, "college/application.html", context)
 
 
 @csrf.csrf_protect
