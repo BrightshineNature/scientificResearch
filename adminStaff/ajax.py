@@ -11,7 +11,7 @@ from backend.utility import getContext
 from adminStaff.utility import getCollege
 from django.utils import simplejson
 from django.template.loader import render_to_string
-from common.utility import get_xls_path
+from common.utility import get_xls_path, checkIdcard
 from const import *
 from users.models import Special,ExpertProfile,TeacherProfile,SchoolProfile,CollegeProfile
 from adminStaff.models import ProjectSingle,HomePagePic
@@ -347,7 +347,13 @@ def getTeacherInfo(request, name):
 def modifyTeacherInfo(request, name, card, id):
     message = ""
     try:
-        if len(name) == 0 or len(card) == 0: raise
+        if len(name) == 0: 
+            message = u"姓名输入为空"
+            raise
+        response = checkIdcard(card)
+        if response[0]:
+            message = response[1]
+            raise
 
         setting = TeacherInfoSetting.objects.get(id = id)
         setting.name = name
@@ -355,8 +361,7 @@ def modifyTeacherInfo(request, name, card, id):
         setting.save()
         message = "ok"
     except:
-        message = "fail"
-
+        pass
     return simplejson.dumps({"message": message, })
 @dajaxice_register
 def change_project_unique_code(request, project_id,project_unique_code):

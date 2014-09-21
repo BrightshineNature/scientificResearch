@@ -8,12 +8,6 @@
         <p>2. 姓名，身份证号一经提交，即无法在本页面修改，如需修改请联系管理员</p>
     </div>
 
-    {% if form.errors %}
-        <div class="alert alert-danger" id="alert-bar">
-        <button class="close" data-dismiss="alert">x</button>
-        <h4>表单存在未填项，请填写完整</h4>
-        </div>
-    {% endif %}
     {% if message == "ok" %}
         <div class="alert alert-success">
         <button class="close" data-dismiss="alert">x</button>
@@ -28,24 +22,40 @@
                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                 {{form.name}}
             </div> 
+            <div id="alert-bar" style="color:red">
+                {{ form.name.errors }}
+            </div>
+
         </div>
         <div class="col-lg-3">
             <div class="input-group">
                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                 {{form.card}}
             </div> 
+            <div id="alert-bar" style="color:red">
+                {{ form.card.errors }}
+            </div>
+
         </div>
 		<div class="col-lg-3">
             <div class="input-group">
                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                 {{form.birth}}
             </div> 
+            <div id="alert-bar" style="color:red">
+                {{ form.birth.errors }}
+            </div>
+
         </div>
         <div class="col-lg-3">
             <div class="input-group">
                 <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
                 {{ form.base_name }}
             </div>
+            <div id="alert-bar" style="color:red">
+                {{ form.base_name.errors }}
+            </div>
+
         </div>
     </div>
 	<div class="row">
@@ -56,6 +66,10 @@
 				</span>
 				{{ form.sex }}
 			</div>
+            <div id="alert-bar" style="color:red">
+                {{ form.sex.errors }}
+            </div>
+
 		</div>
 		<div class="col-lg-3">
 			<div class="input-group">
@@ -64,6 +78,10 @@
 				</span>
 				{{ form.target_type }}
 			</div>
+            <div id="alert-bar" style="color:red">
+                {{ form.target_type.errors }}
+            </div>
+
 		</div>
 		<div class="col-lg-3">
 			<div class="input-group">
@@ -72,6 +90,10 @@
 				</span>
 				{{ form.degree }}
 			</div>
+            <div id="alert-bar" style="color:red">
+                {{ form.degree.errors }}
+            </div>
+
 		</div>
 	</div>
 	<div class="row">
@@ -82,6 +104,10 @@
 				</span>
 				{{ form.base_type }}
 			</div>
+            <div id="alert-bar" style="color:red">
+                {{ form.base_type.errors }}
+            </div>
+
 		</div>
 		<div class="col-lg-3">
 			<div class="input-group">
@@ -90,6 +116,10 @@
 				</span>
 				{{ form.title }}
 			</div>
+            <div id="alert-bar" style="color:red">
+                {{ form.title.errors }}
+            </div>
+
 		</div>
 		<div class="col-lg-3">
 			<div class="input-group">
@@ -98,6 +128,10 @@
 				</span>
 				{{ form.position }}
 			</div>
+            <div id="alert-bar" style="color:red">
+                {{ form.position.errors }}
+            </div>
+
 		</div>
 	</div>
 		<button type="submit" class="btn btn-primary">提交</button>

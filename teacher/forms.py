@@ -6,7 +6,7 @@ from teacher.models import *
 import datetime
 from users.models import Special
 from const import *
-
+from common.utility import checkIdcard
 
 class ProjectBudgetInformationForm(forms.Form):
 	project_basicexpenses = forms.CharField(required=True,label="基本科研业务费经费",widget=forms.TextInput(attrs={'class':'form-control budgetform',}))
@@ -27,6 +27,12 @@ class SettingForm(ModelForm):
     """
         Teacher's Setting Information Form
     """
+    def clean_card(self):
+        card = self.cleaned_data.get("card", "").strip()
+        response = checkIdcard(card)
+        if response[0]:
+            raise forms.ValidationError(response[1])
+        return card
     class Meta:
         model = TeacherInfoSetting
         exclude = ("teacher", )
