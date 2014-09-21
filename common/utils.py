@@ -165,7 +165,6 @@ def get_qset(userauth):
     return (pending,default,search)
 
 def statusRollBack(project,userrole,userstatus,form):
-    project.project_sendback_status=project.project_status
     if userrole=="school":
         if userstatus=="application":
             form_list=form.getlist("application")
@@ -174,7 +173,8 @@ def statusRollBack(project,userrole,userstatus,form):
                 project.file_application=False
                 project.save()
             elif len(form_list)==1:
-                if form_list[0]==u"网上提交不合格":
+                loginfo(form_list[0])
+                if form_list[0]==u"网上申请不合格":
                     set_status(project,PROJECT_STATUS_APPLY)
                 elif form_list[0]==u"申报书不合格":
                     set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)

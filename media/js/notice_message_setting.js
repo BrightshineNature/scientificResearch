@@ -52,11 +52,11 @@ $(document).on("click",".change_template_notice",function(){
     tr=$(this).closest("tr");
     mod=tr.attr("id");
     $("#id_title").val($(tr).children("td:eq(1)").html());
-    $("#id_message").val($(tr).children("td:eq(2)").html());
+    $("#id_message").val($(tr).children("td:eq(2)").children("span").attr("title"));
 });
 $(document).on("click",".select_template_notice",function(){
     tr=$(this).closest("tr");
-    $("#id_mail_content").val($(tr).children("td:eq(2)").html());
+    $("#id_mail_content").val($(tr).children("td:eq(2)").children("span").attr("title"));
     $("#id_mail_title").val($(tr).children("td:eq(1)").html());
 });
 $("#teacher_chose").hide();
@@ -91,7 +91,6 @@ $("#alert_close1").click(function(){
 $("#noticemessage_warning").hide();
 $("#noticemessage_success").hide();
 function send_mail_callback(data){
-    alert(data.status);
     if(data.status==1){
         $("#error_message").html("邮件标题不能为空！");
 

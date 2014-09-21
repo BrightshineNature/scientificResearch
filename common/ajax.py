@@ -28,7 +28,7 @@ from common.models import ProjectMember, BasisContent, BaseCondition
 from teacher.models import ProjectFundBudget,ProjectFundSummary
 from adminStaff.models import ProjectSingle,Re_Project_Expert
 from django.core.mail import send_mail
-from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile
+from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile,SchoolProfile
 OVER_STATUS_NOTOVER = "notover"
 OVER_STATUS_OPENCHECK = "opencheck"
 OVER_STATUS_MIDCHECK = "midcheck"
