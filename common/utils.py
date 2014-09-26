@@ -54,7 +54,7 @@ def getScoreForm(project):
         return KeyLaboratoryProjectScoreForm
 
 def get_application_year_choice():
-    project_group=ProjectSingle.objects.all()
+    project_group=ProjectSingle.objects.filter(project_status__status__lt = PROJECT_STATUS_APPROVAL)
     year = [('-1',u"申请年度")]
     year_has=[]
     for item in project_group:
@@ -64,17 +64,18 @@ def get_application_year_choice():
         year.append((y,y))
     return tuple(year)
 def get_approval_year_choice():
-    project_group=ProjectSingle.objects.all()
+    project_group=ProjectSingle.objects.filter(project_status__status__gte = PROJECT_STATUS_APPROVAL)
     year = [('-1',u"立项年度")]
     year_has=[]
     for item in project_group:
         year_has.append(item.approval_year)
     year_has=list(set(year_has))
     for y in year_has:
+        loginfo(y)
         year.append((y,y))
     return tuple(year)
 def get_conclude_year_choices():
-    project_group=ProjectSingle.objects.all()
+    project_group=ProjectSingle.objects.filter(project_status__status = PROJECT_STATUS_OVER)
     year=[("-1",u"结题年度")]
     year_has=list(set([item.conclude_year for item in project_group]))
     year=year+[(y,y) for y in year_has]
