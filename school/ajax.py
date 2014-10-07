@@ -176,11 +176,14 @@ def ChangeExpertReview(request,form,special_id):
     special = getSpecial(request).get(id = special_id)
     if special:
         expert_form = ExpertReviewForm(deserialize_form(form),instance=special)
-        loginfo(expert_form)
         if expert_form.is_valid():
-            expert_form.save()
-            loginfo("success")
-            return simplejson.dumps({'status':'1'})
+            prolist = ProjectSingle.objects.filter(project_special=special)
+            if prolist.count()==0:
+                expert_form.save()
+                loginfo("success")
+                return simplejson.dumps({'status':'1'})
+            else:
+                return simplejson.dumps({'status':'2'})
     return simplejson.dumps({'status':'0'})
 @dajaxice_register
 def ChangeControlStatus(request,special_id,type_id,type_name):
