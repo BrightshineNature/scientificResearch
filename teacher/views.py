@@ -73,7 +73,12 @@ def homeView(request):
     year = datetime.datetime.now().year   
     projectCreationForbidCheck = (get_project_list(request).filter(Q(application_year = year) | Q(approval_year = year)).count() > 0)
     creationForm = ProjectCreationForm()
+    comment=""
+    for item in project_list:
+        if item.comment!="":
+            comment=item.comment
     context = {
+        'comment':comment,
         'project_list':project_list,
         'form': creationForm,
         'projectCreationForbidCheck': projectCreationForbidCheck,

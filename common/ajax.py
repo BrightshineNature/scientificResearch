@@ -28,7 +28,7 @@ from common.models import ProjectMember, BasisContent, BaseCondition
 from teacher.models import ProjectFundBudget,ProjectFundSummary
 from adminStaff.models import ProjectSingle,Re_Project_Expert
 from django.core.mail import send_mail
-from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile,SchoolProfile
+from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile,SchoolProfile,CollegeProfile
 OVER_STATUS_NOTOVER = "notover"
 OVER_STATUS_OPENCHECK = "opencheck"
 OVER_STATUS_MIDCHECK = "midcheck"
@@ -135,10 +135,10 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
         else:
             comment = u""
         for item in form.getlist('application'):
-            comment+=item+u" "
+            comment+=item+u""
         for item in form.getlist("final"):
             comment+=item+u"、"
-        comment+=u"，原因"+form["reason"]
+        comment+=u",原因"+form["reason"]
         loginfo(comment)
         project.comment=comment
         project.save()
@@ -278,7 +278,6 @@ def saveProjectMember(request, form, pid, mid):
         ok = True        
         if not member : pass
         else:
-            print 'SB'
             print member
             member = member[0]
             status = member.project.project_status.status
@@ -408,6 +407,7 @@ def checkValid(request, pid):
 
     
     if context['status']:
+        loginfo("mdoify success")
         status_confirm(project, APPLICATION_WEB_CONFIRM)
 
     context['error'] = error

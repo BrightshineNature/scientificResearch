@@ -5,8 +5,10 @@
         <li><a href="/teacher">申请项目信息</a></li>
         <li><a href="/teacher/finalinfo">在研与结题项目信息</a></li>
         <li><a href="/teacher/setting">注册信息</a></li>
-        <li><a data-toggle="modal" data-target="#teacher_notice" >评审结果</a></li>
-      </ul>
+        {% if comment != ""%}
+        <li id="teacher_modal"><a href="#" data-toggle="modal" data-target="#teacher_notice">评审结果</a></li>
+        {% endif%}
+    </ul>
       {% include "widgets/userinfo_nav.html"%}
       
     </div>

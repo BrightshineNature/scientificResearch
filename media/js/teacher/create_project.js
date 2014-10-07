@@ -15,3 +15,10 @@ $("#button_create_project").click(function(){
     }
 });
 
+$().ready(function(){
+  if($("#teacher_modal").length>0){
+      $('#teacher_notice').modal('show');
+  }
+})
+
+
