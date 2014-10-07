@@ -1,4 +1,3 @@
-
 $(".form-date").datetimepicker({
     weekStart:1,
     todayBtn: 1,
@@ -30,7 +29,7 @@ function clear(list)
     {
         var u = "#id_" + list[i];
         $(u).css("background", "white");
-    }    
+    }
 }
 $(document).on("click", "#addNewProjectMember", function(){
 
@@ -47,12 +46,7 @@ $(document).on("click", "#addNewProjectMember", function(){
     $(member_info_modal).find("h4").text("添加项目成员");
     
     $('#project_member_form_error').hide();
-
-        
     clear(Members);
-    
-
-
 })
 
 $(document).on("click", "#saveProjectMember", function(){
@@ -104,8 +98,6 @@ function saveProjectMemberCallback(data){
 }
 
 
-
-
 $(document).on("click", ".modifyProjectMember", function(){
     var pid = $(this).parents("[pid]").attr("pid");
     var cnt = $(this).parent().parent();
@@ -124,10 +116,6 @@ $(document).on("click", ".modifyProjectMember", function(){
 
     $("input[name='card']").val($(cnt).children("td:eq(6)").html());
     clear(Members);
-    
-
-
-
 });
 
 $(document).on("click", ".deleteProjectMember", function(){
@@ -138,8 +126,6 @@ $(document).on("click", ".deleteProjectMember", function(){
         'mid' : $(cnt).attr("mid"),
         'pid':pid,
         })
-
-
 });
 
 function deleteProjectMemberCallback(data){
@@ -247,7 +233,6 @@ $(document).on("click", ".save_button",function(){
     }
     else
     {
-        
         user = $("[user]").attr("user");
 
         Dajaxice.common.saveBaseCondition(saveBaseConditionCallback,{
