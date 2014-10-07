@@ -3,7 +3,7 @@
 <div class="hero-unit">
     <form class="form" id="project_fundbudget_form" method="POST" action="/{{role}}/fundbudget/{{pid}}">
         {% csrf_token  %}
-        <table id="mainTable" class="table table-striped" value={{finalreportid}}>
+        <table id="mainTable" value={{pid}} class="table table-striped" value={{finalreportid}}>
             <thead><tr><th>科目</th><th>预算经费</th><th>说明</th></tr></thead>
             <tbody>
                 <tr><td><strong>1.设备费</strong></td><td>{{fundbudget_form.equcosts_budget}}</td><td>{{fundbudget_form.equcosts_remark}}</td></tr>
@@ -23,7 +23,8 @@
             <tfoot><tr><td><strong>合计</strong></td><td>{{fundbudget_form.total_budget}}</td><td>{{fundbudget_form.total_remark}}</td></tr></tfoot>
         </table>
         {% if is_submited %}
-        <button class="btn btn-primary" type="submit">保存经费预算表</button>
+            <button type="button" class="btn btn-primary" onclick="projectfundbudget()">保存经费预算表</button>
         {% endif %}
     </form>
 </div>
+<script type='text/javascript' src="{{STATIC_URL}}js/finalreport/fundsuammary.js"></script>
