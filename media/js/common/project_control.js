@@ -8,6 +8,11 @@ $("select[name='expert_review']").each(function(){
 
 $("#project_control_field input").click(function(){
   text_div = $(this).parents(".active");
+  if($(this).attr('class')=="btn btn-warning"){
+    if(!confirm("是否要关闭"+$(this).attr('name'))){
+     return ;
+   }
+  }
   Dajaxice.school.ChangeControlStatus(ChangeControlStatus_callback,{'special_id':$(text_div).attr('id'),'type_id':$(this).attr('id'),'type_name':$(this).attr('name')});
 })
 
@@ -38,9 +43,15 @@ function ExpertReview_callback(data){
   if (data.status == "1"){
     $(text_div).find("#expert_review_success").show();
     $(text_div).find("#expert_review_fail").hide();
-  }else{
+    $(text_div).find("#expert_review_fail_1").hide();
+  }else if(data.status == "0"){
     $(text_div).find("#expert_review_fail").show();
     $(text_div).find("#expert_review_success").hide();
+    $(text_div).find("#expert_review_fail_1").hide();
+  }else{
+    $(text_div).find("#expert_review_fail").hide();
+    $(text_div).find("#expert_review_success").hide();
+    $(text_div).find("#expert_review_fail_1").show();
   }
 }
 $("[name = 'btn_export']").click(function(){
