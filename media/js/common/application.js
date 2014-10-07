@@ -269,8 +269,17 @@ $(document).on("click", ".submit_button", function(){
 function checkValidCallback(data) {
     if(data.status == 1)
     {
+        $("#basis_content_form_error").hide();        
         user = $("[user]").attr("user");
         location.href = "/" + user + "/file_upload/" + pid;
+
+
+    }
+    else
+    {
+        $("#basis_content_form_error").html("<h3>" + data.error + "</h3>");
+        $("#basis_content_form_error").show(500);
+        
     }
 
 
