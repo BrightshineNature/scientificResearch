@@ -57,3 +57,7 @@ input {
     width:100%;
     height:25px;
 }
+#input_account input{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
