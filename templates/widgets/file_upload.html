@@ -20,7 +20,7 @@
             <td>{{item.name}}</td>
             <td>{{item.file_type}}</td>
             <td>{{item.file_size}}</td>
-            <td>{{item.upload_time}}</td>
+            <td>{{item.upload_time|date:"Y-m-d"}}</td>
             <td><span><a href="{{item.file_obj.url}}" class='btn btn-primary'>下载</a></span> </td>
 
             <td>
@@ -84,12 +84,8 @@
             <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_interimchecklist" accept="doc,docx" >
 
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
-            
         </form>
     </div>
-
-    
-
 </div>
 <div class="row" > 
     <div class="col-lg-4">

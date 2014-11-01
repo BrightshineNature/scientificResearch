@@ -38,7 +38,7 @@
             <td>{{item.teacher.teacherinfosetting.name}}</td>
             <td>{{item.teacher.college}}</td> 
             <td> {{item.application_year}}</td>
-            <td>201s-7-1 </td>
+            <td> {{item.submit_date|date:"Y-m-d"}}</td>
             <td><span data-toggle="tooltip" data-placement="top" title={{item.project_special}}>{{item.project_special|truncatechars:10}}</span></td>
             <td>
                 {% if item.file_application%}
