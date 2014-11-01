@@ -382,6 +382,7 @@ def get_search_data(request,schedule_form):
 
 def finalReportViewWork(request,pid,is_submited,redirect=False):
     final = FinalSubmit.objects.get( project_id = pid)
+    project = ProjectSingle.objects.get(project_id = pid)
     achivement_list = ProjectAchivement.objects.filter( project_id = pid )
     datastatics_list = ProjectStatistics.objects.filter( project_id = pid )
     projfundsummary = ProjectFundSummary.objects.get( project_id = pid ) 
@@ -404,6 +405,7 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
 		'projfundsummary':projfundsummary,
 		'profundsummaryform':profundsummaryform,
         'is_submited':is_submited,
+        'projectbudget':project.project_budget_max,
     }
     return context
 
@@ -429,6 +431,7 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
 		'fundbudget_form':fundbudget_form,
         'pid':pid,
         'is_submited':is_submited,
+        'projectbudget':project.project_budget_max,
     }
     return context
     

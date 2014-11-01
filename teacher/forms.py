@@ -116,14 +116,14 @@ class ProjectDatastaticsForm(forms.Form):
 class ProFundSummaryForm(ModelForm):
 	class Meta:
 		model = ProjectFundSummary
-		exclude = ('content_id','project_id','finance_comment',)
+		exclude = ('content_id','project_id','finance_comment','equcosts_budget','equcosts_expenditure')
         widgets = {"finance_account": forms.TextInput(attrs={"class":'form-control', "placeholder": "财务账号", }),
                   }
 
 class ProFundBudgetForm(ModelForm):
 	class Meta:
 		model = ProjectFundBudget
-		exclude = ('content_id','project_id','finance_comment')
+		exclude = ('content_id','project_id','finance_comment','equcosts_budget')
 
 class ProjectCreationForm(forms.Form):
     SPECIAL_CHOICE = tuple((special.id, special.name) for special in Special.objects.all())

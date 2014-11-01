@@ -3,10 +3,11 @@
 <div class="hero-unit">
     <form class="form" id="project_fundbudget_form" method="POST" action="/{{role}}/fundbudget/{{pid}}">
         {% csrf_token  %}
+        <STRONG>项目最大预算:</STRONG>{{projectbudget}}
         <table id="mainTable" value={{pid}} class="table table-striped" value={{finalreportid}}>
             <thead><tr><th>科目</th><th>预算经费</th><th>说明</th></tr></thead>
             <tbody>
-                <tr><td><strong>1.设备费</strong></td><td>{{fundbudget_form.equcosts_budget}}</td><td>{{fundbudget_form.equcosts_remark}}</td></tr>
+                <tr><td><strong>1.设备费</strong></td><td></td><td></td></tr>
                 <tr><td>&nbsp;&nbsp;&nbsp;(1)设备购置费</td><td>{{fundbudget_form.equacquisition_budget}}</td><td>{{fundbudget_form.equacquisition_remark}}</td></tr>
                 <tr><td>&nbsp;&nbsp;&nbsp;(2)试制改造费</td><td>{{fundbudget_form.equtrial_budget}}</td><td>{{fundbudget_form.equtrial_remark}}</td></tr>
                 <tr><td>&nbsp;&nbsp;&nbsp;(3)设备改造与租凭费</td><td>{{fundbudget_form.equrent_budget}}</td><td>{{fundbudget_form.equrent_remark}}</td></tr>
