@@ -118,8 +118,6 @@ class ProjectFundSummary(models.Model):
     project_id = models.OneToOneField(ProjectSingle)
     finance_comment = models.CharField(max_length=100, blank=True, null=True,default="",
    										verbose_name="财务评审意见")
-    finance_account = models.CharField(max_length=20, blank=True, null=True,default="",
-   										verbose_name="财务评审意见")
     equcosts_budget = models.FloatField(blank=False, null=True,default="0",
    										verbose_name="设备费预算经费")
     equcosts_expenditure = models.FloatField(blank=False, null=True,default="0",
