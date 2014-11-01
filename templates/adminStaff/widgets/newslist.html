@@ -12,7 +12,7 @@
     <tr id="{{news.id}}">
       <td>{{news.news_title|truncatechars:25}}</td>
       <td>{{news.news_category}}</td>
-      <td>{{news.news_date}}</td>
+      <td>{{news.news_date|date:"Y-m-d"}}</td>
       <td>
         <button class="btn btn-danger" rel="news_delete" uid="{{news.id}}">
           <i class="icon-trash icon-white"></i>

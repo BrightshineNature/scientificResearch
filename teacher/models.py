@@ -202,6 +202,7 @@ class ProjectFundSummary(models.Model):
    										verbose_name="合计经费支出")
     total_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="合计说明")
+    finance_account = models.CharField(max_length = 20,blank = False,null = True, verbose_name="财务账号")
     class Meta:
    	 verbose_name = "经费决算表"
    	 verbose_name_plural = "经费决算表"

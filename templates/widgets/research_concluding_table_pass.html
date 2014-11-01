@@ -5,7 +5,8 @@
             <th>项目名称</th>          
             <th>项目负责人</th>          
             <th>学院</th>         
-            <th>立项年度</th>   
+            <th>立项年度</th>
+            <th>提交日期</th>
             <th>专题类型</th>
             <th>项目状态</th>
             {%ifnotequal usercontext.role "finance"%}
@@ -46,6 +47,7 @@
             <td>{{item.teacher.teacherinfosetting.name}}</td>
             <td>{{item.teacher.college}}</td>
             <td> {{item.approval_year}}</td>
+            <td>{{item.submit_date|date:"Y-m-d"}}</td>
             <td><span data-toggle="tooltip" data-placement="top" title={{item.project_special}}>{{item.project_special|truncatechars:10}}</span></td>
             <td>{{item.project_status}}</td>
             {% ifnotequal usercontext.role "finance"%}                   

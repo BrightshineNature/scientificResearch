@@ -16,9 +16,15 @@
   {%endfor%}
 </fieldset>
 
+<fieldset>
+  <legend>导出项目信息统计表</legend>
+  <button type="button" class="btn btn-primary" eid={{alloc_excel}} name="btn_export">导出专家初审统计表</button>
+  <button type="button" class="btn btn-primary" eid={{final_alloc_excel}} name="btn_export">导出专家终审统计表</button>
+  {% include "widgets/infoexport/infoexport_alert.html"%}
+</fieldset
 
 <fieldset>
-  <legend>专家评分表选择</legend>
+  <legend>专题项目配置选项</legend>
   <form id="expert_review_form" class= "form-inline" role="form" method="POST" action="." >
     {% csrf_token%}
     <div class="alert alert-success" style="display:none" id="expert_review_success" >
@@ -34,23 +40,10 @@
       专家评分表修失败,已有项目关联无法修改
     </div>
     <div class="form-group">
-      {{expert_review_form.expert_review}} 
+      <span >专家评分表</span> {{expert_review_form.expert_review}} 
     </div>
   </form>
-</fieldset>
-
-<fieldset>
-  <legend>导出项目信息统计表</legend>
-  <button type="button" class="btn btn-primary" eid={{alloc_excel}} name="btn_export">导出专家初审统计表</button>
-  <button type="button" class="btn btn-primary" eid={{final_alloc_excel}} name="btn_export">导出专家终审统计表</button>
-  {% include "widgets/infoexport/infoexport_alert.html"%}
-</fieldset
-
-<fieldset>
-  <legend>项目自动编号</legend>
-  <div class="alert alert-success" style="display:none" id="success_bar_2">
-    <button type="button" class="close" data-dismiss="alert">x</button>
-    编号成功！
-  </div>
-  <input type="button" class="btn btn-warning" value="自动编号" onclick="auto_ranking();">
+  <br>
+  <input type="button" id="review" name=""  class="btn {%if item.is_review %}btn-warning{%else%}btn-primary{%endif%}" value="{%if item.is_review%}关闭{%else%}打开{%endif%}专家评审流程">
+  <span id="review_span" class="label {%if item.is_review%}label-success{%else%}label-danger{%endif%}">专家评审流程为{%if item.is_review%}打开{%else%}关闭{%endif%}状态</span>
 </fieldset>

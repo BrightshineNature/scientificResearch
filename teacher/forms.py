@@ -117,6 +117,8 @@ class ProFundSummaryForm(ModelForm):
 	class Meta:
 		model = ProjectFundSummary
 		exclude = ('content_id','project_id','finance_comment',)
+        widgets = {"finance_account": forms.TextInput(attrs={"class":'form-control', "placeholder": "财务账号", }),
+                  }
 
 class ProFundBudgetForm(ModelForm):
 	class Meta:
