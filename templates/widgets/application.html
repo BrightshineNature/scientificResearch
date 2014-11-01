@@ -36,13 +36,15 @@
       {% include "widgets/basis_content.html"%}
 
       {#{%include "widgets/save_button.html"%}#}
+
       {% if is_submited %}
         <button class="btn btn-primary  save_button">保存当前页面信息</button>
 
+      {% ifequal user "teacher"%}
         <button class="btn btn-primary  submit_button" >提交</button>
+      {% endifequal%}
+
       {% endif %}
-
-
     </div>
 
     <!-- <div class="tab-pane fade" id="base_condition"> -->

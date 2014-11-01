@@ -126,18 +126,21 @@ def handleFileUpload(request, pid,  entrance):
     ftype = getType(f.name) 
     if(ftype != FileList[entrance]):
         return 0
+    obj = UploadFile() 
     if ftype != FileList['file_other']:
+        if f.name.count('.') == 0: 
+            return 0
         if not AcceptedExtension.count(f.name.split('.')[1]):
             return 0
-    # print "enter *******"
-    obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
-    if obj :
-        obj = obj[0] # assert only exist one    
-        path = obj.file_obj.path
-        obj.delete()
+        obj = UploadFile.objects.filter(project__project_id = pid, file_type = ftype)
+    else:
+        obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
+
+    for i in obj:
+        path = i.file_obj.path
+        i.delete()
         default_storage.delete(path)
-    else :
-        pass
+
 
     # print "enter ********* save"
     project = ProjectSingle.objects.get(project_id = pid)
@@ -149,7 +152,7 @@ def handleFileUpload(request, pid,  entrance):
     obj.file_type = ftype
     obj.file_size = f.size
     obj.save()
-    timenow=time.strftime('%Y-%m-%d',time.localtime(time.time()))
+    timenow = time.strftime('%Y-%m-%d',time.localtime(time.time()))
     if entrance == 'file_application':
         project.file_application = True
         project.submit_date=timenow
@@ -184,6 +187,7 @@ def fileUploadManage(request, pid):
                 default_storage.delete(path)
         for i in FileList:
             if request.FILES.has_key(i):
+
                 if not handleFileUpload(request, pid, i):
                     error = 1
     else :
