@@ -13,7 +13,7 @@
             <tr id={{notice.id}}>
                 <td>{{ notice.iid}}</td>
                 <td>{{ notice.title}}</td>
-                <td><span data-toggle="tooltip" data-placement="top" title={{notice.message}}>{{ notice.message|truncatechars:20}}</span></td>
+                <td><span data-toggle="tooltip" data-placement="top" title="{{notice.message}}">{{ notice.message|truncatechars:20}}</span></td>
                 <td>
                     <div class="btn-group">
                          <button class="btn btn-primary select_template_notice">选择</button> <button class="btn btn-success change_template_notice" data-toggle="modal" data-target="#notice_profile_info">修改</button><button class="btn btn-info delete_template_notice"  data-toggle="modal" data-target="#notice_delete_info">删除</button>

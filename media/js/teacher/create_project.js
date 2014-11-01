@@ -14,10 +14,10 @@ $("#button_create_project").click(function(){
         $("#create-form").trigger("submit");
     }
 });
-
+$().ready(function(){
 if($("#teacher_modal").length>0)
     {
         $('#teacher_notice').modal('show');
 
     }
-
+});
