@@ -27,7 +27,7 @@ from backend.logging import loginfo
 from users.models import SchoolProfile,CollegeProfile,Special,College
 from teacher.models import TeacherInfoSetting
 from backend.logging import logger
-from   adminStaff.forms      import ObjectForm
+from adminStaff.forms import ObjectForm
 
 def getObject(object):
     if object == "special":
@@ -288,10 +288,16 @@ def Dispatch(request,form,identity,page):
             flag = sendemail(request, username, password,email,identity, person_name)
         elif identity == EXPERT_USER or identity == TEACHER_USER:
             college = dispatchForm.cleaned_data["college"]
-            loginfo(college)
-            flag = sendemail(request, username, password,email,identity, person_name,college=college)
+            if identity == EXPERT_USER:
+                send_email =False
+            else:
+                send_email=True
+            flag = sendemail(request, username, password,email,identity, person_name,send_email,college=college)
         if flag:
-            message = u"发送邮件成功"
+            if identity == EXPERT_USER:
+                message = u"导入专家成功"
+            else:
+                message = u"发送邮件成功"
             table = refresh_user_table(request,identity,page)
             return simplejson.dumps({'field':dispatchForm.data.keys(), 'status':'1', 'message':message,'table':table})
         else:
