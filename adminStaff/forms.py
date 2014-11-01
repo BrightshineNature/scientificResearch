@@ -43,7 +43,7 @@ class DispatchAddCollegeForm(DispatchForm):
         if user != None:
             del kwargs['user']
         super(DispatchAddCollegeForm, self).__init__(*args, **kwargs)
-        if user == COLLEGE_USER:
+        if user != None:
             college_list = College.objects.filter(college_user__userid= user)
             college_choice_list=[]
             for obj in college_list:
