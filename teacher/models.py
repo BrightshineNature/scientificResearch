@@ -113,14 +113,11 @@ class ProjectStatistics(models.Model):
         return self.staticsdatatype.__unicode__() + "(" +self.staticstype.__unicode__() + ")"
 
 class ProjectFundSummary(models.Model):
-    content_id = models.CharField(max_length=50,
-   							   primary_key=True, default=lambda: str(uuid.uuid4()),
+    content_id = models.CharField(max_length=50,primary_key=True, default=lambda: str(uuid.uuid4()),
    							   verbose_name="经费决算表唯一ID")
     project_id = models.OneToOneField(ProjectSingle)
-   
     finance_comment = models.CharField(max_length=100, blank=True, null=True,default="",
    										verbose_name="财务评审意见")
- 
     equcosts_budget = models.FloatField(blank=False, null=True,default="0",
    										verbose_name="设备费预算经费")
     equcosts_expenditure = models.FloatField(blank=False, null=True,default="0",
@@ -205,6 +202,7 @@ class ProjectFundSummary(models.Model):
    										verbose_name="合计经费支出")
     total_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="合计说明")
+    finance_account = models.CharField(max_length = 20,blank = False,null = True, verbose_name="财务账号")
     class Meta:
    	 verbose_name = "经费决算表"
    	 verbose_name_plural = "经费决算表"

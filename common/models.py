@@ -1,8 +1,5 @@
 #coding:UTF-8
 # Create your models here.
-
-
-
 from const import *
 from adminStaff.models import ProjectSingle
 import uuid,datetime, os

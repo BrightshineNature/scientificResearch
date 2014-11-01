@@ -44,3 +44,24 @@ $("#mainTable").find("input").bind('change',function(){
     $("#id_total_budget").val(parseFloat(totalbudget));
     $("#id_total_expenditure").val(parseFloat(totalexpenditure));
 });
+
+function projectfundbudget(){
+    var pid = $("#mainTable").attr("value");
+    var total_budget = parseFloat($('#id_total_budget').val())
+    var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val())
+    if (totalbudget * 0.3 > laborcosts_budget){
+        Dajaxice.teacher.fundBudget(fundBudget_callback,
+                                    {   
+                                        'form': $('#project_fundbudget_form').serialize(true),
+                                        'pid':pid,       
+                                });
+    }
+    else
+    {
+        alert("劳务费应低于总结额的30%,请仔细核实");
+    }
+}
+
+function fundBudget_callback(data){
+    alert(data.message);
+}

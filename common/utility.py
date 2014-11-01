@@ -13,7 +13,7 @@ from settings import TMP_FILES_PATH,MEDIA_URL
 from const import *
 from common.utils import getScoreTable, getScoreForm
 
-def get_xls_path(request,exceltype,proj_set,specialtype=""):
+def get_xls_path(request,exceltype,proj_set):
     """
         exceltype = EXCELTYPE_DICT 导出表类型
         proj_set 筛选出导出的项目集
@@ -24,8 +24,10 @@ def get_xls_path(request,exceltype,proj_set,specialtype=""):
     EXCELTYPE_DICT = EXCELTYPE_DICT_OBJECT()
     if exceltype == EXCELTYPE_DICT.INFO_COLLECTION:
         file_path = xls_info_collection(request,proj_set)
+    elif exceltype == EXCELTYPE_DICT.INFO_BASESUMMARYSCIENCE_PREVIEW:
+        file_path = xls_info_basesummary_sciencepreview(request,proj_set,1)
     elif exceltype == EXCELTYPE_DICT.INFO_BASESUMMARY_PREVIEW:
-        file_path = xls_info_basesummary_preview(request,proj_set,specialtype)
+        file_path = xls_info_basesummary_preview(request,proj_set,2)
     elif exceltype == EXCELTYPE_DICT.INFO_HUMANITY_PREVIEW:
         file_path = xls_info_humanity_preview(request,proj_set)
     elif exceltype == EXCELTYPE_DICT.INFO_IMPORTANTPROJECT_PREVIEW:
@@ -300,7 +302,7 @@ def xls_info_humanity_preview(request,proj_set,specialtype=""):
     """
     """
 
-    xls_obj, workbook = xls_info_humanity_preview_gen(request)
+    xls_obj, workbook = xls_info_humanity_preview_gen(request,specialtype)
 
     _number= 1
     index = 1
@@ -341,21 +343,27 @@ def xls_info_basesummary_preview_gen(request,specialtype):
     workbook = xlwt.Workbook(encoding='utf-8')
     worksheet = workbook.add_sheet('sheet1')
     style = cell_style(horizontal=True,vertical=True)
+    if specialtype == 1:
+        typename = "理科基础科研专题"
+        persontype = "负责人"
+    elif specialtype == 2:
+        typename = "前沿、人才、学科科研专题"
+        persontype = "申请人"
     # generate header
-    worksheet.write_merge(0, 0, 0,2 + 2*EXPERT_NUM ,specialtype + '项目结题验收评审打分汇总表',style)
+    worksheet.write_merge(0, 0, 0,2 + 2*EXPERT_NUM ,typename + '项目结题验收评审打分汇总表',style)
     # generate body
     worksheet.write_merge(1, 2, 0, 0, '序号')
     worksheet.write_merge(1, 2, 1, 1, '项目名称')
     worksheet.col(1).width = len('项目名称') * 400
-    worksheet.write_merge(1, 2, 2, 2, '负责人')
+    worksheet.write_merge(1, 2, 2, 2, persontype)
     for i in range(0,EXPERT_NUM):
         add_col = i * 2
         worksheet.write_merge(1,1,3+add_col,4+add_col,'专家'+str(i + 1))
         worksheet.write_merge(2,2,3+add_col,3+add_col,'评分(100分)')
-        worksheet.write_merge(2,2,4+add_col,4+add_col,'计划完成度(%)')
+        worksheet.write_merge(2,2,4+add_col,4+add_col,'备注')
     return worksheet, workbook
 
-def xls_info_basesummary_preview(request,proj_set,specialtype=""):
+def xls_info_basesummary_preview(request,proj_set,specialtype):
     """
     """
 

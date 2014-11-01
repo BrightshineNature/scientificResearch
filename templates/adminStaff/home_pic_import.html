@@ -19,7 +19,7 @@
       <td>{{item.name}}</td>
       <td>{{item.file_type}}</td>
       <td>{{item.file_size}}</td>
-      <td>{{item.uploadtime}}</td>
+      <td>{{item.uploadtime|date:"Y-m-d"}}</td>
       <td>
         <span><a href="{{item.pic_obj.url}}" class='btn btn-primary'>下载</a></span>
         <button class="btn btn-danger" rel="file_delete" fid="{{item.id}}">
