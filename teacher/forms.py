@@ -40,7 +40,7 @@ class SettingForm(ModelForm):
                    "sex": forms.Select(attrs={'class':'form-control', }),
                    "card": forms.TextInput(attrs={"class":'form-control', "placeholder": "身份证号", }),
                    "birth": forms.TextInput(attrs = {"class": "form-control", "placeholder": "出生年月 yyyy-MM"}),
-                   "base_name": forms.TextInput(attrs={"class":'form-control', "placeholder": "所在研究基地名称", }),
+                   "base_name": forms.TextInput(attrs={"class":'form-control', "placeholder": "所在研究基地名称（可为空）", }),
                    "target_type": forms.Select(attrs={'class':'form-control', }),
                    "degree": forms.Select(attrs={'class':'form-control', }),
                    "title": forms.Select(attrs={'class':'form-control', }),
