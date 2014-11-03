@@ -386,7 +386,8 @@ def get_search_data(request,schedule_form):
 
 def finalReportViewWork(request,pid,is_submited,redirect=False):
     final = FinalSubmit.objects.get( project_id = pid)
-    project = ProjectSingle.objects.get(project_id = pid)
+    loginfo(pid)
+    project = ProjectSingle.objects.get( project_id = pid)
     achivement_list = ProjectAchivement.objects.filter( project_id = pid )
     datastatics_list = ProjectStatistics.objects.filter( project_id = pid )
     projfundsummary = ProjectFundSummary.objects.get( project_id = pid ) 

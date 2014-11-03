@@ -78,8 +78,11 @@ def researchConcludingView(request):
 def dispatchView(request):
     dispatchAddCollege_form=DispatchAddCollegeForm(user=request.user)
     colleges = getCollege(request)
-    qset = reduce(lambda x,y:x|y,[Q(college = _college) for _college in colleges])
-    teacher_users = TeacherProfile.objects.filter(qset)
+    try:
+        qset = reduce(lambda x,y:x|y,[Q(college = _college) for _college in colleges])
+        teacher_users = TeacherProfile.objects.filter(qset)
+    except:
+        teacher_users = TeacherProfile.objects.none()
     context = {
                "dispatchAddCollege_form":dispatchAddCollege_form,
     }

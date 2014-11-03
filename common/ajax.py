@@ -87,7 +87,7 @@ def SendMail(request,form):
             status=3
         else:
             status=0
-            send_mail(form["mail_title"],form["mail_content"],settings.DEFAULT_FROM_EMAIL,["347096491@qq.com","369385153@qq.com"])
+            send_mail(form["mail_title"],form["mail_content"],settings.DEFAULT_FROM_EMAIL,recipient_list)
     return simplejson.dumps({"status":status})
 
 @dajaxice_register

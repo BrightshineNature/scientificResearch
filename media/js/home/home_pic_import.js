@@ -4,7 +4,6 @@ $(document).ready(function(){
 
 $('[rel="file_delete"]').click(function(){
   var fid = $(this).attr("fid");
-  alert("aaa");
   Dajaxice.adminStaff.FileDeleteConsistence(file_delete_callback,
                                         {'fid':fid});
 });
