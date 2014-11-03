@@ -22,6 +22,7 @@ def get_xls_path(request,exceltype,proj_set,specialname):
 
     loginfo(p=proj_set,label="get_xls_path")
     loginfo(p = exceltype,label = "exceltype")
+    loginfo(p = proj_set,label = "proj_set")
     EXCELTYPE_DICT = EXCELTYPE_DICT_OBJECT()
     if exceltype == EXCELTYPE_DICT.INFO_COLLECTION:
         file_path = xls_info_collection(request,proj_set)
@@ -305,7 +306,7 @@ def xls_info_humanity_preview(request,proj_set,specialtype=""):
     """
     """
 
-    xls_obj, workbook = xls_info_humanity_preview_gen(request,specialtype)
+    xls_obj, workbook = xls_info_humanity_preview_gen(request)
 
     _number= 1
     index = 1
