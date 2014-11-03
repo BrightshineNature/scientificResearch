@@ -30,7 +30,7 @@ def get_xls_path(request,exceltype,proj_set,specialname):
     elif exceltype == EXCELTYPE_DICT.INFO_FRONT_PREVIEW:
         file_path = xls_info_basesummary_preview(request,proj_set,2,specialname)
     elif exceltype == EXCELTYPE_DICT.INFO_OUTSTANDING_PREVIEW:
-        file_path = xls_info_basesummary_preview(request,proj_set,2,specialname)
+        file_path = xls_info_basesummary_preview(request,proj_set,3,specialname)
     elif exceltype == EXCELTYPE_DICT.INFO_HUMANITY_PREVIEW:
         file_path = xls_info_humanity_preview(request,proj_set)
     elif exceltype == EXCELTYPE_DICT.INFO_IMPORTANTPROJECT_PREVIEW:
@@ -350,7 +350,10 @@ def xls_info_basesummary_preview_gen(request,specialtype):
         typename = "理科基础科研专题"
         sectype = "是否理科基础科研（100分）"
     elif specialtype == 2:
-        typename = "前沿、人才、学科科研专题"
+        typename = "前沿学科科研专题"
+        sectype = "对所评内容熟悉度A、B、C"
+    else:
+        typename = "优秀青年人才基础科研专题"
         sectype = "对所评内容熟悉度A、B、C"
     # generate header
     worksheet.write_merge(0, 0, 0,2 + 2*EXPERT_NUM ,typename + '项目结题验收评审打分汇总表',style)
@@ -374,7 +377,6 @@ def xls_info_basesummary_preview(request,proj_set,specialtype,specialname):
 
     _number= 2
     index = 1
-    loginfo(p=proj_set,label = "proj_set")
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
@@ -386,23 +388,16 @@ def xls_info_basesummary_preview(request,proj_set,specialtype,specialname):
         xls_obj.write(row, 2, unicode(manager.name))
         i = 0
         for re_expert_temp in re_project_expert_list:
-            loginfo(p=re_expert_temp,label="re_expert_temp")
             score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
-            if specialtype == 1:
-                fir_col = score_table.get_comments() 
-                sec_col = score_table.get_total_score() 
-            elif specialtype == 2:
-                fir_col = score_table.get_total_score()
-                sec_col = score_table.get_comments()
-            xls_obj.write(row,3 + i*2,unicode(fir_col))
-            xls_obj.write(row,4 + i*2,unicode(sec_col))
+            xls_obj.write(row,3 + i*2,unicode(score_table.get_total_score()))
+            xls_obj.write(row,4 + i*2,unicode(score_table.get_comments()))
 
             i += 1
         _number+= 1
         index += 1
 
     # write xls file
-    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学"+ specialname +"基本科研业务经费科研专题项目结题验收评审结果汇总表"))
+    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), u"年大连理工大学"+ specialname +u"专题基本科研业务经费科研专题项目结题验收评审结果汇总表"))
     workbook.save(save_path)
     return save_path
 
