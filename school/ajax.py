@@ -177,7 +177,8 @@ def ChangeExpertReview(request,form,special_id):
     if special:
         expert_form = ExpertReviewForm(deserialize_form(form),instance=special)
         if expert_form.is_valid():
-            prolist = ProjectSingle.objects.filter(project_special=special)
+            prolist = ProjectSingle.objects.filter(Q(project_special=special) and (Q(project_status__status__gte = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT) and Q(project_status__status__lt = PROJECT_STATUS_APPROVAL)))
+            loginfo(prolist)
             if prolist.count()==0:
                 expert_form.save()
                 loginfo("success")
