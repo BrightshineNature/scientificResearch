@@ -177,7 +177,7 @@ def ChangeExpertReview(request,form,special_id):
     if special:
         expert_form = ExpertReviewForm(deserialize_form(form),instance=special)
         if expert_form.is_valid():
-            prolist = ProjectSingle.objects.filter(Q(project_special=special) and (Q(project_status__status__gte = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT) and Q(project_status__status__lt = PROJECT_STATUS_APPROVAL)))
+            prolist = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status__gt = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
             loginfo(prolist)
             if prolist.count()==0:
                 expert_form.save()
@@ -243,7 +243,7 @@ def getScore(request, pid):
     for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round)):
         table = scoreTableType.objects.get(re_obj = re_obj)
         score_row = scoreFormType(instance = table)
-        
+
         if table.get_total_score() == 0: continue
 
         for i, field in enumerate(score_row):
