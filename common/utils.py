@@ -33,7 +33,6 @@ def createNewProject(teacher, title, special):
     
 def getScoreTable(project):
     category = project.project_special.expert_review.category
-    print category == EXPERT_REVIEW_BASICSCIENTIFICSCIENCE
     if category == EXPERT_REVIEW_BASICSCIENTIFIC:
         return BasicScientificResearchScoreTable
     elif category == EXPERT_REVIEW_HUMANITIESSOCIAL:

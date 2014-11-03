@@ -193,9 +193,10 @@ def xls_info_laboratory_preview(request,proj_set,specialtype=""):
         average_score_3 = 0
         for re_expert_temp in re_project_expert_list:
             score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
-            xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
-            score_list.append(score_table.get_total_score())
-            i += 1
+            if score_table.get_total_score():
+                xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
+                score_list.append(score_table.get_total_score())
+                i += 1
         average_score_1 = average(score_list)
         if (len(score_list) > 4):
             score_list=delete_max_and_min(score_list)
@@ -260,9 +261,10 @@ def xls_info_importantproject_preivew(request,proj_set,specialtype=""):
         average_score_3 = 0
         for re_expert_temp in re_project_expert_list:
             score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
-            xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
-            score_list.append(score_table.get_total_score())
-            i += 1
+            if score_table.get_total_score():
+                xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
+                score_list.append(score_table.get_total_score())
+                i += 1
         average_score_1 = average(score_list)
         if (len(score_list) > 4):
             score_list=delete_max_and_min(score_list)
@@ -326,9 +328,10 @@ def xls_info_humanity_preview(request,proj_set,specialtype=""):
         average_score_2 = 0
         for re_expert_temp in re_project_expert_list:
             score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
-            xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
-            score_list.append(score_table.get_total_score())
-            i += 1
+            if score_table.get_total_score():
+                xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
+                score_list.append(score_table.get_total_score())
+                i += 1
         average_score_1 = average(score_list) 
         if (len(score_list) > 2):
             delete_max_and_min(score_list)
@@ -368,6 +371,7 @@ def xls_info_basesummary_preview_gen(request,specialtype):
         worksheet.write_merge(1,1,3+add_col,4+add_col,'专家'+str(i + 1))
         worksheet.write_merge(2,2,3+add_col,3+add_col,'评分(100分)')
         worksheet.write_merge(2,2,4+add_col,4+add_col,sectype)
+    worksheet.write_merge(1,2,3+EXPERT_NUM*2,3+EXPERT_NUM*2,'平均分')
     return worksheet, workbook
 
 def xls_info_basesummary_preview(request,proj_set,specialtype,specialname):
@@ -388,12 +392,21 @@ def xls_info_basesummary_preview(request,proj_set,specialtype,specialname):
         xls_obj.write(row, 1, unicode(proj_obj.title)) 
         xls_obj.write(row, 2, unicode(manager.name))
         i = 0
+        average_score = 0
+        score_list = []
         for re_expert_temp in re_project_expert_list:
             score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
-            xls_obj.write(row,3 + i*2,unicode(score_table.get_total_score()))
-            xls_obj.write(row,4 + i*2,unicode(score_table.get_comments()))
-
-            i += 1
+            if score_table.get_total_score():
+                if specialtype == 1:
+                    score_tmp = score_table.get_total_score() + int(score_table.get_comments())
+                else:
+                    score_tmp = score_table.get_total_score()
+                score_list.append(score_tmp)
+                xls_obj.write(row,3 + i*2,unicode(score_table.get_total_score()))
+                xls_obj.write(row,4 + i*2,unicode(score_table.get_comments()))
+                i += 1
+        average_score = average(score_list)
+        xls_obj.write(row,3+EXPERT_NUM*2,unicode(average_score))
         _number+= 1
         index += 1
 
