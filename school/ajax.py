@@ -175,9 +175,12 @@ def queryAllocedExpert(request, project_id, path):
 def ChangeExpertReview(request,form,special_id):
     special = getSpecial(request).get(id = special_id)
     if special:
+        loginfo(special)
         expert_form = ExpertReviewForm(deserialize_form(form),instance=special)
         if expert_form.is_valid():
-            prolist = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status__gt = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
+            qset1=Q(project_status__status__gte = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT,project_status__status__lte = PROJECT_STATUS_APPROVAL)
+            qset2=Q(project_status__status__gte = PROJECT_STATUS_FINAL_EXPERT_SUBJECT,project_status__status__lt = PROJECT_STATUS_OVER)
+            prolist = ProjectSingle.objects.filter(Q(project_special=special) & (qset1 | qset2))
             loginfo(prolist)
             if prolist.count()==0:
                 expert_form.save()
@@ -195,23 +198,23 @@ def ChangeControlStatus(request,special_id,type_id,type_name):
             bValue = not getattr(special,type_id+"_status")
             if type_id == TYPE_ALLOC[0]:
                 if bValue:
-                    pro_list = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
+                    pro_list = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
                     loginfo(pro_list)
                     for pro in pro_list:
                         status_confirm(pro,APPLICATION_REVIEW_START_CONFIRM)
                 else:
-                    pro_list = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status = PROJECT_STATUS_APPLICATION_REVIEW_START))
+                    pro_list = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_APPLICATION_REVIEW_START))
                     loginfo(pro_list)
                     for pro in pro_list:
                         status_confirm(pro,APPLICATION_REVIEW_CONFIRM)
             elif type_id == TYPE_FINAL_ALLOC[0]:
                 if bValue:
-                   pro_list = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT))
+                   pro_list = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT))
                    loginfo(pro_list)
                    for pro in pro_list:
                        status_confirm(pro,FINAL_REVIEW_START_CONFIRM)
                 else:
-                    pro_list = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status = PROJECT_STATUS_FINAL_REVIEW_START))
+                    pro_list = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_FINAL_REVIEW_START))
                     loginfo(pro_list)
                     for pro in pro_list:
                         status_confirm(pro,FINAL_REVIEW_CONFIRM)
@@ -265,9 +268,10 @@ def ExpertinfoExport(request,special_id,eid):
     special = getSpecial(request).get(id = special_id)
     if special:
         if eid==TYPE_ALLOC[0]:
-            proj_set = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status__gte = PROJECT_STATUS_APPLICATION_REVIEW_OVER,project_status__status__lte = PROJECT_STATUS_APPROVAL))
+            proj_set = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status__gte = PROJECT_STATUS_APPLICATION_REVIEW_OVER,project_status__status__lte = PROJECT_STATUS_APPROVAL))
+            loginfo(proj_set)
         elif eid == TYPE_FINAL_ALLOC[0]:
-            proj_set = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status__gte = PROJECT_STATUS_FINAL_REVIEW_OVER,project_status__status__lte = PROJECT_STATUS_OVER))
+            proj_set = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status__gte = PROJECT_STATUS_FINAL_REVIEW_OVER,project_status__status__lt = PROJECT_STATUS_OVER))
         loginfo(proj_set.count())
         path = get_xls_path(request,special.expert_review.category,proj_set,special.name)
         ret = {'path':path}
