@@ -48,7 +48,7 @@ class DispatchAddCollegeForm(DispatchForm):
             college_choice_list=[]
             for obj in college_list:
                 college_choice_list.append((obj.id, obj.name))
-                college_choice = tuple(college_choice_list)
+            college_choice = tuple(college_choice_list)
             self.fields["college"].choices = college_choice
 class ObjectForm(forms.Form):
     name = forms.CharField(

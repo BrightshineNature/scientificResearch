@@ -16,6 +16,10 @@ RegisterClass = (
     HumanitiesSocialSciencesResearchScoreTable,
     MajorProjectScoreTable,
     KeyLaboratoryProjectScoreTable,
+    FrontAndIntercrossResreachScoreTable,
+    ScienceFoundationResearchScoreTable,
+    OutstandingYoungResreachScoreTable,
+    HomePagePic,
 )
 
 for temp in RegisterClass:

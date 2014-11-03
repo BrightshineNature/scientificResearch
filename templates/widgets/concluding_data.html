@@ -6,6 +6,7 @@
                 <th>{{ field.label_tag }}</th>
             {% endfor %}
             <th>总分</th>
+            <th>备注</th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
                     </td>
                 {% endfor %}
                 <td>{{item.total_score }}</td>
+                <td>{{item.comments}}</td>
             </tr>
         {% endfor %}
     </tbody>

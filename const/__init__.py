@@ -6,6 +6,15 @@ Created on 2014-06-10
 
 Desc: const defination
 '''
+LEVEL_CHOICES = (
+    (0, "A"),
+    (1, "B"),
+    (2, "C"),
+    (3, "D"),
+    (4, "E"),
+    #...
+)
+
 UNDIFINED = "undifined"
 # For UserIdentity Table
 ADMINSTAFF_USER = "adminStaff"
@@ -295,12 +304,17 @@ EXPERT_REVIEW_MAJORPROJECT = "majorproject"
 EXPERT_REVIEW_KEYLABORATORY = "keylaboratory"
 EXPERT_REVIEW_HUMANITIESSOCIAL = "humanitiessocial"
 EXPERT_REVIEW_BASICSCIENTIFICSCIENCE = "basicscientificscience"
+EXPERT_REVIEW_FRONT = "front"
+EXPERT_REVIEW_OUTSTANDING = "outstanding"
+
 EXPERT_REVIEW_TABLE_CHOICES =(
-    (EXPERT_REVIEW_BASICSCIENTIFIC , u"理科基本科研业务费"),
+    (EXPERT_REVIEW_BASICSCIENTIFIC , u"基本科研业务费"),
     (EXPERT_REVIEW_HUMANITIESSOCIAL , u"人文社科科研"),
     (EXPERT_REVIEW_MAJORPROJECT , u"重大项目"),
     (EXPERT_REVIEW_KEYLABORATORY , u"重点实验室专题"),
-    (EXPERT_REVIEW_BASICSCIENTIFICSCIENCE,u"前沿、人才、学科基础科研业务费")
+    (EXPERT_REVIEW_BASICSCIENTIFICSCIENCE, "理科基础科研业务费"),
+    (EXPERT_REVIEW_FRONT,u"前沿学科基础科研业务费"),
+    (EXPERT_REVIEW_OUTSTANDING,u"优秀青年人才基础科研业务费"),
 )
 EXPERT_NUM = 10
 

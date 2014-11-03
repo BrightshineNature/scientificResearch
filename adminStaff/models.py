@@ -119,6 +119,8 @@ class BasicScientificResearchScoreTable(models.Model):
         verbose_name_plural = u"基本科研业务费重大项目培育科研专题项目评审表"
     def get_total_score(self):
         return self.summary + self.completion + self.achievement + self.prospect + self.funds_report
+    def get_comments(self):
+        return ""
 
 class HumanitiesSocialSciencesResearchScoreTable(models.Model):
     re_obj = models.ForeignKey(Re_Project_Expert)
@@ -131,6 +133,49 @@ class HumanitiesSocialSciencesResearchScoreTable(models.Model):
         verbose_name_plural = u"基本科研业务费人文社科科研专题一般项目评审表"
     def get_total_score(self):
         return self.significance + self.innovation + self.feasibility + self.base
+    def get_comments(self):
+        return ""
+
+
+class ScienceFoundationResearchScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    check = models.IntegerField(blank = False, default = 0, verbose_name = u"是否理科基础科研（100分）", validators = [MaxValueValidator(100), MinValueValidator(0)])
+    score = models.IntegerField(blank = False, default = 0, verbose_name = u"评分（100分）", validators = [MaxValueValidator(100), MinValueValidator(0)])
+    class Meta:
+        verbose_name = u"基本科研业务费理科基础科研专题一般项目评审表"
+        verbose_name_plural = u"基本科研业务费理科基础科研专题一般项目评审表"
+    def get_total_score(self):
+        return self.score
+    def get_comments(self):
+        return str(self.get_check_display())
+
+
+class FrontAndIntercrossResreachScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    score = models.IntegerField(blank = False, default = 0, verbose_name = u"评分（100分）", validators = [MaxValueValidator(100), MinValueValidator(0)])
+    level = models.IntegerField(blank = False, default = 0, choices = LEVEL_CHOICES[:3], verbose_name = u"对所评内容熟悉程度")
+    class Meta:
+        verbose_name = u"基本科研业务费前沿探索与学科交叉科研专题一般项目评审表"
+        verbose_name_plural = u"基本科研业务费前沿探索与学科交叉科研专题一般项目评审表"
+    def get_total_score(self):
+        return self.score
+    def get_comments(self):
+        return str(self.get_level_display())
+
+
+ 
+class OutstandingYoungResreachScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    score = models.IntegerField(blank = False, default = 0, verbose_name = u"评分（100分）", validators = [MaxValueValidator(100), MinValueValidator(0)])
+    level = models.IntegerField(blank = False, default = 0, choices = LEVEL_CHOICES[:4], verbose_name = u"优先资助级别")
+    class Meta:
+        verbose_name = u"基本科研业务费优秀青年人才科研专题一般项目评审表"
+        verbose_name_plural = u"基本科研业务费优秀青年人才科研专题一般项目评审表"
+    def get_total_score(self):
+        return self.score
+    def get_comments(self):
+        return str(self.get_level_display())
+
 
 
 class MajorProjectScoreTable(models.Model):
@@ -145,6 +190,9 @@ class MajorProjectScoreTable(models.Model):
         verbose_name_plural = u"重大项目培育科研专题项目评审表"
     def get_total_score(self):
         return self.evaluation + self.feasibility + self.funds_report + self.expection + self.measures
+    def get_comments(self):
+        return ""
+
 
 class KeyLaboratoryProjectScoreTable(models.Model):
     re_obj = models.ForeignKey(Re_Project_Expert)
@@ -158,6 +206,10 @@ class KeyLaboratoryProjectScoreTable(models.Model):
         verbose_name_plural = u"重点实验室专题项目评审表"
     def get_total_score(self):
         return self.significance + self.innovation + self.feasibility + self.base + self.funds_report
+    def get_comments(self):
+        return ""
+
+
 class HomePagePic(models.Model):
     """
     """
