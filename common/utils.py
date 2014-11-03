@@ -39,8 +39,13 @@ def getScoreTable(project):
         return HumanitiesSocialSciencesResearchScoreTable
     elif category == EXPERT_REVIEW_MAJORPROJECT:
         return MajorProjectScoreTable
-    else:
+    elif category == EXPERT_REVIEW_KEYLABORATORY:
         return KeyLaboratoryProjectScoreTable
+    elif category == EXPERT_REVIEW_FRONT:
+        return FrontAndIntercrossResreachScoreTable
+    elif category == EXPERT_REVIEW_BASICSCIENTIFICSCIENCE:
+        return ScienceFoundationResearchScoreTable
+    return OutstandingYoungResreachScoreTable
 
 def getScoreForm(project):
     category = project.project_special.expert_review.category      
@@ -50,8 +55,13 @@ def getScoreForm(project):
         return HumanitiesSocialSciencesResearchScoreForm
     elif category == EXPERT_REVIEW_MAJORPROJECT:
         return MajorProjectScoreForm
-    else:
+    elif category == EXPERT_REVIEW_KEYLABORATORY:
         return KeyLaboratoryProjectScoreForm
+    elif category == EXPERT_REVIEW_FRONT:
+        return FrontAndIntercrossResreachScoreForm
+    elif category == EXPERT_REVIEW_BASICSCIENTIFICSCIENCE:
+        return ScienceFoundationResearchScoreForm
+    return OutstandingYoungResreachScoreForm
 
 def get_application_year_choice():
     project_group=ProjectSingle.objects.filter(project_status__status__lt = PROJECT_STATUS_APPROVAL)
