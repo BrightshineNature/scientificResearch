@@ -147,7 +147,7 @@ class ScienceFoundationResearchScoreTable(models.Model):
     def get_total_score(self):
         return self.score
     def get_comments(self):
-        return str(self.get_check_display())
+        return str(self.check)
 
 
 class FrontAndIntercrossResreachScoreTable(models.Model):

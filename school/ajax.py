@@ -269,7 +269,7 @@ def ExpertinfoExport(request,special_id,eid):
         elif eid == TYPE_FINAL_ALLOC[0]:
             proj_set = ProjectSingle.objects.filter(Q(project_special=special) and Q(project_status__status__gte = PROJECT_STATUS_FINAL_REVIEW_OVER,project_status__status__lte = PROJECT_STATUS_OVER))
         loginfo(proj_set.count())
-        path = get_xls_path(request,special.expert_review.category,proj_set)
+        path = get_xls_path(request,special.expert_review.category,proj_set,special.name)
         ret = {'path':path}
         return simplejson.dumps(ret)
     return simplejson.dumps({'status':'0'})
