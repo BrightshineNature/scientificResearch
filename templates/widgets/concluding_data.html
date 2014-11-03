@@ -3,7 +3,9 @@
         <tr>
             <th></th>
             {% for field in form %}
+                {% if forloop.counter0 != comments_index %}
                 <th>{{ field.label_tag }}</th>
+                {% endif %}
             {% endfor %}
             <th>总分</th>
             <th>备注</th>
@@ -20,9 +22,11 @@
             <tr class="expert_score_list_item">
                 <td>{{item.expert_name}}</td>
                 {% for field in item %}
+                    {% if forloop.counter0 != comments_index %}
                     <td>
                     {{ field.value }}
                     </td>
+                    {% endif %}
                 {% endfor %}
                 <td>{{item.total_score }}</td>
                 <td>{{item.comments}}</td>

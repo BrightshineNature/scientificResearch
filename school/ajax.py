@@ -240,16 +240,19 @@ def getScore(request, pid):
         is_first_round = False
 
     scoreTableType = getScoreTable(project)
+
+    comments_index = scoreTableType.has_comments()
     scoreFormType = getScoreForm(project)
     scoreList = []
     ave_score = {}
+    tem = scoreTableType.objects.all()
     for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round)):
         table = scoreTableType.objects.get(re_obj = re_obj)
         score_row = scoreFormType(instance = table)
-
         if table.get_total_score() == 0: continue
 
         for i, field in enumerate(score_row):
+            if i == comments_index: continue
             ave_score[i] = ave_score.get(i, 0) + int(field.value())
 
         score_row.expert_name = re_obj.expert
@@ -261,7 +264,7 @@ def getScore(request, pid):
     if len(scoreList):
         for item in ave_score.items():
             ave_score[item[0]] = 1.0 * item[1] / len(scoreList)
-    html = render_to_string("widgets/concluding_data.html", {"scoreList": scoreList, "ave_score": ave_score.values(), "form": scoreFormType,})
+    html = render_to_string("widgets/concluding_data.html", {"scoreList": scoreList, "ave_score": ave_score.values(), "form": scoreFormType, "comments_index": comments_index, })
     return simplejson.dumps({"message": message, "html": html,})
 @dajaxice_register
 def ExpertinfoExport(request,special_id,eid):
