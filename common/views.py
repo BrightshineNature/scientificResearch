@@ -55,6 +55,7 @@ def getParam(pro_list, userauth,flag,page,page2):
     param={}
     param.update(getContext(pass_apply_project_group,page2,"item2",0,page_elems=10))
     param.update(getContext(not_pass_apply_project_group,page,"item",0,page_elems=10))
+    param.update({"pro_count":len(pass_apply_project_group)})
     return param
 
 def appManage(request, pid):
