@@ -132,6 +132,37 @@ class HumanitiesSocialSciencesResearchScoreTable(models.Model):
     def get_total_score(self):
         return self.significance + self.innovation + self.feasibility + self.base
 
+class ScienceFoundationResearchScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    check = models.IntegerField(blank = False, default = 0, verbose_name = u"是否理科基础科研（100分）", validators = [MaxValueValidator(100), MinValueValidator(0)])
+    score = models.IntegerField(blank = False, default = 0, verbose_name = u"评分（100分）", validators = [MaxValueValidator(100), MinValueValidator(0)])
+    class Meta:
+        verbose_name = u"基本科研业务费理科基础科研专题一般项目评审表"
+        verbose_name_plural = u"基本科研业务费理科基础科研专题一般项目评审表"
+    def get_total_score(self):
+        return self.check + self.score
+
+class FrontAndIntercrossResreachScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    score = models.IntegerField(blank = False, default = 0, verbose_name = u"评分（100分）", validators = [MaxValueValidator(100), MinValueValidator(0)])
+    level = models.IntegerField(blank = False, choices = LEVEL_CHOICES[:3], verbose_name = u"对所评内容熟悉程度")
+    class Meta:
+        verbose_name = u"基本科研业务费前沿探索与学科交叉科研专题一般项目评审表"
+        verbose_name_plural = u"基本科研业务费前沿探索与学科交叉科研专题一般项目评审表"
+    def get_total_score(self):
+        return self.score
+ 
+ 
+class OutstandingYoungResreachScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    score = models.IntegerField(blank = False, default = 0, verbose_name = u"评分（100分）", validators = [MaxValueValidator(100), MinValueValidator(0)])
+    level = models.IntegerField(blank = False, choices = LEVEL_CHOICES[:4], verbose_name = u"优先资助级别")
+    class Meta:
+        verbose_name = u"基本科研业务费优秀青年人才科研专题一般项目评审表"
+        verbose_name_plural = u"基本科研业务费优秀青年人才科研专题一般项目评审表"
+    def get_total_score(self):
+        return self.score
+
 
 class MajorProjectScoreTable(models.Model):
     re_obj = models.ForeignKey(Re_Project_Expert)

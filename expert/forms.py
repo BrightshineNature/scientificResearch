@@ -5,6 +5,34 @@ from django.forms import ModelForm
 
 from adminStaff.models import BasicScientificResearchScoreTable, HumanitiesSocialSciencesResearchScoreTable
 from adminStaff.models import MajorProjectScoreTable, KeyLaboratoryProjectScoreTable
+from adminStaff.models import ScienceFoundationResearchScoreTable
+from adminStaff.models import FrontAndIntercrossResreachScoreTable
+from adminStaff.models import OutstandingYoungResreachScoreTable
+
+class ScienceFoundationResearchScoreForm(ModelForm):
+    class Meta:
+        model = ScienceFoundationResearchScoreTable
+        exclude = ("re_obj", )
+        widgets = {"check": forms.TextInput(attrs={"class": "form-control",}),
+                   "score": forms.TextInput(attrs={"class": "form-control",}),
+                  }
+
+class FrontAndIntercrossResreachScoreForm(ModelForm):
+    class Meta:
+        model = FrontAndIntercrossResreachScoreTable
+        exclude = ("re_obj", )
+        widgets = {"score": forms.TextInput(attrs={"class": "form-control",}),
+                   "level": forms.Select(attrs={"class": "form-control",}),
+                  }
+
+class OutstandingYoungResreachScoreForm(ModelForm):
+    class Meta:
+        model = OutstandingYoungResreachScoreTable
+        exclude = ("re_obj", )
+        widgets = {"score": forms.TextInput(attrs={"class": "form-control",}),
+                   "level": forms.Select(attrs={"class": "form-control",}),
+                  }
+
 
 class BasicScientificResearchScoreForm(ModelForm):
     class Meta:
