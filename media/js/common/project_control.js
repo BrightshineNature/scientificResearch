@@ -6,7 +6,7 @@ $("select[name='expert_review']").each(function(){
   })
 })
 
-$("#project_control_field input").click(function(){
+$("fieldset input").click(function(){
   text_div = $(this).parents(".active");
   if($(this).attr('class')=="btn btn-warning"){
     if(!confirm("是否要关闭"+$(this).attr('name'))){

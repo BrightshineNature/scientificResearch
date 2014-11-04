@@ -1,6 +1,7 @@
 # coding: UTF-8
 from datetime import *
 from django import  forms
+from backend.logging import loginfo
 from django.forms import ModelForm
 from django.contrib.admin import widgets
 from const.models import NewsCategory
