@@ -9,9 +9,9 @@ $("select[name='expert_review']").each(function(){
 $("fieldset input").click(function(){
   text_div = $(this).parents(".active");
   if($(this).attr('class')=="btn btn-warning"){
-    if(!confirm("是否要关闭"+$(this).attr('name'))){
-     return ;
-   }
+    if(!confirm("是否要关闭"+$(this).attr('name'))) return ;
+   }else{
+     if(!confirm("是否要打开"+$(this).attr('name'))) return ;
   }
   Dajaxice.school.ChangeControlStatus(ChangeControlStatus_callback,{'special_id':$(text_div).attr('id'),'type_id':$(this).attr('id'),'type_name':$(this).attr('name')});
 })

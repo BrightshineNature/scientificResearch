@@ -264,8 +264,10 @@ def get_news_list(request, uid):
 def Dispatch(request,form,identity,page):
     if identity == SCHOOL_USER or identity ==COLLEGE_USER:
         dispatchForm = DispatchForm(deserialize_form(form))
-    elif identity == EXPERT_USER or identity == TEACHER_USER:
+    elif identity == EXPERT_USER :
         dispatchForm = DispatchAddCollegeForm(deserialize_form(form))
+    elif identity == TEACHER_USER :
+        dispatchForm = DispatchAddCollegeForm(deserialize_form(form),user=request.user)
     else:
         dispatchForm = DispatchForm(deserialize_form(form))
     if dispatchForm.is_valid():
