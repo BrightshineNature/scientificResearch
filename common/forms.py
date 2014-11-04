@@ -290,9 +290,16 @@ class BaseConditionForm(forms.ModelForm):
 
 
 
-
+from common.utility import checkIdcard
 
 class ProjectMemberForm(forms.ModelForm):
+    def clean_card(self):
+        card = self.cleaned_data.get("card", "").strip()
+        response = checkIdcard(card)
+        if response[0]:
+            raise forms.ValidationError(response[1])
+        return card
+
     class Meta:
         model = ProjectMember
         fields = ('project', 'name', 'birth_year', 'tel', 'mail', 'professional_title', 'executive_position', 'card',)

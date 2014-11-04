@@ -40,6 +40,7 @@ $(document).on("click", "#addNewProjectMember", function(){
 
     $("select[name='professional_title']").val("");
     $("select[name='executive_position']").val("");
+    $("input[name='card']").val("");
 
     $(member_info_modal).attr("mid", "");
 
@@ -81,7 +82,7 @@ function saveProjectMemberCallback(data){
             $('#project_member_form_error').show(500);
             return ;
         }
-        $('#project_member_form_error').html('<h3>您有字段没有填写。</h3>');
+        $('#project_member_form_error').html('<h3>您有字段没有填写或填写错误。</h3>');
         $('#project_member_form_error').hide();
         $('#project_member_form_error').show(500);
 
@@ -212,7 +213,6 @@ $(document).on("click", ".save_button",function(){
     var pid = $(this).parents("[pid]").attr("pid");
     if($(cnt_content).attr("id") == "project_info")
     {
-    
         Dajaxice.common.saveProjectInfoForm(saveProjectInfoFormCallback,{
             'form': $("#project_info_form").serialize(),
             'pid': pid,
@@ -297,6 +297,12 @@ function saveProjectInfoFormCallback(data)
         }
 
         $("#project_info_form_error").html("<h3>您有字段没有被填写。</h3>");
+        $("#project_info_form_error").hide();
+        $("#project_info_form_error").show(500);
+    }
+    else if(data.status == 2)
+    {
+        $("#project_info_form_error").html("<h3>!错误:“研究开始时间“大于“研究结束时间“</h3>");
         $("#project_info_form_error").hide();
         $("#project_info_form_error").show(500);
     }

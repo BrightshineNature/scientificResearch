@@ -33,11 +33,16 @@ $("#mainTable").find("input").bind('change',function(){
     totalbudget = 0;
     totalexpenditure = 0;
     index = 0;
+    if($(this).val()<0||isNaN($(this).val()))
+    {
+        alert("数据格式不对,请重新输入");
+        $(this).val(0.0);
+    }
     $("#mainTable tbody tr").each(function(){
         if(index>0)
         {
             totalbudget += parseFloat($(this).find("td").eq(1).children().val());
-        totalexpenditure += parseFloat($(this).find("td").eq(2).children().val());
+            totalexpenditure += parseFloat($(this).find("td").eq(2).children().val());
         }
         index += 1;
     });

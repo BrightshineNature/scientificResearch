@@ -215,7 +215,7 @@ def saveProjectInfoForm(request, form, pid):
         'error': None,
     }
     if form.is_valid():        
-        p.title = form.cleaned_data['project_name']
+        p.title = form.cleaned_data['project_name']        
 
         science_type =form.cleaned_data['science_type']
         p.science_type = ScienceActivityType.objects.get(category=science_type)
@@ -229,8 +229,12 @@ def saveProjectInfoForm(request, form, pid):
         p.start_time = form.cleaned_data['start_time']
         p.end_time = form.cleaned_data['end_time']
         p.project_tpye = None
-        p.save()            
-        pass
+
+        if p.start_time > p.end_time:
+            context['status'] = 2
+            context['error'] = None            
+        else :
+            p.save()
     else :
         print "error in saveProjectInfoForm"
         

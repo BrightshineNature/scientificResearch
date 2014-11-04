@@ -132,29 +132,31 @@ def staticsChange(request,statics_type):
 def fundSummary(request, form, pid):
     profundsummary = ProjectFundSummary.objects.get(project_id = pid) 
     profundsummaryform = ProFundSummaryForm(deserialize_form(form),instance = profundsummary)
-    project = ProjectSingle.objects.get(project_id = pid )
-    print "summary"*10
+    project = ProjectSingle.objects.get(project_id = pid)
+    flag = False
     if profundsummaryform.is_valid():
-        total_budget = float(profundsummaryform.cleaned_data["total_budget"])
-        print total_budget
-        laborcosts_budget = float(profundsummaryform.cleaned_data["laborcosts_budget"])
-        print laborcosts_budget
-        if laborcosts_budget < total_budget * 0.3:
-            if total_budget < project.project_budget_max:
-                profundsummaryform.save()
-                copyFundsummaryToBudget(pid)    
-                message = u"保存成功"
-                flag = True
-            else:
-                message = u"经费决算表总结额应低于项目最大预算金额,请仔细核实"
-                flag = False
+        if profundsummaryform.cleaned_data["finance_account"]:
+            total_budget = float(profundsummaryform.cleaned_data["total_budget"])
+            total_expenditure =  float(profundsummaryform.cleaned_data["total_expenditure"])
+            if total_budget < 0 or total_expenditure < 0:
+                message = u"数据未填写完整或数据格式不对，保存失败"
+            else:  
+                laborcosts_budget = float(profundsummaryform.cleaned_data["laborcosts_budget"])
+                if laborcosts_budget < total_budget * 0.3:
+                    if total_budget < project.project_budget_max:
+                        profundsummaryform.save()
+                        #copyFundsummaryToBudget(pid)    
+                        message = u"保存成功"
+                        flag = True
+                    else:
+                        message = u"经费决算表总结额应低于项目最大预算金额,请仔细核实"
+                else:
+                    message = u"劳务费应低于总结额的30%,请仔细核实"
         else:
-            message = u"劳务费应低于总结额的30%,请仔细核实"
-            flag = False
+            message = u"请填写财务账号"
     else:
         loginfo(p=profundsummaryform.errors,label='profundsummaryform.errors')
-        message = u"保存失败"
-        flag = False
+        message = u"数据未填写完整或数据格式不对，保存失败"
 
     # table = refresh_fundsummary_table(request,profundsummaryform,pid)
     ret = {'message':message,'flag':flag}
@@ -165,30 +167,27 @@ def fundBudget(request, form, pid):
     profundbudget = ProjectFundBudget.objects.get(project_id = pid) 
     profundbudgetform = ProFundBudgetForm(deserialize_form(form),instance = profundbudget)
     project = ProjectSingle.objects.get(project_id = pid )
-    print "budgetform"*10
+    flag = False
     if profundbudgetform.is_valid():
         total_budget = float(profundbudgetform.cleaned_data["total_budget"])
-        laborcosts_budget = float(profundbudgetform.cleaned_data["laborcosts_budget"])
-        print total_budget
-        print laborcosts_budget
-        if laborcosts_budget < total_budget * 0.3:
-            if total_budget < project.project_budget_max:
-                profundbudgetform.save()
-                copyBudgetToFundsummary(pid)    
-                message = u"保存成功"
-                flag = True
-                status_confirm(project,TASK_BUDGET_CONFIRM)
-            else:
-                message = u"经费预算表总结额应低于项目最大预算金额,请仔细核实"
-                flag = False
+        if total_budget < 0:
+            message = u"数据未填写完整或数据格式不对，保存失败"
         else:
-            message = u"劳务费应低于总结额的30%,请仔细核实"
-            flag = False
+            laborcosts_budget = float(profundbudgetform.cleaned_data["laborcosts_budget"])
+            if laborcosts_budget < total_budget * 0.3:
+                if total_budget < project.project_budget_max:
+                    profundbudgetform.save()
+                    copyBudgetToFundsummary(pid)    
+                    message = u"保存成功"
+                    flag = True
+                    status_confirm(project,TASK_BUDGET_CONFIRM)
+                else:
+                    message = u"经费预算表总结额应低于项目最大预算金额,请仔细核实"
+            else:
+                message = u"劳务费应低于总结额的30%,请仔细核实"
     else:
         loginfo(p=profundbudgetform.errors,label='profundbudgetform.errors')
-        message = u"保存失败"
-        flag = False
-
+        message = u"数据未填写完整或数据格式不对，保存失败"
     # table = refresh_fundsummary_table(request,profundsummaryform,pid)
     ret = {'message':message,'flag':flag}
     return simplejson.dumps(ret)
