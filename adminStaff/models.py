@@ -122,6 +122,10 @@ class BasicScientificResearchScoreTable(models.Model):
     def get_comments(self):
         return ""
 
+    @staticmethod
+    def has_comments():
+        return -1
+
 class HumanitiesSocialSciencesResearchScoreTable(models.Model):
     re_obj = models.ForeignKey(Re_Project_Expert)
     significance = models.IntegerField(blank = False, default = 0, verbose_name = u"研究意义（25分）", validators = [MaxValueValidator(25), MinValueValidator(0)])
@@ -135,6 +139,10 @@ class HumanitiesSocialSciencesResearchScoreTable(models.Model):
         return self.significance + self.innovation + self.feasibility + self.base
     def get_comments(self):
         return ""
+    @staticmethod
+    def has_comments():
+        return -1
+
 
 
 class ScienceFoundationResearchScoreTable(models.Model):
@@ -147,7 +155,11 @@ class ScienceFoundationResearchScoreTable(models.Model):
     def get_total_score(self):
         return self.score
     def get_comments(self):
-        return str(self.get_check_display())
+        return str(self.check)
+    @staticmethod
+    def has_comments():
+        return 0
+
 
 
 class FrontAndIntercrossResreachScoreTable(models.Model):
@@ -161,6 +173,10 @@ class FrontAndIntercrossResreachScoreTable(models.Model):
         return self.score
     def get_comments(self):
         return str(self.get_level_display())
+    @staticmethod
+    def has_comments():
+        return 1
+
 
 
  
@@ -175,6 +191,10 @@ class OutstandingYoungResreachScoreTable(models.Model):
         return self.score
     def get_comments(self):
         return str(self.get_level_display())
+    @staticmethod
+    def has_comments():
+        return 1
+
 
 
 
@@ -192,6 +212,10 @@ class MajorProjectScoreTable(models.Model):
         return self.evaluation + self.feasibility + self.funds_report + self.expection + self.measures
     def get_comments(self):
         return ""
+    @staticmethod
+    def has_comments():
+        return -1
+
 
 
 class KeyLaboratoryProjectScoreTable(models.Model):
@@ -208,6 +232,10 @@ class KeyLaboratoryProjectScoreTable(models.Model):
         return self.significance + self.innovation + self.feasibility + self.base + self.funds_report
     def get_comments(self):
         return ""
+    @staticmethod
+    def has_comments():
+        return -1
+
 
 
 class HomePagePic(models.Model):
