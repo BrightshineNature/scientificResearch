@@ -32,7 +32,7 @@ def createNewProject(teacher, title, special):
     ProjectFundBudget(project_id = project).save()
     
 def getScoreTable(project):
-    category = project.project_special.expert_review.category      
+    category = project.project_special.expert_review.category
     if category == EXPERT_REVIEW_BASICSCIENTIFIC:
         return BasicScientificResearchScoreTable
     elif category == EXPERT_REVIEW_HUMANITIESSOCIAL:
