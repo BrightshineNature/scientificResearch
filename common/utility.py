@@ -13,7 +13,7 @@ from settings import TMP_FILES_PATH,MEDIA_URL
 from const import *
 from common.utils import getScoreTable, getScoreForm
 
-def get_xls_path(request,exceltype,proj_set):
+def get_xls_path(request,exceltype,proj_set,specialname):
     """
         exceltype = EXCELTYPE_DICT 导出表类型
         proj_set 筛选出导出的项目集
@@ -21,13 +21,16 @@ def get_xls_path(request,exceltype,proj_set):
     """
 
     loginfo(p=proj_set,label="get_xls_path")
+    loginfo(p = exceltype,label = "exceltype")
     EXCELTYPE_DICT = EXCELTYPE_DICT_OBJECT()
     if exceltype == EXCELTYPE_DICT.INFO_COLLECTION:
         file_path = xls_info_collection(request,proj_set)
     elif exceltype == EXCELTYPE_DICT.INFO_BASESUMMARYSCIENCE_PREVIEW:
-        file_path = xls_info_basesummary_sciencepreview(request,proj_set,1)
-    elif exceltype == EXCELTYPE_DICT.INFO_BASESUMMARY_PREVIEW:
-        file_path = xls_info_basesummary_preview(request,proj_set,2)
+        file_path = xls_info_basesummary_preview(request,proj_set,1,specialname)
+    elif exceltype == EXCELTYPE_DICT.INFO_FRONT_PREVIEW:
+        file_path = xls_info_basesummary_preview(request,proj_set,2,specialname)
+    elif exceltype == EXCELTYPE_DICT.INFO_OUTSTANDING_PREVIEW:
+        file_path = xls_info_basesummary_preview(request,proj_set,3,specialname)
     elif exceltype == EXCELTYPE_DICT.INFO_HUMANITY_PREVIEW:
         file_path = xls_info_humanity_preview(request,proj_set)
     elif exceltype == EXCELTYPE_DICT.INFO_IMPORTANTPROJECT_PREVIEW:
@@ -345,25 +348,28 @@ def xls_info_basesummary_preview_gen(request,specialtype):
     style = cell_style(horizontal=True,vertical=True)
     if specialtype == 1:
         typename = "理科基础科研专题"
-        persontype = "负责人"
+        sectype = "是否理科基础科研（100分）"
     elif specialtype == 2:
-        typename = "前沿、人才、学科科研专题"
-        persontype = "申请人"
+        typename = "前沿学科科研专题"
+        sectype = "对所评内容熟悉度A、B、C"
+    else:
+        typename = "优秀青年人才基础科研专题"
+        sectype = "对所评内容熟悉度A、B、C"
     # generate header
     worksheet.write_merge(0, 0, 0,2 + 2*EXPERT_NUM ,typename + '项目结题验收评审打分汇总表',style)
     # generate body
     worksheet.write_merge(1, 2, 0, 0, '序号')
     worksheet.write_merge(1, 2, 1, 1, '项目名称')
     worksheet.col(1).width = len('项目名称') * 400
-    worksheet.write_merge(1, 2, 2, 2, persontype)
+    worksheet.write_merge(1, 2, 2, 2, '申请人')
     for i in range(0,EXPERT_NUM):
         add_col = i * 2
         worksheet.write_merge(1,1,3+add_col,4+add_col,'专家'+str(i + 1))
         worksheet.write_merge(2,2,3+add_col,3+add_col,'评分(100分)')
-        worksheet.write_merge(2,2,4+add_col,4+add_col,'备注')
+        worksheet.write_merge(2,2,4+add_col,4+add_col,sectype)
     return worksheet, workbook
 
-def xls_info_basesummary_preview(request,proj_set,specialtype):
+def xls_info_basesummary_preview(request,proj_set,specialtype,specialname):
     """
     """
 
@@ -384,14 +390,14 @@ def xls_info_basesummary_preview(request,proj_set,specialtype):
         for re_expert_temp in re_project_expert_list:
             score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
             xls_obj.write(row,3 + i*2,unicode(score_table.get_total_score()))
-            xls_obj.write(row,4 + i*2,unicode())
+            xls_obj.write(row,4 + i*2,unicode(score_table.get_comments()))
 
             i += 1
         _number+= 1
         index += 1
 
     # write xls file
-    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务经费科研专题项目结题验收评审结果汇总表"))
+    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), u"年大连理工大学"+ specialname +u"专题基本科研业务经费科研专题项目结题验收评审结果汇总表"))
     workbook.save(save_path)
     return save_path
 
@@ -441,13 +447,14 @@ def xls_info_collection(request,proj_set):
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
+        loginfo(p=manager,label="manager")
         row = 1 + _number
         xls_obj.write(row, 0, unicode(proj_obj.title)) 
         xls_obj.write(row, 1, unicode(proj_obj.project_code)) 
         xls_obj.write(row, 2, unicode(proj_obj.science_type)) 
-        xls_obj.write(row, 3, unicode(proj_obj.trade_code).split()[0])
-        xls_obj.write(row, 4, unicode(proj_obj.subject).split()[1])
-        xls_obj.write(row, 5, unicode(proj_obj.subject).split()[0])
+        xls_obj.write(row, 3, unicode(proj_obj.trade_code)) 
+        xls_obj.write(row, 4, unicode(proj_obj.subject_name))
+        xls_obj.write(row, 5, unicode(proj_obj.subject_code))  
         xls_obj.write(row, 6, unicode(proj_obj.start_time)) 
         xls_obj.write(row, 7, unicode(proj_obj.end_time))
         xls_obj.write(row, 8, unicode(proj_obj.approval_year)) 
