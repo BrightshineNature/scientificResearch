@@ -242,6 +242,8 @@ def getScore(request, pid):
     for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round)):
         table = scoreTableType.objects.get(re_obj = re_obj)
         score_row = scoreFormType(instance = table)
+        
+        if table.get_total_score() == 0: continue
 
         for i, field in enumerate(score_row):
             ave_score[i] = ave_score.get(i, 0) + int(field.value())
@@ -250,7 +252,7 @@ def getScore(request, pid):
         score_row.total_score = table.get_total_score()
 
         ave_score["total"] = ave_score.get("total", 0) + score_row.total_score
-
+        score_row.comments = table.get_comments()
         scoreList.append(score_row)
     if len(scoreList):
         for item in ave_score.items():

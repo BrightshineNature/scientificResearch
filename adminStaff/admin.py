@@ -16,6 +16,9 @@ RegisterClass = (
     HumanitiesSocialSciencesResearchScoreTable,
     MajorProjectScoreTable,
     KeyLaboratoryProjectScoreTable,
+    FrontAndIntercrossResreachScoreTable,
+    ScienceFoundationResearchScoreTable,
+    OutstandingYoungResreachScoreTable,
     HomePagePic,
 )
 
