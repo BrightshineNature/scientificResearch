@@ -57,10 +57,8 @@ def refreshObjectAlloc(request, object):
     if object == "special":
 
         user_special_info = {}
-
         for i in SchoolProfile.objects.all():
             user_special_info[i] = []
-
         for i in Special.objects.all():
             if i.school_user:
                 user_special_info[i.school_user].append(i.name)
@@ -122,9 +120,6 @@ def saveObjectName(request, object, form):
 
 @dajaxice_register
 def deleteObjectName(request, object, deleted):
-
-
-
     context = {
         'status':0 ,
         'objects_table': None,
@@ -154,8 +149,6 @@ def deleteObjectName(request, object, deleted):
             alloced += "]"
             context['status'] = 0
             context['alloced'] = alloced
-            # print "***********()()"
-            # print context['alloced']
         else :
             context['status'] = 1
             for i in deleted:
@@ -164,8 +157,6 @@ def deleteObjectName(request, object, deleted):
                 else:
                     cnt = College.objects.filter(name = i)
                 cnt.delete()
-
-
     context['objects_table'] = refreshObjectTable(request, object)
     return simplejson.dumps(context)
 
@@ -273,8 +264,10 @@ def get_news_list(request, uid):
 def Dispatch(request,form,identity,page):
     if identity == SCHOOL_USER or identity ==COLLEGE_USER:
         dispatchForm = DispatchForm(deserialize_form(form))
-    elif identity == EXPERT_USER or identity == TEACHER_USER:
+    elif identity == EXPERT_USER :
         dispatchForm = DispatchAddCollegeForm(deserialize_form(form))
+    elif identity == TEACHER_USER :
+        dispatchForm = DispatchAddCollegeForm(deserialize_form(form),user=request.user)
     else:
         dispatchForm = DispatchForm(deserialize_form(form))
     if dispatchForm.is_valid():

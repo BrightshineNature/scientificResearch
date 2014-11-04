@@ -194,7 +194,8 @@ def ChangeControlStatus(request,special_id,type_id,type_name):
     special = getSpecial(request).get(id = special_id)
     if special:
         type=(type_id,type_name)
-        if type in CONTROL_TYPE_CHOICES:
+        loginfo(type_id)
+        if type in CONTROL_TYPE_CHOICES or type_id=="review":
             bValue = not getattr(special,type_id+"_status")
             if type_id == TYPE_ALLOC[0]:
                 if bValue:
@@ -218,14 +219,6 @@ def ChangeControlStatus(request,special_id,type_id,type_name):
                     loginfo(pro_list)
                     for pro in pro_list:
                         status_confirm(pro,FINAL_REVIEW_CONFIRM)
-            elif type_id == TYPE_APPLICATION[0]:
-                pass
-            elif type_id == TYPE_TASK[0]:
-                pass
-            elif type_id == TYPE_PROGRESS[0]:
-                pass
-            elif type_id == TYPE_FINAL[0]:
-                pass
             setattr(special,type_id+"_status",bValue)
             special.save()
         return simplejson.dumps({'status':'1','type_id':type_id,'type_name':type_name,'value':bValue})

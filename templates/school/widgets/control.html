@@ -21,7 +21,7 @@
   <button type="button" class="btn btn-primary" eid={{alloc_excel}} name="btn_export">导出专家初审统计表</button>
   <button type="button" class="btn btn-primary" eid={{final_alloc_excel}} name="btn_export">导出专家终审统计表</button>
   {% include "widgets/infoexport/infoexport_alert.html"%}
-</fieldset
+</fieldset>
 
 <fieldset>
   <legend>专题项目配置选项</legend>
@@ -44,6 +44,6 @@
     </div>
   </form>
   <br>
-  <input type="button" id="review" name=""  class="btn {%if item.review_status %}btn-warning{%else%}btn-primary{%endif%}" value="{%if item.review_status%}关闭{%else%}打开{%endif%}专家评审流程">
+  <input type="button" id="review" name="专家评审流程"  class="btn {%if item.review_status %}btn-warning{%else%}btn-primary{%endif%}" value="{%if item.review_status%}关闭{%else%}打开{%endif%}专家评审流程">
   <span id="review_span" class="label {%if item.review_status%}label-success{%else%}label-danger{%endif%}">专家评审流程为{%if item.review_status%}打开{%else%}关闭{%endif%}状态</span>
 </fieldset>
