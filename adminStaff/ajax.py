@@ -266,7 +266,7 @@ def Dispatch(request,form,identity,page):
         dispatchForm = DispatchForm(deserialize_form(form))
     elif identity == EXPERT_USER :
         dispatchForm = DispatchAddCollegeForm(deserialize_form(form))
-    elif identity == TEACHER_USER :
+    elif identity == TEACHER_USER:
         dispatchForm = DispatchAddCollegeForm(deserialize_form(form),user=request.user)
     else:
         dispatchForm = DispatchForm(deserialize_form(form))

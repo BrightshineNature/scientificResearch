@@ -100,7 +100,7 @@ def get_status_choice():
     return status_choice
 def get_all_status_choice():
     status_choice=get_status_choice()
-    status_choice=[(PROJECT_STATUS_APPROVAL,u"项目申请阶段")]+status_choice
+    status_choice=[(PROJECT_STATUS_APPROVAL,u"项目申请阶段")]+status_choice+[(PROJECT_STATUS_STOP,u"终止")]
     return status_choice
 def get_application_status_choice():
     application_status_choice=[
@@ -161,9 +161,9 @@ def get_qset(userauth):
             default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     elif userauth['role']=="adminStaff":
-        pending=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_OVER)
-        default=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_OVER)
-        search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_OVER)
+        pending=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_STOP)
+        default=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_STOP)
+        search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_STOP)
     else:
         if userauth['status']=="budget":
             pending=create_QE(PROJECT_STATUS_TASK_COMMIT_OVER)
