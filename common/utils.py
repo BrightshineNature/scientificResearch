@@ -180,6 +180,8 @@ def statusRollBack(project,userrole,userstatus,form):
         if userstatus=="application":
             if project.project_status.status==PROJECT_STATUS_APPLICATION_REVIEW_OVER:
                 set_status(project,PROJECT_STATUS_STOP)
+            elif project.project_special.review_status==False and project.project_status.status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
+                set_status(project,PROJECT_STATUS_STOP)
             else:
                 form_list=form.getlist("application")
                 if len(form_list)==2:
