@@ -40,6 +40,7 @@ $(document).on("click", "#addNewProjectMember", function(){
 
     $("select[name='professional_title']").val("");
     $("select[name='executive_position']").val("");
+    $("input[name='card']").val("");
 
     $(member_info_modal).attr("mid", "");
 
