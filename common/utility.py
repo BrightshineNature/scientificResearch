@@ -441,14 +441,13 @@ def xls_info_collection(request,proj_set):
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
-        loginfo(p=manager,label="manager")
         row = 1 + _number
         xls_obj.write(row, 0, unicode(proj_obj.title)) 
         xls_obj.write(row, 1, unicode(proj_obj.project_code)) 
         xls_obj.write(row, 2, unicode(proj_obj.science_type)) 
-        xls_obj.write(row, 3, unicode(proj_obj.trade_code)) 
-        xls_obj.write(row, 4, unicode(proj_obj.subject_name))
-        xls_obj.write(row, 5, unicode(proj_obj.subject_code))  
+        xls_obj.write(row, 3, unicode(proj_obj.trade_code).split()[0])
+        xls_obj.write(row, 4, unicode(proj_obj.subject).split()[1])
+        xls_obj.write(row, 5, unicode(proj_obj.subject).split()[0])
         xls_obj.write(row, 6, unicode(proj_obj.start_time)) 
         xls_obj.write(row, 7, unicode(proj_obj.end_time))
         xls_obj.write(row, 8, unicode(proj_obj.approval_year)) 

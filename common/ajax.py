@@ -44,7 +44,6 @@ OVER_STATUS_CHOICES = (
 def SendMail(request,form):
     form=deserialize_form(form)
     loginfo(form)
-    
     #send_mail(form["mail_title"],form["mail_content"],"zhc1009@163.com",["347096491@qq.com","369385153@qq.com"])
     if form["mail_title"]=="":
         status=1
@@ -88,7 +87,7 @@ def SendMail(request,form):
             status=3
         else:
             status=0
-            send_mail(form["mail_title"],form["mail_content"],settings.DEFAULT_FROM_EMAIL,["347096491@qq.com","369385153@qq.com"])
+            send_mail(form["mail_title"],form["mail_content"],settings.DEFAULT_FROM_EMAIL,recipient_list)
     return simplejson.dumps({"status":status})
 
 @dajaxice_register
@@ -105,7 +104,7 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
     if form["judgeresult"]=="1":
         project.comment=''
         project.save()
-        if userstatus=="application" and userrole=="school" and not project.project_special.is_review:
+        if userstatus=="application" and userrole=="school" and not project.project_special.review_status:
             set_status(project,PROJECT_STATUS_APPROVAL)
         else:
             status_confirm(project,-1)

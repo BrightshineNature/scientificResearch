@@ -311,21 +311,25 @@ def get_project_list(request):
         pro_list = ProjectSingle.objects.all()
     elif identity == SCHOOL_USER:
         specials = getSpecial(request)
-        qset = reduce(lambda x,y:x|y,[Q(project_special = _special) for _special in specials])
-        loginfo(qset)
-        pro_list = ProjectSingle.objects.filter(qset)
+        try:
+            qset = reduce(lambda x,y:x|y,[Q(project_special = _special) for _special in specials])
+            pro_list = ProjectSingle.objects.filter(qset)
+        except:
+            pro_list = ProjectSingle.objects.none()
+        loginfo(pro_list)
     elif identity == COLLEGE_USER:
-        colleges = getCollege(request)
-        qset = reduce(lambda x,y:x|y,[Q(teacher__college = _college) for _college in colleges])
-        pro_list = ProjectSingle.objects.filter(qset)
+        try:
+            colleges = getCollege(request)
+            qset = reduce(lambda x,y:x|y,[Q(teacher__college = _college) for _college in colleges])
+            pro_list = ProjectSingle.objects.filter(qset)
+        except:
+            pro_list = ProjectSingle.objects.none()
     elif identity == TEACHER_USER:
         pro_list = ProjectSingle.objects.filter(teacher__userid = request.user)
     elif identity == EXPERT_USER:
         pro_list = ProjectSingle.objects.all()
     else:
         pro_list = ProjectSingle.objects.all()
-
-    
     return pro_list
 def get_search_data(request,schedule_form):
     if schedule_form.is_valid():
@@ -382,6 +386,8 @@ def get_search_data(request,schedule_form):
 
 def finalReportViewWork(request,pid,is_submited,redirect=False):
     final = FinalSubmit.objects.get( project_id = pid)
+    loginfo(pid)
+    project = ProjectSingle.objects.get( project_id = pid)
     achivement_list = ProjectAchivement.objects.filter( project_id = pid )
     datastatics_list = ProjectStatistics.objects.filter( project_id = pid )
     projfundsummary = ProjectFundSummary.objects.get( project_id = pid ) 
@@ -404,6 +410,7 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
 		'projfundsummary':projfundsummary,
 		'profundsummaryform':profundsummaryform,
         'is_submited':is_submited,
+        'projectbudget':project.project_budget_max,
     }
     return context
 
@@ -429,6 +436,7 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
 		'fundbudget_form':fundbudget_form,
         'pid':pid,
         'is_submited':is_submited,
+        'projectbudget':project.project_budget_max,
     }
     return context
     

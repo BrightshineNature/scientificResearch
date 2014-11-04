@@ -56,7 +56,7 @@ def homeView(request, is_submited=False):
 def finalReportView(request, is_submited = False):
     re_id = request.GET.get("re_id")
     re_obj = Re_Project_Expert.objects.get(id = re_id)
-    pid = re_obj.project
+    pid = re_obj.project.project_id
     score_table = getScoreTable(re_obj.project).objects.get(re_obj = re_obj)
     context = finalReportViewWork(request, pid, is_submited)
     if request.method == "GET":

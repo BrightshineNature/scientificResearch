@@ -178,23 +178,26 @@ def get_qset(userauth):
 def statusRollBack(project,userrole,userstatus,form):
     if userrole=="school":
         if userstatus=="application":
-            form_list=form.getlist("application")
-            if len(form_list)==2:
-                set_status(project,PROJECT_STATUS_APPLY)
-                project.file_application=False
-                project.save()
-            elif len(form_list)==1:
-                loginfo(form_list[0])
-                if form_list[0]==u"网上申请不合格":
+            if project.project_status.status==PROJECT_STATUS_APPLICATION_REVIEW_OVER:
+                set_status(project,PROJECT_STATUS_STOP)
+            else:
+                form_list=form.getlist("application")
+                if len(form_list)==2:
                     set_status(project,PROJECT_STATUS_APPLY)
-                elif form_list[0]==u"申报书不合格":
-                    set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
                     project.file_application=False
                     project.save()
+                elif len(form_list)==1:
+                    loginfo(form_list[0])
+                    if form_list[0]==u"网上申请不合格":
+                        set_status(project,PROJECT_STATUS_APPLY)
+                    elif form_list[0]==u"申报书不合格":
+                        set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
+                        project.file_application=False
+                        project.save()
+                    else:
+                        return False
                 else:
                     return False
-            else:
-                return False
         elif userstatus=="research_concluding":
             if project.project_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
                 set_status(project,PROJECT_STATUS_TASK_BUDGET_OVER)

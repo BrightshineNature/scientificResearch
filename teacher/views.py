@@ -217,6 +217,6 @@ def finalInfoView(request):
 def fundBudgetView(request,pid,is_submited=False):
     context = fundBudgetViewWork(request,pid,is_submited)
     if context['redirect']:
-		return HttpResponseRedirect('/teacher/finalinfo')
+	return HttpResponseRedirect('/teacher/finalinfo')
     context['role'] = 'teacher'
     return render(request,"teacher/fundbudget.html",context)

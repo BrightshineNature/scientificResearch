@@ -133,9 +133,12 @@ def fundSummary(request, form, pid):
     profundsummary = ProjectFundSummary.objects.get(project_id = pid) 
     profundsummaryform = ProFundSummaryForm(deserialize_form(form),instance = profundsummary)
     project = ProjectSingle.objects.get(project_id = pid )
+    print "summary"*10
     if profundsummaryform.is_valid():
         total_budget = float(profundsummaryform.cleaned_data["total_budget"])
+        print total_budget
         laborcosts_budget = float(profundsummaryform.cleaned_data["laborcosts_budget"])
+        print laborcosts_budget
         if laborcosts_budget < total_budget * 0.3:
             if total_budget < project.project_budget_max:
                 profundsummaryform.save()
@@ -162,17 +165,21 @@ def fundBudget(request, form, pid):
     profundbudget = ProjectFundBudget.objects.get(project_id = pid) 
     profundbudgetform = ProFundBudgetForm(deserialize_form(form),instance = profundbudget)
     project = ProjectSingle.objects.get(project_id = pid )
+    print "budgetform"*10
     if profundbudgetform.is_valid():
         total_budget = float(profundbudgetform.cleaned_data["total_budget"])
         laborcosts_budget = float(profundbudgetform.cleaned_data["laborcosts_budget"])
+        print total_budget
+        print laborcosts_budget
         if laborcosts_budget < total_budget * 0.3:
             if total_budget < project.project_budget_max:
                 profundbudgetform.save()
                 copyBudgetToFundsummary(pid)    
                 message = u"保存成功"
                 flag = True
+                status_confirm(project,TASK_BUDGET_CONFIRM)
             else:
-                message = u"经费决算表总结额应低于项目最大预算金额,请仔细核实"
+                message = u"经费预算表总结额应低于项目最大预算金额,请仔细核实"
                 flag = False
         else:
             message = u"劳务费应低于总结额的30%,请仔细核实"

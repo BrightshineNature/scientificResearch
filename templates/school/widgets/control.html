@@ -44,6 +44,6 @@
     </div>
   </form>
   <br>
-  <input type="button" id="review" name=""  class="btn {%if item.is_review %}btn-warning{%else%}btn-primary{%endif%}" value="{%if item.is_review%}关闭{%else%}打开{%endif%}专家评审流程">
-  <span id="review_span" class="label {%if item.is_review%}label-success{%else%}label-danger{%endif%}">专家评审流程为{%if item.is_review%}打开{%else%}关闭{%endif%}状态</span>
+  <input type="button" id="review" name=""  class="btn {%if item.review_status %}btn-warning{%else%}btn-primary{%endif%}" value="{%if item.review_status%}关闭{%else%}打开{%endif%}专家评审流程">
+  <span id="review_span" class="label {%if item.review_status%}label-success{%else%}label-danger{%endif%}">专家评审流程为{%if item.review_status%}打开{%else%}关闭{%endif%}状态</span>
 </fieldset>
