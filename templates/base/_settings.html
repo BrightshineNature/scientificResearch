@@ -4,9 +4,8 @@
 
 {% block before_css %}
    {{ block.super }}
-   <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/index.css" >
-   <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/content.css" >
    <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
+   <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/content.css" >
 {% endblock  %}
 
 {% block nav_content%}
@@ -18,14 +17,16 @@
    {% include "expert/widgets/features_item_navbar.html" %}
    {%elif userauth.is_teacher %}
    {% include "teacher/widgets/features_item_navbar.html" %}
-   {%elif userauth.is_student %}
-   {% include "student/widgets/features_item_navbar.html" %}
+   {%elif userauth.is_colleger %}
+   {% include "college/widgets/features_item_navbar.html" %}
+   {%elif userauth.is_finance %}
+   {% include "finance/widgets/features_item_navbar.html" %}
    {%endif%}
 {% endblock %}
 {% block content %}
-<div class="container content-container">
+<div class="container main-content-container">
   <div class = "row" id="setting_div">
-    <div class="span3 bs-docs-sidebar">
+    <div class="col-lg-3 bs-docs-sidebar">
       <!--left navigation-->
       <ul class="nav nav-pills nav-stacked nav-list bs-docs-sidenav affix-top">
         <li class="{% block active_profile_content %}  {% endblock %}">
@@ -40,10 +41,10 @@
               账户密码设置
           	</a>
           </li>
-      </ul>   
+      </ul> 
     </div>
       <!--right panel-->
-      <div class="span8">
+      <div class="col-lg-8">
         {% block settings_content %}
         {% endblock %}
       </div> 

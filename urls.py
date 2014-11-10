@@ -70,6 +70,10 @@ urlpatterns = patterns('',
         include('finance.urls'),
     ),
     url(
+        r'^settings/',
+        include("users.urls")
+    ),
+    url(
         r'^errors/',
         include("backend.urls")
     ),
