@@ -32,6 +32,7 @@ def userauth_settings(request):
     The context processor will add user authorities variables
     into all template
     """
+    loginfo(request.META['HTTP_USER_AGENT'])
     userauth = {
                 "is_adminstaff": False,
                 "is_schooler": False,
