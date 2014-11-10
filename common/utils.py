@@ -261,12 +261,12 @@ def statusRollBack(project,userrole,userstatus,form):
     project.save()
     return True
 
-
-
 def set_status(project,status):
     project.project_status=ProjectStatus.objects.get(status=status)
     if project.project_status.status==PROJECT_STATUS_APPROVAL:
         project.approval_year=str(time.strftime('%Y',time.localtime(time.time())))
+    elif project.project_status.status==PROJECT_STATUS_OVER:
+        project.conclude_year=str(time.strftime('%Y',time.localtime(time.time())))
     project.save()
 def status_confirm(project, confirm):
     if confirm==-1:
