@@ -11,6 +11,7 @@
     <!-- <li><a href="#base_condition" data-toggle="tab">研究基础与工作条件</a></li> -->
     
     {% if userauth.is_experter %}
+    <li><a href="#file_download_page" data-toggle="tab" >文件下载</a></li>
     <li {% if error %}class="active" {% endif %}><a href="#score_board" data-toggle="tab">项目评价</a></li>     
     {% endif %}
   </ul>
@@ -63,7 +64,10 @@
 
 
     <!-- </div> -->
-
+    <div class="tab-pane fade" id="file_download_page">
+        {% include "widgets/file_download_page.html" %}
+    </div>
+ 
     <div class="tab-pane fade {% if error %} active in {% endif %}" id="score_board">
       {% include "widgets/score_board.html" %}
     </div>

@@ -5,6 +5,8 @@
         <li id="li_achivement"><a href="#achivement" data-toggle="tab" >研究成果目录</a></li>
         <li id="li_datastatics"><a href="#datastatics" data-toggle="tab">数据统计表</a></li>
         {% if userauth.is_experter %}
+        <li><a href="#file_download_page" data-toggle="tab" >文件下载</a></li>
+
         <li {% if error %}class="active" {% endif %}><a href="#score_board" data-toggle="tab">项目评价</a></li>     
         {% endif %}
     </ul>
@@ -22,6 +24,9 @@
         <div class="tab-pane fade" id="datastatics">
 	        {% include "widgets/finalreport/finalreport_datastatics.html"%}
 	    </div>
+        <div class="tab-pane fade" id="file_download_page">
+            {% include "widgets/file_download_page.html" %}
+        </div>
         <div class="tab-pane fade {% if error %} active in {% endif %}" id="score_board">
             {% include "widgets/score_board.html" %}
         </div>

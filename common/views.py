@@ -20,6 +20,40 @@ from teacher.models import ProjectFundBudget
 from users.models import College,Special
 from common.models import ProjectMember,BasisContent , BaseCondition, UploadFile
 from dajaxice.utils import deserialize_form
+
+def getSingleProjectURLList(item):
+    URLList = []
+    if item.file_application:
+        try:
+            file_obj = UploadFile.objects.filter(project=item,file_type=FileList['file_application'])[0]
+            URLList.append(file_obj)
+        except:
+            item.file_application=False
+            URLList.append(None)
+    if item.file_task:
+        try:
+            file_obj = UploadFile.objects.filter(project=item,file_type=FileList['file_task'])[0]
+            URLList.append(file_obj)
+        except:
+            item.file_application=False
+            URLList.append(None)
+    if item.file_interimchecklist:
+        try:
+            file_obj = UploadFile.objects.filter(project=item,file_type=FileList['file_interimchecklist'])[0]
+            URLList.append(file_obj)
+        except:
+            item.file_application=False
+            URLList.append(None)
+    if item.file_summary:
+        try:
+            file_obj = UploadFile.objects.filter(project=item,file_type=FileList['file_summary'])[0]
+            URLList.append(file_obj)
+        except:
+            item.file_application=False
+            URLList.append(None)
+
+    return URLList
+
 def addURL(project_list):
     for item in project_list:
         if item.file_application:

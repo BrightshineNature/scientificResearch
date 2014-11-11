@@ -20,7 +20,7 @@ from expert import forms
 from common.utils import getScoreTable, getScoreForm
 from teacher.forms import *
 from teacher.models import *
-from common.views import finalReportViewWork, appManage
+from common.views import finalReportViewWork, appManage, getSingleProjectURLList
 
 @csrf.csrf_protect
 @login_required
@@ -59,12 +59,15 @@ def finalReportView(request, is_submited = False):
     pid = re_obj.project.project_id
     score_table = getScoreTable(re_obj.project).objects.get(re_obj = re_obj)
     context = finalReportViewWork(request, pid, is_submited)
+    file_list = getSingleProjectURLList(re_obj.project)[1:]   
+
     if request.method == "GET":
         score_form = getScoreForm(re_obj.project)(instance = score_table)
 
         context.update({
             'score_form': score_form,
             're_obj': re_obj,
+            'file_list': file_list,
         })
         return render(request,"expert/final.html",context)
     else:
@@ -76,6 +79,7 @@ def finalReportView(request, is_submited = False):
             context.update({
                 'score_form': score_form,
                 're_obj': re_obj,
+                'file_list': file_list,
                 'error': score_form.errors,
             })
             return render(request,"expert/final.html",context)
@@ -91,12 +95,15 @@ def applicationView(request, is_submited = False):
     score_table = getScoreTable(re_obj.project).objects.get(re_obj = re_obj)
 
     context = appManage(request, pid)
-
+    
+    file_list = getSingleProjectURLList(re_obj.project)[:1]   
+    
     if request.method == "GET":
         score_form = getScoreForm(re_obj.project)(instance = score_table)
         context.update({
             'score_form': score_form,
             're_obj': re_obj,
+            'file_list': file_list,
         })
         return render(request, "expert/application.html", context)
     else:
@@ -108,6 +115,7 @@ def applicationView(request, is_submited = False):
             context.update({
                 'score_form': score_form,
                 're_obj': re_obj,
+                'file_list': file_list,
                 'error': score_form.errors
             })
             return render(request, "expert/application.html", context)

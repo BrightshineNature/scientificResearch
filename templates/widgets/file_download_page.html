@@ -1,0 +1,32 @@
+<p></p>
+<form class="well form" method="post"  action="?re_id={{ re_obj.id }}">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-6">
+      <table class="table table-bordered table-striped" id="score-table">
+        <colgroup>
+          <col class="col-lg-2">
+          <col class="col-lg-1">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>文件名</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for file in file_list %}
+            {% if file %}
+            <tr>
+                <td>{{file.name}}</td>
+                <td><a class="btn btn-primary" href="{{file.file_obj.url}}">下载</a></td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+      </table>
+
+    </div> 
+
+  </div> <!-- row -->
+</form>
