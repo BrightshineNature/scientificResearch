@@ -167,6 +167,25 @@ def cancelProjectAlloc(request, project_list, path):
         message = "ok"
     return simplejson.dumps({"message": message,})
 
+@dajaxice_register
+def appendAlloc(request, project_id, expert_list, path):
+    message = ""
+    is_first_round = (path == FIRST_ROUND_PATH)
+    if len(expert_list) != 1:
+        message = "error"
+    else:
+        expert = ExpertProfile.objects.get(userid__username = expert_list[0])
+        project = ProjectSingle.objects.get(project_id = project_id)
+        if Re_Project_Expert.objects.filter(Q(project = project) & Q(expert = expert) & Q(is_first_round = is_first_round)).count() > 0:
+            message = "redundance"
+        else:
+            re_obj = Re_Project_Expert(project = project, expert = expert, is_first_round = is_first_round)
+            re_obj.save()
+            table = getScoreTable(project)
+            table(re_obj = re_obj).save()
+
+            message = "ok"
+    return simplejson.dumps({"message": message, })
 
 @dajaxice_register
 def queryAllocedExpert(request, project_id, path):
@@ -280,3 +299,4 @@ def ExpertinfoExport(request,special_id,eid):
         ret = {'path':path}
         return simplejson.dumps(ret)
     return simplejson.dumps({'status':'0'})
+
