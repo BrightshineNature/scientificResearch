@@ -459,32 +459,35 @@ def xls_info_collection(request,proj_set):
 
     _number= 1
     for proj_obj in proj_set:
-        teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
-        manager = teacher.teacherinfosetting
-        loginfo(p=manager,label="manager")
-        row = 1 + _number
-        xls_obj.write(row, 0, unicode(proj_obj.title)) 
-        xls_obj.write(row, 1, unicode(proj_obj.project_code)) 
-        xls_obj.write(row, 2, unicode(proj_obj.science_type)) 
-        xls_obj.write(row, 3, unicode(proj_obj.trade_code)) 
-        xls_obj.write(row, 4, unicode(proj_obj.subject_name))
-        xls_obj.write(row, 5, unicode(proj_obj.subject_code))  
-        xls_obj.write(row, 6, unicode(proj_obj.start_time)) 
-        xls_obj.write(row, 7, unicode(proj_obj.end_time))
-        xls_obj.write(row, 8, unicode(proj_obj.approval_year)) 
-        xls_obj.write(row, 9, unicode(proj_obj.project_status))  
-        xls_obj.write(row, 10, unicode(proj_obj.project_tpye)) 
-        xls_obj.write(row, 11, unicode(proj_obj.finalsubmit.project_summary))
-        xls_obj.write(row, 12, unicode(manager.name)) 
-        xls_obj.write(row, 13, unicode(manager.get_sex_display())) 
-        xls_obj.write(row, 14, unicode(manager.birth)) 
-        xls_obj.write(row, 15, unicode(manager.get_target_type_display())) 
-        xls_obj.write(row, 16, unicode(manager.get_degree_display()))
-        xls_obj.write(row, 17, unicode(manager.get_title_display()))  
-        xls_obj.write(row, 18, unicode(manager.get_position_display())) 
-        xls_obj.write(row, 19, unicode(manager.get_base_type_display()))
-        xls_obj.write(row, 20, unicode(manager.base_name))
-
+        try:
+            teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
+            manager = teacher.teacherinfosetting
+            loginfo(p=manager,label="manager")
+            row = 1 + _number
+            xls_obj.write(row, 0, unicode(proj_obj.title)) 
+            xls_obj.write(row, 1, unicode(proj_obj.project_code)) 
+            xls_obj.write(row, 2, unicode(proj_obj.science_type)) 
+            xls_obj.write(row, 3, unicode(proj_obj.trade_code).split()[0])
+            loginfo(unicode(proj_obj.subject).split())
+            xls_obj.write(row, 4, unicode(proj_obj.subject).split()[1])
+            xls_obj.write(row, 5, unicode(proj_obj.subject).split()[0])  
+            xls_obj.write(row, 6, unicode(proj_obj.start_time)) 
+            xls_obj.write(row, 7, unicode(proj_obj.end_time))
+            xls_obj.write(row, 8, unicode(proj_obj.approval_year)) 
+            xls_obj.write(row, 9, unicode(proj_obj.project_status))  
+            xls_obj.write(row, 10, unicode(proj_obj.project_tpye)) 
+            xls_obj.write(row, 11, unicode(proj_obj.finalsubmit.project_summary))
+            xls_obj.write(row, 12, unicode(manager.name)) 
+            xls_obj.write(row, 13, unicode(manager.get_sex_display())) 
+            xls_obj.write(row, 14, unicode(manager.birth)) 
+            xls_obj.write(row, 15, unicode(manager.get_target_type_display())) 
+            xls_obj.write(row, 16, unicode(manager.get_degree_display()))
+            xls_obj.write(row, 17, unicode(manager.get_title_display()))  
+            xls_obj.write(row, 18, unicode(manager.get_position_display())) 
+            xls_obj.write(row, 19, unicode(manager.get_base_type_display()))
+            xls_obj.write(row, 20, unicode(manager.base_name))
+        except:
+            pass
         _number+= 1
     # write xls file
     save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学教育部项目信息采集填报表"))

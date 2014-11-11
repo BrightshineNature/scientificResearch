@@ -1,6 +1,7 @@
 # coding: UTF-8
 import os, sys,pickle
 import time
+import datetime
 from django.shortcuts import get_object_or_404
 from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
@@ -329,7 +330,7 @@ def refresh_user_table(request,identity,page=1):
 
 @dajaxice_register
 def infoExport(request,eid):
-    proj_set = ProjectSingle.objects.all()
+    proj_set = ProjectSingle.objects.filter(project_status__status=PROJECT_STATUS_OVER,conclude_year = datetime.datetime.now().year)
     path = get_xls_path(request,eid,proj_set)
     ret = {'path':path}
     return simplejson.dumps(ret)
