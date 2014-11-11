@@ -1,0 +1,18 @@
+<table class="table">
+    <thead>
+        <th>专家姓名</th>
+        <th>是否已审阅</th>
+    </thead>
+    <tbody>
+        {% for expert, score in expert_list %}
+            <tr>
+                <td>{{ expert}} </td>
+                {% if score != 0 %}
+                    <td>YES</td>
+                {% else %}
+                    <td>NO</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

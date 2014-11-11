@@ -10,6 +10,7 @@
 		  <th>所属学院</th>
 		  <th>所属分类</th>
 		  <th>题目状态</th>
+          <th>审阅状态</th>
 		  <th>操作</th>
 		</tr>
 	</thead>
@@ -26,7 +27,8 @@
 			  <td>{{ project.teacher.college }}</td>
 			  <td>{{ project.project_special }}</td>
 			  <td>{{ project.project_status }}</td>
-			  <td><a data-toggle="modal" href="#query_modal" class="query_info" arg="{{ project.project_id }}">查询指派信息</a></td>
+              <td>{{ project.review_status }}</td>
+			  <td><a data-toggle="modal" href="#query_modal" class="query_info" arg="{{ project.project_id }}">查询审阅信息</a></td>
 			</tr>
     {% endfor %}
   </tbody>

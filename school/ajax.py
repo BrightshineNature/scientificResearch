@@ -14,7 +14,7 @@ from adminStaff.models import ProjectSingle, Re_Project_Expert
 from backend.utility import getContext
 from users.models import ExpertProfile
 from const import *
-from common.utils import status_confirm, getScoreTable, getScoreForm
+from common.utils import status_confirm, getScoreTable, getScoreForm, getProjectReviewStatus
 from const.models import ProjectStatus
 from school.forms import ExpertReviewForm
 from common.views import get_project_list
@@ -32,7 +32,7 @@ def getUnallocProjectPagination(request, page, college_id, special_id, path):
         project_list = project_list.filter(teacher__college = college_id)
     if special_id != "-1":
         project_list = project_list.filter(project_special = special_id)
-
+    
     context = getContext(project_list, page, "item", 0)
     html = render_to_string("school/widgets/unalloc_project_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })
@@ -50,6 +50,10 @@ def getAllocProjectPagination(request, page, college_id, special_id, path):
         project_list = project_list.filter(teacher__college = college_id)
     if special_id != "-1":
         project_list = project_list.filter(project_special = special_id)
+ 
+    for project in project_list:
+        project.review_status = getProjectReviewStatus(project)
+
 
     context = getContext(project_list, page, "item2", 0)
     html = render_to_string("school/widgets/alloc_project_table.html", context)
@@ -101,6 +105,12 @@ def getProjectList(request, college_id, special_id, path):
         unalloc_project_list = unalloc_project_list.filter(teacher__college = college_id)
     if special_id != "-1":
         unalloc_project_list = unalloc_project_list.filter(project_special = special_id)
+
+
+    for project in alloc_project_list:
+        project.review_status = getProjectReviewStatus(project)
+
+
     context = getContext(unalloc_project_list, 1, "item", 0)
     context2 = getContext(alloc_project_list, 1, "item2", 0)
     html_alloc = render_to_string("school/widgets/alloc_project_table.html", context2)
@@ -163,12 +173,9 @@ def queryAllocedExpert(request, project_id, path):
     message = ""
     is_first_round = (path == FIRST_ROUND_PATH)
     project = ProjectSingle.objects.get(project_id = project_id)
-    expert_list = [re_obj.expert for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round))]
+    expert_list = [(re_obj.expert, getScoreTable(project).objects.get(re_obj = re_obj).get_total_score()) for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round))]
 
-    html = ''
-    for expert in expert_list:
-        html += r'<p>' + expert.__str__() + r'</p>'
-
+    html = render_to_string("school/widgets/project_review_table.html", {"expert_list": expert_list})
     return simplejson.dumps({"html": html, })
 
 @dajaxice_register

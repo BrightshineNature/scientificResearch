@@ -12,7 +12,7 @@ from backend.decorators import *
 from backend.logging import loginfo
 from backend.utility import getContext
 from const import *
-from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM
+from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM, getProjectReviewStatus 
 from adminStaff.utility import getSpecial
 
 from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase, get_project_list, finalReportViewWork, appManage
@@ -85,6 +85,10 @@ def allocView(request):
     expert_form = FilterForm()
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
+
+    for project in alloc_project_list:
+        project.review_status = getProjectReviewStatus(project)
+
     context = {"form": form,
                "expert_form": expert_form,
                "page_info": "alloc",}
@@ -118,6 +122,11 @@ def finalAllocView(request):
     context = {"form": form,
                "expert_form": expert_form,
                "page_info": "finalalloc",}
+ 
+    for project in alloc_project_list:
+        project.review_status = getProjectReviewStatus(project)
+
+
     context.update(getContext(unalloc_project_list, 1, "item", 0))
     context.update(getContext(alloc_project_list, 1, "item2", 0))
     context.update(getContext(expert_list, 1, "item3", 0))

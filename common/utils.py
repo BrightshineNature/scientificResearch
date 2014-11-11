@@ -1,5 +1,5 @@
 # coding: UTF-8
-from adminStaff.models import ProjectSingle
+from adminStaff.models import ProjectSingle, Re_Project_Expert
 from backend.logging import loginfo
 from django.db.models import Q
 from const import *
@@ -62,6 +62,19 @@ def getScoreForm(project):
     elif category == EXPERT_REVIEW_BASICSCIENTIFICSCIENCE:
         return ScienceFoundationResearchScoreForm
     return OutstandingYoungResreachScoreForm
+
+def getProjectReviewStatus(project):
+    print project
+    if project.project_status.status == PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
+        total = Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = True))
+    else:
+        total = Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = False))
+    
+    sub = 0
+    for re_obj in total:
+        if getScoreTable(project).objects.get(re_obj = re_obj).get_total_score() > 0:
+            sub += 1
+    return "%d/%d" % (sub, total.count())
 
 def get_application_year_choice():
     project_group=ProjectSingle.objects.filter(project_status__status__lt = PROJECT_STATUS_APPROVAL)
