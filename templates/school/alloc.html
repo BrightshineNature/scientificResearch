@@ -11,8 +11,9 @@
         {% else %}
         <p>1. 本界面是终审专家分配界面。</p>
         {% endif %}
-        <p>2. 指派专家时，请分别筛选出对应类别的项目和专家后，点击选择对应项目集合和专家集合，然后点击批量指派按钮。分配时，可参考专家“已分配数量”内容。</p>
-	    <p>3. 取消分配专家时，选择对应项目集合，然后点击批量取消按钮。</p>
+        <p>2. 指派专家时，请分别筛选出对应类别的项目和专家后，点击选择对应项目集合和专家集合，然后点击“批量指派”按钮。分配时，可参考专家“已分配数量”内容。</p>
+	    <p>3. 取消分配专家时，选择对应项目集合，然后点击“批量取消”按钮。</p>
+        <p>4. 已指派项目可以在原有分配专家数目基础上追加，限每次操作只能为一个项目追加一个专家。</p>
     </p>
   </div>
     <div id="project_filter_form">
@@ -46,6 +47,8 @@
     </div><!--end tab content-->
   </div><!--end tab pane-->
   <hr/>
+    <a data-toggle="modal" id="button_operator_cancel"><button class="btn btn-primary">批量取消</button></a>
+  <hr/>
    <div id="id_div_expert">
 	<div id="expert_filter_form">
 		{% csrf_token %}
@@ -56,10 +59,7 @@
 		{% include "school/widgets/alloc_expert_table.html" %}
   </div>
     </div>
-	<div id="operator_area">
-  	<a data-toggle="modal" id="button_operator_cancel"><button class="btn btn-primary">批量取消</button></a>
-		<a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
-	</div>
+   <a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
  
 	<div class="modal fade" id="query_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

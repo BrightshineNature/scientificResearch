@@ -10,6 +10,11 @@ if(!String.prototype.format) {
 
 var glob_path;
 
+function clear_check_box(){
+    $("input[type='checkbox']").each(function(){ 
+        this.checked = false;
+    });
+}
 $(document).ready(function(){
     $("#button_operator_cancel").hide(); 
 
@@ -17,15 +22,17 @@ $(document).ready(function(){
 });
 
 $("#alloc_tab").click(function(){
+    clear_check_box();
     $("#button_operator_cancel").show();
     $("#button_operator_alloc").hide();
-    $("#id_div_expert").hide();
+    //$("#id_div_expert").hide();
 
 });
 $("#unalloc_tab").click(function(){
+    clear_check_box();
     $("#button_operator_cancel").hide(); 
     $("#button_operator_alloc").show();
-    $("#id_div_expert").show();
+    //$("#id_div_expert").show();
 });
 
 
@@ -169,4 +176,34 @@ $(document).on("click", ".query_info", function(){
 });
 function queryAllocedExpertCallback(data){
     $("#query_modal .modal-body").html(data.html);
+}
+
+
+$(document).on("click", ".append_alloc", function(){
+    project_id = $(this).attr("arg");
+    var expert_list = []
+    $("input[name='checkbox_expert']:checkbox:checked").each(function(){ 
+        expert_list.push($(this).val());
+    });
+    if(expert_list.length > 1){
+        alert("选中的专家数量超过1！");
+    }
+    else{
+        Dajaxice.school.appendAlloc(appendAllocCallBack, {"project_id": project_id,
+                                                          "expert_list": expert_list,
+                                                          "path": glob_path,});
+    }
+});
+
+function appendAllocCallBack(data){
+    if(data.message == "ok"){
+        refresh();
+        alert("操作成功！");
+    }
+    else if(data.message == "redundance"){
+        alert("选中的专家已被该项目分配！");
+    }
+    else{
+        alert("选中的专家数量不为1！");
+    }
 }
