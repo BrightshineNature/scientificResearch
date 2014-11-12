@@ -22,7 +22,7 @@ def index(request):
     context = getContext(news_announcement, 1, "news_announcement",page_elems=7)
     context.update(getContext(news_docs,1,"news_docs",page_elems = 7))
     def convert_url(raw_url):
-        return STATIC_URL + raw_url[raw_url.find(MEDIA_URL)+len(MEDIA_URL):]
+        return MEDIA_URL + raw_url[raw_url.find(MEDIA_URL)+len(MEDIA_URL):]
     homepage_pic = HomePagePic.objects.all()
     flag = True
     for pic in homepage_pic:
@@ -52,12 +52,6 @@ def show(request):
     else:
         pro_list=ProjectSingle.objects.all()
     context = getContext(pro_list,project_page,'project',page_elems = 9)
-    # for project in context["project_list"]:
-    #     imgs = project.uploadFile_set.filter( \
-    #         Q(file_obj__iendswith="jpg") | \
-    #             Q(file_obj__iendswith="png") )
-    #     project.img = (imgs.count() and convert2media_url(imgs[0].file_obj.url)) or \
-    #         DEFAULT_IMG_URL
     context.update({
                'schedule_form':schedule_form,
              })
