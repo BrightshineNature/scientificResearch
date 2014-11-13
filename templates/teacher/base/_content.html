@@ -15,3 +15,7 @@
 </div>
 
 {% endblock %}
+{% block bottom_js %}
+    {{ block.super }}
+    <script type='text/javascript' src="{{STATIC_URL}}js/teacher/create_project.js"></script>
+{% endblock %}

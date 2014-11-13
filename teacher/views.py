@@ -36,7 +36,6 @@ def appView(request, pid, is_submited = False):
     userauth = {
         'role':"teacher",
     }
-    
     context = appManage(request, pid)
     context['user'] = "teacher" 
     context['is_submited'] = is_submited
@@ -89,8 +88,15 @@ def homeView(request):
 @authority_required(TEACHER_USER)
 def finalInfoView(request):
     project_list = get_project_list(request).filter(project_status__status__gte = PROJECT_STATUS_APPROVAL);
+    comment=""
+    for item in project_list:
+        if item.comment!="":
+            comment=item.comment
+    loginfo("aaaaaaaa")
+    loginfo(comment)
     context = {
-		'project_list':project_list,
+        'comment':comment,
+        'project_list':project_list,
     }
     return render(request,"teacher/finalinfo.html",context)
 @csrf.csrf_protect
@@ -146,13 +152,6 @@ def progressReportView(request):
     context = {}
     return render(request,"teacher/progress.html",context)
 
-# @csrf.csrf_protect
-# @login_required
-# @authority_required(TEACHER_USER)
-# def fileView(request):
-#     data={};
-#     return render(request,"teacher/file_upload.html",data)
-
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
@@ -196,19 +195,6 @@ def financialView(request):
         'budgetannuform':budgetannuform,
     }
     return render(request,"teacher/financial.html",context)
-
-@csrf.csrf_protect
-@login_required
-@authority_required(TEACHER_USER)
-def finalInfoView(request):
-    project_list = get_project_list(request).filter(project_status__status__gte=PROJECT_STATUS_APPLICATION_REVIEW_OVER)
-    teacher = TeacherProfile.objects.get(userid = request.user)
-    project_list = ProjectSingle.objects.filter(teacher = teacher).filter(project_status__status__gte = PROJECT_STATUS_APPROVAL )
-    context = {
-		'project_list':project_list,
-        'role':'teacher',
-    }
-    return render(request,"teacher/finalinfo.html",context)
 
 @csrf.csrf_protect
 @login_required
