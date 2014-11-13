@@ -279,7 +279,9 @@ def Dispatch(request,form,identity,page):
         person_name = dispatchForm.cleaned_data["person_firstname"]
         error = checkIdcard(username)
         if error[0]!=0:
-            return simplejson.dumps({'field':dispatchForm.data.keys(),'error_id':dispatchForm.errors.keys(),'message':u"用户名必须为身份证号，输入的身份证号错误为"+error[1]})
+            loginfo(error[1])
+            message= error[1]
+            return simplejson.dumps({'field':dispatchForm.data.keys(),'error_id':dispatchForm.errors.keys(),'message':message})
         if password == "":
             password = username[12:18]
         if identity == SCHOOL_USER or identity ==COLLEGE_USER:
