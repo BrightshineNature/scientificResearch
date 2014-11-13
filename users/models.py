@@ -82,7 +82,7 @@ class CollegeProfile(models.Model):
 class Special(models.Model):
     school_user = models.ForeignKey(SchoolProfile, blank=True, null=True, verbose_name=u"专题管理员")
     try:
-        default_status = ExpertReview.objects.get(status = EXPERT_REVIEW_HUMANITIESSOCIAL)
+        default_status = ExpertReview.objects.get(category = EXPERT_REVIEW_HUMANITIESSOCIAL)
     except:
         default_status = 2
     expert_review = models.ForeignKey(ExpertReview, blank=False, null=False, default=default_status,verbose_name=u"专家评审表")
