@@ -24,6 +24,7 @@ from django.template.loader import render_to_string
 from dajaxice.utils import deserialize_form
 from adminStaff.models import TemplateNoticeMessage,ProjectSingle,News
 from backend.logging import loginfo
+from common.utility import checkIdcard
 
 from users.models import SchoolProfile,CollegeProfile,Special,College
 from teacher.models import TeacherInfoSetting
@@ -276,8 +277,11 @@ def Dispatch(request,form,identity,page):
         password = dispatchForm.cleaned_data["password"]
         email = dispatchForm.cleaned_data["email"]
         person_name = dispatchForm.cleaned_data["person_firstname"]
+        error = checkIdcard(username)
+        if error[0]!=0:
+            return simplejson.dumps({'field':dispatchForm.data.keys(),'error_id':dispatchForm.errors.keys(),'message':u"用户名必须为身份证号，输入的身份证号错误为"+error[1]})
         if password == "":
-            password = username
+            password = username[12:18]
         if identity == SCHOOL_USER or identity ==COLLEGE_USER:
             flag = sendemail(request, username, password,email,identity, person_name)
         elif identity == EXPERT_USER or identity == TEACHER_USER:
@@ -401,7 +405,9 @@ def FileDeleteConsistence(request, fid):
         try:
             os.remove(f.pic_obj.url)
             f.delete()
-        except: pass
+            loginfo("delete success")
+        except:
+            pass
         return simplejson.dumps({"is_deleted": True,
                                  "message": "delete it successfully!",
                                  "fid": str(fid)})
