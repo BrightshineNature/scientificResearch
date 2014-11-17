@@ -24,13 +24,15 @@
             <td><span><a href="{{item.file_obj.url}}" class='btn btn-primary'>下载</a></span> </td>
 
             <td>
-            {%ifequal item.file_type "其他" %} 
+                
+            {%if item.file_type == "其他" or item.file_type == "基本科研业务费专项项目进展报告" %} 
                 <form method="POST"  action="">
                     {% csrf_token %}
                     <input type= "hidden" name= "fid" value = "{{item.id}}">
                     <button type="submit" class="btn btn-success"> 删除</button>
                 </form>
-            {%endifequal%}
+            {%endif%}
+
              </td>
 
         </tr>

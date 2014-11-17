@@ -15,7 +15,7 @@ from const import *
 from common.utils import status_confirm,APPLICATION_SCHOOL_CONFIRM, getProjectReviewStatus 
 from adminStaff.utility import getSpecial
 
-from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase, get_project_list, finalReportViewWork, appManage
+from common.views import scheduleManage, researchConcludingManage,noticeMessageSettingBase, get_project_list, finalReportViewWork, appManage, fileUploadManage
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm,SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
@@ -61,6 +61,9 @@ def financialInfoView(request):
 @check_submit_status(SUBMIT_STATUS_FINAL)
 def finalReportView(request,pid,is_submited=False):
     context = finalReportViewWork(request,pid,is_submited)
+    context = dict(context, **fileUploadManage(request, pid))
+    context['is_submited'] = is_submited
+    context['user'] = "special"
     loginfo(p=is_submited,label="is_submited")
     if context['redirect']:
 		return HttpResponseRedirect('/teacher/finalinfo')
