@@ -102,7 +102,7 @@
     <div class="col-lg-4">
         <form method="POST"  action="" enctype="multipart/form-data">
             {% csrf_token %}
-            <span class="label label-info col-lg-12"><h4>其他文件上传</h4></span>
+            <span class="label label-info col-lg-12"><h4>结题报告成果附件文件上传</h4></span>
             <p class="tip">上传的文件不能命名为<strong>其他四个入口的名称</strong></p>
             <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_other" accept="doc,docx" >
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>

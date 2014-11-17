@@ -25,7 +25,7 @@ class BasisContent(Model):
 
     project = models.ForeignKey(ProjectSingle, blank = True, null = True)
 
-    basis = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'项目的立项依据')
+    basis = TextField(blank = False, null = True, max_length = 10000,verbose_name=u'项目摘要')
 
     content = TextField(blank = True, null = True, max_length = 10000,verbose_name=u'项目的研究内容、研究目标,以及拟解决的关键科学问题')
 

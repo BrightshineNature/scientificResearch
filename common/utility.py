@@ -241,14 +241,12 @@ def xls_info_importantproject_preivew(request,proj_set,specialtype=""):
     """
 
     xls_obj, workbook = xls_info_importantproject_preivew_gen(request)
-
     _number= 1
-    index = 1 
+    index = 1
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         re_project_expert_list = Re_Project_Expert.objects.filter(project_id = proj_obj)
-        
         row = 1 + _number
         xls_obj.write(row, 0, unicode(index)) 
         xls_obj.write(row, 1, unicode(proj_obj.title)) 
@@ -316,7 +314,6 @@ def xls_info_humanity_preview(request,proj_set,specialtype=""):
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         re_project_expert_list = Re_Project_Expert.objects.filter(project_id = proj_obj)
-        
         row = 1 + _number
         xls_obj.write(row, 0, unicode(index)) 
         xls_obj.write(row, 1, unicode(proj_obj.title)) 
@@ -386,7 +383,6 @@ def xls_info_basesummary_preview(request,proj_set,specialtype,specialname):
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         re_project_expert_list = Re_Project_Expert.objects.filter(project_id = proj_obj)
-        
         row = 1 + _number
         xls_obj.write(row, 0, unicode(index)) 
         xls_obj.write(row, 1, unicode(proj_obj.title)) 
@@ -476,7 +472,7 @@ def xls_info_collection(request,proj_set):
             xls_obj.write(row, 8, unicode(proj_obj.approval_year)) 
             xls_obj.write(row, 9, unicode(proj_obj.project_status))  
             xls_obj.write(row, 10, unicode(proj_obj.project_tpye)) 
-            xls_obj.write(row, 11, unicode(proj_obj.finalsubmit.project_summary))
+            xls_obj.write(row, 11, unicode(proj_obj.basiscontent.basis))
             xls_obj.write(row, 12, unicode(manager.name)) 
             xls_obj.write(row, 13, unicode(manager.get_sex_display())) 
             xls_obj.write(row, 14, unicode(manager.birth)) 
@@ -593,4 +589,3 @@ def checkIdcard(idcard):
             return Errors[2]
     else:
         return Errors[1]
-    

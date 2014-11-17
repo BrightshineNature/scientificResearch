@@ -177,29 +177,7 @@ class ProjectInfoForm(forms.Form):
             }),
         )
 
-    # trade_code = forms.CharField(
-    #     max_length = 20,
-    #     required=True,
-    #     widget=forms.TextInput(
-    #         attrs={
-    #         'class':'form-control ',
-    #         'placeholder':u"国民行业代码（国标）"}), )
-    # subject_name = forms.CharField(
-    #     max_length = 20,
-    #     required=True,
-    #     widget=forms.TextInput(
-    #         attrs={
-    #         'class':'form-control ',
-    #         'placeholder':u"学科名称"}), )
-    # subject_code = forms.CharField(
-    #     max_length = 20,
-    #     required=True,
-    #     widget=forms.TextInput(
-    #         attrs={
-    #         'class':'form-control ',
-    #         'placeholder':u"学科代码"}), )
     start_time = forms.DateField(
-        # max_length = 20,
         required=True,
         widget=forms.DateInput(
             attrs={
@@ -213,14 +191,7 @@ class ProjectInfoForm(forms.Form):
             attrs={
             'class':'form-control ',
             'placeholder':u"研究结束时间"}), )
-    # project_tpye =forms.CharField(
-    #     max_length = 20,
-    #     required=True,
-    #     widget=forms.TextInput(
-    #         attrs={
-    #         'class':'form-control ',
-    #         'placeholder':u"项目类型"}), )
-
+    
     def clean_science_type(self):
         i = self.cleaned_data['science_type'] 
         # print "*" * 100
@@ -251,11 +222,6 @@ class ProjectInfoForm(forms.Form):
             raise forms.ValidationError("SB")
         return i
 
-
-
-
-
-
 class BasisContentForm(forms.ModelForm):
 
     class Meta:
@@ -264,7 +230,7 @@ class BasisContentForm(forms.ModelForm):
          # 'content', 'plan', 'innovation', 'expect'
          )
         widgets = {
-        'basis':forms.Textarea(attrs = {'rows': 8, 'cols': 120,'class':'form-control', 'placeholder': u"研究意义、国内外研究现状及发展动态分析，需结合科学研究发展趋势来论述科学意义；或结合国民经济和社会发展中迫切需要解决的关键科技问题来论述其应用前景。附主要参考文献目录",}),
+        'basis':forms.Textarea(attrs = {'rows': 8, 'cols': 120,'class':'form-control', 'placeholder': u"项目研究内容、目标、预期成果等信息，不超过500字",}),
         # 'content':forms.Textarea(attrs = {'rows': 8, 'cols': 120,'class':'form-control', 'placeholder': u"此部分为重点阐述内容",}),
         # 'plan':forms.Textarea(attrs = {'rows': 8, 'cols': 120,'class':'form-control', 'placeholder': u"包括有关方法、技术路线、实验手段、关键技术等说明",}),
         # 'innovation':forms.Textarea(attrs = {'rows': 8, 'cols': 120,'class':'form-control', 'placeholder': u"",}),
@@ -285,10 +251,6 @@ class BaseConditionForm(forms.ModelForm):
         'progress':forms.Textarea(attrs = {'rows': 8, 'cols': 120,'class':'form-control', 'placeholder': u"对申请者负责的前一个已结题基本科研业务费专项项目完成情况、后续研究进展及与本申请项目的关系加以详细说明。另附该已结题项目研究工作总结摘要（限500字）和相关成果的详细目录",}),
 
         }
-
-
-
-
 
 from common.utility import checkIdcard
 

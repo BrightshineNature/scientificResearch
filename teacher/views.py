@@ -92,9 +92,8 @@ def finalInfoView(request):
     for item in project_list:
         if item.comment!="":
             comment=item.comment
-    loginfo("aaaaaaaa")
-    loginfo(comment)
     context = {
+        'role':"teacher",
         'comment':comment,
         'project_list':project_list,
     }
