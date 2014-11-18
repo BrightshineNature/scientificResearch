@@ -187,11 +187,24 @@ def finalInfoView(request,pid):
 @authority_required(ADMINSTAFF_USER)
 @check_submit_status(SUBMIT_STATUS_FINAL)
 def finalReportView(request,pid,is_submited=False):
+    print "YYA" * 10
     context = finalReportViewWork(request,pid,is_submited)
+
+    context = dict(context, **fileUploadManage(request, pid))
+    context['is_submited'] = is_submited
+    context['user'] = "adminStaff"
     loginfo(p=is_submited,label="is_submited")
     # if context['redirect']:
     #     return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"adminStaff/final.html",context)
+# def fileUploadManageView(request, pid, is_submited = False):
+
+#     context = fileUploadManage(request, pid)
+#     context['user'] = "teacher"
+#     # is_submited = False
+#     context['is_submited'] = is_submited
+
+#     return render(request, "teacher/file_upload.html", context)
 
 @csrf.csrf_protect
 @login_required

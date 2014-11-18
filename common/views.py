@@ -157,7 +157,8 @@ AcceptedExtension = [
 ]
 def handleFileUpload(request, pid,  entrance):
 
-    print "enter handleFileUpload"
+    print "HA&" * 10
+    print entrance
     f = request.FILES[entrance]
     ftype = getType(f.name) 
     if(ftype != FileList[entrance]):
@@ -172,10 +173,13 @@ def handleFileUpload(request, pid,  entrance):
     else:
         obj = UploadFile.objects.filter(project__project_id = pid, name = f.name)
 
-    for i in obj:
-        path = i.file_obj.path
-        i.delete()
-        default_storage.delete(path)
+    if entrance == "file_application" or \
+    entrance == "file_task" or \
+    entrance == "file_summary":
+        for i in obj:
+            path = i.file_obj.path
+            i.delete()
+            default_storage.delete(path)
 
 
     # print "enter ********* save"
@@ -215,12 +219,19 @@ def fileUploadManage(request, pid):
     print "fileUploadManage**********"
     error = 0
     if request.method == 'POST':
-        if request.POST.has_key("fid"):
-            obj = UploadFile.objects.get(id = request.POST['fid'])
-            if obj:
-                path = obj.file_obj.path
-                obj.delete()
-                default_storage.delete(path)
+
+
+        # if request.POST.has_key("fid"):
+
+
+        #     obj = UploadFile.objects.get(id = request.POST['fid'])
+        #     if obj:
+        #         path = obj.file_obj.path
+        #         obj.delete()
+        #         default_storage.delete(path)
+
+
+
         for i in FileList:
             if request.FILES.has_key(i):
 
