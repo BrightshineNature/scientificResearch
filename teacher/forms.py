@@ -60,7 +60,7 @@ class FinalReportForm(ModelForm):
                                                                 'placeholder':'关键词(不超过5个)',
                                                                 'class':"fill-form"},),
                    "project_summary": forms.Textarea(attrs={'rows': 8, 'cols': 100,
-                                                                'placeholder': '项目摘要',
+                                                                'placeholder': '概括项目精华，如背景、方向、主要内容、重要成果，关键数据及其科学意义等信息,不超过300字',
                                                                 'class': "fill-form"}),
                    "project_plan": forms.Textarea(attrs={'rows': 8, 'cols': 100,
                                                                 'placeholder':'研究计划要点及执行情况概述...',

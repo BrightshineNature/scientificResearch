@@ -33,13 +33,9 @@ urlpatterns = patterns('',
         r'setting$',
         teacher_views.settingView,
     ),
-	url(
-		r'financial$',
-		teacher_views.financialView,
-	),
     url(
-        r'progress$',
-        teacher_views.progressReportView,
+        r'financial$',
+        teacher_views.financialView,
     ),
     url(
         r'file_upload/(?P<pid>.{36})$',
@@ -49,10 +45,14 @@ urlpatterns = patterns('',
         r'finalinfo$',
         teacher_views.finalInfoView,
     ),
-	url(
-		r'^fundbudget/(?P<pid>.{36})$',
-		teacher_views.fundBudgetView,
-	),
+    url(
+        r'^fundbudget/(?P<pid>.{36})$',
+        teacher_views.fundBudgetView,
+    ),
+    url(
+        r'^progress/(?P<pid>.{36})$',
+        teacher_views.progressReportView,
+    ),
     url(
         r'^create$',
         teacher_views.createView,

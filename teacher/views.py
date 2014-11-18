@@ -39,7 +39,6 @@ def appView(request, pid, is_submited = False):
     context = appManage(request, pid)
     context['user'] = "teacher" 
     context['is_submited'] = is_submited
-    context['is_submited'] = True
     return render(request, "teacher/application.html", context)
 
 @csrf.csrf_protect
@@ -50,7 +49,6 @@ def fileUploadManageView(request, pid, is_submited = False):
 
     context = fileUploadManage(request, pid)
     context['user'] = "teacher"
-    # is_submited = False
     context['is_submited'] = is_submited
 
     return render(request, "teacher/file_upload.html", context)
@@ -141,13 +139,13 @@ def finalReportView(request,pid,is_submited=False):
     context = finalReportViewWork(request,pid,is_submited)
     loginfo(p=is_submited,label="is_submited")
     if context['redirect']:
-		return HttpResponseRedirect('/teacher/finalinfo')
+        return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/final.html",context)
 
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-def progressReportView(request):
+def progressReportView(request,pid):
     context = {}
     return render(request,"teacher/progress.html",context)
 
@@ -205,3 +203,4 @@ def fundBudgetView(request,pid,is_submited=False):
 	return HttpResponseRedirect('/teacher/finalinfo')
     context['role'] = 'teacher'
     return render(request,"teacher/fundbudget.html",context)
+
