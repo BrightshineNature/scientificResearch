@@ -195,9 +195,6 @@ class OutstandingYoungResreachScoreTable(models.Model):
     def has_comments():
         return 1
 
-
-
-
 class MajorProjectScoreTable(models.Model):
     re_obj = models.ForeignKey(Re_Project_Expert)
     evaluation = models.IntegerField(blank = False, default = 0, verbose_name = u"项目成果及前景评价（20分）", validators = [MaxValueValidator(20), MinValueValidator(0)])

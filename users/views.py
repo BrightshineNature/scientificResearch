@@ -78,7 +78,6 @@ def admin_account_view(request):
         Set Password
     """
     user = request.user
-
     if request.method == "POST":
         form = PasswordForm(user, request.POST)
         if form.is_valid():
@@ -86,6 +85,5 @@ def admin_account_view(request):
             user.save()
     else:
         form = PasswordForm(user)
-
     data = {"form": form}
     return render(request, "settings/admin.html", data)
