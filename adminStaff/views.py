@@ -45,8 +45,14 @@ def allocManageView(request):
     for i in Special.objects.all() :
         special_list.append({'name':i.name, 'user':i.school_user, })
 
+
+
+
+
+
     for i in SchoolProfile.objects.all():
         user_special_info[i] = []   
+        print i.userid
     
     for i in special_list:
         if i['user']:
