@@ -9,6 +9,7 @@ from dajaxice.utils import deserialize_form
 from django.db.models import Q
 from backend.utility import getContext
 
+from django.contrib.auth.models import User
 from adminStaff.utility import getCollege
 from django.utils import simplejson
 from django.template.loader import render_to_string
@@ -262,6 +263,16 @@ def get_news_list(request, uid):
                                      "message": "Warning! Only POST accepted!"})
     except Exception, err:
         logger.info(err)
+@dajaxice_register
+def DispatchDelete(request,username,identity,page):
+    user = User.objects.get(username=username)
+    loginfo(user)
+    if not user.is_active:
+        user.delete()
+        table = refresh_user_table(request,identity,page)
+        return simplejson.dumps({'status':'1', 'message':u"删除用户成功",'table':table})
+    else:
+        return simplejson.dumps({'status':'0', 'message':u"用户已激活，不能删除"})
 @dajaxice_register
 def Dispatch(request,form,identity,page):
     if identity == SCHOOL_USER or identity ==COLLEGE_USER:
