@@ -52,7 +52,7 @@ class SchoolProfile(models.Model):
         verbose_name_plural = "专题管理员"
 
     def __unicode__(self):
-        return '%s' % (self.userid.first_name)
+        return '%s' % (self.userid)
 
     def save(self, *args, **kwargs):
         super(SchoolProfile, self).save()
@@ -72,7 +72,7 @@ class CollegeProfile(models.Model):
         verbose_name_plural = "学院秘书"
 
     def __unicode__(self):
-        return '%s' % (self.userid.first_name)
+        return '%s' % (self.userid)
 
     def save(self, *args, **kwargs):
         super(CollegeProfile, self).save()
@@ -119,7 +119,7 @@ class ExpertProfile(models.Model):
         verbose_name_plural = "评审专家"
 
     def __unicode__(self):
-        return '%s' % (self.userid.first_name)
+        return '%s' % (self.userid)
 
     def save(self, *args, **kwargs):
         super(ExpertProfile, self).save()
@@ -136,7 +136,7 @@ class TeacherProfile(models.Model):
         verbose_name_plural = "教师"
 
     def __unicode__(self):
-        return '%s' % (self.userid.first_name)
+        return '%s' % (self.userid)
 
     def save(self, *args, **kwargs):
         super(TeacherProfile, self).save()
