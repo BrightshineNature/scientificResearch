@@ -136,7 +136,18 @@ class ProjectCreationForm(forms.Form):
         SPECIAL_CHOICE = tuple((special.id, special.name) for special in Special.objects.filter(application_status = True))
         self.fields["special"].choices = SPECIAL_CHOICE
 
-
-
+class ProjectChangeForm(forms.Form):
+    project_special=forms.ChoiceField(required=True,choices=(),widget=forms.Select(attrs={"class":"form-control"}))
+    def __init__(self, *args,**kwargs):
+        special=kwargs.get("special",None)
+        if special != None :
+            del kwargs['special']            
+        super(ProjectChangeForm, self).__init__(*args, **kwargs)
+        SPECIAL_CHOICE = [(sp.id, sp.name) for sp in Special.objects.filter(application_status = True)]
+        if special != None :
+            SPECIAL_CHOICE.remove((special.id,special.name))
+            SPECIAL_CHOICE=[(special.id,special.name)]+SPECIAL_CHOICE
+        SPECIAL_CHOICE=tuple(SPECIAL_CHOICE)
+        self.fields["project_special"].choices = SPECIAL_CHOICE
 
 

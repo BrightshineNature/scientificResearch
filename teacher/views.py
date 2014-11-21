@@ -21,7 +21,7 @@ from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
 from users.models import TeacherProfile
 from teacher.models import TeacherInfoSetting
 from adminStaff.models import ProjectSingle
-from forms import ProjectCreationForm
+from forms import ProjectCreationForm,ProjectChangeForm
 from common.utils import createNewProject
 from common.views import get_project_list
 from const import PROJECT_STATUS_APPLICATION_REVIEW_OVER
@@ -74,6 +74,7 @@ def homeView(request):
     for item in project_list:
         if item.comment!="":
             comment=item.comment
+            item.specialform=ProjectChangeForm(special=item.project_special)
     context = {
         'comment':comment,
         'project_list':project_list,

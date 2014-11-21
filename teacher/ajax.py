@@ -13,6 +13,21 @@ from const import FINAL_WEB_CONFIRM
 from common.utils import  status_confirm
 from backend.logging import logger, loginfo
 from django.template.loader import render_to_string
+from adminStaff.models import ProjectSingle
+from users.models import Special
+@dajaxice_register 
+def DeleteProject(request,pid):
+    loginfo(pid)
+    project=ProjectSingle.objects.get(pk=pid)
+    project.delete()
+
+@dajaxice_register
+def ChangeSpecial(request,pid,value):
+    value=int(value)
+    project=ProjectSingle.objects.get(pk=pid)
+    project.project_special=Special.objects.get(id=value)
+    project.save()
+
 @dajaxice_register
 def achivementChange(request,form,achivementid,pid,is_submited):
 
