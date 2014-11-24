@@ -17,7 +17,7 @@ class ProjectMember(Model):
     card = models.CharField(max_length=100, blank=False, null=True, verbose_name="身份证号码")
     birth_year = models.IntegerField(blank= False,null=True, max_length = 4, verbose_name=u'出生年份')
     tel = models.CharField(blank = False, null = True, max_length = 20, verbose_name=u'电话')
-    mail = models.EmailField(blank = False, null = True, max_length = 20, verbose_name=u'邮箱')
+    mail = models.EmailField(blank = False, null = True, max_length = 100, verbose_name=u'邮箱')
     professional_title = models.ForeignKey(ProfessionalTitle, null = True, verbose_name=u'职称')
     executive_position = models.ForeignKey(ExecutivePosition, null = True, verbose_name=u'行政职务')
 
