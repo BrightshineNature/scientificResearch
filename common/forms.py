@@ -272,7 +272,9 @@ class ProjectMemberForm(forms.ModelForm):
             'mail':forms.TextInput(attrs = {'class':'form-control','placeholder': "邮箱",}),
             'professional_title':forms.Select(attrs = {'class':'form-control','placeholder': "职称",}),
             'executive_position':forms.Select(attrs = {'class':'form-control','placeholder': "行政职务",}),
-            'card':forms.TextInput(attrs = {'class':'form-control','placeholder': "身份证号码",}),
+            'card':forms.TextInput(attrs = {'class':'form-control ', \
+                                            'style': 'width:120%;',\
+                                            'placeholder': "身份证号码",}),
 
         }
 

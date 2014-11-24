@@ -10,7 +10,7 @@
   <tbody>
     {%for user, object in instance.user_object_info.iteritems %}
     <tr>
-      <td>{{user}}</td>
+      <td user-name="{{user}}" user-first-name ="{{user.userid.first_name}}">{{user.userid.first_name}}</td>
       <td>{%for i in object%}{%ifequal forloop.counter 1%}{%else%},{%endifequal%}{{i}}{%endfor%}</td>
       <td>
         <a data-toggle="modal" id="" href="#object_modal"  pid="{{forloop.counter}}" class="btn btn-primary object_alloc"> 分配 </a>
