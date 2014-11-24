@@ -53,6 +53,7 @@ class SchoolProfile(models.Model):
 
     def __unicode__(self):
         return '%s' % (self.userid)
+    
 
     def save(self, *args, **kwargs):
         super(SchoolProfile, self).save()
