@@ -93,7 +93,6 @@ class RegistrationManager(models.Manager):
                                            [new_user.email])
         else:
             new_user = User.objects.get(username=username)
-
         #对用户权限写入数据库
         try:
             new_authority = UserIdentity.objects.get(identity=Identity)
