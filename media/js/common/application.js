@@ -73,15 +73,16 @@ function saveProjectMemberCallback(data){
         $('#member_info_modal').modal("hide");
 
     }
-    else if(data.status == 0)
+    if(data.status == 2)
     {
-        if(data.error.indexOf(",") == -1)
-        {
-            $('#project_member_form_error').html(data.error);
-            $('#project_member_form_error').hide();
-            $('#project_member_form_error').show(500);
-            return ;
-        }
+    
+        $('#project_member_form_error').html(data.error);
+        $('#project_member_form_error').hide();
+        $('#project_member_form_error').show(500);
+        return ;
+    }
+    else if(data.status == 3)
+    {
         $('#project_member_form_error').html('<h3>您有字段没有填写或填写错误。</h3>');
         $('#project_member_form_error').hide();
         $('#project_member_form_error').show(500);
@@ -93,8 +94,9 @@ function saveProjectMemberCallback(data){
             if(error[i] == "") continue;
             cnt = "#id_" + error[i];
             $(cnt).css("background","red");
-        }
+        }    
     }
+        
 
 }
 

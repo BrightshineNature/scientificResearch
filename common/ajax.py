@@ -23,6 +23,7 @@ from common.utils import status_confirm, statusRollBack
 from const.models import ScienceActivityType, NationalTradeCode, Subject
 from common.views import schedule_form_data
 from adminStaff.models import ProjectSingle
+from teacher.models import TeacherInfoSetting
 from common.forms import ProjectInfoForm, ProjectMemberForm,BasisContentForm, BaseConditionForm
 from common.models import ProjectMember, BasisContent, BaseCondition
 from teacher.models import ProjectFundBudget,ProjectFundSummary
@@ -259,13 +260,30 @@ def refreshMemberTabel(pid):
         })
 
 
+def checkCanAddMember(request,icard):
+    if TeacherProfile.objects.get(userid=request.user).teacherinfosetting.card == icard:
+        return False
+    try:
+        teacherInfo =TeacherInfoSetting.objects.get(card=icard)
+        pro = ProjectSingle.objects.filter(Q(teacher=teacherInfo.teacher) & Q(project_status__status__lt =PROJECT_STATUS_OVER))
+    except:
+        pro = ProjectSingle.objects.none()
+    member = ProjectMember.objects.filter(card = icard)
+    if member.count() + pro.count()  < 3:
+        return True
+    else:
+        return False
+
+
 @dajaxice_register
 def saveProjectMember(request, form, pid, mid): 
     # save member info into the  member that mid is "mid"
-    if mid:
+    card_id =""
+    if mid:   # modify
         mem = ProjectMember.objects.get(id = mid)
+        card_id =mem.card
         form = ProjectMemberForm(deserialize_form(form),instance = mem)
-    else :
+    else :     # save
         form = ProjectMemberForm(deserialize_form(form))
     
     context = {
@@ -274,21 +292,10 @@ def saveProjectMember(request, form, pid, mid):
         'project_member_table': "",
     }
 
-    if form.is_valid():
-        icard = form.cleaned_data['card']
-        member = ProjectMember.objects.filter(card = icard)
-
-        ok = True        
-        if not member : pass
-        else:
-            print member
-            member = member[0]
-            status = member.project.project_status.status
-            
-            if status == PROJECT_STATUS_OVER or status == PROJECT_STATUS_STOP :
-               pass
-            else : ok = False
-
+    if form.is_valid(): 
+        ok=True
+        if not mid or mem.card != card_id:       
+            ok = checkCanAddMember(request,mem.card)
         if ok: 
             temp = form.save(commit = False)
             temp.project = ProjectSingle.objects.get(project_id = pid)
@@ -296,11 +303,11 @@ def saveProjectMember(request, form, pid, mid):
             context['status'] = 1
             context['project_member_table'] = refreshMemberTabel(pid)
         else :
-            context['status'] = 0
-            context['error'] = "此成员已被添加到其他为结题项目中 不可添加到本项目中"
+            context['status'] = 2
+            context['error'] = "<h3>此成员被添加次数超过规定限制,不可添加到本项目中</h3>"
 
     else:
-        context['status'] = 0
+        context['status'] = 3
         error = ""
         for i in form.errors: error += i + ","
         context['error'] = error

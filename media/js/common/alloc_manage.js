@@ -61,6 +61,7 @@ function deleteObjectNameCallback(data) {
     $("#alert_info_modal").modal('show');
   }
   $(objects_table_pos).html(data.objects_table);
+  
 }
 
 
