@@ -134,7 +134,7 @@ class NoticeForm(forms.Form):
             self.fields["expert_special"].choices=teacher_special_choice
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
-        max_length = 20,
+        max_length = 400,
         required=True,
         widget=forms.TextInput(attrs={
             'class':'form-control ', 
