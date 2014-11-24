@@ -2,33 +2,33 @@
   <thead>
     <tr>
         <th scope="col" class="action-checkbox-column">  
-          <input type="checkbox"  class="all_object_checkbox" >
+            <input type="checkbox"  class="all_object_checkbox" >
         </th>
 
         <th scope="col">
 
-          {%ifequal instance.object_name "special"%} 专题{%else%}
-          学院{%endifequal%}列表
+            {%ifequal instance.object_name "special"%} 专题{%else%}
+            学院{%endifequal%}列表
         </th>
         <th>是否被分配 </th>
     </tr>
   </thead>
 
   <tbody>
-    {%for i in instance.object_list %}
-    <tr class="success">
-        <td class="action-checkbox">
-            <input type="checkbox" class="action-select object_checkbox" name="{{i.name}}" >
-        </td>
-        <td>{{i.name}}</td>
-        <td> 
-          {%ifequal i.user None%}
-          <span class="label label-danger"> 未分配</span>                    
-          {%else%}
-          <span class="label label-success"> 已分配</span>
-          {%endifequal%}
-    </tr>
-    {%endfor%}
+      {%for i in instance.object_list %}
+      <tr class="success">
+          <td class="action-checkbox">
+              <input type="checkbox" class="action-select object_checkbox" name="{{i.name}}" >
+          </td>
+          <td>{{i.name}}</td>
+          <td> 
+              {%ifequal i.user None%}
+              <span class="label label-danger"> 未分配</span>                    
+              {%else%}
+              <span class="label label-success"> 已分配</span>
+              {%endifequal%}
+      </tr>
+      {%endfor%}
 
   </tbody>
 </table>
