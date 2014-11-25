@@ -283,17 +283,17 @@ def Dispatch(request,form,identity,page):
     else:
         dispatchForm = DispatchForm(deserialize_form(form))
     if dispatchForm.is_valid():
-        username = dispatchForm.cleaned_data["username"]
-        password = dispatchForm.cleaned_data["password"]
-        email = dispatchForm.cleaned_data["email"]
-        person_name = dispatchForm.cleaned_data["person_firstname"]
+        username = dispatchForm.cleaned_data["username"].strip()
+        password = dispatchForm.cleaned_data["password"].strip()
+        email = dispatchForm.cleaned_data["email"].strip()
+        person_name = dispatchForm.cleaned_data["person_firstname"].strip()
         error = checkIdcard(username)
         if error[0]!=0:
             loginfo(error[1])
             message= error[1]
             return simplejson.dumps({'field':dispatchForm.data.keys(),'error_id':dispatchForm.errors.keys(),'message':message})
         if password == "":
-            password = username[12:18]
+            password = username[-6:]
         if identity == SCHOOL_USER or identity ==COLLEGE_USER:
             flag = sendemail(request, username, password,email,identity, person_name)
         elif identity == EXPERT_USER or identity == TEACHER_USER:

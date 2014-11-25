@@ -285,7 +285,6 @@ def saveProjectMember(request, form, pid, mid):
         form = ProjectMemberForm(deserialize_form(form),instance = mem)
     else :     # save
         form = ProjectMemberForm(deserialize_form(form))
-    
     context = {
         'status':0,
         'error': "",
@@ -294,7 +293,9 @@ def saveProjectMember(request, form, pid, mid):
 
     if form.is_valid(): 
         ok=True
-        if not mid or mem.card != card_id:       
+        if not mid:
+            ok = checkCanAddMember(request,form.cleaned_data["card"])
+        elif mem.card != card_id:
             ok = checkCanAddMember(request,mem.card)
         if ok: 
             temp = form.save(commit = False)
