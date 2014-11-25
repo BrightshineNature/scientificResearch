@@ -1,116 +1,113 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/member_change.css" >
 
 <div class="modal  fade in" id="member_info_modal" mid="">
-    <div class="modal-dialog">
-        <div class="modal-content">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="modal_title"></h4>
-            </div>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal_title"></h4>
+      </div>
 
-            <div class="modal-body">
-
-                <div class="alert alert-danger" role="alert" id = "project_member_form_error"
-                    style= "display:none">
-                </div>
-
-                <form class="well form" id="project_member_form">
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    姓名
-                                </span>
-                                {{project_member_form.name}}
-                            </div> 
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="input-group date form-year" data-date=""data-date-format="yyyy">
-                                
-                                <span class="input-group-addon">出生年份</span>
-                                {{project_member_form.birth_year}}
-
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-group">
-
-                                <span class="input-group-addon">
-                                    电话
-                                </span>
-                                {{project_member_form.tel}}
-
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    邮箱
-                                </span>
-                                {{project_member_form.mail}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    职称
-                                </span>
-                                {{project_member_form.professional_title}}
-                            </div> 
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    行政职务
-                                </span>
-                                {{project_member_form.executive_position}}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    身份证号码
-                                </span>
-                                {{project_member_form.card}}
-                            </div> 
-                        </div>
-                    </div>
-
-
-
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel_change">关闭</button>
-                <button type="button" class="btn btn-primary" data-dismiss="" id="saveProjectMember">保存</button>
-            </div>
-
+      <div class="modal-body">
+        <div class="alert alert-danger" role="alert" id = "project_member_form_error"
+             style= "display:none">
         </div>
+        <form class="well form" id="project_member_form">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  姓名
+                </span>
+                {{project_member_form.name}}
+              </div> 
+            </div>
+            <div class="col-lg-6">
+              <div class="input-group date form-year" data-date=""data-date-format="yyyy">
+                
+                <span class="input-group-addon">出生年份</span>
+                {{project_member_form.birth_year}}
+
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="input-group">
+
+                <span class="input-group-addon">
+                  电话
+                </span>
+                {{project_member_form.tel}}
+
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  邮箱
+                </span>
+                {{project_member_form.mail}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  职称
+                </span>
+                {{project_member_form.professional_title}}
+              </div> 
+            </div>
+            <div class="col-lg-6">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  行政职务
+                </span>
+                {{project_member_form.executive_position}}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  身份证号码
+                </span>
+                {{project_member_form.card}}
+              </div> 
+            </div>
+          </div>
+
+
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel_change">关闭</button>
+        <button type="button" class="btn btn-primary" data-dismiss="" id="saveProjectMember">保存</button>
+      </div>
+
     </div>
+  </div>
 </div>
 
 <p> </p>
 
 {%if is_submited%}
 <button class="btn btn-primary" id="addNewProjectMember"  data-toggle="modal"
-data-target="#member_info_modal" >添加新成员</button>
+        data-target="#member_info_modal" >添加新成员</button>
 <button class="btn btn-primary  next_step" >下一步</button>
 {%endif%}
 
 <div id = "project_member_table_div">
-{%include "widgets/project_member_table.html" %}
+  {%include "widgets/project_member_table.html" %}
 </div>
 
 
