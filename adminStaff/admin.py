@@ -8,6 +8,8 @@ Created on 2013-3-27
 from django.contrib import admin
 from adminStaff.models import *
 
+# class ProjectSingle(admin.ModelAdmin):
+#     search_fields = ['project_code','title']
 
 RegisterClass = (
     ProjectSingle,

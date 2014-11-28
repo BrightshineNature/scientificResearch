@@ -10,8 +10,6 @@ from common.models import *
 
 
 RegisterClass = (
-    
-    ProjectMember,
     BasisContent,
     BaseCondition,
     UploadFile,
@@ -19,3 +17,13 @@ RegisterClass = (
 
 for temp in RegisterClass:
     admin.site.register(temp)
+
+class ProjectMemberAdmin(admin.ModelAdmin):
+    search_fields = ['name','card']
+
+RegisterSearchClass = (
+    (ProjectMember,ProjectMemberAdmin),
+)
+
+for temp in RegisterSearchClass:
+    admin.site.register(temp[0],temp[1])
