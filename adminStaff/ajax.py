@@ -280,7 +280,10 @@ def Dispatch(request,form,identity,page):
     elif identity == EXPERT_USER :
         dispatchForm = DispatchAddCollegeForm(deserialize_form(form))
     elif identity == TEACHER_USER:
-        dispatchForm = DispatchAddCollegeForm(deserialize_form(form),user=request.user)
+        if request.session.get('auth_role', "") in  (SCHOOL_USER):
+            dispatchForm = DispatchAddCollegeForm(deserialize_form(form))
+        elif request.session.get('auth_role', "") in  (COLLEGE_USER):
+            dispatchForm = DispatchAddCollegeForm(deserialize_form(form),user=request.user)
     else:
         dispatchForm = DispatchForm(deserialize_form(form))
     if dispatchForm.is_valid():
@@ -288,11 +291,12 @@ def Dispatch(request,form,identity,page):
         password = dispatchForm.cleaned_data["password"].strip()
         email = dispatchForm.cleaned_data["email"].strip()
         person_name = dispatchForm.cleaned_data["person_firstname"].strip()
-        error = checkIdcard(username)
-        if error[0]!=0:
-            loginfo(error[1])
-            message= error[1]
-            return simplejson.dumps({'field':dispatchForm.data.keys(),'error_id':dispatchForm.errors.keys(),'message':message})
+        if request.session.get('auth_role', "") in (COLLEGE_USER):
+            error = checkIdcard(username)
+            if error[0]!=0:
+                loginfo(error[1])
+                message= error[1]
+                return simplejson.dumps({'field':dispatchForm.data.keys(),'error_id':dispatchForm.errors.keys(),'message':message})
         if password == "":
             password = username[-6:]
         if identity == SCHOOL_USER or identity ==COLLEGE_USER:

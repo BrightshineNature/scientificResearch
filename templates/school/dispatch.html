@@ -1,0 +1,10 @@
+{% extends "school/base/_content.html" %}
+{%block inner_content%}
+<div id="dispatch-div">
+  {% include "widgets/dispatch/teacher_dispatch_form.html" %}
+</div>
+{% endblock %}
+{%block bottom_js %}
+{{ block.super }}
+<script type='text/javascript' src="{{STATIC_URL}}js/common/dispatch.js"></script>
+{%endblock%}

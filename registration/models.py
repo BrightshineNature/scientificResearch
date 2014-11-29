@@ -100,7 +100,6 @@ class RegistrationManager(models.Manager):
             new_authority.save()
         except:
             pass
-
         if Identity == SCHOOL_USER:
             schoolProfileObj = SchoolProfile(userid = new_user)
             schoolProfileObj.save()
@@ -113,6 +112,7 @@ class RegistrationManager(models.Manager):
             teacherProfileObj = TeacherProfile(userid = new_user,college=collegeObj)
             teacherProfileObj.save()
             teacherInfoSettingObj = TeacherInfoSetting(teacher= teacherProfileObj)
+            teacherInfoSettingObj.card = username
             teacherInfoSettingObj.save()
         elif Identity == EXPERT_USER:
             collegeObj = College.objects.get(id=kwargs["college"]);
