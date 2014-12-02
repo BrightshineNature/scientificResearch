@@ -18,7 +18,7 @@
       {%if user.userid.is_active %}
       <td><button class="btn btn-success">已经激活</button></td>
       {%else%}
-      <td><button class="btn btn-warning">已发送，尚未激活</button></td>
+      <td><button class="btn btn-warning">已发送，尚未激活</button> <button class="btn btn-danger">删除</button></td>
       {%endif%}
     </tr>
     {%endfor %}

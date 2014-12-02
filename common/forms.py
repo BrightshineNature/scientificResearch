@@ -134,7 +134,7 @@ class NoticeForm(forms.Form):
             self.fields["expert_special"].choices=teacher_special_choice
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
-        max_length = 20,
+        max_length = 400,
         required=True,
         widget=forms.TextInput(attrs={
             'class':'form-control ', 
@@ -255,12 +255,12 @@ class BaseConditionForm(forms.ModelForm):
 from common.utility import checkIdcard
 
 class ProjectMemberForm(forms.ModelForm):
-    def clean_card(self):
-        card = self.cleaned_data.get("card", "").strip()
-        response = checkIdcard(card)
-        if response[0]:
-            raise forms.ValidationError(response[1])
-        return card
+    # def clean_card(self):
+    #     card = self.cleaned_data.get("card", "").strip()
+    #     response = checkIdcard(card)
+    #     if response[0]:
+    #         raise forms.ValidationError(response[1])
+    #     return card
 
     class Meta:
         model = ProjectMember
@@ -272,7 +272,9 @@ class ProjectMemberForm(forms.ModelForm):
             'mail':forms.TextInput(attrs = {'class':'form-control','placeholder': "邮箱",}),
             'professional_title':forms.Select(attrs = {'class':'form-control','placeholder': "职称",}),
             'executive_position':forms.Select(attrs = {'class':'form-control','placeholder': "行政职务",}),
-            'card':forms.TextInput(attrs = {'class':'form-control','placeholder': "身份证号码",}),
+            'card':forms.TextInput(attrs = {'class':'form-control ', \
+                                            'style': 'width:120%;',\
+                                            'placeholder': "身份证号码",}),
 
         }
 

@@ -45,15 +45,9 @@ def allocManageView(request):
     for i in Special.objects.all() :
         special_list.append({'name':i.name, 'user':i.school_user, })
 
-
-
-
-
-
     for i in SchoolProfile.objects.all():
-        user_special_info[i] = []   
+        user_special_info[i] = []
         print i.userid
-    
     for i in special_list:
         if i['user']:
             user_special_info[i['user']].append(i['name'])
@@ -86,7 +80,6 @@ def allocManageView(request):
     context = { 
     'instance_list': instance_list,
     }
-
     return render(request, "adminStaff/alloc_manage.html", context)
 
 @csrf.csrf_protect
@@ -109,7 +102,7 @@ def newsRelease(request):
         form = NewsForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-    newsList = News.objects.all()
+    newsList = News.objects.all().order_by('-news_date')
     context = getContext(newsList,1,"item",page_elems=7)
     context.update({"newsform":NewsForm,
                   })
@@ -147,7 +140,6 @@ def financialView(request):
     }
     return financialManage(request, userauth)
 
-
 @csrf.csrf_protect
 @login_required
 @authority_required(ADMINSTAFF_USER)
@@ -175,7 +167,6 @@ def infoExportView(request):
 		'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
 	}
     return render(request, "adminStaff/infoexport.html", context)
-
 
 @csrf.csrf_protect
 @login_required
@@ -244,7 +235,6 @@ def homepic_import_view(request):
     project group member change
     """
     if request.method == "POST":
-        loginfo("sssss")
         f = request.FILES["file"]
         ftype = getType(f.name)
 

@@ -20,8 +20,8 @@ from common.views import scheduleManage, researchConcludingManage,noticeMessageS
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm,SettingForm
 from adminStaff.models import ProjectSingle, Re_Project_Expert
 from school.forms import FilterForm,ExpertReviewForm
-
-from users.models import ExpertProfile, SchoolProfile
+from adminStaff.forms import DispatchAddCollegeForm
+from users.models import ExpertProfile, SchoolProfile,TeacherProfile
 
 @csrf.csrf_protect
 @login_required
@@ -144,6 +144,20 @@ def noticeMessageSettingView(request):
         "role":"school"
     }
     return noticeMessageSettingBase(request,userauth)
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
+def dispatchView(request):
+    dispatchAddCollege_form=DispatchAddCollegeForm()
+    try:
+        teacher_users = TeacherProfile.objects.all()
+    except:
+        teacher_users = TeacherProfile.objects.none()
+    context = {
+               "dispatchAddCollege_form":dispatchAddCollege_form,
+    }
+    context.update(getContext(teacher_users, 1, "item"))
+    return render(request, "school/dispatch.html", context)
 
 @csrf.csrf_protect
 @login_required

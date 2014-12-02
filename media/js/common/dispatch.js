@@ -6,6 +6,7 @@ $(function(){
       $("#dispatch_error_message").empty();
       dispatch_form = $(this).parents("form");
       page = $(dispatch_form).parent().find(".disabled").attr("value");
+      dispatch_div = $(dispatch_form).parent().find(".dispatch_paginator");
       Dajaxice.adminStaff.Dispatch(Dispatch_callback,{'form':$(dispatch_form).serialize(true),'identity':$(this).attr("id"),'page':page});
     })
   })
@@ -16,8 +17,20 @@ $(document).on("click",".dispatch_paginator .item_page",function(){
       ids = $(dispatch_div).attr("id").split('_');
       Dajaxice.adminStaff.DispatchPagination(DispatchPaginationCallback,{'page':page,'identity':ids[1]});
 })
+$(document).on("click","table .btn-danger",function(){
+  username=$(this).parent().parent().children(0).html();
+  dispatch_div = $(this).parents(".dispatch_paginator");
+  page = $(dispatch_div).find(".disabled").attr("value");
+  Dajaxice.adminStaff.DispatchDelete(DispatchDelete_callback,{'username':username,'identity':$(dispatch_div).attr("id").split("_")[1],'page':page});
+})
+function DispatchDelete_callback(data){
+  if (data.status == "1"){
+    $(dispatch_div).html(data.table);
+  }
+  alert(data.message);
+}
 function DispatchPaginationCallback(data){
-    $(dispatch_div).html(data.html);
+  $(dispatch_div).html(data.html);
 }
 function Dispatch_callback(data){
   if (data.status == "1"){
@@ -26,7 +39,7 @@ function Dispatch_callback(data){
       object = $(dispatch_form).find('#'+item);
       object.css("background","white");
     });
-    $(dispatch_form).parent().find("table").parent().html(data.table);
+    $(dispatch_div).html(data.table);
   }else{
     $.each(data.field,function(i,item){
        object = $(dispatch_form).find('#'+item);
@@ -39,5 +52,4 @@ function Dispatch_callback(data){
     });
   }
   alert(data.message);
-
 }

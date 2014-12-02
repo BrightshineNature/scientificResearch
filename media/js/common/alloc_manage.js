@@ -61,6 +61,7 @@ function deleteObjectNameCallback(data) {
     $("#alert_info_modal").modal('show');
   }
   $(objects_table_pos).html(data.objects_table);
+  
 }
 
 
@@ -90,6 +91,7 @@ var object_alloc_pos;
 
 $(document).on("click", ".object_alloc", function() {
 
+ // alert("SB");
   var cnt = $(this).parents("[object]")[0]
 
   object_alloc_pos = cnt;
@@ -105,10 +107,10 @@ $(document).on("click", ".object_alloc", function() {
   // selectAll();
 
   var p = $(this).parent().parent();
-  cnt_user = p.children("td:eq(0)").text();  
-  // alert(cnt_user)
+  cnt_user = p.children("td:eq(0)").attr("user-name");  
+  //alert(cnt_user);
 
-  $("#object_modal").find("h4").html("当前用户:" + cnt_user )
+  $("#object_modal").find("h4").html("当前用户:" + p.children("td:eq(0)").attr("user-first-name") )
 
   var box = $("#object_modal").find(".object_checkbox");
   var s = p.children("td:eq(1)").text();
