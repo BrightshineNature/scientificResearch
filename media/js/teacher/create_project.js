@@ -6,6 +6,7 @@ $("#button_to_create").click(function(){
 $("#button_create_project").click(function(){
     title = $("#create_project_modal #id_title").val();
     special = $("#create_project_modal #id_special").val();
+    alert(title);
     if (title.length == 0){
         $("#create_project_modal #id_title").css("background", "red");
         $("#create_project_modal #id_title").val("输入名称不能为空");
