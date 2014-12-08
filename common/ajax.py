@@ -13,7 +13,7 @@ from django.utils import simplejson
 from django.template.loader import render_to_string
 
 #from adminStaff.forms import NumLimitForm, TimeSettingForm, SubjectCategoryForm, ExpertDispatchForm,SchoolDispatchForm,TemplateNoticeForm,FundsChangeForm,StudentNameForm, SchoolDictDispatchForm
-
+from backend.decorators import check_auth
 from django.db.models import Q
 from backend.logging import loginfo
 from django.conf import settings
