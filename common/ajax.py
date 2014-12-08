@@ -261,8 +261,9 @@ def refreshMemberTabel(pid):
 
 
 def checkCanAddMember(request,icard):
-    if TeacherProfile.objects.get(userid=request.user).teacherinfosetting.card == icard:
-        return False
+    if check_auth(request.user,TEACHER_USER):
+        if TeacherProfile.objects.get(userid=request.user).teacherinfosetting.card == icard:
+            return False
     try:
         teacherInfo =TeacherInfoSetting.objects.get(card=icard)
         pro = ProjectSingle.objects.filter(Q(teacher=teacherInfo.teacher) & Q(project_status__status__lt =PROJECT_STATUS_OVER))
