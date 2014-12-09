@@ -94,7 +94,6 @@ def financialInfoView(request):
 def exportFinanceView(request):
     schedule_form = ScheduleBaseForm()
     context={'schedule_form':schedule_form,
-             'type_budget':EXCELTYPE_INFO_FUNDBUDGET,
-             'type_summary':EXCELTYPE_INFO_FUNDSUMMARY
-    }
+             'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
+            }
     return render(request,"finance/exportFinance.html",context)

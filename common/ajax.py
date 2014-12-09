@@ -17,19 +17,22 @@ from backend.decorators import check_auth
 from django.db.models import Q
 from backend.logging import loginfo
 from django.conf import settings
+
 from const import *
-from adminStaff.models import ProjectSingle
 from common.utils import status_confirm, statusRollBack
-from const.models import ScienceActivityType, NationalTradeCode, Subject
-from common.views import schedule_form_data
-from adminStaff.models import ProjectSingle
-from teacher.models import TeacherInfoSetting
-from common.forms import ProjectInfoForm, ProjectMemberForm,BasisContentForm, BaseConditionForm
-from common.models import ProjectMember, BasisContent, BaseCondition
-from teacher.models import ProjectFundBudget,ProjectFundSummary
+
 from adminStaff.models import ProjectSingle,Re_Project_Expert
-from django.core.mail import send_mail
+from const.models import ScienceActivityType, NationalTradeCode, Subject
+from teacher.models import TeacherInfoSetting,ProjectFundBudget,ProjectFundSummary
+from common.models import ProjectMember, BasisContent, BaseCondition
 from users.models import AdminStaffProfile,TeacherProfile,ExpertProfile,SchoolProfile,CollegeProfile
+
+from common.views import schedule_form_data,get_search_data
+from common.utility import get_xls_path
+
+from common.forms import ProjectInfoForm, ProjectMemberForm,BasisContentForm, BaseConditionForm, ScheduleBaseForm
+from django.core.mail import send_mail
+
 OVER_STATUS_NOTOVER = "notover"
 OVER_STATUS_OPENCHECK = "opencheck"
 OVER_STATUS_MIDCHECK = "midcheck"
@@ -424,3 +427,9 @@ def checkValid(request, pid):
 
     context['error'] = error
     return simplejson.dumps(context)
+@dajaxice_register
+def ExportExcel(request,form,category):
+    schedule_form = ScheduleBaseForm(deserialize_form(form))
+    pro_list=get_search_data(request,schedule_form)
+    path = get_xls_path(request,category,pro_list)
+    return simplejson.dumps({"status": "ok","path":path})

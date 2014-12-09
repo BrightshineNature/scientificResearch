@@ -22,6 +22,7 @@ from adminStaff.models import ProjectSingle, Re_Project_Expert
 from school.forms import FilterForm,ExpertReviewForm
 from adminStaff.forms import DispatchAddCollegeForm
 from users.models import ExpertProfile, SchoolProfile,TeacherProfile
+from common.forms import ScheduleBaseForm
 
 @csrf.csrf_protect
 @login_required
@@ -183,3 +184,12 @@ def controlView(request):
     }
     return render(request, "school/control.html", context);
 
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
+def infoExportView(request):
+    schedule_form = ScheduleBaseForm(request=request)
+    context={'schedule_form':schedule_form,
+             'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
+            }
+    return render(request,"school/exportExcel.html",context)
