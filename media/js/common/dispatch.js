@@ -30,7 +30,7 @@ function DispatchDelete_callback(data){
   alert(data.message);
 }
 function DispatchPaginationCallback(data){
-    $(dispatch_div).html(data.html);
+  $(dispatch_div).html(data.html);
 }
 function Dispatch_callback(data){
   if (data.status == "1"){

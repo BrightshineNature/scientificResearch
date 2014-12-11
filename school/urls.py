@@ -36,6 +36,10 @@ urlpatterns = patterns('',
         school_views.controlView,
     ),
     url(
+        r'infoExport$',
+        school_views.infoExportView,
+    ),
+    url(
         r'financialinfo$',
         school_views.financialInfoView,
     ),
@@ -46,6 +50,10 @@ urlpatterns = patterns('',
     url(
         r'noticeMessageSetting$',
         school_views.noticeMessageSettingView,
+    ),
+    url(
+        r'dispatch$',
+        school_views.dispatchView,
     ),
 )
 urlpatterns += staticfiles_urlpatterns()
