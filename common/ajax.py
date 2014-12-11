@@ -298,6 +298,7 @@ def saveProjectMember(request, form, pid, mid):
         elif mem.card != card_id:
             ok = checkCanAddMember(request,mem.card)
         if ok: 
+
             temp = form.save(commit = False)
             temp.project = ProjectSingle.objects.get(project_id = pid)
             temp.save()
