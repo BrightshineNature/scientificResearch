@@ -37,7 +37,6 @@ def appView(request, pid, is_submited = False):
 @login_required
 @authority_required(SCHOOL_USER)
 def scheduleView(request):
-
     userauth = {
                 "role": "school",
                 "status":"application"
@@ -166,7 +165,6 @@ def dispatchView(request):
 def controlView(request):
     expert_review_forms=[]
     specials =  getSpecial(request)
-    loginfo(specials)
     for special in specials:
         expert_review_form = ExpertReviewForm(instance=special)
         expert_review_forms.append(expert_review_form)
