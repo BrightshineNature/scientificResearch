@@ -19,10 +19,10 @@
         <tbody>
             {%for p in project_list %}
             <tr pid={{p.project_id}}>
-                <td >{{p.title}}</td>
+                <td data-toggle="tooltip" data-placement="top" title="{{p.title}}">{{p.title|truncatechars:10}}</td>
                 <td >{{p.project_status}}</td>
                 <td >{{p.project_status.get_next_status}}</td>
-                {%if p.project_status < 3%}
+                {%if p.project_status > 2 or p.specialform == None%}
                 <td >{{p.project_special}}</td>
                 {%else%}
                 <td>{{p.specialform.project_special}}</td>
