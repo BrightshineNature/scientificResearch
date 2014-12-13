@@ -262,7 +262,7 @@ def fileUploadManage(request, pid):
 
     context = {
         'files': files,
-        'error': error, 
+        'upload_file_error': error, 
         'is_upload_file':is_upload_file,
 
     }
