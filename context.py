@@ -50,6 +50,7 @@ def userauth_settings(request):
         "finance":FINANCE_USER,
     }
     identity = request.session.get('auth_role', "")
+    userauth["user"]=identity
     if identity == ADMINSTAFF_USER and check_auth(user=request.user, authority=ADMINSTAFF_USER):
         userauth["is_adminstaff"] = True
         try:

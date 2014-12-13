@@ -2,12 +2,12 @@
     <thead>
         <tr>
             <th>申请代码</th>
-            <th>项目名称</th>          
-            <th>项目申请人</th>          
-            <th>学院</th>         
-            <th>申请年度</th>          
+            <th>项目名称</th> 
+            <th>项目申请人</th>
+            <th>学院</th>
+            <th>申请年度</th>
             <th>提交日期</th>
-            <th>专题类型</th>          
+            <th>专题类型</th>
             <th>项目状态</th>
             <th>附件</th>
             <th>评审</th>
@@ -19,13 +19,13 @@
         <tr iid={{item.project_id}} status={{item.project_status.status}}>
             <td>{{item.project_application_code}}</td>
             {% if usercontext.role == 'school' %}
-            <td><a href=/school/application/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
+            <td><a href="/school/application/{{item.project_id}}?page={{page}}&page2={{page2}}" data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
             {% endif %}
             {% if usercontext.role == 'college' %}
-            <td><a href=/college/application/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
+            <td><a href="/college/application/{{item.project_id}}?page={{page}}&page2={{page2}}" data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
             {% endif %}
             {% if usercontext.role == 'finance' %}
-            <td><a href=/finance/application/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
+            <td><a href="/finance/application/{{item.project_id}}?page={{page}}&page2={{page2}}" data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
             {% endif %}
             <td>{{item.teacher.teacherinfosetting.name}}</td>
             <td>{{item.teacher.college}}</td>

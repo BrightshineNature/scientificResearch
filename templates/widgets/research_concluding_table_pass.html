@@ -5,9 +5,9 @@
     <thead>
         <tr>
             <th>项目编号</th>
-            <th>项目名称</th>          
-            <th>项目负责人</th>          
-            <th>学院</th>         
+            <th>项目名称</th>
+            <th>项目负责人</th>
+            <th>学院</th>
             <th>立项年度</th>
             <th>提交日期</th>
             <th>专题类型</th>
@@ -35,16 +35,16 @@
         <tr iid={{item.project_id}} status={{item.project_status.status}}>
             <td>{{item.project_code}}</td>
             {% if usercontext.role == 'school' %}
-            <td><a href=/school/final/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
+            <td><a href="/school/final/{{item.project_id}}?page={{page}}&page2={{page2}}" data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
             {% endif %}
             {% if usercontext.role == 'college' %}
-            <td><a href=/college/final/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
+            <td><a href="/college/final/{{item.project_id}}?page={{page}}&page2={{page2}}" data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
             {% endif %}
             {% if usercontext.role == 'finance' %}
-            <td><a href=/finance/final/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
+            <td><a href="/finance/final/{{item.project_id}}?page={{page}}&page2={{page2}}" data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
             {% endif %}
             {% if usercontext.role == 'adminStaff' %}
-            <td><a href=/adminStaff/final/{{item.project_id}} data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
+            <td><a href="/adminStaff/final/{{item.project_id}}?page={{page}}&page2={{page2}}" data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
             {% endif %}
 
             <td>{{item.teacher.teacherinfosetting.name}}</td>
@@ -53,7 +53,7 @@
             <td>{{item.submit_date|date:"Y-m-d"}}</td>
             <td><span data-toggle="tooltip" data-placement="top" title={{item.project_special}}>{{item.project_special|truncatechars:10}}</span></td>
             <td>{{item.project_status}}</td>
-            {% ifnotequal usercontext.role "finance"%}                   
+            {% ifnotequal usercontext.role "finance"%}
             <td>
                 {%if item.file_task%}
                 <span  class="label label-success"><a href={{item.task_url}}>任务书</a></span>

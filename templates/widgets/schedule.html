@@ -1,82 +1,74 @@
-
-
-
 {%include "widgets/project_filter.html" %}
 <div id="applicationTable">
-{%include "widgets/project_info.html" %}
+  {%include "widgets/project_info.html" %}
 </div>
 
 <div class="modal fade" id="approve_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a class="close" data-dismiss="modal">×</a>
-                <h3>立项</h3>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>立项</h3>
+      </div>
 
-            <div class="modal-body">
-                <form class="well" id="lookThroughForm" >
-                <label>评审分数</label>
-                    <div id="score_tables_part">
-                     </div>
-                    <div class="form-group">
-                        <label for="review_select">审核结果</label>
-                        {{ProjectJudge_form.judgeresult}}
-                    </div>
-                    <div class="form-group" id="budget">
-                        <label>最大预算</label>
-                        {{ProjectJudge_form.max_budget}}
-                    </div>
-                    <div class="form-group" name="not_pass_reason">
-                        <label class="add-on" for="review_reason">不通过原因</label>
-                        {{ProjectJudge_form.reason}}
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <a class="btn" data-dismiss="modal">关闭</a>
-                <a class="btn btn-primary" data-dismiss="modal" name="commit">确定</a>
-            </div>
-        </div>
-
-
+      <div class="modal-body">
+        <form class="well" id="lookThroughForm" >
+          <label>评审分数</label>
+          <div id="score_tables_part">
+          </div>
+          <div class="form-group">
+            <label for="review_select">审核结果</label>
+            {{ProjectJudge_form.judgeresult}}
+          </div>
+          <div class="form-group" id="budget">
+            <label>最大预算</label>
+            {{ProjectJudge_form.max_budget}}
+          </div>
+          <div class="form-group" name="not_pass_reason">
+            <label class="add-on" for="review_reason">不通过原因</label>
+            {{ProjectJudge_form.reason}}
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="btn" data-dismiss="modal">关闭</a>
+        <a class="btn btn-primary" data-dismiss="modal" name="commit">确定</a>
+      </div>
     </div>
+  </div>
 </div>
 <div class="modal fade" id="review_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a class="close" data-dismiss="modal">×</a>
-                <h3>审核</h3>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>审核</h3>
+      </div>
 
-            <div class="modal-body">
-                <form class="well" id="lookThroughForm" >
-                    <div class="form-group">
-                        <label for="review_select">审核结果</label>
-                        {{ProjectJudge_form.judgeresult}}
-                    </div>
-                    <div id="not_pass_article">
-                        <label>不通过方面</label>
-                        {{ProjectJudge_form.application}}
-                    </div>
-                    <div class="form-group" name="not_pass_reason">
-                        <label class="add-on" for="review_reason">不通过原因</label>
-                        {{ProjectJudge_form.reason}}
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <a class="btn" data-dismiss="modal">关闭</a>
-                <a class="btn btn-primary" data-dismiss="modal" name="commit">确定</a>
-            </div>
-        </div>
-
-
+      <div class="modal-body">
+        <form class="well" id="lookThroughForm" >
+          <div class="form-group">
+            <label for="review_select">审核结果</label>
+            {{ProjectJudge_form.judgeresult}}
+          </div>
+          <div id="not_pass_article">
+            <label>不通过方面</label>
+            {{ProjectJudge_form.application}}
+          </div>
+          <div class="form-group" name="not_pass_reason">
+            <label class="add-on" for="review_reason">不通过原因</label>
+            {{ProjectJudge_form.reason}}
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="btn" data-dismiss="modal">关闭</a>
+        <a class="btn btn-primary" data-dismiss="modal" name="commit">确定</a>
+      </div>
     </div>
+  </div>
 </div>
+{% include "widgets/infoexport/infoexport_alert.html"%}
 <script type="text/javascript" src="{{STATIC_URL}}js/project_info.js"></script>
 
 <script type="text/javascript" src="{{STATIC_URL}}js/common.js"></script>

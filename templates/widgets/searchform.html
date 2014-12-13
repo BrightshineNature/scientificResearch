@@ -1,3 +1,4 @@
+<script type='text/javascript' src="{{ STATIC_URL }}js/common/infoExport.js"></script>
 <div class="form-inline" role="form" id="searchForm">
     {% ifnotequal usercontext.status "application"%}
     <div class="form-group">
@@ -10,16 +11,17 @@
         {{schedule_form.application_year}} 
     </div>
     {% endifnotequal%}
-    <div class="form-group">              
+    <div class="form-group">
         {{schedule_form.special}}
     </div>
-    <div class="form-group">              
+    <div class="form-group">
         {{schedule_form.college}}
     </div>
-    <div class="form-group">              
+    <div class="form-group">
         {{schedule_form.other_search}}
     </div>
-    <div class="form-group">                    
+    <div class="form-group">
         <button type="button" class="btn btn-primary" id="filter_button">检索</button>
+        <input type="button" class="btn btn-primary export-excel" eid={{EXCELTYPE_DICT.INFO_SUMMARY}} value="导出信息表">
     </div>
 </div>

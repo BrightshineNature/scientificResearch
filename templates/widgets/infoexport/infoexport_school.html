@@ -3,30 +3,6 @@
   <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/" >
     <div class="form-inline" role="form">
       <div class="form-group">
-        {{schedule_form.application_status}}
-      </div>
-      <div class="form-group">
-        {{schedule_form.application_year}}
-      </div>
-      <div class="form-group">
-        {{schedule_form.special}}
-      </div>
-      <div class="form-group">
-        {{schedule_form.college}}
-      </div>
-      <div class="form-group">
-        {{schedule_form.other_search}}
-      </div>
-      <div class="form-group">
-        <input type="button" class="btn btn-primary" eid={{EXCELTYPE_DICT.INFO_COLLECTION}} value="导出申请项目信息表">
-      </div>
-    </div>
-  </form>
-</div>
-<div class="well form">
-  <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/" >
-    <div class="form-inline" role="form">
-      <div class="form-group">
         {{schedule_form.status}}
       </div>
       <div class="form-group">
@@ -42,7 +18,7 @@
         {{schedule_form.other_search}}
       </div>
       <div class="form-group">
-        <input type="button" class="btn btn-primary" eid={{EXCELTYPE_DICT.INFO_COLLECTION}} value="导出在研项目信息表">
+        <input type="button" class="btn btn-primary export-excel" eid={{EXCELTYPE_DICT.INFO_COLLECTION}} value="导出在研项目信息表">
       </div>
     </div>
   </form>

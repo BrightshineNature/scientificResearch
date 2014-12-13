@@ -1,5 +1,5 @@
 $(function(){
-  $("#schedule_form .btn").click(function(){
+  $("#schedule_form .export-excel").click(function(){
      export_form = $(this).parents("form");
     $('#excelprogress').modal('show');
      Dajaxice.common.ExportExcel(ExportExcel_callback,{'form':$(export_form).serialize(true),'category':$(this).attr("eid")});

@@ -32,8 +32,6 @@ def finalReportView(request,pid,is_submited=False):
     loginfo(p=is_submited,label="is_submited")
     return render(request,"finance/final.html",context)
 
-
-
 @csrf.csrf_protect
 @login_required
 @authority_required(FINANCE_USER)
