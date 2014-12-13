@@ -1,9 +1,14 @@
 <div class="report-content-container"> 
   <ul class="nav nav-pills">
 
-    <li {% if not error %}class="active" {% endif %}><a href="#project_info" data-toggle="tab">项目信息</a></li>
+    <li {% if not error %} {%if not is_upload_file%}class="active"  {%endif%}     {% endif %}><a href="#project_info" data-toggle="tab">项目信息</a></li>
     <li><a href="#project_member" data-toggle="tab">项目成员</a></li>
     <li><a href="#basis_content" data-toggle="tab">项目摘要</a></li>
+
+    {%if userauth.is_colleger or userauth.is_schooler%}
+        <li {%if is_upload_file%}class="active"  {%endif%}
+        ><a href="#file_upload" data-toggle="tab">文件上传</a></li>    
+    {%endif%}
 
     {% ifequal user "teacher"%}
       {% else %}
@@ -18,7 +23,9 @@
   
   <div class="tab-content" pid="{{pid}}" user = '{{user}}' >
 
-    <div class="tab-pane fade {% if not error %} active in {% endif %}" id="project_info"> 
+    <div class="tab-pane fade {% if not error %} 
+    {%if not is_upload_file%} active in {% endif %}  
+     {% endif %}" id="project_info"> 
       {% include "widgets/project_infoform.html" %}
       {%include "widgets/save_button.html"%}
     </div>
@@ -40,6 +47,16 @@
       {% endifequal%}
       {% endif %}
     </div>
+
+
+
+    <div class="tab-pane fade  {%if is_upload_file%} active in {% endif %} " id="file_upload">
+        {%include "widgets/file_upload.html" %}
+
+      
+
+    </div>
+
 
     <!-- <div class="tab-pane fade" id="base_condition"> -->
       {# {% include "widgets/base_condition.html"%} #}

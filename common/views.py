@@ -140,6 +140,10 @@ def appManage(request, pid):
         'page2':page2,
     }
 
+
+    file_upload_context = fileUploadManage(request, pid)
+    context = dict(file_upload_context.items()+context.items())
+
     return context
 
 from django.core.files.storage import default_storage
@@ -157,6 +161,8 @@ AcceptedExtension = [
     'doc', 'docx', 'DOC', 'DOCX',
 ]
 def handleFileUpload(request, pid,  entrance):
+
+
 
     print "HA&" * 10
     print entrance
@@ -217,13 +223,32 @@ def handleFileUpload(request, pid,  entrance):
 
 def fileUploadManage(request, pid):
 
+
+
     print "fileUploadManage**********"
     error = 0
+    is_upload_file = 0
     if request.method == 'POST':
-        for i in FileList:
-            if request.FILES.has_key(i):
-                if not handleFileUpload(request, pid, i):
-                    error = 1
+
+
+        if request.POST.has_key("is_delete_file"):
+            print "CAO" * 10
+            fid = request.POST['fid']
+            print fid
+            deleted_file = UploadFile.objects.get(id = fid)
+
+            path = deleted_file.file_obj.path
+            deleted_file.delete()
+            default_storage.delete(path)
+            is_upload_file = 1
+        else:
+
+            for i in FileList:
+                if request.FILES.has_key(i):
+                    if not handleFileUpload(request, pid, i):
+                        error = 1
+                    else :
+                        is_upload_file = 1
     else :
         pass
         # form = UploadFileForm()
@@ -237,7 +262,9 @@ def fileUploadManage(request, pid):
 
     context = {
         'files': files,
-        'error': error
+        'error': error, 
+        'is_upload_file':is_upload_file,
+
     }
     return context
 
