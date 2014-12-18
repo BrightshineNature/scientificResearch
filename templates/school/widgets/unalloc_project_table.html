@@ -1,34 +1,36 @@
 <table class="table table-condensed" id="unalloced_subject_table">
-	<thead>
-		<tr>
-		  <th><label class="checkbox">
-        	<input type="checkbox" class="select_all" arg="checkbox_unalloc_project">
-				</label></th>
-		  <th>项目编号</th>
-		  <th>发布题目名称</th>
-		  <th>所属学院</th>
-		  <th>所属分类</th>
-		  <th>题目状态</th>
-		</tr>
-	</thead>
-	<tbody id="unalloced_subject_table_body">
-		            
-  {% for project in item_list %}
-  <tr>
-		<td><label class="checkbox">
-        	<input type="checkbox" name="checkbox_unalloc_project" value="{{ project.project_id }}">
-				</label>
-    </td>
-		<td>{{ project.project_code }}</td>
-		<td>{{ project.title }}</td>
-		<td>{{ project.teacher.college }}</td>
-		<td>{{ project.project_special }}</td>
-		<td>{{ project.project_status }}</td>
-	</tr>
+  <thead>
+    <tr>
+      <th><label class="checkbox">
+          <input type="checkbox" class="select_all" arg="checkbox_unalloc_project">
+      </label></th>
+      <th>项目编号</th>
+      <th>项目名称</th>
+      <th>申请人</th>
+      <th>所属学院</th>
+      <th>所属分类</th>
+      <th>题目状态</th>
+    </tr>
+  </thead>
+  <tbody id="unalloced_subject_table_body">
+    
+    {% for project in item_list %}
+    <tr>
+      <td><label class="checkbox">
+          <input type="checkbox" name="checkbox_unalloc_project" value="{{ project.project_id }}">
+	</label>
+      </td>
+      <td>{{ project.project_code }}</td>
+      <td>{{ project.title }}</td>
+      <td>{{ project.teacher.userid.first_name }}</td>
+      <td>{{ project.teacher.college }}</td>
+      <td>{{ project.project_special }}</td>
+      <td>{{ project.project_status }}</td>
+    </tr>
 
-  {% endfor %}
-	</tbody>
+    {% endfor %}
+  </tbody>
 </table>
 <div id="unalloc_paginator">
-	{% include "widgets/paginator.html" %}
+  {% include "widgets/paginator.html" %}
 </div>

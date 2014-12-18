@@ -120,7 +120,7 @@ class ExpertProfile(models.Model):
         verbose_name_plural = "评审专家"
 
     def __unicode__(self):
-        return '%s' % (self.userid)
+        return '%s' % (self.userid.first_name)
 
     def save(self, *args, **kwargs):
         super(ExpertProfile, self).save()
