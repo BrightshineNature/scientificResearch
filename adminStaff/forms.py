@@ -47,7 +47,7 @@ class ObjectForm(forms.Form):
     name = forms.CharField(
       label='Your name',
       max_length=200, required=True,
-                                 widget=forms.TextInput(attrs={'class':'form-control object_name','placeholder':u""}),)
+      widget=forms.TextInput(attrs={'class':'form-control object_name','placeholder':u""}),)
 
 class TemplateNoticeMessageForm(ModelForm):
     class Meta:

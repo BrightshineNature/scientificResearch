@@ -1,12 +1,18 @@
 # coding: UTF-8
 from adminStaff.models import ProjectSingle
 from const.models import ProjectStatus
+from users.models import College
 from const import *
+from backend.logging import loginfo
+from common.sendEmail import sendemail
 
-pro_list = ProjectSingle.objects.filter(project_status__status=PROJECT_STATUS_TASK_COMMIT_OVER )
-prostatus = ProjectStatus.objects.get(status=PROJECT_STATUS_FINAL_COMMIT_OVER)
-for pro in pro_list:
-    pro.project_status = prostatus
-    pro.save()
+import xlrd
 
-print "aaaa"
+data = xlrd.open_workbook("1.xls")
+table = data.sheet_by_index(0)
+
+row = table.row_values(2)
+
+college=College.objects.get(name= row[3])
+print college.id
+sendemail('1',row[1],row[1][-6:],row[2],TEACHER_USER,row[0],send_email = False,college=college.id)
