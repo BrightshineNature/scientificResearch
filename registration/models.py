@@ -112,6 +112,7 @@ class RegistrationManager(models.Manager):
             teacherProfileObj.save()
             teacherInfoSettingObj = TeacherInfoSetting(teacher= teacherProfileObj)
             teacherInfoSettingObj.card = username
+            teacherInfoSettingObj.name = first_name
             teacherInfoSettingObj.save()
         elif Identity == EXPERT_USER:
             collegeObj = College.objects.get(id=kwargs["college"]);
