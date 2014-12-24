@@ -47,7 +47,6 @@ def allocManageView(request):
 
     for i in SchoolProfile.objects.all():
         user_special_info[i] = []
-        print i.userid
     for i in special_list:
         if i['user']:
             user_special_info[i['user']].append(i['name'])
@@ -57,7 +56,7 @@ def allocManageView(request):
     for i in College.objects.all() :
         college_list.append({'name':i.name, 'user':i.college_user, })
     for i in CollegeProfile.objects.all():
-        user_college_info[i] = []   
+        user_college_info[i] = []
     for i in college_list:
         if i['user']:
             user_college_info[i['user']].append(i['name'])

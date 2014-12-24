@@ -95,30 +95,28 @@ from common.sendEmail import sendemail
 @dajaxice_register
 def saveObjectName(request, object, form):
 
-    print "save*****"
-    print object
+    # print "save*****"
+    # print object
     form = ObjectForm(deserialize_form(form))
 
     Object = getObject(object)
 
     context = {
-        'status': 1 ,
+        'status': 1 , # 1: OK
+                      # 2: blank
+                      # 3: repeated
+
         'objects_table': "",
     }
     if form.is_valid():
         if Object.objects.filter(name = form.cleaned_data['name']):
-            print "hh" 
-            context['status'] = 0
+            context['status'] = 3
         else :
-            print "OK"
+            context['objects_table'] = refreshObjectTable(request, object)
             p = Object(name = form.cleaned_data['name'])
             p.save()
     else :
-        context['status'] = 0
-        pass
-
-    context['objects_table'] = refreshObjectTable(request, object)
-
+        context['status'] = 2
     return simplejson.dumps(context)
 
 @dajaxice_register
@@ -135,16 +133,17 @@ def deleteObjectName(request, object, deleted):
         context['status']  = 0
     else:
 
-        alloced = "["
+        alloced = "[" # can not be deleted 
         for i in deleted:
             if object == "special":
                 cnt = Special.objects.get(name = i)
-                if ProjectSingle.objects.filter(project_special = cnt):
+
+                if ProjectSingle.objects.filter(project_special = cnt) or cnt.school_user != None:
                     if alloced != "[": alloced += ','
                     alloced += unicode(cnt.name)
             else:
                 cnt = College.objects.get(name = i)
-                if ProjectSingle.objects.filter(teacher__college = cnt):
+                if TeacherProfile.objects.filter(college = cnt) or cnt.college_user != None:
                     if alloced != "[": alloced += ','
                     alloced += unicode(cnt.name)
 

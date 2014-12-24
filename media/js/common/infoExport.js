@@ -1,8 +1,8 @@
 $(function(){
-  $("#schedule_form .btn").click(function(){
+  $("#schedule_form .export-excel").click(function(){
      export_form = $(this).parents("form");
     $('#excelprogress').modal('show');
-     Dajaxice.finance.ExportExcel(ExportExcel_callback,{'form':$(export_form).serialize(true),'category':$(this).attr("id")});
+     Dajaxice.common.ExportExcel(ExportExcel_callback,{'form':$(export_form).serialize(true),'category':$(this).attr("eid")});
   })
 })
 function ExportExcel_callback(data){

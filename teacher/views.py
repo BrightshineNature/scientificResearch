@@ -74,6 +74,7 @@ def homeView(request):
     for item in project_list:
         if item.comment!="":
             comment=item.comment
+        if item.project_special.application_status:
             item.specialform=ProjectChangeForm(special=item.project_special)
     context = {
         'comment':comment,

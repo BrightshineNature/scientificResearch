@@ -32,8 +32,6 @@ def finalReportView(request,pid,is_submited=False):
     loginfo(p=is_submited,label="is_submited")
     return render(request,"finance/final.html",context)
 
-
-
 @csrf.csrf_protect
 @login_required
 @authority_required(FINANCE_USER)
@@ -94,7 +92,6 @@ def financialInfoView(request):
 def exportFinanceView(request):
     schedule_form = ScheduleBaseForm()
     context={'schedule_form':schedule_form,
-             'type_budget':EXCELTYPE_INFO_FUNDBUDGET,
-             'type_summary':EXCELTYPE_INFO_FUNDSUMMARY
-    }
+             'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
+            }
     return render(request,"finance/exportFinance.html",context)

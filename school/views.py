@@ -22,6 +22,7 @@ from adminStaff.models import ProjectSingle, Re_Project_Expert
 from school.forms import FilterForm,ExpertReviewForm
 from adminStaff.forms import DispatchAddCollegeForm
 from users.models import ExpertProfile, SchoolProfile,TeacherProfile
+from common.forms import ScheduleBaseForm
 
 @csrf.csrf_protect
 @login_required
@@ -36,7 +37,6 @@ def appView(request, pid, is_submited = False):
 @login_required
 @authority_required(SCHOOL_USER)
 def scheduleView(request):
-
     userauth = {
                 "role": "school",
                 "status":"application"
@@ -86,6 +86,7 @@ def allocView(request):
     alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
     form = FilterForm(request = request)
     expert_form = FilterForm()
+    loginfo(expert_list.count())
     for expert in expert_list:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
 
@@ -165,7 +166,6 @@ def dispatchView(request):
 def controlView(request):
     expert_review_forms=[]
     specials =  getSpecial(request)
-    loginfo(specials)
     for special in specials:
         expert_review_form = ExpertReviewForm(instance=special)
         expert_review_forms.append(expert_review_form)
@@ -183,3 +183,12 @@ def controlView(request):
     }
     return render(request, "school/control.html", context);
 
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
+def infoExportView(request):
+    schedule_form = ScheduleBaseForm(request=request)
+    context={'schedule_form':schedule_form,
+             'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
+            }
+    return render(request,"school/exportExcel.html",context)

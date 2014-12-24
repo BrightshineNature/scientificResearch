@@ -78,7 +78,6 @@ def addURL(project_list):
                 item.file_summary=False
     return project_list
 def getParam(pro_list, userauth,flag,page,page2):
-    loginfo(pro_list)
     (pending_q,default_q,search_q)=get_qset(userauth)
     not_pass_apply_project_group=pro_list.filter(pending_q)
     if flag:
@@ -94,6 +93,12 @@ def getParam(pro_list, userauth,flag,page,page2):
     return param
 
 def appManage(request, pid):
+    page = request.GET.get('page')
+    page2 = request.GET.get('page2')
+    if page == None:
+        page = 1
+    if page2 == None:
+        page2 = 1
     basis_content = BasisContent.objects.filter(project__project_id = pid)
     if basis_content:
         basis_content_id = basis_content[0].id
@@ -121,23 +126,23 @@ def appManage(request, pid):
         'end_time': p.end_time,
         'project_tpye': p.project_tpye,
     }
-
-
-
     project_member_list = ProjectMember.objects.filter(project__project_id = pid)
-
-
     context = {
         'project_info_form': ProjectInfoForm(project_info_data),
         'project_member_form': ProjectMemberForm(),
         'basis_content_form':basis_content_form,
         'basis_content_id':basis_content_id,
-
         'base_condition_form':base_condition_form,
         'base_condition_id':base_condition_id,
         'project_member_list': project_member_list,
         'pid': pid,
+        'page':page,
+        'page2':page2,
     }
+
+
+    file_upload_context = fileUploadManage(request, pid)
+    context = dict(file_upload_context.items()+context.items())
 
     return context
 
@@ -156,6 +161,8 @@ AcceptedExtension = [
     'doc', 'docx', 'DOC', 'DOCX',
 ]
 def handleFileUpload(request, pid,  entrance):
+
+
 
     print "HA&" * 10
     print entrance
@@ -216,27 +223,32 @@ def handleFileUpload(request, pid,  entrance):
 
 def fileUploadManage(request, pid):
 
+
+
     print "fileUploadManage**********"
     error = 0
+    is_upload_file = 0
     if request.method == 'POST':
 
 
-        # if request.POST.has_key("fid"):
+        if request.POST.has_key("is_delete_file"):
+            print "CAO" * 10
+            fid = request.POST['fid']
+            print fid
+            deleted_file = UploadFile.objects.get(id = fid)
 
+            path = deleted_file.file_obj.path
+            deleted_file.delete()
+            default_storage.delete(path)
+            is_upload_file = 1
+        else:
 
-        #     obj = UploadFile.objects.get(id = request.POST['fid'])
-        #     if obj:
-        #         path = obj.file_obj.path
-        #         obj.delete()
-        #         default_storage.delete(path)
-
-
-
-        for i in FileList:
-            if request.FILES.has_key(i):
-
-                if not handleFileUpload(request, pid, i):
-                    error = 1
+            for i in FileList:
+                if request.FILES.has_key(i):
+                    if not handleFileUpload(request, pid, i):
+                        error = 1
+                    else :
+                        is_upload_file = 1
     else :
         pass
         # form = UploadFileForm()
@@ -250,21 +262,41 @@ def fileUploadManage(request, pid):
 
     context = {
         'files': files,
-        'error': error
+        'upload_file_error': error, 
+        'is_upload_file':is_upload_file,
+
     }
     return context
 
 def scheduleManage(request, userauth):
-    context = schedule_form_data(request, userauth)
+    page = request.GET.get('page')
+    page2 = request.GET.get('page2')
+    if page == None:
+        page = 1
+    if page2 == None:
+        page2 = 1
+    context = schedule_form_data(request, userauth,page=page,page2=page2)
     if userauth['role']=="adminStaff":
         statusform=AllStatusForm()
         context.update({'allstatusform':statusform})
     return render(request, userauth['role'] + '/schedule.html', context)
 def researchConcludingManage(request , userauth):
-    context = schedule_form_data(request , userauth)
+    page = request.GET.get('page')
+    page2 = request.GET.get('page2')
+    if page == None:
+        page = 1
+    if page2 == None:
+        page2 = 1
+    context = schedule_form_data(request , userauth,page=page,page2=page2)
     return render(request, userauth['role']+'/research_concluding.html' ,context)
 def financeManage(request, userauth):
-    context = schedule_form_data(request, userauth)
+    page = request.GET.get('page')
+    page2 = request.GET.get('page2')
+    if page == None:
+        page = 1
+    if page2 == None:
+        page2 = 1
+    context = schedule_form_data(request, userauth,page=page,page2=page2)
     for item in context.get("item2_list"):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
     for item in context.get("item_list"):
@@ -272,21 +304,17 @@ def financeManage(request, userauth):
     return render(request, userauth['role'] + '/financeProject.html', context)
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
-
     return render(request, userauth['role'] + '/financial.html', context)
 def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
     ProjectJudge_form=ProjectJudgeForm()
     has_data = False
     schedule_form=ScheduleBaseForm(request=request)
-    
     if search == 1:
         schedule_form = ScheduleBaseForm(deserialize_form(form))
         pro_list=get_search_data(request,schedule_form)
-        loginfo(pro_list)
         default=False
     else:
         pro_list=get_project_list(request)
-
         default=True
     param=getParam(pro_list,userauth,default,page,page2)
     context ={ 'schedule_form':schedule_form,
@@ -294,12 +322,14 @@ def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
                'usercontext': userauth,
                'ProjectJudge_form':ProjectJudge_form,
                "approve":PROJECT_STATUS_APPLICATION_REVIEW_OVER,
-               "review":PROJECT_STATUS_FINAL_REVIEW_OVER
+               "review":PROJECT_STATUS_FINAL_REVIEW_OVER,
+               "page":page,
+               "page2":page2,
+               'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
     }
     if userauth['role']!="college" and userauth['role']!="adminStaff":
         context.update({'show':1})
     context.update(param)
-
     return context
 def get_project_list(request):
     identity = request.session.get('auth_role', "")
@@ -374,9 +404,7 @@ def get_search_data(request,schedule_form):
         qset=filter(lambda x:x!=None,[q0,q1,q2,q3,q4,q5,q6,q7])
         if qset:
             qset=reduce(lambda x,y: x&y ,qset)
-            loginfo(qset)
             pro_list=get_project_list(request).filter(qset)
-            loginfo(pro_list)
         else:
             pro_list=get_project_list(request).all()
         return pro_list
@@ -396,19 +424,27 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
 
     final_form = FinalReportForm(instance=final)
 
+    page = request.GET.get('page')
+    page2 = request.GET.get('page2')
+    if page == None:
+        page = 1
+    if page2 == None:
+        page2 = 1
     loginfo(p=redirect, label="redirect")
     context = {
         'projachivementform':projachivementform,
-		'projdatastaticsform':projdatastaticsform,
+        'projdatastaticsform':projdatastaticsform,
         'final': final_form,
         'pid':pid,
         'redirect':redirect,
         'achivement_list':achivement_list,
-		'datastatics_list':datastatics_list,
-		'projfundsummary':projfundsummary,
-		'profundsummaryform':profundsummaryform,
+        'datastatics_list':datastatics_list,
+        'projfundsummary':projfundsummary,
+        'profundsummaryform':profundsummaryform,
         'is_submited':is_submited,
         'projectbudget':project.project_budget_max,
+        'page':page,
+        'page2':page2,
     }
     return context
 
@@ -430,8 +466,8 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
         fundbudget_form = ProFundBudgetForm(instance=fundbudget)
 
     context = {
-		'redirect':redirect,
-		'fundbudget_form':fundbudget_form,
+        'redirect':redirect,
+        'fundbudget_form':fundbudget_form,
         'pid':pid,
         'is_submited':is_submited,
         'projectbudget':project.project_budget_max,
@@ -453,7 +489,7 @@ def noticeMessageSettingBase(request,userauth):
         }
         cnt+=1
         template_notice_message_group.append(nv)
-    notice_form=NoticeForm(request=request)   
+    notice_form=NoticeForm(request=request)
     context=getContext(template_notice_message_group,1,"item",0)
     context.update({
         "template_notice_message_form":template_notice_message_form,

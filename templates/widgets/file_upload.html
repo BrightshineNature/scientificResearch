@@ -28,6 +28,7 @@
             {%if item.file_type == "其他" or item.file_type == "基本科研业务费专项项目进展报告" %} 
                 <form method="POST"  action="">
                     {% csrf_token %}
+                    <input type= "hidden" name= "is_delete_file" value = "1">
                     <input type= "hidden" name= "fid" value = "{{item.id}}">
                     <button type="submit" class="btn btn-success"> 删除</button>
                 </form>

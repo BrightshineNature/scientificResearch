@@ -22,7 +22,6 @@ def get_xls_path(request,exceltype,proj_set,specialname=""):
 
     loginfo(p=proj_set,label="get_xls_path")
     loginfo(p = exceltype,label = "exceltype")
-    loginfo(p = proj_set,label = "proj_set")
     EXCELTYPE_DICT = EXCELTYPE_DICT_OBJECT()
     if exceltype == EXCELTYPE_DICT.INFO_COLLECTION:
         file_path = xls_info_collection(request,proj_set)
@@ -40,8 +39,12 @@ def get_xls_path(request,exceltype,proj_set,specialname=""):
         file_path = xls_info_laboratory_preview(request,proj_set)
     elif exceltype == EXCELTYPE_DICT.INFO_FUNDSUMMARY:
         file_path = xls_info_fundsummay(request,proj_set)
-    else:
+    elif exceltype == EXCELTYPE_DICT.INFO_SUMMARY:
+        file_path = xls_info_summary(request,proj_set)
+    elif exceltype == EXCELTYPE_DICT.INFO_FUNDBUDGET:
         file_path = xls_info_fundbudget(request,proj_set)
+    else:
+        pass
     return MEDIA_URL + "tmp" + file_path[len(TMP_FILES_PATH):]
 
 def xls_info_fundbudget_gen():
@@ -75,7 +78,6 @@ def xls_info_fundbudget(request,proj_set):
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
-        loginfo(p=manager,label="manager")
         row = 1 + _number
         xls_obj.write(row, 0, unicode(proj_obj.project_code)) 
         xls_obj.write(row, 1, unicode(proj_obj.title)) 
@@ -464,15 +466,14 @@ def xls_info_collection(request,proj_set):
             xls_obj.write(row, 1, unicode(proj_obj.project_code)) 
             xls_obj.write(row, 2, unicode(proj_obj.science_type)) 
             xls_obj.write(row, 3, unicode(proj_obj.trade_code).split()[0])
-            loginfo(unicode(proj_obj.subject).split())
             xls_obj.write(row, 4, unicode(proj_obj.subject).split()[1])
             xls_obj.write(row, 5, unicode(proj_obj.subject).split()[0])  
             xls_obj.write(row, 6, unicode(proj_obj.start_time)) 
             xls_obj.write(row, 7, unicode(proj_obj.end_time))
             xls_obj.write(row, 8, unicode(proj_obj.approval_year)) 
             xls_obj.write(row, 9, unicode(proj_obj.project_status))  
-            xls_obj.write(row, 10, unicode(proj_obj.project_tpye)) 
-            xls_obj.write(row, 11, unicode(proj_obj.basiscontent.basis))
+            xls_obj.write(row, 10, unicode(proj_obj.project_special)) 
+            xls_obj.write(row, 11, unicode(proj_obj.finalsubmit.project_summary))
             xls_obj.write(row, 12, unicode(manager.name)) 
             xls_obj.write(row, 13, unicode(manager.get_sex_display())) 
             xls_obj.write(row, 14, unicode(manager.birth)) 
@@ -487,6 +488,54 @@ def xls_info_collection(request,proj_set):
         _number+= 1
     # write xls file
     save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学教育部项目信息采集填报表"))
+    workbook.save(save_path)
+    return save_path
+
+
+def xls_info_summary_gen():
+    workbook = xlwt.Workbook(encoding='utf-8')
+    worksheet = workbook.add_sheet('sheet1')
+    style = cell_style(horizontal=True,vertical=True)
+    # generate header
+    # generate body
+    worksheet.write_merge(1, 1, 0, 0, '序号')
+    worksheet.write_merge(1, 1, 1, 1, '申请人')
+    worksheet.write_merge(1, 1, 2, 2, '所在院系')
+    worksheet.write_merge(1, 1, 3, 3, '项目名称')
+    worksheet.write_merge(1, 1, 4, 4, '项目类别')
+    worksheet.write_merge(1, 1, 5, 5, '申报领域/层次')
+    worksheet.write_merge(1, 1, 6, 6, '项目组成员')
+    worksheet.write_merge(1, 1, 7, 7, '项目状态')
+
+    worksheet.col(3).width = 15000
+    worksheet.col(4).width = 6000
+    worksheet.col(5).width = 4000
+    worksheet.col(6).width = 6000
+    return worksheet, workbook
+
+def xls_info_summary(request,proj_set):
+    """
+    """
+
+    xls_obj, workbook = xls_info_summary_gen()
+
+    _number=1
+    for proj_obj in proj_set:
+        try:
+            row = _number + 1
+            xls_obj.write(row, 0, unicode(_number))
+            xls_obj.write(row, 1, unicode(proj_obj.teacher.teacherinfosetting))
+            xls_obj.write(row, 2, unicode(proj_obj.teacher.college))
+            xls_obj.write(row, 3, unicode(proj_obj.title))
+            xls_obj.write(row, 4, unicode(proj_obj.project_special))
+            xls_obj.write(row, 5, unicode())
+            xls_obj.write(row, 6, ','.join([ item.name for item in proj_obj.projectmember_set.all()]))
+            xls_obj.write(row, 7, unicode(proj_obj.project_status))  
+        except:
+            pass
+        _number =_number+1
+    # write xls file
+    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费申报项目汇总表"))
     workbook.save(save_path)
     return save_path
 

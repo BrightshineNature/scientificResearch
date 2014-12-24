@@ -36,6 +36,10 @@ urlpatterns = patterns('',
         school_views.controlView,
     ),
     url(
+        r'infoExport$',
+        school_views.infoExportView,
+    ),
+    url(
         r'financialinfo$',
         school_views.financialInfoView,
     ),

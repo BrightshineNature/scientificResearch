@@ -1,5 +1,6 @@
 
 var objects_table_pos;
+
 $(document).on("click", ".saveObjectName",function(){
 
   var cnt = $(this).parents("[object]");
@@ -13,14 +14,22 @@ function saveObjectNameCallback(data){
     if(data.status == 1)
     {
       $(objects_table_pos).html(data.objects_table);
+      // $(objects_table_pos).find("tbody").append("adsfasdf");
+
+
 
       $("#alert_info_modal").find(".modal-body").html("<h3>添加成功！<h3>");
       $("#alert_info_modal").modal('show');
 
     }
-    else if(data.status == 0)
+    else if(data.status == 2)
     {
-      $("#alert_info_modal").find(".modal-body").html("<h3>添加不成功！所添加名字为空或者已存在！<h3>");
+      $("#alert_info_modal").find(".modal-body").html("<h3>添加不成功！所添加名字为空！<h3>");
+      $("#alert_info_modal").modal('show');
+    }
+    else if(data.status == 3)
+    {
+      $("#alert_info_modal").find(".modal-body").html("<h3>添加不成功！所添加名字已存在！<h3>");
       $("#alert_info_modal").modal('show');
     }
 }
@@ -55,7 +64,7 @@ function deleteObjectNameCallback(data) {
     }
     else 
     {
-      error = "<h3>删除不成功！" + data.alloced + "已被分配到项目中，不可被删除！"
+      error = "<h3>删除不成功！" + data.alloced + "已被分配，不可被删除！"
     }
     $("#alert_info_modal").find(".modal-body").html(error);
     $("#alert_info_modal").modal('show');
