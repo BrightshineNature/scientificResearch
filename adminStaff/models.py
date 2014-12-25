@@ -43,7 +43,6 @@ class ProjectSingle(models.Model):
         default_status = 1
     project_status=models.ForeignKey(ProjectStatus,blank=False,default=default_status,verbose_name=u"项目状态")
     project_sendback_status = models.ForeignKey(ProjectStatus,verbose_name=u"项目退回状态",blank=True,null=True,default=None)
-    # expert = models.ManyToManyField(ExpertProfile, through='Re_Project_Expert')
 
     project_special = models.ForeignKey(Special, verbose_name=u"专题类型", blank=True, null=True, default=None)
     application_year = models.IntegerField(blank=False, null=False, max_length=4,default=lambda: datetime.datetime.today().year,verbose_name=u"申请年份")

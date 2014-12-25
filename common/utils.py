@@ -30,6 +30,7 @@ def createNewProject(teacher, title, special):
     FinalSubmit(project_id = project).save()   
     ProjectFundSummary(project_id = project).save()
     ProjectFundBudget(project_id = project).save()
+    return project
     
 def getScoreTable(project):
     category = project.project_special.expert_review.category

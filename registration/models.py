@@ -1,4 +1,5 @@
 # coding: UTF-8
+import datetime
 from django.db import models
 import re,sha,random,uuid,datetime
 from django.db import transaction
@@ -73,8 +74,7 @@ class RegistrationManager(models.Manager):
             if send_email:
                 from django.core.mail import send_mail
                 subject = render_to_string('email/activation_email_subject.txt',
-                                       {'site':get_current_site(request),
-                                        'username':username,
+                                       {'username':username,
                                         'password':password})
 
                 # Email subject *must not* contain newlines
@@ -82,7 +82,9 @@ class RegistrationManager(models.Manager):
                 message = render_to_string('email/activation_email.txt',
                                        {'activation_key':registration_profile.activation_key,
                                         'expiration_days':settings.ACCOUNT_ACTIVATION_DAYS,
-                                        'site':site_domain,
+                                        # 'site':site_domain,
+                                        'year':datetime.datetime.today().year,
+                                        'site':"202.118.67.200:9006",
                                         'username':username,
                                         'password':password})
                 logger.error(message)
@@ -112,7 +114,7 @@ class RegistrationManager(models.Manager):
             teacherProfileObj.save()
             teacherInfoSettingObj = TeacherInfoSetting(teacher= teacherProfileObj)
             teacherInfoSettingObj.card = username
-            teacherInfoSettingObj.name = first_name
+            teacherInfoSettingObj.name = person_firstname
             teacherInfoSettingObj.save()
         elif Identity == EXPERT_USER:
             collegeObj = College.objects.get(id=kwargs["college"]);
