@@ -82,9 +82,8 @@ class RegistrationManager(models.Manager):
                 message = render_to_string('email/activation_email.txt',
                                        {'activation_key':registration_profile.activation_key,
                                         'expiration_days':settings.ACCOUNT_ACTIVATION_DAYS,
-                                        # 'site':site_domain,
+                                        'site':site_domain,
                                         'year':datetime.datetime.today().year,
-                                        'site':"202.118.67.200:9006",
                                         'username':username,
                                         'password':password})
                 logger.error(message)
