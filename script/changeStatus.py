@@ -35,13 +35,13 @@ import xlrd
 
 # print "hello"
 
-teachers = TeacherInfoSetting.objects.filter(card__endswith='x')
-teachers.count()
-for t in teachers:
-    u=t.card[:-1]
-    u=u+'X'
-    t.card=u
-    t.save()
-    print t.card
+# teachers = TeacherInfoSetting.objects.filter(card__endswith='x')
+# teachers.count()
+# for t in teachers:
+#     u=t.card[:-1]
+#     u=u+'X'
+#     t.card=u
+#     t.save()
+#     print t.card
 
-print "hello"
+# print "hello"
