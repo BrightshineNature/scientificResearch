@@ -10,6 +10,7 @@ from backend.logging import loginfo
 from common.sendEmail import sendemail
 from common.utils import createNewProject
 from django.contrib.auth.models import User
+from teacher.models import TeacherInfoSetting
 import xlrd
 
 # data = xlrd.open_workbook("1.xlsx")
@@ -24,12 +25,23 @@ import xlrd
 
 # print "hello"
 
-users = User.objects.filter(username__endswith='x')
-for user in users:
-    u=user.username[:-1]
+# users = User.objects.filter(username__endswith='x')
+# for user in users:
+#     u=user.username[:-1]
+#     u=u+'X'
+#     user.username = u
+#     user.save()
+#     print u
+
+# print "hello"
+
+teachers = TeacherInfoSetting.objects.filter(card__endswith='x')
+teachers.count()
+for t in teachers:
+    u=t.card[:-1]
     u=u+'X'
-    user.username = u
-    user.save()
-    print u
+    t.card=u
+    t.save()
+    print t.card
 
 print "hello"
