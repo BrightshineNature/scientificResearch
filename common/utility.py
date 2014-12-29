@@ -523,14 +523,17 @@ def xls_info_summary(request,proj_set):
     for proj_obj in proj_set:
         try:
             row = _number + 1
-            xls_obj.write(row, 0, unicode(_number))
-            xls_obj.write(row, 1, unicode(proj_obj.teacher.teacherinfosetting))
-            xls_obj.write(row, 2, unicode(proj_obj.teacher.college))
-            xls_obj.write(row, 3, unicode(proj_obj.title))
-            xls_obj.write(row, 4, unicode(proj_obj.project_special))
-            xls_obj.write(row, 5, unicode())
-            xls_obj.write(row, 6, ','.join([ item.name for item in proj_obj.projectmember_set.all()]))
-            xls_obj.write(row, 7, unicode(proj_obj.project_status))  
+            xls_obj.write(row, 0,u"姓名")
+            xls_obj.write(row, 1,u"所在学院")
+            xls_obj.write(row, 2,u"项目中邮箱")
+            xls_obj.write(row, 3,u"项目中出生年月")
+            xls_obj.write(row, 4,u"项目中参加状态")
+            xls_obj.write(row, 5,u"项目中职称")
+            xls_obj.write(row, 6,u"项目负责人")
+            xls_obj.write(row, 7,u"项目名称")
+            xls_obj.write(row, 8,u"依托学院")
+            xls_obj.write(row, 9,u"专题类型")
+            xls_obj.write(row, 10,u"参与项目数量")
         except:
             pass
         _number =_number+1
@@ -583,6 +586,49 @@ def average(score_list):
 def set_float(num):
     return float('%.2f' % num)
 
+def xls_info_duplicatecheck_gen():
+    workbook = xlwt.Workbook(encoding='utf-8')
+    worksheet = workbook.add_sheet('sheet1')
+    style = cell_style(horizontal=True,vertical=True)
+    # generate header
+    xls_obj.write(row, 0, unicode(proj_obj.project_code)) 
+    xls_obj.write(row, 1, unicode(proj_obj.title)) 
+    xls_obj.write(row, 2, unicode(manager.name)) 
+    xls_obj.write(row, 3, unicode(proj_obj.teacher.college)) 
+    xls_obj.write(row, 4, unicode(proj_obj.approval_year))
+    xls_obj.write(row, 5, unicode(proj_obj.project_special))  
+    xls_obj.write(row, 6, unicode(proj_obj.project_status)) 
+    xls_obj.write(row, 7, unicode(proj_obj.projectfundsummary.total_expenditure))
+
+    return worksheet, workbook
+
+def xls_info_duplicatecheck(request,proj_set):
+    """
+    """
+
+    xls_obj, workbook = xls_info_fundbudget_gen()
+
+    _number= 1
+    for proj_obj in proj_set:
+        teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
+        manager = teacher.teacherinfosetting
+        row = 1 + _number
+        xls_obj.write(row, 0, unicode(proj_obj.project_code)) 
+        xls_obj.write(row, 1, unicode(proj_obj.title)) 
+        xls_obj.write(row, 2, unicode(manager.name)) 
+        xls_obj.write(row, 3, unicode(proj_obj.teacher.college)) 
+        xls_obj.write(row, 4, unicode(proj_obj.approval_year))
+        xls_obj.write(row, 5, unicode(proj_obj.project_special))  
+        xls_obj.write(row, 6, unicode(proj_obj.project_status)) 
+        xls_obj.write(row, 7, unicode(proj_obj.projectfundsummary.total_expenditure))
+
+        _number+= 1
+    # write xls file
+    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学项目预算支出总和表"))
+    workbook.save(save_path)
+    return save_path
+
+    
 def delete_max_and_min(score_list):
     """
         删除最高分和最低分
