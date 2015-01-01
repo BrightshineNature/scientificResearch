@@ -13,7 +13,7 @@ from backend.logging import loginfo
 from const import *
 from django.db.models import Q
 
-from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage,get_project_list
+from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage,get_project_list, progressReportViewWork
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
@@ -147,8 +147,9 @@ def finalReportView(request,pid,is_submited=False):
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-def progressReportView(request,pid):
-    context = {}
+@check_submit_status(SUBMIT_STATUS_PROGRESS)
+def progressReportView(request,pid, is_submited = False):
+    context = progressReportViewWork(request, pid, is_submited)
     return render(request,"teacher/progress.html",context)
 
 @csrf.csrf_protect

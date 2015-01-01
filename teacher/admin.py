@@ -16,6 +16,7 @@ RegisterClass = (
     TeacherInfoSetting,
 	ProjectFundSummary,
 	ProjectFundBudget,
+    ProgressReport,
 )
 
 for temp in RegisterClass:

@@ -21,6 +21,8 @@ from users.models import College,Special
 from common.models import ProjectMember,BasisContent , BaseCondition, UploadFile
 from dajaxice.utils import deserialize_form
 
+import datetime
+
 def getSingleProjectURLList(item):
     URLList = []
     if item.file_application:
@@ -420,6 +422,8 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     projachivementform  = ProjectAchivementForm()
     projdatastaticsform = ProjectDatastaticsForm()
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
+    reports = ProgressReport.objects.filter(project_id = pid).order_by("-year")
+    progress_form = ProgressForm()
 
 
     final_form = FinalReportForm(instance=final)
@@ -443,6 +447,8 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
         'profundsummaryform':profundsummaryform,
         'is_submited':is_submited,
         'projectbudget':project.project_budget_max,
+        'reports': reports,
+        'progress_form': progress_form,
         'page':page,
         'page2':page2,
     }
@@ -473,7 +479,20 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
         'projectbudget':project.project_budget_max,
     }
     return context
-    
+
+def progressReportViewWork(request, pid, is_submited, redirect = False):
+    progress_form = ProgressForm()
+    reports = ProgressReport.objects.filter(project_id = pid).order_by("-year")
+    context = {
+        'redirect': redirect,
+        'progress_form': progress_form,
+        'pid': pid,
+        'is_submited': is_submited,
+        'reports': reports,
+    }
+    return context
+
+
 def noticeMessageSettingBase(request,userauth):
     notice_choice=NOTICE_CHOICE
     template_notice_message=TemplateNoticeMessage.objects.all()

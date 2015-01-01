@@ -1,6 +1,6 @@
 # coding: UTF-8
 
-import uuid
+import uuid, datetime
 
 from const import *
 from django.db import models
@@ -8,6 +8,22 @@ from backend.utility import make_uuid
 from adminStaff.models import ProjectSingle
 from const.models import  AchivementTypeDict,StaticsTypeDict,StaticsDataTypeDict
 from users.models import TeacherProfile
+
+
+class ProgressReport(models.Model):
+    content_id = models.CharField(max_length=50,
+                                  primary_key=True, default=lambda: str(uuid.uuid4()),
+                                  verbose_name="进展报告唯一ID")
+    project_id = models.ForeignKey(ProjectSingle)
+
+    summary = models.TextField(blank=True, null=True,
+                                       verbose_name="项目建设成效")
+    year = models.IntegerField(blank=False, null=False, default=lambda: datetime.datetime.today().year, max_length=4, verbose_name="录入年份")
+    class Meta:
+        verbose_name = "项目进展报告"
+        verbose_name_plural = "项目进展报告"
+    def __unicode__(self):
+        return self.project_id.title + "(%d)" % self.year
 
 
 class FinalSubmit(models.Model):

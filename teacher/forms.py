@@ -120,6 +120,14 @@ class ProFundSummaryForm(ModelForm):
         widgets = {"finance_account": forms.TextInput(attrs={"class":'form-control', "placeholder": "财务账号", }),
                   }
 
+class ProgressForm(ModelForm):
+    class Meta:
+        model = ProgressReport
+        exclude = ('content_id', 'project_id', 'year', )
+        widgets = {
+            "summary": forms.Textarea(attrs={"rows": "8", "cols": "100", "class":'fill-form', "placeholder": "项目本年取得的成效。填写具体成果及去的的阶段性成效，文字不超过300字", }),
+ 
+        }
 class ProFundBudgetForm(ModelForm):
 	class Meta:
 		model = ProjectFundBudget
