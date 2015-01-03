@@ -1,0 +1,1 @@
+{% load i18n %}{{email_title}}哈哈　这是标题

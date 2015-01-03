@@ -33,6 +33,11 @@
                                     学院秘书
                                 </label>
                             </div>
+                            {%ifequal userauth.role 'school'%}
+                            <label id="college_chose">
+                                {{notice_form.college_list}}
+                            </label>
+                            {%endifequal%}
                             <div>
                                 <label>
                                     {{notice_form.teacher}}

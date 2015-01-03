@@ -61,6 +61,15 @@ $(document).on("click",".select_template_notice",function(){
 });
 $("#teacher_chose").hide();
 $("#expert_chose").hide();
+$("#college_chose").hide();
+$(document).on("click","#id_college",function(){
+    if(this.checked===true){
+        $("#college_chose").show(300);
+    }
+    else{
+        $("#college_chose").hide(300);
+    }
+});
 $(document).on("click","#id_teacher",function(){
     if(this.checked===true){
         $("#teacher_chose").show(300);
@@ -101,13 +110,12 @@ function send_mail_callback(data){
     else if(data.status==3){
         $("#error_message").html("没有符合要求接收者！");
     }
-    if(data.status!==0){ $("#noticemessage_warning").show();
-$("#noticemessage_success").hide();
-}
-else{
-    $("#noticemessage_warning").hide();
-    $("#noticemessage_success").show();
-}
-
-
+    if(data.status!==0){ 
+        $("#noticemessage_warning").show();
+        $("#noticemessage_success").hide();
+    }
+    else{
+        $("#noticemessage_warning").hide();
+        $("#noticemessage_success").show();
+    }
 }

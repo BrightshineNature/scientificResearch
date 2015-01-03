@@ -282,6 +282,7 @@ def scheduleManage(request, userauth):
         statusform=AllStatusForm()
         context.update({'allstatusform':statusform})
     return render(request, userauth['role'] + '/schedule.html', context)
+
 def researchConcludingManage(request , userauth):
     page = request.GET.get('page')
     page2 = request.GET.get('page2')
@@ -291,6 +292,7 @@ def researchConcludingManage(request , userauth):
         page2 = 1
     context = schedule_form_data(request , userauth,page=page,page2=page2)
     return render(request, userauth['role']+'/research_concluding.html' ,context)
+
 def financeManage(request, userauth):
     page = request.GET.get('page')
     page2 = request.GET.get('page2')
@@ -304,9 +306,11 @@ def financeManage(request, userauth):
     for item in context.get("item_list"):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
     return render(request, userauth['role'] + '/financeProject.html', context)
+
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
     return render(request, userauth['role'] + '/financial.html', context)
+
 def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
     ProjectJudge_form=ProjectJudgeForm()
     has_data = False
@@ -333,6 +337,7 @@ def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
         context.update({'show':1})
     context.update(param)
     return context
+
 def get_project_list(request):
     identity = request.session.get('auth_role', "")
     if identity == ADMINSTAFF_USER:
@@ -359,6 +364,7 @@ def get_project_list(request):
     else:
         pro_list = ProjectSingle.objects.all()
     return pro_list
+    
 def get_search_data(request,schedule_form):
     if schedule_form.is_valid():
         application_status=schedule_form.cleaned_data['application_status']
