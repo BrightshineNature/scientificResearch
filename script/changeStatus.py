@@ -1,4 +1,5 @@
 # coding: UTF-8
+from django.db.models import Q
 import datetime
 from adminStaff.models import ProjectSingle
 from const.models import *
@@ -12,7 +13,7 @@ from common.utils import createNewProject
 from django.contrib.auth.models import User
 from teacher.models import TeacherInfoSetting
 import xlrd
-
+from common.utility import xls_info_duplicatecheck
 # data = xlrd.open_workbook("1.xlsx")
 # table = data.sheet_by_index(0)
 
@@ -45,3 +46,7 @@ import xlrd
 #     print t.card
 
 # print "hello"
+
+proj_list = ProjectSingle.objects.filter(Q(application_year = 2014) & Q(project_status__status__lt =PROJECT_STATUS_APPROVAL) & Q(project_status__status__gte =PROJECT_STATUS_APPLICATION_COLLEGE_OVER))
+xls_info_duplicatecheck("1",proj_list)
+print "end"

@@ -229,8 +229,6 @@ def fileUploadManage(request, pid):
     error = 0
     is_upload_file = 0
     if request.method == 'POST':
-
-
         if request.POST.has_key("is_delete_file"):
             print "CAO" * 10
             fid = request.POST['fid']
