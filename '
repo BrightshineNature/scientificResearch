@@ -1,0 +1,15 @@
+$(document).ready(function(){
+    refresh_progress_history();
+});
+
+function refresh_progress_history(){
+    var pid = $(".save_button").attr("args");
+    Dajaxice.teacher.refreshProgressHistory(refreshCallBack, {"pid": pid,});
+}
+function refreshCallBack(data){
+    $("#progress_history_table").html(data);
+}
+$(".save_button").click(function(){
+    var pid = $(this).attr("args");
+    alert(pid);
+});

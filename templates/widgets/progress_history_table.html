@@ -1,0 +1,21 @@
+    <table class="table table-bordered table-hover">
+        <thead>
+            <th>年份</th>
+            <th>报告内容</th>
+            {% if not is_teacher %}
+            <th>操作</th>
+            {% endif %}
+        </thead>
+        <br/>
+        <tbody>
+            {% for report in reports %}
+                <tr>
+                    <td>{{report.year}}</td>
+                    <td>{{report.summary}}</td>
+                    {% if not is_teacher %}
+                    <td><a data-toggle="modal" href="#change_modal" class="btn btn-primary progress_change" args="{{report.content_id}}">修改</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>

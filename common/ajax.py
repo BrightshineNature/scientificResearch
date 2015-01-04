@@ -17,7 +17,7 @@ from backend.decorators import check_auth
 from django.db.models import Q
 from backend.logging import loginfo
 from django.conf import settings
-
+from django.contrib.auth.models import User
 from const import *
 from common.utils import status_confirm, statusRollBack
 
@@ -59,8 +59,14 @@ def SendMail(request,form):
             special_group=SchoolProfile.objects.all()
             recipient_list.extend([item.userid.email for item in special_group])
         if form.get("college"):
-            college_group=CollegeProfile.objects.all()
-            recipient_list.extend([item.userid.email for item in college_group])
+            if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
+                college_group=CollegeProfile.objects.all()
+                recipient_list.extend([item.userid.email for item in college_group])
+            else:
+                college_group=form.getlist("college_list")
+                college_group=[int(item) for item in college_group]
+                college_group=CollegeProfile.objects.filter(id__in=college_group)
+                recipient_list.extend([item.userid.email for item in college_group])
         if form.get("teacher"):
             if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
                 teacher_group=TeacherProfile.objects.all()
@@ -87,11 +93,18 @@ def SendMail(request,form):
                     expert_group.extend([item.expert for item in p_e_group])
                 expert_group=list(set(expert_group))
                 recipient_list.extend([item.userid.email for item in expert_group])
+        print "#################"
+        print recipient_list
+        print "#################"
         if len(recipient_list)==0:
             status=3
         else:
             status=0
-            send_mail(form["mail_title"],form["mail_content"],settings.DEFAULT_FROM_EMAIL,recipient_list)
+            title = render_to_string('email/email_2_expert_title.txt',
+                                     {"email_title":form["mail_title"]})
+            content = render_to_string('email/email_2_expert_content.txt',
+                                      {"email_content":form["mail_content"]})
+            send_mail(title,content,settings.DEFAULT_FROM_EMAIL,recipient_list)
     return simplejson.dumps({"status":status})
 
 @dajaxice_register

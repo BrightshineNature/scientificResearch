@@ -145,6 +145,7 @@ def noticeMessageSettingView(request):
         "role":"school"
     }
     return noticeMessageSettingBase(request,userauth)
+
 @csrf.csrf_protect
 @login_required
 @authority_required(SCHOOL_USER)

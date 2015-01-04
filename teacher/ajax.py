@@ -2,6 +2,7 @@
 from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
+from django.db.models import Q
 
 from django.http import Http404
 from django.utils import simplejson
@@ -12,6 +13,7 @@ from const.models import *
 from const import FINAL_WEB_CONFIRM 
 from common.utils import  status_confirm
 from backend.logging import logger, loginfo
+from backend.decorators import check_auth
 from django.template.loader import render_to_string
 from adminStaff.models import ProjectSingle
 from users.models import Special
@@ -262,3 +264,42 @@ def finalReportFinish(request,pid):
 
     ret = {'message':message,'pid':pid,'status':status,}
     return simplejson.dumps(ret)
+
+
+@dajaxice_register
+def saveProgress(request, pid, report_content):
+    if report_content == "":
+        return "empty input"
+    project = ProjectSingle.objects.get(project_id = pid)
+    current_year = datetime.datetime.today().year
+    if ProgressReport.objects.filter(Q(project_id = pid) & Q(year = current_year)).count():
+        ProgressReport.objects.get(Q(project_id = pid) & Q(year = current_year)).delete();
+    report = ProgressReport(project_id = project, summary = report_content)
+    report.save()
+    return "ok"
+
+@dajaxice_register
+def refreshProgressHistory(request, pid):
+    reports = ProgressReport.objects.filter(project_id = pid).order_by("-year")
+    is_teacher = (request.session.get('auth_role') == TEACHER_USER) 
+    print is_teacher
+    return render_to_string("widgets/progress_history_table.html", {"reports": reports, "is_teacher": is_teacher, })
+
+@dajaxice_register
+def submitProgress(request, pid):
+    project = ProjectSingle.objects.get(project_id = pid)
+    is_redirect = (request.session.get('auth_role') == TEACHER_USER)
+    current_year = datetime.datetime.today().year
+    if not ProgressReport.objects.filter(Q(project_id = pid) & Q(year = current_year)).count():
+        return simplejson.dumps({"message": "empty report"})
+    status_confirm(project, PROGRESS_SUBMIT_CONFIRM) 
+    return simplejson.dumps({"message": "ok", "is_redirect": is_redirect, "pid": pid})
+
+@dajaxice_register
+def changeProgress(request, report_id, report_content):
+    if report_content == "":
+        return "empty input"
+    report = ProgressReport.objects.get(content_id = report_id)
+    report.summary = report_content
+    report.save()
+    return "ok"

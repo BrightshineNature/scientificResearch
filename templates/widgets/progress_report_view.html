@@ -3,20 +3,45 @@
     <h3>项目建设成效</h3>
 </div>
 <blockquote>
-    <div class="control-group form-inline {% if final.achievement_summary.errors %}error{% endif %}">
-        {{final.achievement_summary}} 
-        {% if final.achievement_summary.errors %}
+    <div args="{{pid}}" class="control-group form-inline {% if progress_form.errors %}error{% endif %}" id="progress_form">
+        {% csrf_token %}
+        {% if progress_form.errors %}
         <div class="row alert alert-error school-display">
             <button class="close" data-dismiss="alert">关闭</button>
-            {{ final.achievement_summary.errors }}
+            {{ progress_form.errors }}
         </div>
         {% endif %}  
-        <textarea rows="8" name="achievement_summary" id="id_achievement_summary" placeholder="项目本年取得的成效。填写具体成果及取得的阶段性成效，文字不超过300字" cols="100" class="fill-form"></textarea>
+        {{progress_form.summary}}
     </div>
+    {% if is_submited %}
+    <button class="btn btn-primary  save_button" args="{{pid}}">保存当前页面信息</button>
+    {% if userauth.is_teacher %}
+    <button class="btn btn-primary submit_button" args="{{pid}}">提交</button>
+    {% endif %}
+    {% endif %}
+    <br/>
+	<div id="progress_history_table">
+		
+	</div>
+	<div class="modal fade" id="change_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	      <h3 class="modal-title"></h3>
+	    </div>
+	    <div class="modal-body">
+            <textarea rows="8" id="change_content" cols="50" class="fill-form">
+            </textarea>
+        </div>
+    <div class="modal-footer">
+        <button type="button" id="change_save_btn" class="btn btn-primary" data-dismiss="modal">保存</button>  
+	    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	    </div>
+	  </div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </blockquote><!--end project content-->
 <br/>
-
-        <button class="btn btn-primary  save_button">保存当前页面信息</button>
-
-        <button class="btn btn-primary  submit_button" >提交</button>
-      <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/content.css"> 
+<script type='text/javascript' src="{{STATIC_URL}}js/teacher/progress.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/content.css"> 

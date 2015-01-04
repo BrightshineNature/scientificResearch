@@ -5,7 +5,7 @@ from const import *
 from backend.logging import loginfo
 from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice,get_conclude_year_choices,get_all_status_choice
 from common.models import ProjectMember, BasisContent, BaseCondition
-from users.models import Special,College
+from users.models import Special,College,CollegeProfile
 
 class AllStatusForm(forms.Form):
     status_choices=PROJECT_STATUS_CHOICES
@@ -102,8 +102,10 @@ class ProjectJudgeForm(forms.Form):
     final=forms.MultipleChoiceField(choices=final_choice,required=False,widget=forms.CheckboxSelectMultiple())
     reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
     max_budget = forms.IntegerField(max_value=50,required=False,widget=forms.DateInput(attrs={'class':'form-control',"onkeyup":"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" ,'onafterpaste':"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"}))
+
 from users.models import SchoolProfile
 from adminStaff.models import ProjectSingle
+
 class NoticeForm(forms.Form):
     mail_content=forms.CharField(required=True,widget=forms.Textarea(attrs={'class':'form-control','row':'6'}))
     mail_title=forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -111,6 +113,7 @@ class NoticeForm(forms.Form):
     college=forms.BooleanField(required=False)
     teacher=forms.BooleanField(required=False)
     expert=forms.BooleanField(required=False)
+    college_list=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
     teacher_year=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
     teacher_special=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
     expert_year=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
@@ -121,6 +124,18 @@ class NoticeForm(forms.Form):
         super(NoticeForm,self).__init__(*args,**kwargs)
         if request == None:return
         if SchoolProfile.objects.filter(userid=request.user).count()>0:
+            college_list_choice=[]
+            college_list_all = CollegeProfile.objects.all()
+            for item in college_list_all:
+                collegename = [obj.name for obj in item.college_set.all()]
+                cname = ""
+                for name in collegename:
+                    cname=cname+name+'  '
+                collegename = item.userid.first_name+'('+cname+')'
+                college_list_choice.append((item.id,collegename))
+            college_list_choice=list(set(college_list_choice))
+
+            #college_list_choice.extend(list(set([(item.id,item.userid.first_name) for item in CollegeProfile.objects.all()])))
             project_group=ProjectSingle.objects.filter(project_special__school_user__userid=request.user)
             teacher_year_choice=[]
             teacher_year_choice.extend(list(set([ (item.approval_year,item.approval_year) for item in project_group])))
@@ -128,10 +143,12 @@ class NoticeForm(forms.Form):
             teacher_special_choice=[]
             teacher_special_choice.extend(list(set([(item.project_special.id,item.project_special.name) for item in project_group])))
             teacher_special_choice=tuple(teacher_special_choice)
+            self.fields["college_list"].choices=college_list_choice
             self.fields["teacher_year"].choices=teacher_year_choice
             self.fields["expert_year"].choices=teacher_year_choice
             self.fields["teacher_special"].choices=teacher_special_choice
             self.fields["expert_special"].choices=teacher_special_choice
+            
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
         max_length = 400,

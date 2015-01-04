@@ -21,6 +21,8 @@ from users.models import College,Special
 from common.models import ProjectMember,BasisContent , BaseCondition, UploadFile
 from dajaxice.utils import deserialize_form
 
+import datetime
+
 def getSingleProjectURLList(item):
     URLList = []
     if item.file_application:
@@ -278,6 +280,7 @@ def scheduleManage(request, userauth):
         statusform=AllStatusForm()
         context.update({'allstatusform':statusform})
     return render(request, userauth['role'] + '/schedule.html', context)
+
 def researchConcludingManage(request , userauth):
     page = request.GET.get('page')
     page2 = request.GET.get('page2')
@@ -287,6 +290,7 @@ def researchConcludingManage(request , userauth):
         page2 = 1
     context = schedule_form_data(request , userauth,page=page,page2=page2)
     return render(request, userauth['role']+'/research_concluding.html' ,context)
+
 def financeManage(request, userauth):
     page = request.GET.get('page')
     page2 = request.GET.get('page2')
@@ -300,9 +304,11 @@ def financeManage(request, userauth):
     for item in context.get("item_list"):
         item.remain=int(item.projectfundsummary.total_budget)-int(item.projectfundsummary.total_expenditure)
     return render(request, userauth['role'] + '/financeProject.html', context)
+
 def financialManage(request, userauth):
     context = schedule_form_data(request, userauth)
     return render(request, userauth['role'] + '/financial.html', context)
+
 def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
     ProjectJudge_form=ProjectJudgeForm()
     has_data = False
@@ -329,6 +335,7 @@ def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
         context.update({'show':1})
     context.update(param)
     return context
+
 def get_project_list(request):
     identity = request.session.get('auth_role', "")
     if identity == ADMINSTAFF_USER:
@@ -355,6 +362,7 @@ def get_project_list(request):
     else:
         pro_list = ProjectSingle.objects.all()
     return pro_list
+    
 def get_search_data(request,schedule_form):
     if schedule_form.is_valid():
         application_status=schedule_form.cleaned_data['application_status']
@@ -418,6 +426,8 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     projachivementform  = ProjectAchivementForm()
     projdatastaticsform = ProjectDatastaticsForm()
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
+    reports = ProgressReport.objects.filter(project_id = pid).order_by("-year")
+    progress_form = ProgressForm()
 
 
     final_form = FinalReportForm(instance=final)
@@ -441,6 +451,8 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
         'profundsummaryform':profundsummaryform,
         'is_submited':is_submited,
         'projectbudget':project.project_budget_max,
+        'reports': reports,
+        'progress_form': progress_form,
         'page':page,
         'page2':page2,
     }
@@ -471,7 +483,20 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
         'projectbudget':project.project_budget_max,
     }
     return context
-    
+
+def progressReportViewWork(request, pid, is_submited, redirect = False):
+    progress_form = ProgressForm()
+    reports = ProgressReport.objects.filter(project_id = pid).order_by("-year")
+    context = {
+        'redirect': redirect,
+        'progress_form': progress_form,
+        'pid': pid,
+        'is_submited': is_submited,
+        'reports': reports,
+    }
+    return context
+
+
 def noticeMessageSettingBase(request,userauth):
     notice_choice=NOTICE_CHOICE
     template_notice_message=TemplateNoticeMessage.objects.all()
