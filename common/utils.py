@@ -356,11 +356,22 @@ def status_confirm(project, confirm):
             set_status(project,PROJECT_STATUS_SCHOOL_OVER)
         else:
             return False
+
     elif project.project_status.status==PROJECT_STATUS_TASK_SCHOOL_OVER:
-        if confirm==PROGRESS_SUBMIT_CONFIRM:
-            set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
+        if confirm==PROGRESS_WEB_CONFIRM:
+            if project.file_interimchecklist==True:
+                set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_PROGRESS_WEB_OVER)
         else:
             return False
+
+    elif project.project_status.status==PROJECT_STATUS_PROGRESS_WEB_OVER:
+        if confirm==PROGRESS_SUBMIT_CONFIRM:
+            set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+        else:
+            return False
+
     elif project.project_status.status==PROJECT_STATUS_PROGRESS_COMMIT_OVER:
         if confirm==PROGRESS_SCHOOL_CONFIRM:
             set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
