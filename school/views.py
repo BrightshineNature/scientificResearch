@@ -193,3 +193,10 @@ def infoExportView(request):
              'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
             }
     return render(request,"school/exportExcel.html",context)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(SCHOOL_USER)
+def allocEmailView(request,param):
+    
+    return render(request,"school/allocEmail.html")

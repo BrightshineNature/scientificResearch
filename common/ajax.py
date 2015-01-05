@@ -104,6 +104,8 @@ def SendMail(request,form):
                                      {"email_title":form["mail_title"]})
             content = render_to_string('email/email_2_expert_content.txt',
                                       {"email_content":form["mail_content"]})
+            for item in recipient_list:
+                print item
             send_mail(title,content,settings.DEFAULT_FROM_EMAIL,recipient_list)
     return simplejson.dumps({"status":status})
 

@@ -24,6 +24,10 @@ urlpatterns = patterns('',
         school_views.progressReportView,
     ),
     url(
+        r'^allocemail/(.+)$',
+        school_views.allocEmailView,
+    ),
+    url(
         r'^alloc',
         school_views.allocView,
     ),

@@ -1,144 +1,144 @@
 <div class="container-fluid"><!--FORM2 DIV-->
-    <fieldset>
-        <div class="row">
-            <div class="col-lg-4">
-                <form class="well" method="POST" id="noticemessage_form" >
-                    {% csrf_token %}
-                    <div class="alert alert-info control-group">
-                        <a class="close" data-dismiss="alert">×</a>
-                        <strong>说明:</strong>提示信息将在相应角色登录后显示
-                    </div>
-                    <div class="alert alert-danger" id="noticemessage_warning" >
-                            <a class="close" id="alert_close">×</a>
-                            <span id="error_message"> 角色选择错误</span>
-                        </div>
- <div class="alert alert-success" id="noticemessage_success" >
-                            <a class="close" id="alert_close1">×</a>
-                            邮件发送成功
-                        </div>
-                    <div class="form-group">
-                        <label class="control-label" for="select_role">角色选择</label>
-                        <div class="controls">
-                            {%ifequal userauth.role 'adminStaff'%}
-                            <div>
-                                <label>
-                                    {{notice_form.special}}
-                                    专题管理员
-                                </label>
-                            </div>
-                            {%endifequal%}
-                            <div>
-                                <label>
-                                    {{notice_form.college}}
-                                    学院秘书
-                                </label>
-                            </div>
-                            {%ifequal userauth.role 'school'%}
-                            <label id="college_chose">
-                                {{notice_form.college_list}}
-                            </label>
-                            {%endifequal%}
-                            <div>
-                                <label>
-                                    {{notice_form.teacher}}
-                                    教师
-                                </label>
-                            </div>
-                            {%ifequal userauth.role 'school'%}
-                            <label id="teacher_chose">
-                                年份
-                                {{notice_form.teacher_year}}
-                                专题
-                                {{notice_form.teacher_special}}
-                            </label>
-                            {%endifequal%}
-                            <div>
-                                <label>
-                                    {{notice_form.expert}}
-                                    专家
-                                </label>
-                            </div>
-                            {%ifequal userauth.role 'school'%}
-                            <label id="expert_chose">
-                                年份
-                                {{notice_form.expert_year}}
-                                专题
-                                {{notice_form.expert_special}}
-                            </label>
-                            {%endifequal%}
-                        </div>
-                    </div>
-                   <div class="form-group">
-                        <label class="control-label" for="textinput">邮件标题</label>
-                        <div class="controls">
-                            {{notice_form.mail_title}}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="textarea">邮件内容</label>
-                        <div class="controls">
-                            {{notice_form.mail_content}}
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-primary" id="send_mail">确认发送</button>
-                        <button class="btn">取消</button>
-                    </div>
-                </form>
+  <fieldset>
+    <div class="row">
+      <div class="col-lg-4">
+        <form class="well" method="POST" id="noticemessage_form" >
+          {% csrf_token %}
+          <div class="alert alert-info control-group">
+            <a class="close" data-dismiss="alert">×</a>
+            <strong>说明:</strong>提示信息将在相应角色登录后显示
+          </div>
+          <div class="alert alert-danger" id="noticemessage_warning" >
+            <a class="close" id="alert_close">×</a>
+            <span id="error_message"> 角色选择错误</span>
+          </div>
+          <div class="alert alert-success" id="noticemessage_success" >
+            <a class="close" id="alert_close1">×</a>
+            邮件发送成功
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="select_role">角色选择</label>
+            <div class="controls">
+              {%ifequal userauth.role 'adminStaff'%}
+              <div>
+                <label>
+                  {{notice_form.special}}
+                  专题管理员
+                </label>
+              </div>
+              {%endifequal%}
+              <div>
+                <label>
+                  {{notice_form.college}}
+                  学院秘书
+                </label>
+              </div>
+              {%ifequal userauth.role 'school'%}
+              <label id="college_chose">
+                {{notice_form.college_list}}
+              </label>
+              {%endifequal%}
+              <div>
+                <label>
+                  {{notice_form.teacher}}
+                  教师
+                </label>
+              </div>
+              {%ifequal userauth.role 'school'%}
+              <label id="teacher_chose">
+                年份
+                {{notice_form.teacher_year}}
+                专题
+                {{notice_form.teacher_special}}
+              </label>
+              {%endifequal%}
+              <div>
+                <label>
+                  {{notice_form.expert}}
+                  专家
+                </label>
+              </div>
+              {%ifequal userauth.role 'school'%}
+              <label id="expert_chose">
+                年份
+                {{notice_form.expert_year}}
+                专题
+                {{notice_form.expert_special}}
+              </label>
+              {%endifequal%}
             </div>
-            <div class="bs-docs-example col-lg-8">
-                <span><a class="btn btn-primary" data-toggle="modal" data-target="#notice_profile_info" id="add_new_notice" 
-                        >添加新模版消息</a></span>
-                <span id="template_notice_error_message"></span>
-                <div class="modal  fade"  id="notice_profile_info">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <a class="close" data-dismiss="modal">×</a>
-                                <h3>修改提示信息模版:</h3>
-                            </div>
-                            <div class="modal-body">
-                                <form class="well form" id="template_notice_info_form" method="POST" action="">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label class="add-on">标题</label>
-                                        {{template_notice_message_form.title}}    
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="add-on">内容</label>
-                                        {{ template_notice_message_form.message}}
-                                    </div>
-                                </form><!--end school_email_send_form-->
-                            </div>
-                            <div class="modal-footer">
-                                <a class="btn" data-dismiss="modal" >关闭</a>
-                                <a class="btn btn-primary" data-dismiss="modal" 
-                                    id="add_or_update_notice">保存更新</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal  fade"  id="notice_delete_info">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            </div>
-                            <div class="modal-body">
-                                <h2 class="text-error">确定删除此条信息模版吗？</h2>
-                            </div>
-                            <div class="modal-footer">
-                                <a class="btn" data-dismiss="modal" >取消</a>
-                                <a class="btn btn-primary" data-dismiss="modal" id="delete_notice">确定</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="template_notice_table">
-                    {% include "widgets/template_notice_table.html" %}
-                </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="textinput">邮件标题</label>
+            <div class="controls">
+              {{notice_form.mail_title}}
             </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="textarea">邮件内容</label>
+            <div class="controls">
+              {{notice_form.mail_content}}
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary" id="send_mail">确认发送</button>
+            <button class="btn">取消</button>
+          </div>
+        </form>
+      </div>
+      <div class="bs-docs-example col-lg-8">
+        <span><a class="btn btn-primary" data-toggle="modal" data-target="#notice_profile_info" id="add_new_notice" 
+                 >添加新模版消息</a></span>
+        <span id="template_notice_error_message"></span>
+        <div class="modal  fade"  id="notice_profile_info">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>修改提示信息模版:</h3>
+              </div>
+              <div class="modal-body">
+                <form class="well form" id="template_notice_info_form" method="POST" action="">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label class="add-on">标题</label>
+                    {{template_notice_message_form.title}}    
+                  </div>
+                  <div class="form-group">
+                    <label class="add-on">内容</label>
+                    {{ template_notice_message_form.message}}
+                  </div>
+                </form><!--end school_email_send_form-->
+              </div>
+              <div class="modal-footer">
+                <a class="btn" data-dismiss="modal" >关闭</a>
+                <a class="btn btn-primary" data-dismiss="modal" 
+                   id="add_or_update_notice">保存更新</a>
+              </div>
+            </div>
+          </div>
         </div>
-    </fieldset>
+
+        <div class="modal  fade"  id="notice_delete_info">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+              </div>
+              <div class="modal-body">
+                <h2 class="text-error">确定删除此条信息模版吗？</h2>
+              </div>
+              <div class="modal-footer">
+                <a class="btn" data-dismiss="modal" >取消</a>
+                <a class="btn btn-primary" data-dismiss="modal" id="delete_notice">确定</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="template_notice_table">
+          {% include "widgets/template_notice_table.html" %}
+        </div>
+      </div>
+    </div>
+  </fieldset>
 </div><!--End FORM2-->
 <script type='text/javascript' src="{{STATIC_URL}}js/notice_message_setting.js"></script>

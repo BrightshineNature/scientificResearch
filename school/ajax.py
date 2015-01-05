@@ -237,25 +237,13 @@ def ChangeControlStatus(request,special_id,type_id,type_name):
         if type in CONTROL_TYPE_CHOICES or type_id=="review":
             bValue = not getattr(special,type_id+"_status")
             if type_id == TYPE_ALLOC[0]:
-                if bValue:
+                if not bValue:
                     pro_list = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
-                    loginfo(pro_list)
-                    for pro in pro_list:
-                        status_confirm(pro,APPLICATION_REVIEW_START_CONFIRM)
-                else:
-                    pro_list = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_APPLICATION_REVIEW_START))
-                    loginfo(pro_list)
                     for pro in pro_list:
                         status_confirm(pro,APPLICATION_REVIEW_CONFIRM)
             elif type_id == TYPE_FINAL_ALLOC[0]:
-                if bValue:
-                   pro_list = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT))
-                   loginfo(pro_list)
-                   for pro in pro_list:
-                       status_confirm(pro,FINAL_REVIEW_START_CONFIRM)
-                else:
-                    pro_list = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_FINAL_REVIEW_START))
-                    loginfo(pro_list)
+                if not bValue:
+                    pro_list = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT))
                     for pro in pro_list:
                         status_confirm(pro,FINAL_REVIEW_CONFIRM)
             setattr(special,type_id+"_status",bValue)
