@@ -137,6 +137,7 @@ def appManage(request, pid):
         'base_condition_form':base_condition_form,
         'base_condition_id':base_condition_id,
         'project_member_list': project_member_list,
+        'pro':p,
         'pid': pid,
         'page':page,
         'page2':page2,
@@ -163,9 +164,6 @@ AcceptedExtension = [
     'doc', 'docx', 'DOC', 'DOCX',
 ]
 def handleFileUpload(request, pid,  entrance):
-
-
-
     print "HA&" * 10
     print entrance
     f = request.FILES[entrance]
@@ -189,8 +187,6 @@ def handleFileUpload(request, pid,  entrance):
             path = i.file_obj.path
             i.delete()
             default_storage.delete(path)
-
-
     # print "enter ********* save"
     project = ProjectSingle.objects.get(project_id = pid)
     obj = UploadFile()
@@ -218,7 +214,6 @@ def handleFileUpload(request, pid,  entrance):
         project.file_summary = True
         project.submit_date=timenow
         status_confirm(project, FINAL_SUBMIT_CONFIRM)
-        
     project.save()
     return 1
 
@@ -453,6 +448,7 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
         'projectbudget':project.project_budget_max,
         'reports': reports,
         'progress_form': progress_form,
+        'pro':project,
         'page':page,
         'page2':page2,
     }

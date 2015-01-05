@@ -1,5 +1,5 @@
 # coding: UTF-8
-
+import datetime
 from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
 from django.utils import simplejson
@@ -18,7 +18,11 @@ from common.utils import status_confirm, getScoreTable, getScoreForm, getProject
 from const.models import ProjectStatus
 from school.forms import ExpertReviewForm
 from common.views import get_project_list
-
+from common.forms import EmailForm
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.contrib.sites.models import get_current_site,Site
 @dajaxice_register
 def getUnallocProjectPagination(request, page, college_id, special_id, path):
     message = ""
@@ -183,7 +187,10 @@ def appendAlloc(request, project_id, expert_list, path):
             re_obj.save()
             table = getScoreTable(project)
             table(re_obj = re_obj).save()
-
+            current_site = Site.objects.get_current()
+            site_domain =current_site.domain
+            content = render_to_string('email/email_expert_content.txt',{'site':site_domain,'year':datetime.datetime.today().year,})
+            send_mail(u'大连理工大学基本科研业务经费管理平台专家评审通知',content,settings.DEFAULT_FROM_EMAIL,[expert.userid.email])
             message = "ok"
     return simplejson.dumps({"message": message, })
 
@@ -300,4 +307,38 @@ def ExpertinfoExport(request,special_id,eid):
         ret = {'path':path}
         return simplejson.dumps(ret)
     return simplejson.dumps({'status':'0'})
+
+@dajaxice_register
+def AllocEmail(request,form,param):
+    form = EmailForm(deserialize_form(form),request=request)
+    if form.is_valid():
+        try:
+            if param in TYPE_ALLOC:
+                proj_list = ProjectSingle.objects.filter(Q(project_special=form.cleaned_data['special']) & Q(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
+            elif param in TYPE_FINAL_ALLOC:
+                proj_list = ProjectSingle.objects.filter(Q(project_special=form.cleaned_data['special']) & Q(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT))
+            else:
+                raise ValueError('')
+        except:
+            return simplejson.dumps({ 'status':'2', 'message':u"发送失败"})
+        if 1:
+            recipient_list=[]
+            expert_group=[]
+            for project in proj_list:
+                print project
+                p_e_group=Re_Project_Expert.objects.filter(project=project)
+                expert_group.extend([item.expert for item in p_e_group])
+            loginfo(len(expert_group))
+            expert_group=list(set(expert_group))
+            loginfo(len(expert_group))
+            recipient_list.extend([item.userid.email for item in expert_group])
+            send_mail(form.cleaned_data["mail_title"],form.cleaned_data["mail_content"],settings.DEFAULT_FROM_EMAIL,recipient_list)
+            return simplejson.dumps({ 'status':'1', 'message':u"专家发送完成"})
+    else:
+        return simplejson.dumps({ 'status':'0', 'message':u"发送失败",'table':refresh_alloc_email_form(form)})
+def refresh_alloc_email_form(form):
+    return render_to_string("widgets/alloc_email_form.html",{"email_form":form})
+
+
+
 

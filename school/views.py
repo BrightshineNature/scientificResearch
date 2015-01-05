@@ -5,6 +5,7 @@ Created on 2014-06-07
 Desc: school' view, includes home(manage), review report view
 '''
 from django.shortcuts import render
+import datetime
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.views.decorators import csrf
@@ -22,8 +23,9 @@ from adminStaff.models import ProjectSingle, Re_Project_Expert
 from school.forms import FilterForm,ExpertReviewForm
 from adminStaff.forms import DispatchAddCollegeForm
 from users.models import ExpertProfile, SchoolProfile,TeacherProfile
-from common.forms import ScheduleBaseForm
-
+from common.forms import ScheduleBaseForm,EmailForm
+from django.template.loader import render_to_string
+from django.contrib.sites.models import get_current_site,Site
 @csrf.csrf_protect
 @login_required
 @check_submit_status(SUBMIT_STATUS_APPLICATION)
@@ -193,10 +195,16 @@ def infoExportView(request):
              'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
             }
     return render(request,"school/exportExcel.html",context)
-
 @csrf.csrf_protect
 @login_required
 @authority_required(SCHOOL_USER)
 def allocEmailView(request,param):
-    
-    return render(request,"school/allocEmail.html")
+    current_site = Site.objects.get_current()
+    site_domain =current_site.domain
+    email_form=EmailForm(request=request,initial={'mail_content':render_to_string('email/email_expert_content.txt',{'site':site_domain,
+        'year':datetime.datetime.today().year,}),'mail_title':u'大连理工大学基本科研业务经费管理平台专家评审通知'})
+    context = {
+        "email_form":email_form,
+        "param":param,
+    }
+    return render(request,"school/allocEmail.html",context)
