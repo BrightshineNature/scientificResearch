@@ -368,7 +368,7 @@ def status_confirm(project, confirm):
 
     elif project.project_status.status==PROJECT_STATUS_PROGRESS_WEB_OVER:
         if confirm==PROGRESS_SUBMIT_CONFIRM:
-            set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+            set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
         else:
             return False
 
