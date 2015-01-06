@@ -14,6 +14,14 @@ from django.contrib.auth.models import User
 from teacher.models import TeacherInfoSetting
 import xlrd
 from common.utility import xls_info_duplicatecheck
+
+projs = ProjectSingle.objects.filter(project_status__gte = PROJECT_STATUS_PROGRESS_WEB_OVER)
+for pro in projs:
+    print pro.project_status.status
+    pstatus = ProjectStatus.object.get(status = pro.project_status.status+1)
+    pro.project_status = pstatus
+    print pro.project_status.status
+
 # data = xlrd.open_workbook("1.xlsx")
 # table = data.sheet_by_index(0)
 

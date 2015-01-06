@@ -276,6 +276,7 @@ def saveProgress(request, pid, report_content):
         ProgressReport.objects.get(Q(project_id = pid) & Q(year = current_year)).delete();
     report = ProgressReport(project_id = project, summary = report_content)
     report.save()
+    
     return "ok"
 
 @dajaxice_register
@@ -292,7 +293,7 @@ def submitProgress(request, pid):
     current_year = datetime.datetime.today().year
     if not ProgressReport.objects.filter(Q(project_id = pid) & Q(year = current_year)).count():
         return simplejson.dumps({"message": "empty report"})
-    status_confirm(project, PROGRESS_SUBMIT_CONFIRM) 
+    status_confirm(project, PROGRESS_WEB_CONFIRM)
     return simplejson.dumps({"message": "ok", "is_redirect": is_redirect, "pid": pid})
 
 @dajaxice_register
