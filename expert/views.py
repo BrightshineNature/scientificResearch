@@ -30,14 +30,16 @@ def homeView(request, is_submited=False):
     expert = ExpertProfile.objects.get(userid = request.user)
     re_list_1 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & \
                                                       Q(is_first_round = True) & \
-                                                      Q(project__project_status__status = PROJECT_STATUS_APPLICATION_REVIEW_START)))
+                                                      Q(project__project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT) & \
+                                                      Q(project__project_special__alloc_status = True)))
     for re_obj in re_list_1:
         loginfo(re_obj.project)
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
 
     re_list_2 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & \
                                                       Q(is_first_round = False) & \
-                                                      Q(project__project_status__status = PROJECT_STATUS_FINAL_REVIEW_START)))
+                                                      Q(project__project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT) & \
+                                                      Q(project__project_special__final_alloc_status = True)))
     for re_obj in re_list_2:
         loginfo(re_obj.project)
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()

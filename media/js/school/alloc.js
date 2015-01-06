@@ -9,6 +9,8 @@ if(!String.prototype.format) {
 }
 
 var glob_path;
+var glob_project_list = [];
+var current_tab;
 
 function clear_check_box(){
     $("input[type='checkbox']").each(function(){ 
@@ -19,29 +21,40 @@ $(document).ready(function(){
     $("#button_operator_cancel").hide(); 
 
     glob_path = window.location.pathname.split('/')[2];
+    current_tab = $("#unalloc_tab");
 });
 
-$("#alloc_tab").click(function(){
+$("#alloc_tab,#unalloc_tab").click(function(){
     clear_check_box();
+    glob_project_list = [];
+    current_tab = $(this);
+    $(".badge").html("");
     $("#button_operator_cancel").toggle();
     $("#button_operator_alloc").toggle();
     //$("#id_div_expert").hide();
 
 });
-$("#unalloc_tab").click(function(){
-    clear_check_box();
-    $("#button_operator_cancel").hide(); 
-    $("#button_operator_alloc").show();
-    //$("#id_div_expert").show();
+
+function update_badge(){
+    if(glob_project_list.length) current_tab.find("span").eq(0).html(glob_project_list.length);
+    else current_tab.find("span").eq(0).html("");
+}
+$(document).on("click", "[name='checkbox_unalloc_project'],[name='checkbox_alloc_project']", function(){
+    if(this.checked) glob_project_list.push($(this).val());
+    else glob_project_list.splice(glob_project_list.indexOf($(this).val()), 1);
+    update_badge();
 });
-
-
 $(document).on("click", ".select_all", function(){
     var state = this.checked;
     target = "[name='{0}']".format($(this).attr("arg"));
     $(target).each(function(){
-        this.checked = state;  
+        if(this.checked != state){
+            this.checked = state;  
+            if(state) glob_project_list.push($(this).val());
+            else glob_project_list.splice(glob_project_list.indexOf($(this).val()), 1);
+        }
     });
+    update_badge();
 });
 
 var glob_project_college_id = "-1";
@@ -54,9 +67,23 @@ $("#project_filter_button").click(function(){
                                                             "special_id": glob_project_special_id,
                                                             "path": glob_path,});
 });
+
+function unallocCheckboxFill(){
+    $("[name='checkbox_unalloc_project']").each(function(){
+        if(glob_project_list.indexOf($(this).val()) != -1) this.checked = true;    
+    });
+}
+function allocCheckboxFill(){
+    $("[name='checkbox_alloc_project']").each(function(){
+        if(glob_project_list.indexOf($(this).val()) != -1) this.checked = true;    
+    });
+}
+
 function getProjectListCallback(data){
     $("#alloced-section").html(data.html_alloc);
+    unallocCheckboxFill();
     $("#unalloced-section").html(data.html_unalloc);
+    allocCheckboxFill();
 }
 
 
@@ -69,6 +96,7 @@ $(document).on("click", "#unalloc_paginator .item_page", function(){
 });
 function getUnallocCallback(data){
     $("#unalloced-section").html(data.html);
+    unallocCheckboxFill();
 }
 
 $(document).on("click", "#alloc_paginator .item_page", function(){
@@ -81,6 +109,7 @@ $(document).on("click", "#alloc_paginator .item_page", function(){
 });
 function getAllocCallback(data){
     $("#alloced-section").html(data.html);
+    allocCheckboxFill();
 }
 
 var glob_expert_college_id = "-1";
@@ -105,6 +134,8 @@ function getExpertListCallback(data){
 }
 
 function refresh(){
+    glob_project_list = [];
+    $(".badge").html("");
     var page1 = $("#alloc_expert_paginator .disabled").val()
     var page2 = $("#alloc_paginator .disabled").val()
     var page3 = $("#unalloc_paginator .disabled").val()
@@ -125,14 +156,13 @@ function refresh(){
 
 $("#button_operator_alloc button").click(function(){
     var expert_list = []
-    var project_list = []
     $("#expert_box tbody").find("tr").each(function(){
         expert_list.push($(this).attr("args"));   
     })
-    $("input[name='checkbox_unalloc_project']:checkbox:checked").each(function(){ 
-        project_list.push($(this).val());
-    });
-    Dajaxice.school.allocProjectToExpert(allocProjectToExpertCallback, {"project_list": project_list,
+    //$("input[name='checkbox_unalloc_project']:checkbox:checked").each(function(){ 
+    //    project_list.push($(this).val());
+    //});
+    Dajaxice.school.allocProjectToExpert(allocProjectToExpertCallback, {"project_list": glob_project_list,
                                                                         "expert_list": expert_list,
                                                                         "path": glob_path,});
 });
@@ -152,11 +182,11 @@ function allocProjectToExpertCallback(data){
 
 
 $("#button_operator_cancel button").click(function(){
-    var project_list = []
-    $("input[name='checkbox_alloc_project']:checkbox:checked").each(function(){ 
-        project_list.push($(this).val());
-    });
-    Dajaxice.school.cancelProjectAlloc(cancelProjectAllocCallback, {"project_list": project_list,
+    //var project_list = []
+    //$("input[name='checkbox_alloc_project']:checkbox:checked").each(function(){ 
+    //    project_list.push($(this).val());
+    //});
+    Dajaxice.school.cancelProjectAlloc(cancelProjectAllocCallback, {"project_list": glob_project_list,
                                                                     "path": glob_path,});
 });
 function cancelProjectAllocCallback(data){
