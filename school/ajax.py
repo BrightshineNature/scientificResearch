@@ -64,12 +64,13 @@ def getAllocExpertPagination(request, id, page, path):
     message = ""
     page = int(page)
     is_first_round = (path == FIRST_ROUND_PATH)
+    status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT if is_first_round else PROJECT_STATUS_FINAL_EXPERT_SUBJECT
 
     if id == "-1": expert_list = ExpertProfile.objects.all()
     else: expert_list = ExpertProfile.objects.filter(college__id = id)
     for expert in expert_list:
-        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round)).count()
-
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round) & Q(project__project_status__status = status)).count()
+    
     context = getContext(expert_list, page, "item3", 0)
     html = render_to_string("school/widgets/alloc_expert_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })
@@ -78,10 +79,12 @@ def getAllocExpertPagination(request, id, page, path):
 def getExpertList(request, id, path):
     message = ""
     is_first_round = (path == FIRST_ROUND_PATH)
+    status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT if is_first_round else PROJECT_STATUS_FINAL_EXPERT_SUBJECT
+
     if id == '-1': expert_list = ExpertProfile.objects.all()
     else: expert_list = ExpertProfile.objects.filter(college__id = id)
     for expert in expert_list:
-        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round)).count()
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round) & Q(project__project_status__status = status)).count()
     context = getContext(expert_list, 1, "item3", 0)
     html = render_to_string("school/widgets/alloc_expert_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })

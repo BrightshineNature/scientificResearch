@@ -88,7 +88,7 @@ def allocView(request):
     expert_form = FilterForm()
     loginfo(expert_list.count())
     for expert in expert_list:
-        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True)).count()
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True) & Q(project__project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)).count()
 
     for project in alloc_project_list:
         project.review_status = getProjectReviewStatus(project)
@@ -122,7 +122,7 @@ def finalAllocView(request):
     form = FilterForm(request = request)
     expert_form = FilterForm()
     for expert in expert_list:
-        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = False)).count()
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = False) & Q(project__project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)).count()
     context = {"form": form,
                "expert_form": expert_form,
                "page_info": "finalalloc",}

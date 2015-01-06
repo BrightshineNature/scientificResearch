@@ -70,6 +70,7 @@ def finalReportView(request, is_submited = False):
             'score_form': score_form,
             're_obj': re_obj,
             'file_list': file_list,
+            'user': 'expert',
         })
         return render(request,"expert/final.html",context)
     else:
@@ -83,6 +84,7 @@ def finalReportView(request, is_submited = False):
                 're_obj': re_obj,
                 'file_list': file_list,
                 'error': score_form.errors,
+                'user': 'expert',
             })
             return render(request,"expert/final.html",context)
 
@@ -106,6 +108,7 @@ def applicationView(request, is_submited = False):
             'score_form': score_form,
             're_obj': re_obj,
             'file_list': file_list,
+            'user': 'expert',
         })
         return render(request, "expert/application.html", context)
     else:
@@ -118,7 +121,8 @@ def applicationView(request, is_submited = False):
                 'score_form': score_form,
                 're_obj': re_obj,
                 'file_list': file_list,
-                'error': score_form.errors
+                'error': score_form.errors,
+                "user": "expert",
             })
             return render(request, "expert/application.html", context)
 
