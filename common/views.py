@@ -220,8 +220,6 @@ def handleFileUpload(request, pid,  entrance):
 
 def fileUploadManage(request, pid):
 
-
-
     print "fileUploadManage**********"
     error = 0
     is_upload_file = 0
@@ -320,8 +318,8 @@ def schedule_form_data(request ,userauth="" ,form="",page=1,page2=1,search=0):
                'has_data': has_data,
                'usercontext': userauth,
                'ProjectJudge_form':ProjectJudge_form,
-               "approve":PROJECT_STATUS_APPLICATION_REVIEW_OVER,
-               "review":PROJECT_STATUS_FINAL_REVIEW_OVER,
+               "approve":PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT,
+               "review":PROJECT_STATUS_FINAL_EXPERT_SUBJECT,
                "page":page,
                "page2":page2,
                'EXCELTYPE_DICT':EXCELTYPE_DICT_OBJECT(),
