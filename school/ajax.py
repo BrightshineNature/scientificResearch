@@ -55,11 +55,11 @@ def getAllocProjectPagination(request, page, college_id, special_id, path):
     if special_id != "-1":
         project_list = project_list.filter(project_special = special_id)
  
-    for project in project_list:
+    context = getContext(project_list, page, "item2", 0)
+    
+    for project in context["item2_list"]:
         project.review_status = getProjectReviewStatus(project)
 
-
-    context = getContext(project_list, page, "item2", 0)
     html = render_to_string("school/widgets/alloc_project_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })
 
@@ -72,10 +72,11 @@ def getAllocExpertPagination(request, id, page, path):
 
     if id == "-1": expert_list = ExpertProfile.objects.all()
     else: expert_list = ExpertProfile.objects.filter(college__id = id)
-    for expert in expert_list:
+    context = getContext(expert_list, page, "item3", 0)
+    for expert in context['item3_list']:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round) & Q(project__project_status__status = status)).count()
     
-    context = getContext(expert_list, page, "item3", 0)
+
     html = render_to_string("school/widgets/alloc_expert_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })
 
@@ -87,9 +88,9 @@ def getExpertList(request, id, path):
 
     if id == '-1': expert_list = ExpertProfile.objects.all()
     else: expert_list = ExpertProfile.objects.filter(college__id = id)
-    for expert in expert_list:
-        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round) & Q(project__project_status__status = status)).count()
     context = getContext(expert_list, 1, "item3", 0)
+    for expert in context['item3_list']:
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round) & Q(project__project_status__status = status)).count()
     html = render_to_string("school/widgets/alloc_expert_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })
 

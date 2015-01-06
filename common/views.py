@@ -342,7 +342,6 @@ def get_project_list(request):
             pro_list = ProjectSingle.objects.filter(qset)
         except:
             pro_list = ProjectSingle.objects.none()
-        loginfo(pro_list)
     elif identity == COLLEGE_USER:
         try:
             colleges = getCollege(request)
