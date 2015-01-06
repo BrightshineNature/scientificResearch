@@ -157,8 +157,8 @@ def xls_info_laboratory_preview_gen(request):
     worksheet.write_merge(0, 0, 0,5 + EXPERT_NUM ,"%s%s" % (str(datetime.date.today().year), "年度大连理工大学基本科研业务费重点实验室科研专题项目申请评审结果汇总表"),style)
     # generate body
     worksheet.write_merge(1, 1, 0, 0, '序号')
-    worksheet.write_merge(1, 1, 1, 1, '申请人')
-    worksheet.write_merge(1, 1, 2, 2, '项目名称')
+    worksheet.write_merge(1, 1, 1, 1, '项目名称')
+    worksheet.write_merge(1, 1, 2, 2, '申请人')
     worksheet.col(2).width = len('项目名称') * 400
     worksheet.write_merge(1, 1, 3, 3, '金额(万)')
     for i in range(0,EXPERT_NUM):
@@ -226,8 +226,8 @@ def xls_info_importantproject_preivew_gen(request):
     worksheet.write_merge(0, 0, 0,5 + EXPERT_NUM ,"%s%s" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费重大项目培育科研专题项目申请评审结果汇总表"),style)
     # generate body
     worksheet.write_merge(1, 1, 0, 0, '序号')
-    worksheet.write_merge(1, 1, 1, 1, '申请人')
-    worksheet.write_merge(1, 1, 2, 2, '项目名称')
+    worksheet.write_merge(1, 1, 1, 1, '项目名称')
+    worksheet.write_merge(1, 1, 2, 2, '申请人')
     worksheet.col(2).width = len('项目名称') * 400
     worksheet.write_merge(1, 1, 3, 3, '金额(万)')
     for i in range(0,EXPERT_NUM):
@@ -292,8 +292,8 @@ def xls_info_humanity_preview_gen(request):
     worksheet.write_merge(0, 0, 0,5 + EXPERT_NUM ,"%s%s" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费人文社科科研专题项目申请评审结果汇总表"),style)
     # generate body
     worksheet.write_merge(1, 1, 0, 0, '序号')
-    worksheet.write_merge(1, 1, 1, 1, '申请人')
-    worksheet.write_merge(1, 1, 2, 2, '项目名称')
+    worksheet.write_merge(1, 1, 1, 1, '项目名称')
+    worksheet.write_merge(1, 1, 2, 2, '申请人')
     worksheet.col(2).width = len('项目名称') * 400
     worksheet.write_merge(1, 1, 3, 3, '金额(万)')
     for i in range(0,EXPERT_NUM):

@@ -75,8 +75,6 @@ def getAllocExpertPagination(request, id, page, path):
     context = getContext(expert_list, page, "item3", 0)
     for expert in context['item3_list']:
         expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round) & Q(project__project_status__status = status)).count()
-    
-
     html = render_to_string("school/widgets/alloc_expert_table.html", context)
     return simplejson.dumps({"message": message, "html": html, })
 
@@ -292,10 +290,10 @@ def ExpertinfoExport(request,special_id,eid):
     special = getSpecial(request).get(id = special_id)
     if special:
         if eid==TYPE_ALLOC[0]:
-            proj_set = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status__gte = PROJECT_STATUS_APPLICATION_REVIEW_OVER,project_status__status__lte = PROJECT_STATUS_APPROVAL))
+            proj_set = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
             loginfo(proj_set)
         elif eid == TYPE_FINAL_ALLOC[0]:
-            proj_set = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status__gte = PROJECT_STATUS_FINAL_REVIEW_OVER,project_status__status__lt = PROJECT_STATUS_OVER))
+            proj_set = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT))
         loginfo(proj_set.count())
         path = get_xls_path(request,special.expert_review.category,proj_set,special.name)
         ret = {'path':path}
