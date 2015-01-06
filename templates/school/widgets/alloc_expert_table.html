@@ -1,24 +1,19 @@
-<table class="table" id="table_expert_list">
+<table class="table table-bordered" id="table_expert_list">
   <thead>
     <tr>
-      <th><label class="checkbox">
-          <input type="checkbox" class="select_all" arg="checkbox_expert">
-      </label></th>
       <th>专家姓名</th>
       <th>所属学院</th>
       <th>已分配数量</th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
     {% for expert in item3_list %}
-    <tr>
-      <td><label class="checkbox">
-          <input type="checkbox" name="checkbox_expert" value="{{ expert.userid}}">
-        </label>
-      </td>
+    <tr args="{{ expert.userid }}">
       <td>{{ expert.userid.first_name }}</td>
       <td>{{ expert.college }}</td>
       <td>{{ expert.alloc_num }}</td>
+      <td><button class="btn btn-primary btn-addon">添加</button></td>
     </tr>
     {% endfor %}
   </tbody>

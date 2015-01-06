@@ -188,6 +188,19 @@ def appendAlloc(request, project_id, expert_list, path):
     return simplejson.dumps({"message": message, })
 
 @dajaxice_register
+def searchExpert(request, name):
+    message = "ok"
+    expert_list = ExpertProfile.objects.filter(userid__first_name = name)
+    if expert_list.count():
+        html = ""
+        for expert in expert_list:
+            html += u"<tr args='%s'><td>%s</td><td>%s</td><td><button class='btn btn-primary btn-remove'>移除</button></td></tr>" % (expert.userid, expert.userid.first_name, expert.college)
+        return simplejson.dumps({"message": message, "html": html, })
+    else:
+        message = "no expert exist"
+        return simplejson.dumps({"message": message, })
+
+@dajaxice_register
 def queryAllocedExpert(request, project_id, path):
     message = ""
     is_first_round = (path == FIRST_ROUND_PATH)

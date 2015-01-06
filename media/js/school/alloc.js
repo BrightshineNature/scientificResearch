@@ -23,8 +23,8 @@ $(document).ready(function(){
 
 $("#alloc_tab").click(function(){
     clear_check_box();
-    $("#button_operator_cancel").show();
-    $("#button_operator_alloc").hide();
+    $("#button_operator_cancel").toggle();
+    $("#button_operator_alloc").toggle();
     //$("#id_div_expert").hide();
 
 });
@@ -126,9 +126,9 @@ function refresh(){
 $("#button_operator_alloc button").click(function(){
     var expert_list = []
     var project_list = []
-    $("input[name='checkbox_expert']:checkbox:checked").each(function(){ 
-        expert_list.push($(this).val());
-    });
+    $("#expert_box tbody").find("tr").each(function(){
+        expert_list.push($(this).attr("args"));   
+    })
     $("input[name='checkbox_unalloc_project']:checkbox:checked").each(function(){ 
         project_list.push($(this).val());
     });
@@ -182,9 +182,9 @@ function queryAllocedExpertCallback(data){
 $(document).on("click", ".append_alloc", function(){
     project_id = $(this).attr("arg");
     var expert_list = []
-    $("input[name='checkbox_expert']:checkbox:checked").each(function(){ 
-        expert_list.push($(this).val());
-    });
+    $("#expert_box tbody").find("tr").each(function(){
+        expert_list.push($(this).attr("args"));   
+    })
     if(expert_list.length > 1){
         alert("选中的专家数量超过1！");
     }
@@ -205,5 +205,50 @@ function appendAllocCallBack(data){
     }
     else{
         alert("选中的专家数量不为1！");
+    }
+}
+
+function exist(userid){
+    var flag = false;
+    $("#expert_box").find("tr").each(function(){
+        if($(this).attr("args") == userid) flag = true;
+    });
+    return flag;
+}
+$(document).on("click", ".btn-addon", function(){
+    var pr_row = $(this).parent().parent();
+    var userid = pr_row.attr("args");
+    if(exist(userid)){
+        alert("该专家已经添加");       
+    }
+    else{
+        var name = pr_row.find("td").eq(0).html();
+        var school = pr_row.find("td").eq(1).html();
+        new_tr_html = "<tr args='{0}'><td>{1}</td><td>{2}</td><td><button class='btn btn-primary btn-remove'>移除</button></td></tr>".format(userid, name, school);
+        $("#expert_box").append(new_tr_html);
+    }
+});
+
+$(document).on("click", ".btn-remove", function(){
+    var pr_row = $(this).parent().parent();
+    pr_row.remove();
+});
+
+$(document).on("click", ".btn-clear", function(){
+    $("#expert_box tbody").find("tr").each(function(){
+        $(this).remove();
+    });
+});
+
+$("#expert_add_button").click(function(){
+    var name = $("#expert_search_input").val();
+    Dajaxice.school.searchExpert(searchCallBack, {"name": name, });    
+});
+function searchCallBack(data){
+    if(data.message == "no expert exist"){
+        alert("未查询到该专家存在");
+    }
+    else{
+        $("#expert_box").append(data.html);
     }
 }

@@ -48,18 +48,41 @@
   </div><!--end tab pane-->
   <hr/>
     <a data-toggle="modal" id="button_operator_cancel"><button class="btn btn-primary">批量取消</button></a>
+    <a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
+
   <hr/>
-   <div id="id_div_expert">
+  <div class="row">
+   <div id="id_div_expert" class="col-md-6">
 	<div id="expert_filter_form">
 		{% csrf_token %}
-    {{ form.colleges}}
-  	<button class="btn btn-primary" id="expert_filter_button">筛选评委</button>
+        {{ form.colleges}}
+  	    <button class="btn btn-primary" id="expert_filter_button">筛选评委</button>
 	</div>
-  <div id="expert_list_div">
+    <div id="expert_list_div">
 		{% include "school/widgets/alloc_expert_table.html" %}
-  </div>
     </div>
-   <a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
+   </div>
+   
+
+   <div class="col-md-6">
+    <div id="expert_addon_form">
+		{% csrf_token %}
+        <input class="form-control" type="text" placeholder="姓名" id="expert_search_input"></input>
+  	    <button class="btn btn-primary" id="expert_add_button">直接添加</button>
+	</div>
+
+    <table class="table table-bordered" id="expert_box">
+      <thead>
+        <th>专家姓名</th>
+        <th>所属学院</th>
+        <th>操作</th>
+      </thead>  
+      <tbody>
+      </tbody>
+    </table>
+    <button class="btn btn-primary btn-clear">清空</button>
+   </div>
+  </div>
  
 	<div class="modal fade" id="query_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
