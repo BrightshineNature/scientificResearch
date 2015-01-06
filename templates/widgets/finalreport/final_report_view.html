@@ -4,10 +4,10 @@
     <li id="li_auditing"><a href="#auditing" data-toggle="tab">经费决算表</a></li>
     <li id="li_achivement"><a href="#achivement" data-toggle="tab" >研究成果目录</a></li>
     <li id="li_datastatics"><a href="#datastatics" data-toggle="tab">数据统计表</a></li>
-    <li id="li_auditing"><a href="#progress" data-toggle="tab">进展报告摘要</a></li>
 
 
     {% if userauth.is_adminstaff or userauth.is_schooler %}
+    <li id="li_auditing"><a href="#progress" data-toggle="tab"><font color="red">进展报告摘要</font></a></li>
     <li id="li_file_upload"><a href="#file_upload" data-toggle="tab">文件上传</a></li>
     {% endif %}
     {% if userauth.is_teacher%}
