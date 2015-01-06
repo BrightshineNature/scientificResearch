@@ -317,11 +317,6 @@ def status_confirm(project, confirm):
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
-        if confirm==APPLICATION_REVIEW_CONFIRM:
-            set_status(project,PROJECT_STATUS_APPLICATION_REVIEW_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_APPLICATION_REVIEW_OVER:
         if confirm==APPROVAL_CONFIRM:
             set_status(project,PROJECT_STATUS_APPROVAL)
         else:
@@ -403,11 +398,6 @@ def status_confirm(project, confirm):
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
-        if confirm==FINAL_REVIEW_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_REVIEW_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_REVIEW_OVER:
         if confirm==PROJECT_OVER_CONFIRM:
             set_status(project,PROJECT_STATUS_OVER)
         else:

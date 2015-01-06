@@ -15,13 +15,15 @@ from teacher.models import TeacherInfoSetting
 import xlrd
 from common.utility import xls_info_duplicatecheck
 
-projs = ProjectSingle.objects.filter(project_status__gte = PROJECT_STATUS_PROGRESS_WEB_OVER)
+projs = ProjectSingle.objects.filter(Q(project_status__gte = PROJECT_STATUS_APPLICATION_REVIEW_START) & Q(project_status__lt = PROJECT_STATUS_APPROVAL))
+pstatus = ProjectStatus.objects.get(status=PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+print pstatus
+print projs.count()
 for pro in projs:
-    print pro.project_status.status
-    pstatus = ProjectStatus.object.get(status = pro.project_status.status+1)
     pro.project_status = pstatus
-    print pro.project_status.status
+    pro.save()
 
+print "hello"
 # data = xlrd.open_workbook("1.xlsx")
 # table = data.sheet_by_index(0)
 
@@ -55,6 +57,6 @@ for pro in projs:
 
 # print "hello"
 
-proj_list = ProjectSingle.objects.filter(Q(application_year = 2014) & Q(project_status__status__lt =PROJECT_STATUS_APPROVAL) & Q(project_status__status__gte =PROJECT_STATUS_APPLICATION_COLLEGE_OVER))
-xls_info_duplicatecheck("1",proj_list)
-print "end"
+# proj_list = ProjectSingle.objects.filter(Q(application_year = 2014) & Q(project_status__status__lt =PROJECT_STATUS_APPROVAL) & Q(project_status__status__gte =PROJECT_STATUS_APPLICATION_COLLEGE_OVER))
+# xls_info_duplicatecheck("1",proj_list)
+# print "end"
