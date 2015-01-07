@@ -11,11 +11,17 @@ from users.models import ExpertProfile
 from common.utils import getScoreTable, getScoreForm
 
 @dajaxice_register
-def getPagination(request, page, is_first_round):
+def getPagination(request, special, college, page, is_first_round):
     message = ""
     expert = ExpertProfile.objects.get(userid = request.user)
     page = int(page)
-    re_list = list(Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round)))
+    re_list = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round))
+    if special != "-1": 
+        re_list = re_list.filter(project__project_special = special)
+    if college != "-1":
+        re_list = re_list.filter(project__teacher__college = college)
+
+    re_list = list(re_list)
     for re_obj in re_list:
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
     re_list.sort(key = lambda x: x.score)
