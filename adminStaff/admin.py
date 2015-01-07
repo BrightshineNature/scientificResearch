@@ -8,11 +8,8 @@ Created on 2013-3-27
 from django.contrib import admin
 from adminStaff.models import *
 
-# class ProjectSingle(admin.ModelAdmin):
-#     search_fields = ['project_code','title']
 
 RegisterClass = (
-    ProjectSingle,
     Re_Project_Expert,
     BasicScientificResearchScoreTable,
     HumanitiesSocialSciencesResearchScoreTable,
@@ -26,3 +23,13 @@ RegisterClass = (
 
 for temp in RegisterClass:
     admin.site.register(temp)
+
+class ProjectSingleAdmin(admin.ModelAdmin):
+    search_fields = ['project_code','title']
+
+RegisterSearchClass = (
+    (ProjectSingle,ProjectSingleAdmin),
+)
+
+for temp in RegisterSearchClass:
+    admin.site.register(temp[0],temp[1])

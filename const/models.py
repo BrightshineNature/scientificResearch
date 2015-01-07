@@ -48,6 +48,13 @@ class ProjectStatus(models.Model):
         return self.get_status_display()
     def get_next_status(self):
         return self.get_next_status_display()
+    def get_export_str(self):
+        if self.status == PROJECT_STATUS_OVER:
+            return u"结题"
+        elif self.status == PROJECT_STATUS_STOP:
+            return u"终止"
+        else:
+            return u"在研"
 
 class Sex(models.Model):
     """
@@ -97,7 +104,6 @@ class ProfessionalTitle(models.Model):
         verbose_name_plural = "职称"
     def __unicode__(self):
         return self.get_category_display()
-
 class Subject(models.Model):
     """
     Subject

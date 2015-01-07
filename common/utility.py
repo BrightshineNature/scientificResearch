@@ -6,9 +6,9 @@ import os,sys, re
 import datetime
 from backend.logging import loginfo
 from users.models import TeacherProfile
-from teacher.models import TeacherInfoSetting
+from teacher.models import TeacherInfoSetting,ProgressReport
 from adminStaff.models import ProjectSingle,Re_Project_Expert
-from common.models import ProjectMember
+from common.models import ProjectMember,BasisContent
 from common.utils import getScoreTable
 from settings import TMP_FILES_PATH,MEDIA_URL
 from const import *
@@ -423,6 +423,8 @@ def xls_info_collection_gen():
     worksheet.write_merge(0, 0, 0, 10, '项目基本信息',style)
     worksheet.write_merge(0, 0, 11, 11, '项目概述',style)
     worksheet.write_merge(0, 0, 12, 20, '项目负责人信息',style)
+    worksheet.write_merge(0, 0, 21, 24, '课题组其他主要参与人（可填多个）',style)
+    worksheet.write_merge(0, 0, 25, 25, '项目建设成效',style)
     # generate body
     worksheet.write_merge(1, 1, 0, 0, '项目名称')
     worksheet.col(0).width = len('项目名称') * 800
@@ -448,6 +450,11 @@ def xls_info_collection_gen():
     worksheet.write_merge(1, 1, 18, 18, '行政职务')
     worksheet.write_merge(1, 1, 19, 19, '所在研发基地类型')
     worksheet.write_merge(1, 1, 20, 20, '所在研究基地名称')
+    worksheet.write_merge(1, 1, 21, 21, '姓名')
+    worksheet.write_merge(1, 1, 22, 22, '出生年份')
+    worksheet.write_merge(1, 1, 23, 23, '职称')
+    worksheet.write_merge(1, 1, 24, 24, '行政职务')
+    worksheet.write_merge(1, 1, 25, 25, '项目本年取得的成效')
     return worksheet, workbook
 
 def xls_info_collection(request,proj_set):
@@ -461,6 +468,7 @@ def xls_info_collection(request,proj_set):
         try:
             teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
             manager = teacher.teacherinfosetting
+            projectMembers = ProjectMember.objects.filter(project=proj_obj)
             loginfo(p=manager,label="manager")
             row = 1 + _number
             xls_obj.write(row, 0, unicode(proj_obj.title)) 
@@ -471,10 +479,10 @@ def xls_info_collection(request,proj_set):
             xls_obj.write(row, 5, unicode(proj_obj.subject).split()[0])  
             xls_obj.write(row, 6, unicode(proj_obj.start_time)) 
             xls_obj.write(row, 7, unicode(proj_obj.end_time))
-            xls_obj.write(row, 8, unicode(proj_obj.approval_year)) 
-            xls_obj.write(row, 9, unicode(proj_obj.project_status))  
-            xls_obj.write(row, 10, unicode(proj_obj.project_special)) 
-            xls_obj.write(row, 11, unicode(proj_obj.finalsubmit.project_summary))
+            xls_obj.write(row, 8, unicode(proj_obj.approval_year))
+            xls_obj.write(row, 9, proj_obj.project_status.get_export_str()) 
+            xls_obj.write(row, 10, unicode(proj_obj.project_special))
+            xls_obj.write(row, 11, unicode(BasisContent.objects.get(project=proj_obj).basis))
             xls_obj.write(row, 12, unicode(manager.name)) 
             xls_obj.write(row, 13, unicode(manager.get_sex_display())) 
             xls_obj.write(row, 14, unicode(manager.birth)) 
@@ -484,9 +492,22 @@ def xls_info_collection(request,proj_set):
             xls_obj.write(row, 18, unicode(manager.get_position_display())) 
             xls_obj.write(row, 19, unicode(manager.get_base_type_display()))
             xls_obj.write(row, 20, unicode(manager.base_name))
+            if proj_obj.project_status.status == PROJECT_STATUS_OVER:
+                xls_obj.write(row, 25, unicode(proj_obj.finalsubmit.project_summary))
+            else:
+                try:
+                    xls_obj.write(row, 25, unicode(ProgressReport.objects.filter(project_id = proj_obj).order_by("-year")[0].summary))
+                except:
+                    pass
+            for i,member in enumerate(projectMembers):
+                xls_obj.write(row+i, 21, unicode(member.name))
+                xls_obj.write(row+i, 22, unicode(member.birth_year))
+                xls_obj.write(row+i, 23, unicode(member.professional_title))
+                xls_obj.write(row+i, 24, unicode(member.executive_position))
+            pass
         except:
             pass
-        _number+= 1
+        _number+= projectMembers.count() if projectMembers.count()!=0 else 1
     # write xls file
     save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学教育部项目信息采集填报表"))
     workbook.save(save_path)
