@@ -1,7 +1,7 @@
 # coding: UTF-8
 from django.db.models import Q
 
-import xlwt
+import xlwt,random
 import os,sys, re
 import datetime
 from backend.logging import loginfo
@@ -44,6 +44,8 @@ def get_xls_path(request,exceltype,proj_set,specialname=""):
         file_path = xls_info_summary(request,proj_set)
     elif exceltype == EXCELTYPE_DICT.INFO_FUNDBUDGET:
         file_path = xls_info_fundbudget(request,proj_set)
+    elif exceltype == EXCELTYPE_DICT.INFO_TEACHERINFO:
+        file_path = xls_info_teacherinfo(request)
     else:
         pass
     return MEDIA_URL + "tmp" + file_path[len(TMP_FILES_PATH):]
@@ -688,6 +690,40 @@ def xls_info_duplicatecheck(request,proj_set):
             _number+= 1
     # write xls file
     save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学项目查重表"))
+    workbook.save(save_path)
+    return save_path
+
+def xls_info_teacherinfo_gen():
+    workbook = xlwt.Workbook(encoding='utf-8')
+    worksheet = workbook.add_sheet('sheet1')
+    style = cell_style(horizontal=True,vertical=True)
+    # generate header
+    # generate body
+    worksheet.write_merge(1, 1, 0, 0, '姓名')
+    worksheet.write_merge(1, 1, 1, 1, '院系')
+    worksheet.write_merge(1, 1, 2, 2, '邮箱')
+    # worksheet.write_merge(1, 1, 3, 3, '邮箱')
+
+    return worksheet, workbook
+
+def xls_info_teacherinfo(request):
+    """
+    """
+
+    xls_obj, workbook = xls_info_teacherinfo_gen()
+    teachers = TeacherInfoSetting.objects.all()
+    _number=1
+    for item in teachers:
+        try:
+            row = _number + 1
+            xls_obj.write(row, 0, unicode(item.name))
+            xls_obj.write(row, 1, unicode(item.teacher.college))
+            xls_obj.write(row, 2, unicode(item.teacher.userid.email))
+        except:
+            pass
+        _number =_number+1
+    # write xls file
+    save_path = os.path.join(TMP_FILES_PATH, "%s%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费教师信息导出表",random.randint(1,1000000)))
     workbook.save(save_path)
     return save_path
 

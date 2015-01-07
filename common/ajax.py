@@ -449,3 +449,8 @@ def ExportExcel(request,form,category):
     pro_list=get_search_data(request,schedule_form)
     path = get_xls_path(request,category,pro_list)
     return simplejson.dumps({"status": "ok","path":path})
+
+@dajaxice_register
+def ExportTeacherInfoExcel(request,category):
+    path = get_xls_path(request,category,"")
+    return simplejson.dumps({"status": "ok","path":path})
