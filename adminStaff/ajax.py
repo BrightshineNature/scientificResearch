@@ -379,6 +379,11 @@ def modifyTeacherInfo(request, name, card, id):
         setting.name = name
         setting.card = card
         setting.save()
+        
+        setting.teacher.userid.username = card
+        setting.teacher.userid.first_name = name
+        setting.teacher.userid.save()
+
         message = "ok"
     except:
         pass
