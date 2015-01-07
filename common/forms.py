@@ -208,11 +208,10 @@ class ProjectInfoForm(forms.Form):
             attrs={
             'class':'form-control ',
             'placeholder':u"研究结束时间"}), )
-    
     def clean_science_type(self):
         i = self.cleaned_data['science_type'] 
         # print "*" * 100
-        try:        
+        try: 
             if i == "-1":
                 raise
         except:
@@ -297,3 +296,13 @@ class ProjectMemberForm(forms.ModelForm):
 
 
 
+class EmailForm(forms.Form):
+    special =forms. ChoiceField(required=True,widget=forms.Select(attrs={'class':'form-control'}),)
+    mail_content=forms.CharField(required=True,widget=forms.Textarea(attrs={'class':'form-control','row':'6'}))
+    mail_title=forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control'}))
+    def __init__(self,*args,**kwargs):
+        request = kwargs.get("request",None)
+        if request != None:
+            del kwargs['request']
+        super(EmailForm, self).__init__(*args, **kwargs)
+        self.fields["special"].choices = [(obj.id,obj.name) for obj in Special.objects.filter(school_user__userid = request.user)]

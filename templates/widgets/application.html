@@ -19,8 +19,10 @@
     <li><a href="#file_download_page" data-toggle="tab" >文件下载</a></li>
     <li {% if error %}class="active" {% endif %}><a href="#score_board" data-toggle="tab">项目评价</a></li>     
     {% endif %}
+    <li class="pull-right">
+      项目编号：{{pro.project_code}} 项目负责人：{{pro.teacher.userid.first_name}}
+    </li>
   </ul>
-  
   <div class="tab-content" pid="{{pid}}" user = '{{user}}' >
 
     <div class="tab-pane fade {% if not error %} 
