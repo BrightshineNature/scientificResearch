@@ -86,19 +86,20 @@ def allocView(request):
     alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
     form = FilterForm(request = request)
     expert_form = FilterForm()
-    loginfo(expert_list.count())
-    for expert in expert_list:
-        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True) & Q(project__project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)).count()
-
-    for project in alloc_project_list:
-        project.review_status = getProjectReviewStatus(project)
-
+    
     context = {"form": form,
                "expert_form": expert_form,
                "page_info": "alloc",}
     context.update(getContext(unalloc_project_list, 1, "item", 0))
     context.update(getContext(alloc_project_list, 1, "item2", 0))
     context.update(getContext(expert_list, 1, "item3", 0))
+    
+    for expert in context['item3_list']:
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True) & Q(project__project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)).count()
+
+    for project in context['item2_list']:
+        project.review_status = getProjectReviewStatus(project)
+
 
     return render(request, "school/alloc.html", context)
 
@@ -121,19 +122,18 @@ def finalAllocView(request):
     alloc_project_list = get_project_list(request).filter(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
     form = FilterForm(request = request)
     expert_form = FilterForm()
-    for expert in expert_list:
-        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = False) & Q(project__project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)).count()
     context = {"form": form,
                "expert_form": expert_form,
                "page_info": "finalalloc",}
  
-    for project in alloc_project_list:
-        project.review_status = getProjectReviewStatus(project)
-
-
     context.update(getContext(unalloc_project_list, 1, "item", 0))
     context.update(getContext(alloc_project_list, 1, "item2", 0))
     context.update(getContext(expert_list, 1, "item3", 0))
+    for expert in context['item3_list']:
+        expert.alloc_num = Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = True) & Q(project__project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)).count()
+
+    for project in context['item2_list']:
+        project.review_status = getProjectReviewStatus(project)
 
     return render(request, "school/alloc.html", context)
 
