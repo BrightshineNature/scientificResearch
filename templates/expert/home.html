@@ -10,13 +10,19 @@
 	  <a class="close" data-dismiss="alert">×</a>
 	  <strong>尊敬的评委老师，请根据评审阶段进入相关管理界面审阅作品，谢谢。</strong>
 	</div>
+  <div id="project_filter_form" class="form-inline" role="form">
+    {{form.special}}
+    {{form.college}}
+    <button class="btn btn-primary" id="project_filter_button">筛选项目</button>
+  </div>
+  <br/>
   <div class="tab-content">
   <div class="tab-pane fade active in" id="review-page">
     <ul class="nav nav-pills">
-      <li {% if is_first_round == "1" %}class="active"{% endif %}>
+      <li {% if is_first_round == "1" %}class="active"{% endif %} args="first_round">
         <a href="#first-round-section" data-toggle="tab">初审管理界面</a>
       </li>
-      <li {% if is_first_round == "0" %}class="active"{% endif %}>
+      <li {% if is_first_round == "0" %}class="active"{% endif %} args="second_round">
         <a href="#second-round-section" data-toggle="tab">终审管理界面</a>
       </li>
 

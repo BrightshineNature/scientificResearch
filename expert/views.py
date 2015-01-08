@@ -21,6 +21,7 @@ from common.utils import getScoreTable, getScoreForm
 from teacher.forms import *
 from teacher.models import *
 from common.views import finalReportViewWork, appManage, getSingleProjectURLList
+from common.forms import ScheduleBaseForm
 
 @csrf.csrf_protect
 @login_required
@@ -46,9 +47,11 @@ def homeView(request, is_submited=False):
     context = {"is_first_round": is_first_round,}
     re_list_1.sort(key = lambda x: x.score)
     re_list_2.sort(key = lambda x: x.score)
+
+    form = ScheduleBaseForm()
     context.update(getContext(re_list_1, 1, "item", 0))
     context.update(getContext(re_list_2, 1, "item2", 0))
-
+    context.update({"form": form, })
     return render(request,"expert/home.html", context)
 
 @csrf.csrf_protect
