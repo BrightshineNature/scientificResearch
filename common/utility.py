@@ -716,7 +716,7 @@ def xls_info_teacherinfo(request):
     for item in teachers:
         try:
             row = _number + 1
-            xls_obj.write(row, 0, unicode(item.name))
+            xls_obj.write(row, 0, unicode(item.teacher.userid.first_name))
             xls_obj.write(row, 1, unicode(item.teacher.college))
             xls_obj.write(row, 2, unicode(item.teacher.userid.email))
         except:
