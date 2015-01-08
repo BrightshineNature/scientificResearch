@@ -167,9 +167,10 @@ def handleFileUpload(request, pid,  entrance):
     print "HA&" * 10
     print entrance
     f = request.FILES[entrance]
-    ftype = getType(f.name) 
-    if(ftype != FileList[entrance]):
-        return 0
+    ftype = getType(f.name)
+    ftype = FileList[entrance]
+    # if(ftype != FileList[entrance]):
+    #     return 0
     obj = UploadFile() 
     if ftype != FileList['file_other']:
         if f.name.count('.') == 0: 

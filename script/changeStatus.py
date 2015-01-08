@@ -15,15 +15,17 @@ from teacher.models import TeacherInfoSetting
 import xlrd
 from common.utility import xls_info_duplicatecheck
 
-projs = ProjectSingle.objects.filter(Q(project_status__gte = PROJECT_STATUS_APPLICATION_REVIEW_START) & Q(project_status__lt = PROJECT_STATUS_APPROVAL))
-pstatus = ProjectStatus.objects.get(status=PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
-print pstatus
-print projs.count()
-for pro in projs:
-    pro.project_status = pstatus
-    pro.save()
+teachers = TeacherInfoSetting.objects.all()
+for t in teachers:
+# projs = ProjectSingle.objects.filter(Q(project_status__gte = PROJECT_STATUS_APPLICATION_REVIEW_START) & Q(project_status__lt = PROJECT_STATUS_APPROVAL))
+# pstatus = ProjectStatus.objects.get(status=PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+# print pstatus
+# print projs.count()
+# for pro in projs:
+#     pro.project_status = pstatus
+#     pro.save()
 
-print "hello"
+# print "hello"
 # data = xlrd.open_workbook("1.xlsx")
 # table = data.sheet_by_index(0)
 
