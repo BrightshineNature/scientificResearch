@@ -1,1 +1,1 @@
-{% load i18n %}{{email_content}}哈哈　这是内容
+{% load i18n %}{{email_content}}
