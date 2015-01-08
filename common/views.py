@@ -70,7 +70,7 @@ def addURL(project_list):
                 item.file_task=False
         if item.file_interimchecklist:
             try:
-                item.progress_url=UploadFile.objects.filter(project=item,file_type=FileList['file_interimchecklist'])[0].file_obj.url
+                item.progress_url=UploadFile.objects.filter(project=item,file_type=FileList['file_interimchecklist']).order_by("-upload_time")[0].file_obj.url
             except:
                 item.file_interimchecklist=False
         if item.file_summary:
