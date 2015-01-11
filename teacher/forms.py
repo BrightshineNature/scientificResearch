@@ -125,7 +125,7 @@ class ProgressForm(ModelForm):
         model = ProgressReport
         exclude = ('content_id', 'project_id', 'year', )
         widgets = {
-            "summary": forms.Textarea(attrs={"rows": "8", "cols": "100", "class":'fill-form', "placeholder": "项目本年取得的成效。填写具体成果及去的的阶段性成效，文字不超过300字", }),
+            "summary": forms.Textarea(attrs={"rows": "8", "cols": "100", "class":'fill-form', "placeholder": "项目本年取得的成效。填写具体成果获得的阶段性成效，文字不超过300字", }),
  
         }
 class ProFundBudgetForm(ModelForm):
