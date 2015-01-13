@@ -12,7 +12,7 @@
       <th>所属分类</th>
       <th>题目状态</th>
       <th>审阅状态</th>
-      <th>操作</th>
+      <!--th>操作</th-->
     </tr>
   </thead>
   <tbody id="alloced_subject_table_body">
@@ -29,7 +29,7 @@
       <td>{{ project.project_special }}</td>
       <td>{{ project.project_status }}</td>
       <td><a data-toggle="modal" href="#query_modal" class="query_info" arg="{{ project.project_id }}">{{ project.review_status }}</a></td>
-      <td><a href="javascript:void(0)" arg="{{ project.project_id }}" class="append_alloc">追加</a></td>
+      <!--td><a href="javascript:void(0)" arg="{{ project.project_id }}" class="append_alloc">追加</a></td-->
     </tr>
     {% endfor %}
   </tbody>
