@@ -39,18 +39,16 @@
     <div class="tab-content">
       <div class="tab-pane fade active in" id="unalloced-section">
 				{% include "school/widgets/unalloc_project_table.html" %}
+                <a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
     </div><!--end content section-->
 
       <div class="tab-pane fade " id="alloced-section">
         {% include "school/widgets/alloc_project_table.html" %}
+            <a data-toggle="modal" id="button_operator_cancel"><button class="btn btn-primary">批量取消</button></a>
+            <a data-toggle="modal" id="button_operator_append"><button class="btn btn-primary">批量追加</button></a>
       </div>
     </div><!--end tab content-->
   </div><!--end tab pane-->
-  <hr/>
-    <a data-toggle="modal" id="button_operator_cancel" style="display:none"><button class="btn btn-primary">批量取消</button></a>
-    <a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
-    <a data-toggle="modal" id="button_operator_append" style="display:none"><button class="btn btn-primary">批量追加</button></a>
-
   <hr/>
   <div class="row">
    <div id="id_div_expert" class="col-md-6">

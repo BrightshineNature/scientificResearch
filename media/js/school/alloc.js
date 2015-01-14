@@ -18,7 +18,6 @@ function clear_check_box(){
     });
 }
 $(document).ready(function(){
-    $("#button_operator_cancel").hide(); 
 
     glob_path = window.location.pathname.split('/')[2];
     current_tab = $("#unalloc_tab");
@@ -29,9 +28,9 @@ $("#alloc_tab,#unalloc_tab").click(function(){
     glob_project_list = [];
     current_tab = $(this);
     $(".badge").html("");
-    $("#button_operator_cancel").toggle();
-    $("#button_operator_alloc").toggle();
-    $("#button_operator_append").toggle();
+    //$("#button_operator_cancel").toggle();
+    //$("#button_operator_alloc").toggle();
+    //$("#button_operator_append").toggle();
     //$("#id_div_expert").hide();
 
 });
