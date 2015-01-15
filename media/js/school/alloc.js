@@ -18,7 +18,6 @@ function clear_check_box(){
     });
 }
 $(document).ready(function(){
-    $("#button_operator_cancel").hide(); 
 
     glob_path = window.location.pathname.split('/')[2];
     current_tab = $("#unalloc_tab");
@@ -29,8 +28,9 @@ $("#alloc_tab,#unalloc_tab").click(function(){
     glob_project_list = [];
     current_tab = $(this);
     $(".badge").html("");
-    $("#button_operator_cancel").toggle();
-    $("#button_operator_alloc").toggle();
+    //$("#button_operator_cancel").toggle();
+    //$("#button_operator_alloc").toggle();
+    //$("#button_operator_append").toggle();
     //$("#id_div_expert").hide();
 
 });
@@ -154,17 +154,16 @@ function refresh(){
 
 }
 
-$("#button_operator_alloc button").click(function(){
-    var expert_list = []
-    $("#expert_box tbody").find("tr").each(function(){
-        expert_list.push($(this).attr("args"));   
-    })
-    //$("input[name='checkbox_unalloc_project']:checkbox:checked").each(function(){ 
-    //    project_list.push($(this).val());
-    //});
-    Dajaxice.school.allocProjectToExpert(allocProjectToExpertCallback, {"project_list": glob_project_list,
+$("#button_operator_alloc,#button_operator_append button").click(function(){
+    if(confirm("是否确定选定项目的所有指派？")){
+        var expert_list = []
+        $("#expert_box tbody").find("tr").each(function(){
+            expert_list.push($(this).attr("args"));   
+        });
+        Dajaxice.school.allocProjectToExpert(allocProjectToExpertCallback, {"project_list": glob_project_list,
                                                                         "expert_list": expert_list,
                                                                         "path": glob_path,});
+    }
 });
 
 function allocProjectToExpertCallback(data){
@@ -186,7 +185,8 @@ $("#button_operator_cancel button").click(function(){
     //$("input[name='checkbox_alloc_project']:checkbox:checked").each(function(){ 
     //    project_list.push($(this).val());
     //});
-    Dajaxice.school.cancelProjectAlloc(cancelProjectAllocCallback, {"project_list": glob_project_list,
+    if(confirm("是否确定取消当前选定项目的所有指派关系？"))
+       Dajaxice.school.cancelProjectAlloc(cancelProjectAllocCallback, {"project_list": glob_project_list,
                                                                     "path": glob_path,});
 });
 function cancelProjectAllocCallback(data){
@@ -207,7 +207,6 @@ $(document).on("click", ".query_info", function(){
 function queryAllocedExpertCallback(data){
     $("#query_modal .modal-body").html(data.html);
 }
-
 
 $(document).on("click", ".append_alloc", function(){
     project_id = $(this).attr("arg");

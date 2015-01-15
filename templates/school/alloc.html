@@ -13,7 +13,7 @@
         {% endif %}
         <p>2. 指派专家时，请分别筛选出对应类别的项目和专家后，点击选择对应项目集合和专家集合，然后点击“批量指派”按钮。分配时，可参考专家“已分配数量”内容。</p>
 	    <p>3. 取消分配专家时，选择对应项目集合，然后点击“批量取消”按钮。</p>
-        <p>4. 已指派项目可以在原有分配专家数目基础上追加，限每次操作只能为一个项目追加一个专家。</p>
+        <p>4. 已指派项目可以在原有分配专家数目基础上追加，指派过程中若发现有项目被追加给了已分配的专家，则该条追加将被忽略。</p>
     </p>
   </div>
     <div id="project_filter_form">
@@ -39,17 +39,16 @@
     <div class="tab-content">
       <div class="tab-pane fade active in" id="unalloced-section">
 				{% include "school/widgets/unalloc_project_table.html" %}
+                <a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
     </div><!--end content section-->
 
       <div class="tab-pane fade " id="alloced-section">
         {% include "school/widgets/alloc_project_table.html" %}
+            <a data-toggle="modal" id="button_operator_cancel"><button class="btn btn-primary">批量取消</button></a>
+            <a data-toggle="modal" id="button_operator_append"><button class="btn btn-primary">批量追加</button></a>
       </div>
     </div><!--end tab content-->
   </div><!--end tab pane-->
-  <hr/>
-    <a data-toggle="modal" id="button_operator_cancel" style="display:none"><button class="btn btn-primary">批量取消</button></a>
-    <a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
-
   <hr/>
   <div class="row">
    <div id="id_div_expert" class="col-md-6">
