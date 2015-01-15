@@ -149,6 +149,7 @@ def finalReportView(request,pid,is_submited=False):
 @authority_required(TEACHER_USER)
 @check_submit_status(SUBMIT_STATUS_PROGRESS)
 def progressReportView(request,pid, is_submited = False):
+    loginfo(is_submited)
     context = progressReportViewWork(request, pid, is_submited)
     return render(request,"teacher/progress.html",context)
 
