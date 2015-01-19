@@ -28,22 +28,25 @@
   <div class="tab-pane fade active in" id="review-page">
     <ul class="nav nav-pills">
       <li class="active">
-        <a href="#unalloced-section" data-toggle="tab" id="unalloc_tab">未指派<span class="badge"></span></a>
+        <a href="#unalloced-tab-section" data-toggle="tab" id="unalloc_tab">未指派<span class="badge"></span></a>
       </li>
       <li>
-        <a href="#alloced-section" data-toggle="tab" id="alloc_tab">已指派<span class="badge"></span></a>
+        <a href="#alloced-tab-section" data-toggle="tab" id="alloc_tab">已指派<span class="badge"></span></a>
       </li>
 
     </ul><!--end ul title-->
 
     <div class="tab-content">
-      <div class="tab-pane fade active in" id="unalloced-section">
-				{% include "school/widgets/unalloc_project_table.html" %}
-                <a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
-    </div><!--end content section-->
-
-      <div class="tab-pane fade " id="alloced-section">
-        {% include "school/widgets/alloc_project_table.html" %}
+      <div class="tab-pane fade active in" id="unalloced-tab-section">
+            <div id="unalloced-section">
+			{% include "school/widgets/unalloc_project_table.html" %}
+            </div>
+            <a data-toggle="modal" id="button_operator_alloc"><button class="btn btn-primary">批量指派</button></a>
+      </div><!--end content section-->
+      <div class="tab-pane fade " id="alloced-tab-section">
+            <div id="alloced-section">
+            {% include "school/widgets/alloc_project_table.html" %}
+            </div>
             <a data-toggle="modal" id="button_operator_cancel"><button class="btn btn-primary">批量取消</button></a>
             <a data-toggle="modal" id="button_operator_append"><button class="btn btn-primary">批量追加</button></a>
       </div>
