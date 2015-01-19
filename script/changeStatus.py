@@ -15,8 +15,51 @@ from teacher.models import TeacherInfoSetting
 import xlrd
 from common.utility import xls_info_duplicatecheck
 
-teachers = TeacherInfoSetting.objects.all()
-for t in teachers:
+
+data = xlrd.open_workbook("1.xls")
+table = data.sheet_by_index(0)
+
+for i in range(2,692):
+    row = table.row_values(i)
+    try:
+        pro=ProjectSingle.objects.get(project_code=row[14])
+    except:
+        print row[14]
+        print i
+    # college=College.objects.get(name= row[3])
+    # sendemail('1',row[1],row[1][-6:],row[2],TEACHER_USER,row[0],send_email = True,college=college.id)
+    # teacher= TeacherProfile.objects.get(userid__username = row[1])
+    # teacherInfoSettingObj  = TeacherInfoSetting.objects.get(teacher = teacher.id)
+    # teacherInfoSettingObj.sex  = SEX_DICTS[row[4]]
+    # teacherInfoSettingObj.birth = row[5]
+    # teacherInfoSettingObj.base_name = row[11]
+    # teacherInfoSettingObj.target_type = PROJECT_IDENTITY_DICTS[row[6]]
+    # teacherInfoSettingObj.degree = DEGREE_DICTS[row[7]]
+    # teacherInfoSettingObj.title = PROFESSIONAL_TITLE_DICTS[row[8]]
+    # teacherInfoSettingObj.base_type = RESEARCH_BASES_TYPE_DICTS[row[10]]
+    # teacherInfoSettingObj.position = EXECUTIVE_POSITION_DICTS[row[9]]
+    # teacherInfoSettingObj.save()
+    # special = Special.objects.get(name = row[22])
+    # project = createNewProject(teacher,row[13],special.id)
+    # print project
+    # project.project_code = unicode(row[14])
+    # project.project_budget_max = float(row[23])*10000
+    # if int(int(row[20])) <=2013:
+    #     project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
+    # else:
+    #     project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_TASK_SCHOOL_OVER)
+    # project.application_year = int(row[20])
+    # project.approval_year = int(row[20])
+    # project.start_time = datetime.datetime.strptime(row[18],"%Y-%m")
+    # project.end_time = datetime.datetime.strptime(row[19],"%Y-%m")
+    # project.science_type = ScienceActivityType.objects.get(category = SCIENCE_ACTIVITY_TYPE_DICTS[row[15]])
+    # # project.trade_code = NationalTradeCode.objects.get(category = NATIONAL_TRADE_CODE_DICTS[row[16]])
+    # project.subject = Subject.objects.get(category = SUBJECT_DICTS[int(row[17])])
+    # project.save()
+    # sendemail('1',row[1],row[1][-6:],row[2],EXPERT_USER,row[0],send_email = False,college=college.id)
+    t=i
+
+print "hello"
 # projs = ProjectSingle.objects.filter(Q(project_status__gte = PROJECT_STATUS_APPLICATION_REVIEW_START) & Q(project_status__lt = PROJECT_STATUS_APPROVAL))
 # pstatus = ProjectStatus.objects.get(status=PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
 # print pstatus
