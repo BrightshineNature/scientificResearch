@@ -159,8 +159,8 @@ def fundSummary(request, form, pid):
                 message = u"数据未填写完整或数据格式不对，保存失败"
             else:  
                 laborcosts_budget = float(profundsummaryform.cleaned_data["laborcosts_budget"])
-                if laborcosts_budget < total_budget * 0.3:
-                    if total_budget < project.project_budget_max:
+                if laborcosts_budget <= total_budget * 0.3:
+                    if total_budget <= project.project_budget_max:
                         profundsummaryform.save()
                         #copyFundsummaryToBudget(pid)    
                         message = u"保存成功"
@@ -191,8 +191,8 @@ def fundBudget(request, form, pid):
             message = u"数据未填写完整或数据格式不对，保存失败"
         else:
             laborcosts_budget = float(profundbudgetform.cleaned_data["laborcosts_budget"])
-            if laborcosts_budget < total_budget * 0.3:
-                if total_budget < project.project_budget_max:
+            if laborcosts_budget <= total_budget * 0.3:
+                if total_budget <= project.project_budget_max:
                     profundbudgetform.save()
                     copyBudgetToFundsummary(pid)    
                     message = u"保存成功"
