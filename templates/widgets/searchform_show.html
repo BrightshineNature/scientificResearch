@@ -1,0 +1,43 @@
+<script type='text/javascript' src="{{ STATIC_URL }}js/common/finance_export.js"></script>
+<div class="well form">
+  <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/" >
+    <div class="form-inline" role="form">
+      <div class="form-group">
+        {{schedule_form.approval_year}}
+      </div>
+      <div class="form-group">
+        {{schedule_form.special}}
+      </div>
+      <div class="form-group">
+        {{schedule_form.college}}
+      </div>
+      <div class="form-group">
+        {{schedule_form.other_search}}
+      </div>
+      <div class="form-group">
+        <input type="button" class="btn btn-primary" id="{{type_budget}}" value="导出预算审核信息表">
+      </div>
+    </div>
+  </form>
+</div>
+<div class="well form">
+  <form id="schedule_form" class= "form-inline" role="form" method="POST" action="/{{userauth.role}}/" >
+    <div class="form-inline" role="form">
+      <div class="form-group">
+        {{schedule_form.conclude_year}}
+      </div>
+      <div class="form-group">
+        {{schedule_form.special}}
+      </div>
+      <div class="form-group">
+        {{schedule_form.college}}
+      </div>
+      <div class="form-group">
+        {{schedule_form.other_search}}
+      </div>
+      <div class="form-group">
+        <input type="button" class="btn btn-primary" id="{{type_summary}}" value="导出结算审核信息表">
+      </div>
+    </div>
+  </form>
+</div>
