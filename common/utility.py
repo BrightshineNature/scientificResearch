@@ -89,7 +89,7 @@ def xls_info_fundbudget(request,proj_set):
         xls_obj.write(row, 4, unicode(proj_obj.approval_year))
         xls_obj.write(row, 5, unicode(proj_obj.project_special))  
         xls_obj.write(row, 6, unicode(proj_obj.project_status)) 
-        xls_obj.write(row, 7, unicode(proj_obj.projectfundsummary.total_expenditure))
+        xls_obj.write(row, 7, unicode(proj_obj.projectfundbudget.total_budget))
 
         _number+= 1
     # write xls file
