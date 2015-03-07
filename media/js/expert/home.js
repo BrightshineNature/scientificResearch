@@ -17,7 +17,9 @@ $("#project_filter_button").click(function(){
     get_project_list("1", is_first_round());
 });
 
-
+$(document).ready(function(){
+    fill_url(); 
+});
 $(document).on("click", "#first_round_paginator .item_page", function(){
     page = $(this).attr("arg");
     get_project_list(page, true);
@@ -37,5 +39,16 @@ function getPaginationCallback(data){
     else{
         $("#second-round-section").html(data.html);
     }
+    fill_url();
+}
+
+function fill_url(){
+    var page = $("#first_round_paginator li.disabled").val();
+    var page2 = $("#second_round_paginator li.disabled").val();
+    $(".review_btn").each(function(){
+        var origin = $(this).attr("href").split("&")[0];
+        var new_url = origin + "&page=" + page + "&page2=" + page2;
+        $(this).attr("href", new_url);
+    });
 }
 

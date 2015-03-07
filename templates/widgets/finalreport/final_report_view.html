@@ -11,6 +11,11 @@
     <li id="li_auditing"><a href="#progress" data-toggle="tab"><font color="red">进展报告摘要</font></a></li>
     <li id="li_file_upload"><a href="#file_upload" data-toggle="tab">文件上传</a></li>
     {% endif %}
+    {% if userauth.is_experter %}
+    <li><a href="#file_download_page" data-toggle="tab" >文件下载</a></li>
+
+    <li {% if error %}class="active" {% endif %}><a href="#score_board" data-toggle="tab">项目评价</a></li>
+    {% endif %}
     {% if userauth.is_teacher%}
     {% elif userauth.is_finance%}
        {% if usercontext.status == 'budget' %}
@@ -20,14 +25,12 @@
        {% endif %}
     {% elif userauth.is_adminstaff%}
        <li><a href="/{{userauth.user}}?page={{page}}&page2={{page2}}">返回上一级</a></li>
+    {% elif userauth.is_experter %}
+       <li><a href="/{{userauth.user}}?page={{page}}&page2={{page2}}&is_first_round=0">返回上一级</a></li>
     {% else %}
     <li><a  href="/{{userauth.user}}/researchconcluding?page={{page}}&page2={{page2}}">返回上一级</a></li>
     {% endif%}
-    {% if userauth.is_experter %}
-    <li><a href="#file_download_page" data-toggle="tab" >文件下载</a></li>
 
-    <li {% if error %}class="active" {% endif %}><a href="#score_board" data-toggle="tab">项目评价</a></li>
-    {% endif %}
     <li class="pull-right">
       项目编号：{{pro.project_code}} 项目负责人：{{pro.teacher.teacherinfosetting.name}}
     </li>

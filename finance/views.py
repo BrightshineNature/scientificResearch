@@ -17,19 +17,18 @@ from common.forms import ScheduleBaseForm
 
 @csrf.csrf_protect
 @login_required
-@check_submit_status(SUBMIT_STATUS_APPLICATION)
-def appView(request, pid, is_submited = False):
+@check_submit_status()
+def appView(request, pid, is_submited):
     context = appManage(request, pid)
-    context['is_submited'] = is_submited
+    context['is_submited'] = is_submited[SUBMIT_STATUS_APPLICATION]
     context['user'] = "finance"
     return render(request, "finance/application.html", context)
 
 @csrf.csrf_protect
 @login_required
-@check_submit_status(SUBMIT_STATUS_FINAL)
-def finalReportView(request,pid,is_submited=False):
-    context = finalReportViewWork(request,pid,is_submited)
-    loginfo(p=is_submited,label="is_submited")
+@check_submit_status()
+def finalReportView(request,pid,is_submited):
+    context = finalReportViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
     return render(request,"finance/final.html",context)
 
 @csrf.csrf_protect

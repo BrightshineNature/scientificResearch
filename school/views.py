@@ -28,10 +28,10 @@ from django.template.loader import render_to_string
 from django.contrib.sites.models import get_current_site,Site
 @csrf.csrf_protect
 @login_required
-@check_submit_status(SUBMIT_STATUS_APPLICATION)
-def appView(request, pid, is_submited = False):
+@check_submit_status()
+def appView(request, pid, is_submited ):
     context = appManage(request, pid)
-    context['is_submited'] = is_submited
+    context['is_submited'] = is_submited[SUBMIT_STATUS_APPLICATION]
     context['user'] = "school"
     return render(request, "school/application.html", context)
 
@@ -60,9 +60,9 @@ def financialInfoView(request):
 
 @csrf.csrf_protect
 @login_required
-@check_submit_status(SUBMIT_STATUS_FINAL)
-def finalReportView(request,pid,is_submited=False):
-    context = finalReportViewWork(request,pid,is_submited)
+@check_submit_status()
+def finalReportView(request,pid,is_submited):
+    context = finalReportViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
     context = dict(context, **fileUploadManage(request, pid))
     context['is_submited'] = is_submited
     context['user'] = "special"
@@ -154,7 +154,7 @@ def noticeMessageSettingView(request):
 def dispatchView(request):
     dispatchAddCollege_form=DispatchAddCollegeForm()
     try:
-        teacher_users = TeacherProfile.objects.all()
+        teacher_users = TeacherProfile.objects.all().order_by('college')
     except:
         teacher_users = TeacherProfile.objects.none()
     context = {
