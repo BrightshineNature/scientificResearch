@@ -31,21 +31,21 @@ import datetime
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-@check_submit_status(SUBMIT_STATUS_APPLICATION)
-def appView(request, pid, is_submited = False):
+@check_submit_status()
+def appView(request, pid, is_submited):
     userauth = {
         'role':"teacher",
     }
     context = appManage(request, pid)
     context['user'] = "teacher" 
-    context['is_submited'] = is_submited
+    context['is_submited'] = is_submited[SUBMIT_STATUS_APPLICATION]
     return render(request, "teacher/application.html", context)
 
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-@check_submit_status(SUBMIT_STATUS_APPLICATION)
-def fileUploadManageView(request, pid, is_submited = False):
+@check_submit_status()
+def fileUploadManageView(request, pid, is_submited):
 
     context = fileUploadManage(request, pid)
     context['user'] = "teacher"
@@ -136,9 +136,9 @@ def commitmentView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-@check_submit_status(SUBMIT_STATUS_FINAL)
-def finalReportView(request,pid,is_submited=False):
-    context = finalReportViewWork(request,pid,is_submited)
+@check_submit_status()
+def finalReportView(request,pid,is_submited):
+    context = finalReportViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
     loginfo(p=is_submited,label="is_submited")
     if context['redirect']:
         return HttpResponseRedirect('/teacher/finalinfo')
@@ -147,10 +147,9 @@ def finalReportView(request,pid,is_submited=False):
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-@check_submit_status(SUBMIT_STATUS_PROGRESS)
-def progressReportView(request,pid, is_submited = False):
-    loginfo(is_submited)
-    context = progressReportViewWork(request, pid, is_submited)
+@check_submit_status()
+def progressReportView(request,pid, is_submited):
+    context = progressReportViewWork(request, pid, is_submited[SUBMIT_STATUS_PROGRESS])
     return render(request,"teacher/progress.html",context)
 
 @csrf.csrf_protect
@@ -200,9 +199,9 @@ def financialView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(TEACHER_USER)
-@check_submit_status(SUBMIT_STATUS_TASK)
-def fundBudgetView(request,pid,is_submited=False):
-    context = fundBudgetViewWork(request,pid,is_submited)
+@check_submit_status()
+def fundBudgetView(request,pid,is_submited):
+    context = fundBudgetViewWork(request,pid,is_submited[SUBMIT_STATUS_TASK])
     if context['redirect']:
 	return HttpResponseRedirect('/teacher/finalinfo')
     context['role'] = 'teacher'
