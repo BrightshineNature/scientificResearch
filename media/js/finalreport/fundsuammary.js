@@ -1,12 +1,13 @@
 function projectfundsummary(){
     var pid = $("#mainTable").attr("value");
-    var total_budget = parseFloat($('#id_total_budget').val())
-    var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val())
-    
+    var total_budget = parseFloat($('#id_total_budget').val());
+    var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val());
+    var max_budget = parseFloat($('#max_budget').val()); 
+    var projectcode = $("#project_code").val();
     Dajaxice.teacher.fundSummary(fundSummary_callback,
                                     {   
                                         'form': $('#project_fundsuammary_form').serialize(true),
-                                        'pid':pid,       
+                                        'pid':pid,
                                 });
 }
 
@@ -29,38 +30,73 @@ $('#fundsummary_next').click(function(){
 });
 var totalbudget = 0.0;
 var totalexpenditure = 0.0;
-$("#mainTable").find("input").bind('change',function(){
+$("table[name='budgettable']").find("input").bind('change',function(){
     totalbudget = 0;
     totalexpenditure = 0;
     index = 0;
+    //alert($(this).attr("id"));
+    var cellindex = this.parentNode.cellIndex;
+    if(cellindex < 2){
     if($(this).val()<0||isNaN($(this).val()))
     {
         alert("数据格式不对,请重新输入");
         $(this).val(0.0);
     }
-    $("#mainTable tbody tr").each(function(){
-        if(index>0)
-        {
+    $(" table[name='budgettable'] tbody tr").each(function(){
+        if(index > 0 && index < 13){
+            //alert($(this).find("td").eq(1).children().val()+' '+index)
+            totalbudget += parseFloat($(this).find("td").eq(1).children().val());
+            //totalexpenditure += parseFloat($(this).find("td").eq(2).children().val());
+        }
+        index += 1;
+    });
+    $("#id_total_budget").val(parseFloat(totalbudget));
+    }
+});
+
+$("table[name='fundsummarytable']").find("input").bind('change',function(){
+    totalbudget = 0;
+    totalexpenditure = 0;
+    index = 0;
+    //alert($(this).attr("id"));
+    var cellindex = this.parentNode.cellIndex;
+    if(cellindex < 3){
+    if($(this).val()<0||isNaN($(this).val()))
+    {
+        alert("数据格式不对,请重新输入");
+        $(this).val(0.0);
+    }
+    $(" table[name='fundsummarytable'] tbody tr").each(function(){
+        //alert($(this).find("td").eq(1).children().val()+' '+index)
+        if(index > 0 && index < 13){    
             totalbudget += parseFloat($(this).find("td").eq(1).children().val());
             totalexpenditure += parseFloat($(this).find("td").eq(2).children().val());
         }
         index += 1;
     });
-    $("#id_total_budget").val(parseFloat(totalbudget));
+    $("table[name='fundsummarytable'] #id_total_budget").val(parseFloat(totalbudget));
     $("#id_total_expenditure").val(parseFloat(totalexpenditure));
+    }
 });
 
 function projectfundbudget(){
     var pid = $("#mainTable").attr("value");
-    var total_budget = parseFloat($('#id_total_budget').val())
-    var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val())
+    var total_budget = parseFloat($('#id_total_budget').val());
+    var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val());
+    var max_budget = parseFloat($('#max_budget').val());
+    var projectcode = $("#project_code").val();
     Dajaxice.teacher.fundBudget(fundBudget_callback,
                                     {   
                                         'form': $('#project_fundbudget_form').serialize(true),
-                                        'pid':pid,       
+                                        'pid':pid,
+                                        'max_budget':max_budget,
+                                        'projectcode':projectcode,       
                                 });
 }
 
 function fundBudget_callback(data){
+   
+    $('#summary_project_code').val(data.project_code);
+    $("#summary_max_budget").val(data.project_budget_max);
     alert(data.message);
 }
