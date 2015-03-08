@@ -8,8 +8,9 @@ from backend.utility import make_uuid
 from settings import MEDIA_ROOT
 from settings import NEWS_DOCUMENTS_PATH
 from const import *
+from django.contrib.auth.models import User
 from users.models import TeacherProfile,CollegeProfile,Special,College,SchoolProfile,ExpertProfile
-from const.models import ProjectStatus,NewsCategory,ScienceActivityType,NationalTradeCode,Subject
+from const.models import ProjectStatus,NewsCategory,ScienceActivityType,NationalTradeCode,Subject,ProfileIdenty
 
 
 
@@ -34,7 +35,6 @@ class ProjectSingle(models.Model):
     comment = models.CharField(max_length=400, blank=True,null=True,
                              verbose_name=u"评审意见")
     teacher = models.ForeignKey(TeacherProfile, blank=False, null=False, verbose_name=u"项目申请人")
-
     # expert = models.ManyToManyField(ExpertProfile, through = "Re_Project_Expert")
 
     try:
@@ -64,6 +64,7 @@ class ProjectSingle(models.Model):
         verbose_name=u'研究结束时间')
     project_tpye =models.CharField(blank=True,null=True,max_length = 20, verbose_name = u'项目类型')
     project_budget_max = models.IntegerField(blank = False, default = 0, verbose_name = u"项目最大预算金额")
+    finance_account = models.CharField(max_length = 20,blank = True,null = True, verbose_name="财务账号")
     class Meta:
         verbose_name = "项目"
         verbose_name_plural = "项目"
@@ -71,6 +72,16 @@ class ProjectSingle(models.Model):
     def __unicode__(self):
         return self.title
 
+class ReviewBackView(models.Model):
+    userid = models.ForeignKey(User,verbose_name="权限对应ID")
+    comment = models.CharField(max_length=400, blank=True,null=True,verbose_name=u"评审意见")
+    identy = models.ForeignKey(ProfileIdenty,verbose_name=u'身份',blank=True,null=True)
+    class Meta:
+        verbose_name = "评审退回意见"
+        verbose_name_plural = "评审退回意见"
+
+    def __unicode__(self):
+        return self.title
 class Re_Project_Expert(models.Model):
     project = models.ForeignKey(ProjectSingle)
     expert = models.ForeignKey(ExpertProfile)

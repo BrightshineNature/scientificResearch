@@ -206,3 +206,15 @@ class ExpertReview(models.Model):
         verbose_name_plural = "专家评审表"
     def __unicode__(self):
         return self.get_category_display()
+class ProfileIdenty(models.Model):
+    """
+    Subject
+    """
+    category = models.CharField(max_length=30, blank=False, unique=True,
+                                choices=AUTH_CHOICES,
+                                verbose_name="身份")
+    class Meta:
+        verbose_name = "账户身份"
+        verbose_name_plural = "账户身份"
+    def __unicode__(self):
+        return self.get_category_display()
