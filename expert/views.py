@@ -28,6 +28,8 @@ from common.forms import ScheduleBaseForm
 @authority_required(EXPERT_USER)
 def homeView(request, is_submited=False):
     is_first_round = request.GET.get("is_first_round", "1")
+    page = int(request.GET.get("page", "1"))
+    page2 = int(request.GET.get("page2", "1"))
     expert = ExpertProfile.objects.get(userid = request.user)
     re_list_1 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & \
                                                       Q(is_first_round = True) & \
@@ -36,7 +38,7 @@ def homeView(request, is_submited=False):
     for re_obj in re_list_1:
         loginfo(re_obj.project)
         re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
-
+    
     re_list_2 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & \
                                                       Q(is_first_round = False) & \
                                                       Q(project__project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT) & \
@@ -49,8 +51,8 @@ def homeView(request, is_submited=False):
     re_list_2.sort(key = lambda x: x.score)
 
     form = ScheduleBaseForm()
-    context.update(getContext(re_list_1, 1, "item", 0))
-    context.update(getContext(re_list_2, 1, "item2", 0))
+    context.update(getContext(re_list_1, page, "item", 0))
+    context.update(getContext(re_list_2, page2, "item2", 0))
     context.update({"form": form, })
     return render(request,"expert/home.html", context)
 
