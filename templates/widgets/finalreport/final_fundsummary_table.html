@@ -1,10 +1,12 @@
 
 <div id = "input_account">
-    <strong>项目最大预算:</strong>{{projectbudget}}
-    <strong style="margin-left:50px;">财务账号：</strong>{{profundsummaryform.finance_account}}
+<STRONG>项目最大预算（元）:</STRONG><input type="text" id = "summary_max_budget"  value="{{project.project_budget_max}}"></input>
+        <strong style="margin-left:50px;">财务账号：</strong>{{project.project_budget_max}}
+        <strong style="margin-left:50px;">项目编号：</strong><input type="text"   id = "summary_project_code" value="{{pro.project_code}}"></input>
 </div>
-<table id="mainTable" class="table table-striped" value={{pid}}>
-        <thead><tr><th>科目</th><th>预算经费</th><th>经费支出</th><th>说明</th></tr></thead>
+        
+<table id="mainTable" name="fundsummarytable" class="table table-striped" value={{pid}}>
+        <thead><tr><th>科目</th><th>预算经费（元）</th><th>经费支出（元）</th><th>说明</th></tr></thead>
 	<tbody>
 		<tr><td><strong>1.设备费</strong></td><td>{{profundsummaryform.equcosts_budget}}</td><td>{{profundsummaryform.equcosts_expenditure}}</td><td>{{profundsummaryform.equcosts_remark}}</td></tr>
 		<tr><td>&nbsp;&nbsp;&nbsp;(1)设备购置费</td><td>{{profundsummaryform.equacquisition_budget}}</td><td>{{profundsummaryform.equacquisition_expenditure}}</td><td>{{profundsummaryform.equacquisition_remark}}</td></tr>

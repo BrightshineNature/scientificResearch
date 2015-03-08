@@ -123,6 +123,17 @@ def getProjectList(request, college_id, special_id, path):
     html_unalloc = render_to_string("school/widgets/unalloc_project_table.html", context)
     return simplejson.dumps({"html_alloc": html_alloc, "html_unalloc": html_unalloc, })
 
+
+def overloadTest(project_list, expert_list, is_first_round):
+    current_special_set = set(ProjectSingle.objects.get(project_id = project_id).project_special for project_id in project_list)
+    for expert_id in expert_list:
+        expert = ExpertProfile.objects.get(userid__username = expert_id)
+        need_status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT if is_first_round else PROJECT_STATUS_FINAL_EXPERT_SUBJECT
+        new_special_set = set(re_obj.project.project_special for re_obj in Re_Project_Expert.objects.filter(Q(expert = expert) & Q(is_first_round = is_first_round) & Q(project__project_status__status = need_status)))
+        if len(current_special_set | new_special_set) > 2:
+            return False
+    return True
+
 @dajaxice_register
 def allocProjectToExpert(request, project_list, expert_list, path):
     message = ""
@@ -131,6 +142,11 @@ def allocProjectToExpert(request, project_list, expert_list, path):
     if len(project_list) == 0 or len(expert_list) == 0:
         message = "no project" if len(project_list) == 0 else "no expert"
     else:
+
+        if overloadTest(project_list, expert_list, is_first_round) == False:
+            message = "overload"
+            return simplejson.dumps({"message": message, })
+
         expert_list = [ExpertProfile.objects.get(userid__username = user) for user in expert_list]
         for project_id in project_list:
             project = ProjectSingle.objects.get(project_id = project_id)

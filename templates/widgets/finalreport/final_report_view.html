@@ -1,6 +1,7 @@
 <div class="report-content-container">
   <ul class="nav nav-pills" id="myTab">
     <li id="li_content" {% if not error %}class="active" {% endif %}><a href="#content" data-toggle="tab">结题报告摘要</a></li>
+    <li id="li_budget"><a href="#budget" data-toggle="tab">经费预算表</a></li>
     <li id="li_auditing"><a href="#auditing" data-toggle="tab">经费决算表</a></li>
     <li id="li_achivement"><a href="#achivement" data-toggle="tab" >研究成果目录</a></li>
     <li id="li_datastatics"><a href="#datastatics" data-toggle="tab">数据统计表</a></li>
@@ -42,7 +43,9 @@
         <div class="tab-pane fade" id="progress">
             {% include "widgets/progress_report_view.html"%}
         </div>
-
+        <div class="tab-pane fade" id="budget">
+            {% include "widgets/finalreport/fundbudget.html"%}
+        </div>
         <div class="tab-pane fade" id="auditing">
             {% include "widgets/finalreport/financial_auditing.html"%}
         </div>
