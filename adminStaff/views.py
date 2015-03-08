@@ -119,7 +119,7 @@ def dispatchView(request):
     dispatch_form = DispatchForm()
     dispatchAddCollege_form=DispatchAddCollegeForm()
     college_users = CollegeProfile.objects.all()
-    expert_users = ExpertProfile.objects.all()
+    expert_users = ExpertProfile.objects.all().order_by('college')
     school_users = SchoolProfile.objects.all()
     context = {
                "dispatch_form":dispatch_form,
@@ -181,10 +181,10 @@ def finalInfoView(request,pid):
 @csrf.csrf_protect
 @login_required
 @authority_required(ADMINSTAFF_USER)
-@check_submit_status(SUBMIT_STATUS_FINAL)
-def finalReportView(request,pid,is_submited=False):
+@check_submit_status()
+def finalReportView(request,pid,is_submited):
     print "YYA" * 10
-    context = finalReportViewWork(request,pid,is_submited)
+    context = finalReportViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
 
     context = dict(context, **fileUploadManage(request, pid))
     context['is_submited'] = is_submited
@@ -205,9 +205,9 @@ def finalReportView(request,pid,is_submited=False):
 @csrf.csrf_protect
 @login_required
 @authority_required(ADMINSTAFF_USER)
-@check_submit_status(SUBMIT_STATUS_FINAL)
-def fundBudgetView(request,pid,is_submited=False):
-    context = fundBudgetViewWork(request,pid,is_submited)
+@check_submit_status()
+def fundBudgetView(request,pid,is_submited):
+    context = fundBudgetViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
     context['role'] = 'adminStaff'
     if context['redirect']:
         return HttpResponseRedirect('/adminStaff/finalinfo/'+str(pid))
@@ -216,8 +216,8 @@ def fundBudgetView(request,pid,is_submited=False):
 @csrf.csrf_protect
 @login_required
 @authority_required(ADMINSTAFF_USER)
-@check_submit_status(SUBMIT_STATUS_APPLICATION)
-def fileUploadManageView(request, pid, is_submited = False):
+@check_submit_status()
+def fileUploadManageView(request, pid, is_submited):
 
     context = fileUploadManage(request, pid)
     context['user'] = "adminStaff"

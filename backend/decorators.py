@@ -85,38 +85,58 @@ class check_submit_status(object):
     """
     This decorator will deal with application,task,progress,final,the following:
     """
-    def __init__(self, phase):
-        self.phase = phase
+    def __init__(self):
+        pass
     def get_submit_status(self,pro):
-        if self.phase == SUBMIT_STATUS_APPLICATION:
-            return pro.project_special.application_status and (pro.project_status.status < PROJECT_STATUS_APPLICATION_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPLY)
-        elif self.phase == SUBMIT_STATUS_TASK:
-            return pro.project_special.task_status and (pro.project_status.status < PROJECT_STATUS_TASK_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPROVAL)
-        elif self.phase == SUBMIT_STATUS_PROGRESS:
-            return pro.project_special.progress_status and (pro.project_status.status < PROJECT_STATUS_PROGRESS_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_TASK_SCHOOL_OVER)
-        elif self.phase == SUBMIT_STATUS_FINAL:
-            return pro.project_special.final_status and (pro.project_status.status < PROJECT_STATUS_FINAL_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
-        elif self.phase == SUBMIT_STATUS_REVIEW:
-            pass
-        return True
+        is_submited={}
+        is_submited[SUBMIT_STATUS_APPLICATION] = pro.project_special.application_status and (pro.project_status.status < PROJECT_STATUS_APPLICATION_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPLY)
+        is_submited[SUBMIT_STATUS_TASK] = pro.project_special.task_status and (pro.project_status.status < PROJECT_STATUS_TASK_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPROVAL)
+        is_submited[SUBMIT_STATUS_PROGRESS] = pro.project_special.progress_status and (pro.project_status.status < PROJECT_STATUS_PROGRESS_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_TASK_SCHOOL_OVER)
+        is_submited[SUBMIT_STATUS_FINAL] = pro.project_special.final_status and (pro.project_status.status < PROJECT_STATUS_FINAL_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
+        is_submited[SUBMIT_STATUS_REVIEW] = True
+        return is_submited
     def __call__(self, method):
         def wrappered_method(request, *args, **kwargs):
             #check time control
             identity = request.session.get('auth_role', "")
             is_submited = False
             if identity == ADMINSTAFF_USER and check_auth(user=request.user, authority=ADMINSTAFF_USER):
-                is_submited = True
+                is_submited={SUBMIT_STATUS_APPLICATION:True,
+                     SUBMIT_STATUS_TASK:True,
+                     SUBMIT_STATUS_PROGRESS:True,
+                     SUBMIT_STATUS_FINAL:True,
+                     SUBMIT_STATUS_REVIEW:True,
+                    }
             elif identity == FINANCE_USER and check_auth(user=request.user, authority=FINANCE_USER):
-                is_submited = True
+                is_submited={SUBMIT_STATUS_APPLICATION:True,
+                     SUBMIT_STATUS_TASK:True,
+                     SUBMIT_STATUS_PROGRESS:True,
+                     SUBMIT_STATUS_FINAL:True,
+                     SUBMIT_STATUS_REVIEW:True,
+                    }
             elif identity == SCHOOL_USER and check_auth(user=request.user, authority=SCHOOL_USER):
-                is_submited = True
+                is_submited={SUBMIT_STATUS_APPLICATION:True,
+                     SUBMIT_STATUS_TASK:True,
+                     SUBMIT_STATUS_PROGRESS:True,
+                     SUBMIT_STATUS_FINAL:True,
+                     SUBMIT_STATUS_REVIEW:True,
+                    }
             elif identity == COLLEGE_USER and check_auth(user=request.user, authority=COLLEGE_USER):
-                is_submited = True
+                is_submited={SUBMIT_STATUS_APPLICATION:True,
+                     SUBMIT_STATUS_TASK:True,
+                     SUBMIT_STATUS_PROGRESS:True,
+                     SUBMIT_STATUS_FINAL:True,
+                     SUBMIT_STATUS_REVIEW:True,
+                    }
             elif identity == EXPERT_USER and check_auth(user=request.user, authority=EXPERT_USER):
-                pass
+                is_submited={SUBMIT_STATUS_APPLICATION:True,
+                     SUBMIT_STATUS_TASK:True,
+                     SUBMIT_STATUS_PROGRESS:True,
+                     SUBMIT_STATUS_FINAL:True,
+                     SUBMIT_STATUS_REVIEW:True,
+                    }
             elif identity == TEACHER_USER and check_auth(user=request.user, authority=TEACHER_USER):
                 pro = ProjectSingle.objects.get(project_id = kwargs["pid"])
-                loginfo(pro)
                 is_submited = self.get_submit_status(pro);
             loginfo(p=is_submited, label="check_submit_status decorator, is_submited")
             kwargs["is_submited"] = is_submited
