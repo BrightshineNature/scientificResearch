@@ -415,10 +415,12 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     project = ProjectSingle.objects.get( project_id = pid)
     achivement_list = ProjectAchivement.objects.filter( project_id = pid )
     datastatics_list = ProjectStatistics.objects.filter( project_id = pid )
-    projfundsummary = ProjectFundSummary.objects.get( project_id = pid ) 
+    projfundsummary = ProjectFundSummary.objects.get( project_id = pid )
+    projfundbudget = ProjectFundBudget.objects.get( project_id = pid)
     projachivementform  = ProjectAchivementForm()
     projdatastaticsform = ProjectDatastaticsForm()
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
+    profundbudgetform = ProFundBudgetForm( instance =projfundbudget ) 
     reports = ProgressReport.objects.filter(project_id = pid).order_by("-year")
     progress_form = ProgressForm()
 
@@ -442,8 +444,10 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
         'datastatics_list':datastatics_list,
         'projfundsummary':projfundsummary,
         'profundsummaryform':profundsummaryform,
+        'fundbudget_form':profundbudgetform,
         'is_submited':is_submited,
         'projectbudget':project.project_budget_max,
+        'project':project,
         'reports': reports,
         'progress_form': progress_form,
         'pro':project,

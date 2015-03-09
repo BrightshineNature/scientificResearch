@@ -152,25 +152,22 @@ def fundSummary(request, form, pid):
     project = ProjectSingle.objects.get(project_id = pid)
     flag = False
     if profundsummaryform.is_valid():
-        if profundsummaryform.cleaned_data["finance_account"]:
-            total_budget = float(profundsummaryform.cleaned_data["total_budget"])
-            total_expenditure =  float(profundsummaryform.cleaned_data["total_expenditure"])
-            if total_budget < 0 or total_expenditure < 0:
-                message = u"数据未填写完整或数据格式不对，保存失败"
-            else:  
-                laborcosts_budget = float(profundsummaryform.cleaned_data["laborcosts_budget"])
-                if laborcosts_budget <= total_budget * 0.3:
-                    if total_budget <= project.project_budget_max:
-                        profundsummaryform.save()
-                        #copyFundsummaryToBudget(pid)    
-                        message = u"保存成功"
-                        flag = True
-                    else:
-                        message = u"经费决算表总结额应低于项目最大预算金额,请仔细核实"
+        total_budget = float(profundsummaryform.cleaned_data["total_budget"])
+        total_expenditure =  float(profundsummaryform.cleaned_data["total_expenditure"])
+        if total_budget < 0 or total_expenditure < 0:
+            message = u"数据未填写完整或数据格式不对，保存失败"
+        else:  
+            laborcosts_budget = float(profundsummaryform.cleaned_data["laborcosts_budget"])
+            if laborcosts_budget <= total_budget * 0.3:
+                if total_budget <= project.project_budget_max:
+                    profundsummaryform.save()
+                    #copyFundsummaryToBudget(pid)    
+                    message = u"保存成功"
+                    flag = True
                 else:
-                    message = u"劳务费应低于总结额的30%,请仔细核实"
-        else:
-            message = u"请填写财务账号"
+                    message = u"经费决算表总结额应低于项目最大预算金额,请仔细核实"
+            else:
+                message = u"劳务费应低于总结额的30%,请仔细核实"
     else:
         loginfo(p=profundsummaryform.errors,label='profundsummaryform.errors')
         message = u"数据未填写完整或数据格式不对，保存失败"
@@ -180,11 +177,27 @@ def fundSummary(request, form, pid):
     return simplejson.dumps(ret)
 
 @dajaxice_register
-def fundBudget(request, form, pid):
+def fundBudget(request, form, pid,max_budget,projectcode,finance_account):
     profundbudget = ProjectFundBudget.objects.get(project_id = pid) 
     profundbudgetform = ProFundBudgetForm(deserialize_form(form),instance = profundbudget)
     project = ProjectSingle.objects.get(project_id = pid )
     flag = False
+    print projectcode
+    print finance_account
+    print max_budget
+    if not check_input(max_budget) or not check_input(projectcode) or not check_input(finance_account):
+        if not check_input(max_budget):
+            message = u"项目最大预算不能为空"
+        elif not check_input(projectcode):
+            message = u"项目编号不能为空"
+        elif not check_input(finance_account):
+            message = u"项目财务编号不能为空"
+        ret = {'message':message,'flag':flag,}
+        return simplejson.dumps(ret)
+    project.project_code = projectcode
+    project.project_budget_max = max_budget
+    project.finance_account = finance_account
+    project.save()
     if profundbudgetform.is_valid():
         total_budget = float(profundbudgetform.cleaned_data["total_budget"])
         if total_budget < 0:
@@ -206,9 +219,15 @@ def fundBudget(request, form, pid):
         loginfo(p=profundbudgetform.errors,label='profundbudgetform.errors')
         message = u"数据未填写完整或数据格式不对，保存失败"
     # table = refresh_fundsummary_table(request,profundsummaryform,pid)
-    ret = {'message':message,'flag':flag}
+    ret = {'message':message,'flag':flag,'project_code':project.project_code,'project_budget_max':project.project_budget_max,}
     return simplejson.dumps(ret)
 
+def check_input(inputStr):
+    inputStr = str(inputStr)
+    if inputStr == "None" or len(inputStr) == 0:
+        return False
+    else:
+        return True
 
 def refresh_fundsummary_table(request, profundsummaryform,pid):
     return render_to_string("widgets/finalreport/final_fundsummary_table.html",

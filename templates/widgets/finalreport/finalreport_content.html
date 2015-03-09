@@ -113,8 +113,9 @@
   {% if is_submited %}
 
     <button class="btn btn-primary" id="finalsubmitform_btn"  pid={{pid}} is_submited={{is_submited}} type="button">提交结题报告正文</button>
+    {% if not userauth.is_adminstaff and not userauth.is_schooler %}
     <a class="btn btn-primary" href="#auditing" data-toggle="tab" id="finalcontent_next" onclick="finalcontent_next();">下一步</a>
-
+    {% endif %}
   {% endif %}
 </form>
 <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/finalcontent.js"></script>

@@ -338,12 +338,12 @@ def refresh_user_table(request,identity,page=1):
     elif identity == TEACHER_USER:
          colleges = getCollege(request)
          qset = reduce(lambda x,y:x|y,[Q(college = _college) for _college in colleges])
-         users = TeacherProfile.objects.filter(qset)
+         users = TeacherProfile.objects.filter(qset).order_by('college')
          context=getContext(users, page, "item")
          return render_to_string("widgets/dispatch/teacher_user_table.html",
                                 context)
     elif identity == EXPERT_USER:
-        users = ExpertProfile.objects.all()
+        users = ExpertProfile.objects.all().order_by('college')
         context=getContext(users, page, "item3")
         return render_to_string("widgets/dispatch/expert_user_table.html",
                                 context)
