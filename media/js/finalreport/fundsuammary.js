@@ -85,18 +85,22 @@ function projectfundbudget(){
     var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val());
     var max_budget = parseFloat($('#max_budget').val());
     var projectcode = $("#project_code").val();
+    var finance_account = $("#finance_account").val();
     Dajaxice.teacher.fundBudget(fundBudget_callback,
                                     {   
                                         'form': $('#project_fundbudget_form').serialize(true),
                                         'pid':pid,
                                         'max_budget':max_budget,
-                                        'projectcode':projectcode,       
+                                        'projectcode':projectcode,
+                                        'finance_account':finance_account,
                                 });
 }
 
 function fundBudget_callback(data){
-   
-    $('#summary_project_code').val(data.project_code);
-    $("#summary_max_budget").val(data.project_budget_max);
+    if(data.flag){ 
+        $('#summary_project_code').val(data.project_code);
+        $("#summary_max_budget").val(data.project_budget_max);
+        $("#summary_finance_account").val(data.finance_account);
+    }
     alert(data.message);
 }

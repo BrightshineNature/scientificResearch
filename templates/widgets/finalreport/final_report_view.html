@@ -39,19 +39,21 @@
   </ul>
     <hr>
     <div class="tab-content">
-        <div class="tab-pane fade {% if not error %} active in {% endif %}" id="content">
+        <div class="tab-pane fade {% if not userauth.is_adminstaff and not userauth.is_schooler %} active in {% endif %}" id="content">
             {% include "widgets/finalreport/finalreport_content.html"%}
         </div>
+        {% if userauth.is_adminstaff or userauth.is_schooler %}
         <div class="tab-pane fade" id="progress">
             {% include "widgets/progress_report_view.html"%}
         </div>
-        <div class="tab-pane fade" id="budget">
+        <div class="tab-pane fade active in" id="budget">
             {% include "widgets/finalreport/fundbudget.html"%}
         </div>
         <div class="tab-pane fade" id="auditing">
             {% include "widgets/finalreport/financial_auditing.html"%}
         </div>
-	      <div class="tab-pane fade" id="achivement">
+        {% endif %}
+        <div class="tab-pane fade" id="achivement">
             {% include "widgets/finalreport/finalreport_achivement.html"%}
         </div>
         <div class="tab-pane fade" id="datastatics">

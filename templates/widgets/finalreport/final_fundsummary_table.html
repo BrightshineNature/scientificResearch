@@ -1,8 +1,8 @@
 
 <div id = "input_account">
-<STRONG>项目最大预算（元）:</STRONG><input type="text" id = "summary_max_budget"  value="{{project.project_budget_max}}"></input>
-        <strong style="margin-left:50px;">财务账号：</strong>{{project.project_budget_max}}
-        <strong style="margin-left:50px;">项目编号：</strong><input type="text"   id = "summary_project_code" value="{{pro.project_code}}"></input>
+<STRONG>项目最大预算（元）:</STRONG><input type="text" id = "summary_max_budget" readonly="readonly" value="{{project.project_budget_max}}" disabled></input>
+        <strong style="margin-left:50px;">财务账号：</strong><input type="text" id = "summary_finance_account" readonly="readonly" value="{{project.finance_account}}" disabled></input>
+        <strong style="margin-left:50px;">项目编号：</strong><input type="text" readonly="readonly"   id = "summary_project_code" value="{{pro.project_code}}" disabled></input>
 </div>
         
 <table id="mainTable" name="fundsummarytable" class="table table-striped" value={{pid}}>
