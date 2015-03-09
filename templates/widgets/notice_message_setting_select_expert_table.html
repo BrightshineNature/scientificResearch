@@ -1,0 +1,27 @@
+
+
+<table class="table table-bordered ">
+	<thead>
+		<tr>
+			<th style="width:10%"> <input type="checkbox" class="checkbox_select_all" > </th>
+			<th style="width:10%">   专家   </th>
+			<th style="width:80%"> 所属学院  </th>
+		</tr>
+
+	<tbody>
+		{%for it in item4_list %}
+			<tr>
+				<td> <input type="checkbox" name="expert_list" value="{{it.0}}"
+				class="checkbox_selected" >	</th>
+				<td> {{it.1}}</th>
+				<td> {{it.2}}</th>
+			</tr>
+		{%endfor%}
+	</tbody>
+
+	</thead>
+</table>
+
+<div id = "expert_alloc_paginator" class="user_alloc_paginator">
+	{%include "widgets/paginator4.html"%}
+</div>

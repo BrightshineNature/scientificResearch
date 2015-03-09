@@ -43,10 +43,136 @@ OVER_STATUS_CHOICES = (
     ('no', u"未结题"),
     ('yes', u"已结题"),    
 )
+from users.models import Special
+from common.forms import getSpecialTypeGroup, getTeacherYearGroup
+
+cnt_teacher_list = []
+
+@dajaxice_register
+def getSelectedTeacher(request, form):
+    form = deserialize_form(form)
+
+    teacher_year_gruop = []
+    if form['teacher_year_select'] != u"-1":
+        teacher_year_gruop.append(int(form['teacher_year_select']))
+    else :
+        
+        for i in getTeacherYearGroup(request):
+            if i[0] == -1: continue
+            teacher_year_gruop.append(int(i[0]))
+
+    special_gruop = []
+    if form['teacher_special_select'] != u"-1":
+        special_gruop.append(Special.objects.get(id = form['teacher_special_select']))
+    else:
+        for i in getSpecialTypeGroup(request):
+            if i[0] == -1: continue
+            special_gruop.append(Special.objects.get(id = i[0]))
+
+
+
+    project_list = ProjectSingle.objects.filter(approval_year__in = teacher_year_gruop,\
+        project_special__in = special_gruop)
+
+
+
+    cnt_teacher_list[:] = []
+    
+    for p in project_list:
+        cnt_teacher_list.append((p.teacher.id, p.teacher.userid.first_name, \
+                            p.teacher.college, p))
+
+    print "IT IS ME *************^&&&&&&&&&&&&&&&"
+
+    # cnt_teacher_list = teacher_list
+    # getContext(getCollegeListForHtml(), 1, "item3", 0)
+    # print "TTTTTTTt"
+    # print teacher_list
+    teacher_table = render_to_string( "widgets/notice_message_setting_select_teacher_table.html",         
+        getContext(cnt_teacher_list, 1, "item3", 0),
+        )
+
+    print cnt_teacher_list
+    return simplejson.dumps({"status":1, "teacher_table":teacher_table})
+
+cnt_expert_list = []
+kkk = []
+@dajaxice_register
+def getSelectedExpert(request, form):
+
+    kkk[:] = []
+    form = deserialize_form(form)    
+    special_id = form["expert_special_select"]
+
+
+    special_id_gruop = []
+    if special_id != u'-1':
+        special_id_gruop.append(special_id);
+    else :
+        all_special = getSpecialTypeGroup(request)
+        for i in all_special:
+            if i[0] == -1: continue
+            special_id_gruop.append(str(i[0]))
+
+    spe = Special.objects.filter(id__in = special_id_gruop)
+
+    proj_list = ProjectSingle.objects.filter(Q(project_special__in=spe) \
+        & Q(project_status__status__gte = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT,\
+            project_status__status__lte = PROJECT_STATUS_FINAL_EXPERT_SUBJECT\
+            ))
+
+
+    p_e_group  = Re_Project_Expert.objects.filter(project__in=proj_list).values("expert").distinct()
+    p_e_group = ExpertProfile.objects.filter(id__in = [ it['expert'] for it in p_e_group])
+    expert_list = []
+    for it in p_e_group:
+        expert_list.append((it.id, it.userid.first_name, it.college))
+    expert_list = list(set(expert_list))
+    cnt_expert_list[:] = expert_list
+
+
+
+    expert_table = render_to_string( "widgets/notice_message_setting_select_expert_table.html",         
+        getContext(expert_list, 1, "item4", 0),
+        )
+    return simplejson.dumps({"status":1, "expert_table":expert_table})
+
+
+
+from common.views import getCollegeListForHtml
+from backend.utility import getContext
+# @dajaxice_register
+# def getCollegeListPagination(request, page):
+#     page = int(page)
+#     college_list = getCollegeListForHtml()
+#     context = getContext(college_list, page, "item2", 0)
+#     html = render_to_string("widgets/notice_message_setting_select_college_table.html", context)
+#     return simplejson.dumps({"status":1, "html":html,})
+
+@dajaxice_register
+def getUserListPagination(request, page, user):
+    page = int(page)
+    html = ""
+    if user == "college":
+        user_list = getCollegeListForHtml()
+        context = getContext(user_list, page, "item2", 0)
+        html = render_to_string("widgets/notice_message_setting_select_college_table.html", context)
+    elif user == "teacher":
+        user_list = cnt_teacher_list
+        context = getContext(user_list, page, "item3", 0)
+        html = render_to_string("widgets/notice_message_setting_select_teacher_table.html", context)
+    else:
+        user_list = cnt_expert_list
+        context = getContext(user_list, page, "item4", 0)
+        html = render_to_string("widgets/notice_message_setting_select_expert_table.html", context)
+
+    return simplejson.dumps({"status":1, "html":html,})
+
 
 @dajaxice_register
 def SendMail(request,form):
     form=deserialize_form(form)
+    print 'SBSBSB****************'
     loginfo(form)
     #send_mail(form["mail_title"],form["mail_content"],"zhc1009@163.com",["347096491@qq.com","369385153@qq.com"])
     if form["mail_title"]=="":
@@ -55,46 +181,67 @@ def SendMail(request,form):
         status=2
     else:
         recipient_list=[]
+
+        watch_all_list = []  # for test, watch every one
         if form.get("special"):
             special_group=SchoolProfile.objects.all()
             recipient_list.extend([item.userid.email for item in special_group])
         if form.get("college"):
-            if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
-                college_group=CollegeProfile.objects.all()
-                recipient_list.extend([item.userid.email for item in college_group])
-            else:
-                college_group=form.getlist("college_list")
-                college_group=[int(item) for item in college_group]
-                college_group=CollegeProfile.objects.filter(id__in=college_group)
-                recipient_list.extend([item.userid.email for item in college_group])
+            # if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
+            #     college_group=CollegeProfile.objects.all()
+            #     recipient_list.extend([item.userid.email for item in college_group])
+            # else:
+            college_group=form.getlist("college_list")
+            college_group=[int(item) for item in college_group]
+            college_group=CollegeProfile.objects.filter(id__in=college_group)
+            recipient_list.extend([item.userid.email for item in college_group])
+
+            watch_all_list.extend([item.userid.first_name for item in college_group])
         if form.get("teacher"):
-            if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
-                teacher_group=TeacherProfile.objects.all()
-                recipient_list.extend([item.userid.email for item in teacher_group])
-            else:
-                year_group=form.getlist("teacher_year")
-                sp_group=form.getlist("teacher_special")
-                sp_group=[int(item) for item in sp_group]
-                project_group=ProjectSingle.objects.filter(application_year__in=year_group,project_special__in=sp_group)
-                teacher_group=[item.teacher for item in project_group]
-                recipient_list.extend([item.userid.email for item in teacher_group])
+
+            teacher_group=form.getlist("teacher_list")
+            teacher_group=[int(item) for item in teacher_group]
+            teacher_group=TeacherProfile.objects.filter(id__in=teacher_group)
+            recipient_list.extend([item.userid.email for item in teacher_group])
+
+
+            watch_all_list.extend([item.userid.first_name for item in teacher_group])
+            # if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
+            #     teacher_group=TeacherProfile.objects.all()
+            #     recipient_list.extend([item.userid.email for item in teacher_group])
+            # else:
+            #     year_group=form.getlist("teacher_year")
+            #     sp_group=form.getlist("teacher_special")
+            #     sp_group=[int(item) for item in sp_group]
+            #     project_group=ProjectSingle.objects.filter(application_year__in=year_group,project_special__in=sp_group)
+            #     teacher_group=[item.teacher for item in project_group]
+            #     recipient_list.extend([item.userid.email for item in teacher_group])
         if form.get("expert"):
-            if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
-                expert_group=ExpertProfile.objects.all()
-                recipient_list.extend([item.userid.email for item in expert_group])
-            else:
-                year_group=form.getlist("expert_year")
-                sp_group=form.getlist("expert_special")
-                sp_group=[int(item) for item in sp_group]
-                project_group=ProjectSingle.objects.filter(application_year__in=year_group,project_special__in=sp_group)
-                expert_group=[]
-                for project in project_group:
-                    p_e_group=Re_Project_Expert.objects.filter(project=project)
-                    expert_group.extend([item.expert for item in p_e_group])
-                expert_group=list(set(expert_group))
-                recipient_list.extend([item.userid.email for item in expert_group])
-        print "#################"
-        print recipient_list
+            expert_group=form.getlist("expert_list")
+            expert_group=[int(item) for item in expert_group] 
+            expert_group=ExpertProfile.objects.filter(id__in=expert_group)
+            recipient_list.extend([item.userid.email for item in expert_group])
+
+            watch_all_list.extend([item.userid.first_name for item in expert_group])
+            # if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
+            #     expert_group=ExpertProfile.objects.all()
+            #     recipient_list.extend([item.userid.email for item in expert_group])
+            # else:
+            #     year_group=form.getlist("expert_year")
+            #     sp_group=form.getlist("expert_special")
+            #     sp_group=[int(item) for item in sp_group]
+            #     project_group=ProjectSingle.objects.filter(application_year__in=year_group,project_special__in=sp_group)
+            #     expert_group=[]
+            #     for project in project_group:
+            #         p_e_group=Re_Project_Expert.objects.filter(project=project)
+            #         expert_group.extend([item.expert for item in p_e_group])
+            #     expert_group=list(set(expert_group))
+            #     recipient_list.extend([item.userid.email for item in expert_group])
+        print "#################&&&&&&&&&&&&&&&&&&&&&&&&&&&7"
+        loginfo( recipient_list)
+        for i in watch_all_list:
+            print i
+
         print "#################"
         if len(recipient_list)==0:
             status=3
@@ -106,7 +253,7 @@ def SendMail(request,form):
                                       {"email_content":form["mail_content"]})
             for item in recipient_list:
                 print item
-            send_mail(title,content,settings.DEFAULT_FROM_EMAIL,recipient_list)
+            # send_mail(title,content,settings.DEFAULT_FROM_EMAIL,recipient_list)
     return simplejson.dumps({"status":status})
 
 @dajaxice_register

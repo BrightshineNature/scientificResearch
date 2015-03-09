@@ -490,7 +490,20 @@ def progressReportViewWork(request, pid, is_submited, redirect = False):
     }
     return context
 
+def getCollegeListForHtml():
+    college_list_choice=[]
+    college_list_all = CollegeProfile.objects.all()
+    for item in college_list_all:
+        college_name = [obj.name for obj in item.college_set.all()]
+        cname = ""
+        for name in college_name:
+            cname=cname+name+'  '
+        
+        college_list_choice.append((item.id,item.userid.first_name, cname))
+    college_list_choice=list(set(college_list_choice))
+    return college_list_choice
 
+from users.models import CollegeProfile
 def noticeMessageSettingBase(request,userauth):
     notice_choice=NOTICE_CHOICE
     template_notice_message=TemplateNoticeMessage.objects.all()
@@ -506,12 +519,22 @@ def noticeMessageSettingBase(request,userauth):
         }
         cnt+=1
         template_notice_message_group.append(nv)
+
+
+
+    
+
+
     notice_form=NoticeForm(request=request)
     context=getContext(template_notice_message_group,1,"item",0)
     context.update({
         "template_notice_message_form":template_notice_message_form,
         "notice_choice":notice_choice,
         "notice_form":notice_form,
-        "userauth":userauth
+        "userauth":userauth,
+        # "college_list":college_list_choice,
+        
     })
+    context.update(getContext(getCollegeListForHtml(), 1, "item2", 0))
+
     return render(request, userauth['role'] + "/notice_message_setting.html", context)

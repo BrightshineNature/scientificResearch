@@ -1,9 +1,16 @@
 <div class="container-fluid"><!--FORM2 DIV-->
   <fieldset>
     <div class="row">
-      <div class="col-lg-4">
-        <form class="well" method="POST" id="noticemessage_form" >
-          {% csrf_token %}
+
+ <form method="POST" id="noticemessage_form" >
+    {% csrf_token %}
+      <div class="col-lg-4 well">
+
+
+          {{notice_form.college}}
+          {{notice_form.teacher}}
+          {{notice_form.expert}}
+
           <div class="alert alert-info control-group">
             <a class="close" data-dismiss="alert">×</a>
             <strong>说明:</strong>提示信息将在相应角色登录后显示
@@ -16,7 +23,10 @@
             <a class="close" id="alert_close1">×</a>
             邮件发送成功
           </div>
-          <div class="form-group">
+
+
+
+          <!-- <div class="form-group">
             <label class="control-label" for="select_role">角色选择</label>
             <div class="controls">
               {%ifequal userauth.role 'adminStaff'%}
@@ -67,7 +77,10 @@
               </label>
               {%endifequal%}
             </div>
-          </div>
+          </div> -->
+
+
+
           <div class="form-group">
             <label class="control-label" for="textinput">邮件标题</label>
             <div class="controls">
@@ -84,12 +97,63 @@
             <button type="button" class="btn btn-primary" id="send_mail">确认发送</button>
             <button class="btn">取消</button>
           </div>
-        </form>
+
+
+
+
+
+
+
+
+
+
       </div>
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
       <div class="bs-docs-example col-lg-8">
         <span><a class="btn btn-primary" data-toggle="modal" data-target="#notice_profile_info" id="add_new_notice" 
                  >添加新模版消息</a></span>
         <span id="template_notice_error_message"></span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="modal  fade"  id="notice_profile_info">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -119,6 +183,34 @@
           </div>
         </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="modal  fade"  id="notice_delete_info">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -137,7 +229,98 @@
         <div id="template_notice_table">
           {% include "widgets/template_notice_table.html" %}
         </div>
+
+
+
+
+
+        ***********I add begin:*********************************
+
+        <div role="tabpanel">
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-pills" role="tablist">
+
+              <li role="presentation" class="active">
+                <a href="#college" aria-controls="home" role="tab" data-toggle="tab">学院秘书</a>
+              </li>
+
+              <li role="presentation">
+                <a href="#teacher" aria-controls="profile" role="tab" data-toggle="tab">教师</a>
+              </li>
+
+              <li role="presentation">
+                <a href="#expert" aria-controls="messages" role="tab" data-toggle="tab">专家</a>
+              </li>
+
+            </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+
+            
+
+              <div role="tabpanel" class="tab-pane active" id="college">
+                  <form class="selected_receiver_form"
+                        id = "college_list_form">
+
+                  {%include "widgets/notice_message_setting_select_college_table.html"%}
+
+                  </form>
+              </div>
+
+              <div role="tabpanel" class="tab-pane" id="teacher">
+                  <form class="form-inline", id ="select_teacher_form">
+                      {{notice_form.teacher_special_select}}
+                      {{notice_form.teacher_year_select}}
+                      <button type="button" class="btn btn-primary" id="select_teacher">选择教师</button>
+                  </form>
+                  <br/>
+                  <form class="selected_receiver_form"
+                        id = "teacher_list_form">
+                  </form>
+              </div>
+
+              <div role="tabpanel" class="tab-pane" id="expert">
+                  <form class="form-inline", id ="select_expert_form">
+                      {{notice_form.expert_special_select}}
+                      <button type="button" class="btn btn-primary" id="select_expert">选择专家</button>
+                  </form>
+                  <br/>
+                  <form class="selected_receiver_form"
+                        id = "expert_list_form">
+                  </form>
+
+
+
+              </div>
+
+        </div>
+
       </div>
+
+
+
+
+
+
+***********I add end:*********************************
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+
+
+
+
     </div>
   </fieldset>
 </div><!--End FORM2-->

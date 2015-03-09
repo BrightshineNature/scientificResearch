@@ -2,6 +2,7 @@
 
 from django import forms
 from const import *
+from django.db.models import Q
 from backend.logging import loginfo
 from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice,get_conclude_year_choices,get_all_status_choice
 from common.models import ProjectMember, BasisContent, BaseCondition
@@ -105,8 +106,55 @@ class ProjectJudgeForm(forms.Form):
 
 from users.models import SchoolProfile
 from adminStaff.models import ProjectSingle
+from adminStaff.utility import getSpecial
+
+def getTeacherYearGroup(request):
+    # return []
+    if request.session.get('auth_role', "") == SCHOOL_USER:
+        project_group=ProjectSingle.objects.filter(Q(project_special__school_user__userid=request.user) & Q(project_status__status__gte = PROJECT_STATUS_APPROVAL))
+    elif request.session.get('auth_role', "") == ADMINSTAFF_USER:
+        project_group=ProjectSingle.objects.filter(Q(project_status__status__gte = PROJECT_STATUS_APPROVAL))
+    else:
+        project_group=ProjectSingle.objects.none()
+    teacher_year_choice=[]
+    teacher_year_choice.extend(list(set([ (item.approval_year,item.approval_year) for item in project_group] )))
+    print "JJFJJJ***" * 10
+    print teacher_year_choice    
+    teacher_year_choice[0] = (-1, "立项年度")
+    teacher_year_choice=tuple(teacher_year_choice)
+    return teacher_year_choice
+def getSpecialTypeGroup(request):
+    special_list = getSpecial(request)
+    special_choice_list=[]
+    special_choice_list.append((-1,"专题类型"))
+    for s in special_list:
+        special_choice_list.append((s.id, s.name))
+    special_choice_list = tuple(special_choice_list)
+    return special_choice_list
 
 class NoticeForm(forms.Form):
+
+    expert_special_select = forms.ChoiceField(required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control ',
+            'style':"width:300px",
+            }),)
+    teacher_special_select = forms.ChoiceField(required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control ',
+            'style':"width:300px",
+            }),)
+
+    teacher_year_select = forms.ChoiceField(required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control ',
+            'style':"width:300px",
+            }),)
+
+
+    expert_list=forms.MultipleChoiceField(required=False,widget=forms.CheckboxSelectMultiple())
+
+
     mail_content=forms.CharField(required=True,widget=forms.Textarea(attrs={'class':'form-control','row':'6'}))
     mail_title=forms.CharField(required=True,widget=forms.TextInput(attrs={'class':'form-control'}))
     special=forms.BooleanField(required=False)
@@ -121,7 +169,34 @@ class NoticeForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request",None)
+
+
+
         super(NoticeForm,self).__init__(*args,**kwargs)
+
+        
+
+        special_list = getSpecial(request)
+        special_choice_list=[]
+        special_choice_list.append((-1,"专题类型"))
+        for s in special_list:
+            special_choice_list.append((s.id, s.name))
+        special_choice = tuple(special_choice_list)
+
+        print '&*@' * 20
+        print special_choice_list
+        self.fields["expert_special_select"].choices = getSpecialTypeGroup(request)
+
+        self.fields["teacher_special_select"].choices = getSpecialTypeGroup(request)
+        self.fields["teacher_year_select"].choices = getTeacherYearGroup(request)
+
+
+
+
+
+
+        
+
         if request == None:return
         if SchoolProfile.objects.filter(userid=request.user).count()>0:
             college_list_choice=[]
@@ -132,7 +207,7 @@ class NoticeForm(forms.Form):
                 for name in collegename:
                     cname=cname+name+'  '
                 collegename = item.userid.first_name+'('+cname+')'
-                college_list_choice.append((item.id,collegename))
+                college_list_choice.append((item.id,collegename,))
             college_list_choice=list(set(college_list_choice))
 
             #college_list_choice.extend(list(set([(item.id,item.userid.first_name) for item in CollegeProfile.objects.all()])))
@@ -143,11 +218,15 @@ class NoticeForm(forms.Form):
             teacher_special_choice=[]
             teacher_special_choice.extend(list(set([(item.project_special.id,item.project_special.name) for item in project_group])))
             teacher_special_choice=tuple(teacher_special_choice)
+
             self.fields["college_list"].choices=college_list_choice
             self.fields["teacher_year"].choices=teacher_year_choice
             self.fields["expert_year"].choices=teacher_year_choice
             self.fields["teacher_special"].choices=teacher_special_choice
             self.fields["expert_special"].choices=teacher_special_choice
+
+            
+
             
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
