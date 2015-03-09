@@ -116,10 +116,19 @@ def getTeacherYearGroup(request):
         project_group=ProjectSingle.objects.filter(Q(project_status__status__gte = PROJECT_STATUS_APPROVAL))
     else:
         project_group=ProjectSingle.objects.none()
+
+    # if not project_group:
+    #     return tuple((-1, "立项年度"), )
     teacher_year_choice=[]
     teacher_year_choice.extend(list(set([ (item.approval_year,item.approval_year) for item in project_group] )))
     print "JJFJJJ***" * 10
     print teacher_year_choice    
+
+    if not teacher_year_choice:
+        tt = (-1, "立项年度")
+
+        return (tt,  )
+
     teacher_year_choice[0] = (-1, "立项年度")
     teacher_year_choice=tuple(teacher_year_choice)
     return teacher_year_choice
