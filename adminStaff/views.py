@@ -219,7 +219,7 @@ def fundBudgetView(request,pid,is_submited):
 @check_submit_status()
 def fileUploadManageView(request, pid, is_submited):
 
-    context = fileUploadManage(request, pid)
+    context = fileUploadManage(request, pid, is_submited)
     context['user'] = "adminStaff"
     # is_submited = False
     context['is_submited'] = is_submited

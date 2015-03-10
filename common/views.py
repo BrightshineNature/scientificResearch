@@ -94,7 +94,7 @@ def getParam(pro_list, userauth,flag,page,page2):
     param.update({"pro_count":len(pass_apply_project_group)})
     return param
 
-def appManage(request, pid):
+def appManage(request, pid, is_submited):
     page = request.GET.get('page')
     page2 = request.GET.get('page2')
     if page == None:
@@ -144,7 +144,7 @@ def appManage(request, pid):
     }
 
 
-    file_upload_context = fileUploadManage(request, pid)
+    file_upload_context = fileUploadManage(request, pid, is_submited)
     context = dict(file_upload_context.items()+context.items())
 
     return context
@@ -219,24 +219,20 @@ def handleFileUpload(request, pid,  entrance):
     return 1
 
 
-def fileUploadManage(request, pid):
+def fileUploadManage(request, pid, is_submited):
 
     print "fileUploadManage**********"
     error = 0
     is_upload_file = 0
     if request.method == 'POST':
         if request.POST.has_key("is_delete_file"):
-            print "CAO" * 10
             fid = request.POST['fid']
-            print fid
             deleted_file = UploadFile.objects.get(id = fid)
-
             path = deleted_file.file_obj.path
             deleted_file.delete()
             default_storage.delete(path)
             is_upload_file = 1
         else:
-
             for i in FileList:
                 if request.FILES.has_key(i):
                     if not handleFileUpload(request, pid, i):
@@ -258,8 +254,12 @@ def fileUploadManage(request, pid):
         'files': files,
         'upload_file_error': error, 
         'is_upload_file':is_upload_file,
+        'is_can_submited':is_submited, 
 
     }
+
+    print '*#$' * 10
+    print is_submited
     return context
 
 def scheduleManage(request, userauth):

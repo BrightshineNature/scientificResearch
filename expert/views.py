@@ -102,7 +102,7 @@ def applicationView(request, is_submited):
     re_obj = Re_Project_Expert.objects.get(id = re_id)
     pid = re_obj.project.project_id
     score_table = getScoreTable(re_obj.project).objects.get(re_obj = re_obj)
-    context = appManage(request, pid)
+    context = appManage(request, pid, is_submited)
     file_list = getSingleProjectURLList(re_obj.project)[:1]   
     if request.method == "GET":
         score_form = getScoreForm(re_obj.project)(instance = score_table)

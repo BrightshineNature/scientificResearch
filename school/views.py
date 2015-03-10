@@ -30,7 +30,7 @@ from django.contrib.sites.models import get_current_site,Site
 @login_required
 @check_submit_status()
 def appView(request, pid, is_submited ):
-    context = appManage(request, pid)
+    context = appManage(request, pid, is_submited)
     context['is_submited'] = is_submited[SUBMIT_STATUS_APPLICATION]
     context['user'] = "school"
     return render(request, "school/application.html", context)
@@ -63,7 +63,7 @@ def financialInfoView(request):
 @check_submit_status()
 def finalReportView(request,pid,is_submited):
     context = finalReportViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
-    context = dict(context, **fileUploadManage(request, pid))
+    context = dict(context, **fileUploadManage(request, pid, is_submited))
     context['is_submited'] = is_submited
     context['user'] = "special"
     loginfo(p=is_submited,label="is_submited")

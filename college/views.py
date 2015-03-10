@@ -27,7 +27,7 @@ from adminStaff.models import ProjectSingle
 @login_required
 @check_submit_status()
 def appView(request, pid, is_submited):
-    context = appManage(request, pid)
+    context = appManage(request, pid, is_submited)
     context['is_submited'] = is_submited[SUBMIT_STATUS_APPLICATION]
     context['user'] = "college"
     return render(request, "college/application.html", context)
@@ -141,7 +141,7 @@ def fundBudgetView(request,pid,is_submited):
 @check_submit_status()
 def fileUploadManageView(request, pid, is_submited):
     print "haha"*100
-    context = fileUploadManage(request, pid)
+    context = fileUploadManage(request, pid, is_submited)
     context['user'] = "college"
     # is_submited = False
     context['is_submited'] = is_submited

@@ -19,7 +19,7 @@ from common.forms import ScheduleBaseForm
 @login_required
 @check_submit_status()
 def appView(request, pid, is_submited):
-    context = appManage(request, pid)
+    context = appManage(request, pid, is_submited)
     context['is_submited'] = is_submited[SUBMIT_STATUS_APPLICATION]
     context['user'] = "finance"
     return render(request, "finance/application.html", context)
