@@ -17,8 +17,8 @@ from const import *
 from common.utils import status_confirm, getScoreTable, getScoreForm, getProjectReviewStatus
 from const.models import ProjectStatus
 from school.forms import ExpertReviewForm
-from common.views import get_project_list
-from common.forms import EmailForm
+from common.views import get_project_list,get_search_data
+from common.forms import EmailForm,ScheduleBaseForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -302,12 +302,14 @@ def getScore(request, pid):
     html = render_to_string("widgets/concluding_data.html", {"scoreList": scoreList, "ave_score": ave_score.values(), "form": scoreFormType, "comments_index": comments_index, })
     return simplejson.dumps({"message": message, "html": html,})
 @dajaxice_register
-def ExpertinfoExport(request,special_id,eid):
+def ExpertinfoExport(request,special_id,eid,form):
     special = getSpecial(request).get(id = special_id)
     if special:
         if eid==TYPE_ALLOC[0]:
-            proj_set = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
-            loginfo(proj_set)
+            schedule_form = ScheduleBaseForm(deserialize_form(form))
+            proj_set =get_search_data(request,schedule_form)
+            # proj_set = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT))
+            loginfo(len(proj_set))
         elif eid == TYPE_FINAL_ALLOC[0]:
             proj_set = ProjectSingle.objects.filter(Q(project_special=special) & Q(project_status__status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT))
         loginfo(proj_set.count())

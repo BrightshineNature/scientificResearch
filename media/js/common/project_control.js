@@ -58,7 +58,8 @@ $("[name = 'btn_export']").click(function(){
     var eid = $(this).attr("eid");
     text_div = $(this).parents(".active");
     $('#excelprogress').modal('show');
-    Dajaxice.school.ExpertinfoExport(releaseexcel_callback,{'special_id':$(text_div).attr('id'),'eid':eid,});
+    form = $(this).parents('form');
+    Dajaxice.school.ExpertinfoExport(releaseexcel_callback,{'special_id':$(text_div).attr('id'),'eid':eid,'form':$(form).serialize(true)});
 });
 
 function releaseexcel_callback(data){

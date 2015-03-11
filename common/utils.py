@@ -289,7 +289,10 @@ def status_confirm(project, confirm):
     if project.project_status.status==PROJECT_STATUS_APPLY:
         if confirm==APPLICATION_WEB_CONFIRM:
             if project.file_application==True:
-                set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+                if project.project_special.review_status:
+                    set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+                else:
+                    set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
             else:
                 set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
         elif confirm==APPLICATION_SUBMIT_CONFIRM:
@@ -298,7 +301,10 @@ def status_confirm(project, confirm):
             return False
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_WEB_OVER:
         if confirm==APPLICATION_SUBMIT_CONFIRM:
-            set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+            if project.project_special.review_status:
+                set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
+            else:
+                set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_APPLICATION_COMMIT_OVER:

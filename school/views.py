@@ -168,6 +168,7 @@ def dispatchView(request):
 @authority_required(SCHOOL_USER)
 def controlView(request):
     expert_review_forms=[]
+    schedule_form=ScheduleBaseForm(request=request)
     specials =  getSpecial(request)
     for special in specials:
         expert_review_form = ExpertReviewForm(instance=special)
@@ -183,6 +184,7 @@ def controlView(request):
         'spec_list' :spec_list,
         'alloc_excel':TYPE_ALLOC[0],
         'final_alloc_excel':TYPE_FINAL_ALLOC[0],
+        'schedule_form':schedule_form,
     }
     return render(request, "school/control.html", context);
 

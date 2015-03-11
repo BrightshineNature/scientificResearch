@@ -18,8 +18,23 @@
 
 <fieldset>
   <legend>导出项目信息统计表</legend>
-  <button type="button" class="btn btn-primary" eid={{alloc_excel}} name="btn_export">导出专家初审统计表</button>
-  <button type="button" class="btn btn-primary" eid={{final_alloc_excel}} name="btn_export">导出专家终审统计表</button>
+  <form class="form-inline" role="form">
+    <div class="form-group">
+    {{schedule_form.application_year}}
+    </div>
+    <div class="form-group">
+    <button type="button" class="btn btn-primary" eid={{alloc_excel}} name="btn_export">导出专家初审统计表</button>
+    </div>
+  </form>
+  <br>
+  <form class="form-inline" role="form">
+    <div class="form-group">
+    {{schedule_form.approval_year}}
+    </div>
+    <div class="form-group">
+    <button type="button" class="btn btn-primary" eid={{final_alloc_excel}} name="btn_export">导出专家终审统计表</button>
+    </div>
+  </form>
   {% include "widgets/infoexport/infoexport_alert.html"%}
 </fieldset>
 
