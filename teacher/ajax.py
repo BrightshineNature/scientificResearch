@@ -208,7 +208,7 @@ def fundBudget(request, form, pid,max_budget,projectcode,finance_account):
             if laborcosts_budget <= total_budget * 0.3:
                 if total_budget <= project.project_budget_max:
                     profundbudgetform.save()
-                    copyBudgetToFundsummary(pid)    
+                    copyBudgetToFundsummary(pid)
                     message = u"保存成功"
                     flag = True
                     status_confirm(project,TASK_BUDGET_CONFIRM)
