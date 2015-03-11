@@ -264,9 +264,9 @@ function send_mail_callback(data){
 document.getElementById("id_college").checked=true;
 document.getElementById("id_teacher").checked=true;
 document.getElementById("id_expert").checked=true;
-// $("#id_college").hide();
-// $("#id_teacher").hide();
-// $("#id_expert").hide();
+$("#id_college").hide();
+$("#id_teacher").hide();
+$("#id_expert").hide();
 
 
 

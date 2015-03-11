@@ -233,19 +233,24 @@ def SendMail(request,form):
             #         expert_group.extend([item.expert for item in p_e_group])
             #     expert_group=list(set(expert_group))
             #     recipient_list.extend([item.userid.email for item in expert_group])
-        # print "#################&&&&&&&&&&&&&&&&&&&&&&&&&&&7"
-        # loginfo( recipient_list)
-        # for i in watch_all_list:
-        #     print i
-        # print "#################"
+        print "#################&&&&&&&&&&&&&&&&&&&&&&&&&&&7"
+        loginfo( recipient_list)
+        for i in watch_all_list:
+            print i
+        print "#################"
         if len(recipient_list)==0:
             status=3
         else:
             status=0
-            title = render_to_string('email/email_2_expert_title.txt',
-                                     {"email_title":form["mail_title"]})
-            content = render_to_string('email/email_2_expert_content.txt',
-                                      {"email_content":form["mail_content"]})
+            title = form["mail_title"]
+            # render_to_string('email/email_2_expert_title.txt',
+            #                          {"email_title":form["mail_title"]})
+            content = form["mail_content"]
+            # render_to_string('email/email_2_expert_content.txt',
+            #                           {"email_content":form["mail_content"]})
+
+            
+
             send_mail(title,content,settings.DEFAULT_FROM_EMAIL,recipient_list)
     return simplejson.dumps({"status":status})
 
