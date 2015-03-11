@@ -182,22 +182,22 @@ def fundBudget(request, form, pid,max_budget,projectcode,finance_account):
     profundbudgetform = ProFundBudgetForm(deserialize_form(form),instance = profundbudget)
     project = ProjectSingle.objects.get(project_id = pid )
     flag = False
-    print projectcode
-    print finance_account
-    print max_budget
-    if not check_input(max_budget) or not check_input(projectcode) or not check_input(finance_account):
-        if not check_input(max_budget):
-            message = u"项目最大预算不能为空"
-        elif not check_input(projectcode):
-            message = u"项目编号不能为空"
-        elif not check_input(finance_account):
-            message = u"项目财务编号不能为空"
-        ret = {'message':message,'flag':flag,}
-        return simplejson.dumps(ret)
-    project.project_code = projectcode
-    project.project_budget_max = max_budget
-    project.finance_account = finance_account
-    project.save()
+    identity = request.session.get('auth_role', "")
+    accessList = [ADMINSTAFF_USER,SCHOOL_USER,FINANCE_USER]
+    if identity in accessList: 
+        if not check_input(max_budget) or not check_input(projectcode) or not check_input(finance_account):
+            if not check_input(max_budget):
+                message = u"项目最大预算不能为空"
+            elif not check_input(projectcode):
+                message = u"项目编号不能为空"
+            elif not check_input(finance_account):
+                message = u"项目财务编号不能为空"
+            ret = {'message':message,'flag':flag,}
+            return simplejson.dumps(ret)
+        project.project_code = projectcode
+        project.project_budget_max = max_budget
+        project.finance_account = finance_account
+        project.save()
     if profundbudgetform.is_valid():
         total_budget = float(profundbudgetform.cleaned_data["total_budget"])
         if total_budget < 0:

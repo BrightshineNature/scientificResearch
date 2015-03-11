@@ -479,6 +479,7 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
         'pid':pid,
         'is_submited':is_submited,
         'projectbudget':project.project_budget_max,
+        'project':project,
     }
     return context
 
