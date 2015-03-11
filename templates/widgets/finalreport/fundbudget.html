@@ -6,9 +6,9 @@
     <form class="form" id="project_fundbudget_form" method="POST" action="/{{role}}/fundbudget/{{pid}}">
         {% csrf_token  %}
         <div id = "input_account">
-        <STRONG>项目最大预算（元）:</STRONG><input type="text" id = "max_budget" value="{{project.project_budget_max}}"></input>
-        <strong style="margin-left:50px;">财务账号：</strong><input type="text" id = "finance_account" value="{{project.finance_account}}"></input>
-        <strong style="margin-left:50px;">项目编号：</strong><input type="text" id = "project_code" value="{{pro.project_code}}"></input>
+            <STRONG>项目最大预算（元）:</STRONG><input type="text" {% if not userauth.is_adminstaff and not userauth.is_schooler and not userauth.is_finance %} readonly="readonly" {% endif %} id = "max_budget" value="{{project.project_budget_max}}"></input>
+        <strong style="margin-left:50px;">财务账号：</strong><input type="text"  {% if not userauth.is_adminstaff and not userauth.is_schooler and not userauth.is_finance %} readonly="readonly" {% endif %} id = "finance_account" value="{{project.finance_account}}"></input>
+        <strong style="margin-left:50px;">项目编号：</strong><input type="text" {% if not userauth.is_adminstaff and not userauth.is_schooler and not userauth.is_finance %} readonly="readonly" {% endif %}  id = "project_code" value="{{project.project_code}}"></input>
         </div>
         <table id="mainTable" name = "budgettable"  value={{pid}} class="table table-striped" value={{finalreportid}}>
             <thead><tr><th>科目</th><th>预算经费（元）</th><th>说明</th></tr></thead>
