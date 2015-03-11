@@ -162,7 +162,7 @@ def get_qset(userauth):
             default=create_QE(PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
         else:
-            pending=create_QE(PROJECT_STATUS_TASK_FINANCE_OVER)|create_QE(PROJECT_STATUS_PROGRESS_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_FINANCE_OVER)|create_QE(PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
+            pending=create_QE(PROJECT_STATUS_TASK_COMMIT_OVER)|create_QE(PROJECT_STATUS_PROGRESS_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_COMMIT_OVER)|create_QE(PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
             default=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)|create_QE(PROJECT_STATUS_PROGRESS_SCHOOL_OVER)|create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     elif userauth['role']=="college":
@@ -180,11 +180,11 @@ def get_qset(userauth):
         search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_STOP)
     else:
         if userauth['status']=="budget":
-            pending=create_QE(PROJECT_STATUS_TASK_COMMIT_OVER)
+            pending=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)
             default=create_QE(PROJECT_STATUS_TASK_FINANCE_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
         else:
-            pending=create_QE(PROJECT_STATUS_FINAL_COMMIT_OVER)
+            pending=create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
             default=create_QE(PROJECT_STATUS_FINAL_FINANCE_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     return (pending,default,search)
@@ -215,7 +215,7 @@ def statusRollBack(project,userrole,userstatus,form):
                 else:
                     return False
         elif userstatus=="research_concluding":
-            if project.project_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
+            if project.project_status.status==PROJECT_STATUS_TASK_COMMIT_OVER:
                 set_status(project,PROJECT_STATUS_TASK_BUDGET_OVER)
                 project.file_task=False
                 project.save()
@@ -223,7 +223,7 @@ def statusRollBack(project,userrole,userstatus,form):
                 set_status(project,PROJECT_STATUS_TASK_SCHOOL_OVER)
                 project.file_interimachecklist=False
                 project.save()
-            elif project.project_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
+            elif project.project_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
                 form_list=form.getlist("final")
                 if len(form_list)==2:
                     set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
@@ -343,17 +343,18 @@ def status_confirm(project, confirm):
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_TASK_COMMIT_OVER:
-        if confirm==TASK_FINANCE_CONFIRM:
-            set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
         if confirm==TASK_SCHOOL_CONFIRM:
             set_status(project,PROJECT_STATUS_SCHOOL_OVER)
         else:
             return False
 
     elif project.project_status.status==PROJECT_STATUS_TASK_SCHOOL_OVER:
+        if confirm==TASK_FINANCE_CONFIRM:
+            set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
+        else:
+            return False
+
+    elif project.project_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
         if confirm==PROGRESS_WEB_CONFIRM:
             if project.file_interimchecklist==True:
                 set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
@@ -389,16 +390,16 @@ def status_confirm(project, confirm):
         else :
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
-        if confirm==FINAL_FINANCE_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_FINANCE_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
         if confirm==FINAL_SCHOOL_CONFIRM:
             set_status(project,PROJECT_STATUS_FINAL_SCHOOL_OVER)
         else:
             return False
     elif project.project_status.status==PROJECT_STATUS_FINAL_SCHOOL_OVER:
+        if confirm==FINAL_FINANCE_CONFIRM:
+            set_status(project,PROJECT_STATUS_FINAL_FINANCE_OVER)
+        else:
+            return False
+    elif project.project_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
         if confirm==FINAL_EXPERT_SUBJECT_CONFIRM:
             set_status(project,PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
         else:
