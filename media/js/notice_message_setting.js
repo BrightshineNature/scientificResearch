@@ -151,10 +151,6 @@ $(document).on("click", ".checkbox_selected", function()
 })
 
 
-
-
-
-
 $(document).on("click" ,"#select_expert", function()
 {
     form = $("#select_expert_form").serialize(true)
@@ -169,11 +165,6 @@ function getSelectedExpertCallback(data){
     $("#expert_list_form").html(data.expert_table)
 
 }
-
-
-
-
-
 
 $(document).on("click" ,"#select_teacher", function()
 {
@@ -204,15 +195,6 @@ $(document).on("click", ".checkbox_select_all", function()
   }
 })
 
-
-
-
-
-
-
-
-
-
 var cnt_user;
 $(document).on("click", ".user_alloc_paginator .item_page", function()
 {
@@ -239,29 +221,6 @@ function getUserListPaginationCallback(data)
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 $("#alert_close").click(function(){
     $("#noticemessage_warning").hide();
 });
@@ -274,12 +233,9 @@ $("#noticemessage_success").hide();
 
 
 $("#send_mail").click(function(){
-
     notice_form = $("#noticemessage_form").serialize(true)
     notice_form += "&"
     notice_form += serialize_all_selected()
-
-
     Dajaxice.common.SendMail(send_mail_callback,{
         "form":notice_form
     });
@@ -305,26 +261,17 @@ function send_mail_callback(data){
     }
 }
 
-
-
-
-
-
-
-
-
 document.getElementById("id_college").checked=true;
 document.getElementById("id_teacher").checked=true;
 document.getElementById("id_expert").checked=true;
-// $("#id_college").hide();
-// $("#id_teacher").hide();
-// $("#id_expert").hide();
+$("#id_college").hide();
+$("#id_teacher").hide();
+$("#id_expert").hide();
 
 
 
 // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) 
 // {
-    
 //     // alert(e.target);
 //     t = String(e.target).split("#");
 //     // alert(t);
@@ -338,8 +285,6 @@ document.getElementById("id_expert").checked=true;
 //     document.getElementById(previous_id).checked=false;
 
 //     // var previous_id = "id_" + e.relatedTarget
-    
-    
-//     // alert(e.target); // newly activated tab
+//   // alert(e.target); // newly activated tab
 //     // alert(e.relatedTarget);
 // })

@@ -184,20 +184,21 @@ def fundBudget(request, form, pid,max_budget,projectcode,finance_account,is_subm
     flag = False
     identity = request.session.get('auth_role', "")
     accessList = [ADMINSTAFF_USER,SCHOOL_USER,FINANCE_USER]
-    if identity in accessList: 
-        if not check_input(max_budget) or not check_input(projectcode) or not check_input(finance_account):
-            if not check_input(max_budget):
-                message = u"项目最大预算不能为空"
-            elif not check_input(projectcode):
-                message = u"项目编号不能为空"
-            elif not check_input(finance_account):
-                message = u"项目财务编号不能为空"
-            ret = {'message':message,'flag':flag,}
-            return simplejson.dumps(ret)
-        project.project_code = projectcode
+    if not check_input(max_budget) or not check_input(projectcode) or not check_input(finance_account):
+        message = ""
+        if not check_input(max_budget):
+            message += u"项目最大预算不能为空 "
+        if not check_input(projectcode):
+            message += u"项目编号不能为空 "
+        if not check_input(finance_account):
+            message += u"项目财务编号不能为空 "
+        ret = {'message':message,'flag':flag,}
+        return simplejson.dumps(ret)
+    if identity in accessList:
         project.project_budget_max = max_budget
-        project.finance_account = finance_account
-        project.save()
+    project.project_code = projectcode
+    project.finance_account = finance_account
+    project.save()
     if profundbudgetform.is_valid():
         total_budget = float(profundbudgetform.cleaned_data["total_budget"])
         if total_budget < 0:
@@ -207,7 +208,7 @@ def fundBudget(request, form, pid,max_budget,projectcode,finance_account,is_subm
             if laborcosts_budget <= total_budget * 0.3:
                 if total_budget <= project.project_budget_max:
                     profundbudgetform.save()
-                    copyBudgetToFundsummary(pid)    
+                    copyBudgetToFundsummary(pid)
                     message = u"保存成功"
                     flag = True
                     if is_submited:

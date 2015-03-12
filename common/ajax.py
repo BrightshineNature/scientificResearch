@@ -195,16 +195,12 @@ def SendMail(request,form):
             college_group=[int(item) for item in college_group]
             college_group=CollegeProfile.objects.filter(id__in=college_group)
             recipient_list.extend([item.userid.email for item in college_group])
-
             watch_all_list.extend([item.userid.first_name for item in college_group])
         if form.get("teacher"):
-
             teacher_group=form.getlist("teacher_list")
             teacher_group=[int(item) for item in teacher_group]
             teacher_group=TeacherProfile.objects.filter(id__in=teacher_group)
             recipient_list.extend([item.userid.email for item in teacher_group])
-
-
             watch_all_list.extend([item.userid.first_name for item in teacher_group])
             # if AdminStaffProfile.objects.filter(userid=request.user).count()>0:
             #     teacher_group=TeacherProfile.objects.all()
@@ -241,19 +237,21 @@ def SendMail(request,form):
         loginfo( recipient_list)
         for i in watch_all_list:
             print i
-
         print "#################"
         if len(recipient_list)==0:
             status=3
         else:
             status=0
-            title = render_to_string('email/email_2_expert_title.txt',
-                                     {"email_title":form["mail_title"]})
-            content = render_to_string('email/email_2_expert_content.txt',
-                                      {"email_content":form["mail_content"]})
-            for item in recipient_list:
-                print item
-            # send_mail(title,content,settings.DEFAULT_FROM_EMAIL,recipient_list)
+            title = form["mail_title"]
+            # render_to_string('email/email_2_expert_title.txt',
+            #                          {"email_title":form["mail_title"]})
+            content = form["mail_content"]
+            # render_to_string('email/email_2_expert_content.txt',
+            #                           {"email_content":form["mail_content"]})
+
+            
+
+            send_mail(title,content,settings.DEFAULT_FROM_EMAIL,recipient_list)
     return simplejson.dumps({"status":status})
 
 @dajaxice_register
