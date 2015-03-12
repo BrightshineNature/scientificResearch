@@ -79,7 +79,7 @@ $("table[name='fundsummarytable']").find("input").bind('change',function(){
     }
 });
 
-function projectfundbudget(){
+function projectfundbudget(is_submited = false){
     var pid = $("#mainTable").attr("value");
     var total_budget = parseFloat($('#id_total_budget').val());
     var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val());
@@ -93,6 +93,7 @@ function projectfundbudget(){
                                         'max_budget':max_budget,
                                         'projectcode':projectcode,
                                         'finance_account':finance_account,
+                                        'is_submited':is_submited,
                                 });
 }
 
