@@ -182,11 +182,10 @@ def finalInfoView(request,pid):
 @login_required
 @authority_required(ADMINSTAFF_USER)
 @check_submit_status()
-def finalReportView(request,pid,is_submited):
+def finalReportView(request,pid,is_submited={}):
     print "YYA" * 10
     context = finalReportViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
-
-    context = dict(context, **fileUploadManage(request, pid))
+    context = dict(context, **fileUploadManage(request, pid,is_submited))
     context['is_submited'] = is_submited
     context['user'] = "adminStaff"
     loginfo(p=is_submited,label="is_submited")
@@ -206,7 +205,7 @@ def finalReportView(request,pid,is_submited):
 @login_required
 @authority_required(ADMINSTAFF_USER)
 @check_submit_status()
-def fundBudgetView(request,pid,is_submited):
+def fundBudgetView(request,pid,is_submited={}):
     context = fundBudgetViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
     context['role'] = 'adminStaff'
     if context['redirect']:
@@ -217,7 +216,7 @@ def fundBudgetView(request,pid,is_submited):
 @login_required
 @authority_required(ADMINSTAFF_USER)
 @check_submit_status()
-def fileUploadManageView(request, pid, is_submited):
+def fileUploadManageView(request, pid, is_submited={}):
 
     context = fileUploadManage(request, pid, is_submited)
     context['user'] = "adminStaff"

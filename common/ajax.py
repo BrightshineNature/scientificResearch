@@ -248,9 +248,6 @@ def SendMail(request,form):
             content = form["mail_content"]
             # render_to_string('email/email_2_expert_content.txt',
             #                           {"email_content":form["mail_content"]})
-
-            
-
             send_mail(title,content,settings.DEFAULT_FROM_EMAIL,recipient_list)
     return simplejson.dumps({"status":status})
 
@@ -322,8 +319,7 @@ def StatusChange(request,judgeid,status,page2,searchForm):
     project=ProjectSingle.objects.get(pk=judgeid)
     set_status(project,int(status))
     project.save()
-    loginfo(status)
-    return getPagination(request,-1,page2,"adminStaff","researchConcluding",0,searchForm)
+    return getPagination(request,-1,page2,"adminStaff","all",1,searchForm)
 
 @dajaxice_register
 def getPagination(request,page,page2,userrole,userstatus,search,form):
@@ -334,8 +330,6 @@ def getPagination(request,page,page2,userrole,userstatus,search,form):
     page=int(page)
     page2=int(page2)
     search=int(search)
-    loginfo(userrole)
-    loginfo(form)
     loginfo(userstatus)
     context=schedule_form_data(request,userauth,form,page,page2,search)
     if userstatus=="application":
