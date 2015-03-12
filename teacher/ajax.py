@@ -184,6 +184,7 @@ def fundBudget(request, form, pid,max_budget,projectcode,finance_account,is_subm
     flag = False
     identity = request.session.get('auth_role', "")
     accessList = [ADMINSTAFF_USER,SCHOOL_USER,FINANCE_USER]
+    print is_submited
     if not check_input(max_budget) or not check_input(projectcode) or not check_input(finance_account):
         message = ""
         if not check_input(max_budget):
