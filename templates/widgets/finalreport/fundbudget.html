@@ -7,7 +7,7 @@
         {% csrf_token  %}
         <div id = "input_account">
             <STRONG>项目最大预算（元）:</STRONG><input type="text" {% if not userauth.is_adminstaff and not userauth.is_schooler and not userauth.is_finance %} readonly="readonly" {% endif %} id = "max_budget" value="{{project.project_budget_max}}"></input>
-        <strong style="margin-left:50px;">财务账号：</strong><input type="text"    id = "finance_account" value="{{project.finance_account}}"></input>
+        <strong style="margin-left:50px;">财务账号：</strong><input type="text" id = "finance_account" value="{{project.finance_account}}"></input>
         <strong style="margin-left:50px;">项目编号：</strong><input type="text"  id = "project_code" value="{{project.project_code}}"></input>
         </div>
         <table id="mainTable" name = "budgettable"  value={{pid}} class="table table-striped" value={{finalreportid}}>
@@ -30,7 +30,8 @@
             <tfoot><tr><td><strong>合计</strong></td><td>{{fundbudget_form.total_budget}}</td><td>{{fundbudget_form.total_remark}}</td></tr></tfoot>
         </table>
         {% if is_submited %}
-            <button type="button" class="btn btn-primary" onclick="projectfundbudget()">保存经费预算表</button>
+            <button type="button" class="btn btn-primary" onclick="projectfundbudget(false)">保存经费预算表</button>
+            <button type="button" class="btn btn-primary" onclick="projectfundbudget(true)">提交</button>
         {% endif %}
     </form>
 </div>

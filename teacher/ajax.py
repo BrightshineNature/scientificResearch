@@ -177,13 +177,14 @@ def fundSummary(request, form, pid):
     return simplejson.dumps(ret)
 
 @dajaxice_register
-def fundBudget(request, form, pid,max_budget,projectcode,finance_account):
+def fundBudget(request, form, pid,max_budget,projectcode,finance_account,is_submited = False):
     profundbudget = ProjectFundBudget.objects.get(project_id = pid) 
     profundbudgetform = ProFundBudgetForm(deserialize_form(form),instance = profundbudget)
     project = ProjectSingle.objects.get(project_id = pid )
     flag = False
     identity = request.session.get('auth_role', "")
     accessList = [ADMINSTAFF_USER,SCHOOL_USER,FINANCE_USER]
+    print is_submited
     if not check_input(max_budget) or not check_input(projectcode) or not check_input(finance_account):
         message = ""
         if not check_input(max_budget):
@@ -211,7 +212,8 @@ def fundBudget(request, form, pid,max_budget,projectcode,finance_account):
                     copyBudgetToFundsummary(pid)
                     message = u"保存成功"
                     flag = True
-                    status_confirm(project,TASK_BUDGET_CONFIRM)
+                    if is_submited:
+                        status_confirm(project,TASK_BUDGET_CONFIRM)
                 else:
                     message = u"经费预算表总结额应低于项目最大预算金额,请仔细核实"
             else:

@@ -79,7 +79,7 @@ $("table[name='fundsummarytable']").find("input").bind('change',function(){
     }
 });
 
-function projectfundbudget(){
+function projectfundbudget(is_submited){
     var pid = $("#mainTable").attr("value");
     var total_budget = parseFloat($('#id_total_budget').val());
     var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val());
@@ -93,6 +93,7 @@ function projectfundbudget(){
                                         'max_budget':max_budget,
                                         'projectcode':projectcode,
                                         'finance_account':finance_account,
+                                        'is_submited':is_submited,
                                 });
 }
 
@@ -101,6 +102,10 @@ function fundBudget_callback(data){
         $('#summary_project_code').val(data.project_code);
         $("#summary_max_budget").val(data.project_budget_max);
         $("#summary_finance_account").val(data.finance_account);
+        alert(data.message);
+        var pid = $("#mainTable").attr("value");
+        location.href = "/teacher/file_upload/"+pid;
     }
-    alert(data.message);
+    else 
+        alert(data.message);
 }
