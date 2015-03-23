@@ -7,11 +7,27 @@
         {% csrf_token  %}
         <div id = "input_account">
             <STRONG>项目最大预算（元）:</STRONG><input type="text" {% if not userauth.is_adminstaff and not userauth.is_schooler and not userauth.is_finance %} readonly="readonly" {% endif %} id = "max_budget" value="{{project.project_budget_max}}"></input>
-        <strong style="margin-left:50px;">财务账号：</strong><input type="text" id = "finance_account" value="{{project.finance_account}}"></input>
-        <strong style="margin-left:50px;">项目编号：</strong><input type="text"  id = "project_code" value="{{project.project_code}}"></input>
+            <strong style="margin-left:50px;">财务账号：</strong><input type="text" id = "finance_account" value="{{project.finance_account}}"></input>
+            <strong style="margin-left:50px;">项目编号：</strong><input type="text"  id = "project_code" value="{{project.project_code}}"></input>
         </div>
         <table id="mainTable" name = "budgettable"  value={{pid}} class="table table-striped" value={{finalreportid}}>
-            <thead><tr><th>科目</th><th>预算经费（元）</th><th>说明</th></tr></thead>
+          <thead>
+            <tr>
+              <td><strong>项目编号</strong></td><td><input type="text"  id = "project_code" value="{{project.project_code}}"></input></td>
+            </tr>
+            <tr>
+              <td><strong>项目名称</strong></td><td><input type="text"  id = "project_code" value="{{project.project_code}}"></input></td>
+            </tr>
+            <tr>
+              <td><strong>负责人</strong></td><td><input type="text"></input></td>
+            </tr>
+            <tr>
+              <td><strong>项目总预算</strong></td><td><input type="text"></input></td>
+            </tr>
+            <tr>
+              <th>科目</th><th>预算经费（元）</th><th>说明</th>
+            </tr>
+          </thead>
             <tbody>
                 <tr><td><strong>1.设备费</strong></td><td></td><td></td></tr>
                 <tr><td>&nbsp;&nbsp;&nbsp;(1)设备购置费</td><td>{{fundbudget_form.equacquisition_budget}}</td><td>{{fundbudget_form.equacquisition_remark}}</td></tr>

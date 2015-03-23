@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 import uuid, datetime
 
 from const import *
@@ -132,6 +131,9 @@ class ProjectFundSummary(models.Model):
     content_id = models.CharField(max_length=50,primary_key=True, default=lambda: str(uuid.uuid4()),
    							   verbose_name="经费决算表唯一ID")
     project_id = models.OneToOneField(ProjectSingle)
+
+    remarkment = models.CharField(max_length=1500,blank=False,null=True,
+                                                                                verbose_name="经费决算说明")
     finance_comment = models.CharField(max_length=100, blank=True, null=True,default="",
    										verbose_name="财务评审意见")
     equcosts_budget = models.FloatField(blank=False, null=True,default="0",
@@ -230,6 +232,9 @@ class ProjectFundBudget(models.Model):
                                   primary_key=True, default=lambda: str(uuid.uuid4()),
                                   verbose_name="经费预算表唯一ID")
     project_id = models.OneToOneField(ProjectSingle)
+
+    remarkment = models.CharField(max_length=1500,blank=False,null=True,
+                                           verbose_name="经费预算说明")
    
     equcosts_budget = models.FloatField(blank=False, null=True,default="0",
                                            verbose_name="设备费预算经费")
