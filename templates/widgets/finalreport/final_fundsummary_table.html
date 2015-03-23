@@ -1,12 +1,42 @@
-
+<!--
 <div id = "input_account">
-<STRONG>项目最大预算（元）:</STRONG><input type="text" id = "summary_max_budget" readonly="readonly" value="{{project.project_budget_max}}" disabled></input>
-        <strong style="margin-left:50px;">财务账号：</strong><input type="text" id = "summary_finance_account" readonly="readonly" value="{{project.finance_account}}" disabled></input>
-        <strong style="margin-left:50px;">项目编号：</strong><input type="text" readonly="readonly"   id = "summary_project_code" value="{{pro.project_code}}" disabled></input>
+  <STRONG>项目最大预算（元）:</STRONG><input type="text" id = "summary_max_budget" readonly="readonly" value="{{project.project_budget_max}}" disabled></input>
+  <strong style="margin-left:50px;">财务账号：</strong><input type="text" id = "summary_finance_account" readonly="readonly" value="{{project.finance_account}}" disabled></input>
+  <strong style="margin-left:50px;">项目编号：</strong><input type="text" readonly="readonly"   id = "summary_project_code" value="{{pro.project_code}}" disabled></input>
 </div>
-        
-<table id="mainTable" name="fundsummarytable" class="table table-striped" value={{pid}}>
-        <thead><tr><th>科目</th><th>预算经费（元）</th><th>经费支出（元）</th><th>说明</th></tr></thead>
+-->
+<div role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#fundsummary" aria-controls="fundsummary" role="tab" data-toggle="tab">决算表</a></li>
+    <li role="presentation"><a href="#fundsummary_remarkment" aria-controls="fundsummary_remarkment" role="tab" data-toggle="tab">决算说明</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="fundsummary">
+      <table id="mainTable" name="fundsummarytable" class="table table-striped" value={{pid}}>
+        <thead>
+          <tr>
+            <td><strong>项目负责人</strong></td><td><input type="text" id="teacher" value="{{project.teacher.userid.first_name}}"></input></td>
+          </tr>
+          <tr>
+            <td><strong>项目名称</strong></td><td><input type="text" id="project_title" value="{{project.title}}"></input></td>
+          </tr>
+          <tr>
+            <td><STRONG>项目总经费（元）</STRONG></td>
+            <td><input type="text" id = "summary_max_budget" readonly="readonly" value="{{project.project_budget_max}}" disabled></input></td>
+          </tr>
+          <tr>
+            <td><strong style="margin-left:50px;">财务账号：</strong></td>
+            <td><input type="text" id = "summary_finance_account" readonly="readonly" value="{{project.finance_account}}" disabled></input></td>
+          </tr>
+          <tr>
+            <td><strong style="margin-left:50px;">项目编号：</strong></td>
+            <td><input type="text" readonly="readonly"   id = "summary_project_code" value="{{pro.project_code}}" disabled></input></td>
+          </tr>
+          <tr><th>科目</th><th>预算经费（元）</th><th>经费支出（元）</th><th>说明</th></tr></thead>
 	<tbody>
 		<tr><td><strong>1.设备费</strong></td><td>{{profundsummaryform.equcosts_budget}}</td><td>{{profundsummaryform.equcosts_expenditure}}</td><td>{{profundsummaryform.equcosts_remark}}</td></tr>
 		<tr><td>&nbsp;&nbsp;&nbsp;(1)设备购置费</td><td>{{profundsummaryform.equacquisition_budget}}</td><td>{{profundsummaryform.equacquisition_expenditure}}</td><td>{{profundsummaryform.equacquisition_remark}}</td></tr>
@@ -24,3 +54,12 @@
 	</tbody>
 	<tfoot><tr><td><strong>合计</strong></td><td>{{profundsummaryform.total_budget}}</td><td>{{profundsummaryform.total_expenditure}}</td><td>{{profundsummaryform.total_remark}}</td></tr></tfoot>
   </table>
+
+    </div>
+    <div role="tabpanel" class="tab-pane" id="fundsummary_remarkment">
+      <p><strong>对各支出主要用途，测算方法，测算依据进行详细分析说明</strong></p>
+      <textarea class="form-control" id="fundsummaryremarkment_content" rows="30" name="reason"></textarea>
+    </div>
+  </div>
+
+</div>
