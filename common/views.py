@@ -425,6 +425,12 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     progress_form = ProgressForm()
 
 
+    if projfundsummary.finance_staff:finance_staff=projfundsummary.finance_staff
+    else:finance_staff="未审核"
+    if projfundsummary.finance_checktime:finance_checktime=projfundsummary.finance_checktime
+    else:finance_checktime="未审核"
+
+    
     final_form = FinalReportForm(instance=final)
 
     page = request.GET.get('page')
@@ -453,12 +459,20 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
         'pro':project,
         'page':page,
         'page2':page2,
+        'finance_staff':'未审核',
+        'finance_checktime':'未审核'
     }
     return context
 
 def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     fundbudget = ProjectFundBudget.objects.get(project_id = pid)
     project = ProjectSingle.objects.get(project_id = pid)
+    
+    if fundbudget.finance_staff:finance_staff=fundbudget.finance_staff
+    else:finance_staff="未审核"
+    if fundbudget.finance_checktime:finance_checktime=fundbudget.finance_checktime
+    else:finance_checktime="未审核"
+    
     print request.method
     if request.method == "POST":
         fundbudget_form = ProFundBudgetForm(request.POST, instance=fundbudget)
@@ -480,6 +494,8 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
         'is_submited':is_submited,
         'projectbudget':project.project_budget_max,
         'project':project,
+        'finance_staff':finance_staff,
+        'finance_checktime':finance_checktime
     }
     return context
 
@@ -503,7 +519,6 @@ def getCollegeListForHtml():
         cname = ""
         for name in college_name:
             cname=cname+name+'  '
-        
         college_list_choice.append((item.id,item.userid.first_name, cname))
     college_list_choice=list(set(college_list_choice))
     return college_list_choice
