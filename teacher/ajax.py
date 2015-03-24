@@ -178,21 +178,21 @@ def fundSummary(request, form, pid):
 
 @dajaxice_register
 def fundBudget(request, form, pid,max_budget,projectcode,finance_account,is_submited = False):
-    profundbudget = ProjectFundBudget.objects.get(project_id = pid) 
+    profundbudget = ProjectFundBudget.objects.get(project_id = pid)
     profundbudgetform = ProFundBudgetForm(deserialize_form(form),instance = profundbudget)
     project = ProjectSingle.objects.get(project_id = pid )
     flag = False
     identity = request.session.get('auth_role', "")
     accessList = [ADMINSTAFF_USER,SCHOOL_USER,FINANCE_USER]
     print is_submited
-    if not check_input(max_budget) or not check_input(projectcode) or not check_input(finance_account):
+    if not check_input(max_budget) or not check_input(projectcode):
         message = ""
         if not check_input(max_budget):
             message += u"项目最大预算不能为空 "
         if not check_input(projectcode):
             message += u"项目编号不能为空 "
-        if not check_input(finance_account):
-            message += u"项目财务编号不能为空 "
+        #if not check_input(finance_account):
+        #   message += u"项目财务编号不能为空 "
         ret = {'message':message,'flag':flag,}
         return simplejson.dumps(ret)
     if identity in accessList:
@@ -234,7 +234,7 @@ def check_input(inputStr):
 
 def refresh_fundsummary_table(request, profundsummaryform,pid):
     return render_to_string("widgets/finalreport/final_fundsummary_table.html",
-                            {        
+                            {
                                 'pid':pid,
                                 'profundsummaryform':profundsummaryform,
         })
@@ -260,7 +260,7 @@ def finalReportContent(request,pid,finalsubmitform,is_submited):
 def refresh_finalsubmit_form(request,final_form,is_submited):
 
     return render_to_string("widgets/finalreport/finalreport_content.html",
-                            {        
+                            {
                                 'is_submited':is_submited,
                                 'final':final_form,
         })
@@ -298,7 +298,6 @@ def saveProgress(request, pid, report_content):
         ProgressReport.objects.get(Q(project_id = pid) & Q(year = current_year)).delete();
     report = ProgressReport(project_id = project, summary = report_content)
     report.save()
-    
     return "ok"
 
 @dajaxice_register

@@ -19,22 +19,23 @@
       <table id="mainTable" name="fundsummarytable" class="table table-striped" value={{pid}}>
         <thead>
           <tr>
-            <td><strong>项目负责人</strong></td><td><input type="text" id="teacher" value="{{project.teacher.userid.first_name}}"></input></td>
+            <td><strong>项目负责人</strong></td>
+            <td><input type="text" readonly="readonly" id="teacher" value="{{project.teacher.userid.first_name}}"></input></td>
           </tr>
           <tr>
-            <td><strong>项目名称</strong></td><td><input type="text" id="project_title" value="{{project.title}}"></input></td>
+            <td><strong>项目名称</strong></td><td><input type="text" readonly="readonly" id="project_title" value="{{project.title}}"></input></td>
           </tr>
           <tr>
-            <td><STRONG>项目总经费（元）</STRONG></td>
-            <td><input type="text" id = "summary_max_budget" readonly="readonly" value="{{project.project_budget_max}}" disabled></input></td>
+            <td><STRONG>以拨入经费（元）</STRONG></td>
+            <td><input type="text" id = "summary_max_budget" value="{{project.project_budget_max}}"></input></td>
           </tr>
           <tr>
-            <td><strong style="margin-left:50px;">财务账号：</strong></td>
-            <td><input type="text" id = "summary_finance_account" readonly="readonly" value="{{project.finance_account}}" disabled></input></td>
+            <td><strong>财务账号：</strong></td>
+            <td><input type="text" id = "summary_finance_account" value="{{project.finance_account}}"></input></td>
           </tr>
           <tr>
-            <td><strong style="margin-left:50px;">项目编号：</strong></td>
-            <td><input type="text" readonly="readonly"   id = "summary_project_code" value="{{pro.project_code}}" disabled></input></td>
+            <td><strong>项目编号：</strong></td>
+            <td><input type="text" readonly="readonly" id = "summary_project_code" value="{{pro.project_code}}"></input></td>
           </tr>
           <tr><th>科目</th><th>预算经费（元）</th><th>经费支出（元）</th><th>说明</th></tr></thead>
 	<tbody>
@@ -58,7 +59,7 @@
     </div>
     <div role="tabpanel" class="tab-pane" id="fundsummary_remarkment">
       <p><strong>对各支出主要用途，测算方法，测算依据进行详细分析说明</strong></p>
-      <textarea class="form-control" id="fundsummaryremarkment_content" rows="30" name="reason"></textarea>
+      {{profundsummaryform.remarkment}}
     </div>
   </div>
 

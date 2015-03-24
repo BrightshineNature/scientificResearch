@@ -5,16 +5,16 @@ function projectfundsummary(){
     var max_budget = parseFloat($('#max_budget').val()); 
     var projectcode = $("#project_code").val();
     Dajaxice.teacher.fundSummary(fundSummary_callback,
-                                    {   
+                                    {
                                         'form': $('#project_fundsuammary_form').serialize(true),
-                                        'pid':pid,
+                                        'pid':pid
                                 });
 }
 
 function fundSummary_callback(data){
     alert(data.message);
     if (data.flag) {
-        $('#li_auditing').removeClass('active');        
+        $('#li_auditing').removeClass('active');
         $('#auditing').removeClass('active in');
         $('#li_achivement').addClass('active');        
         $('#achivement').addClass('active in');
@@ -68,7 +68,7 @@ $("table[name='fundsummarytable']").find("input").bind('change',function(){
     }
     $(" table[name='fundsummarytable'] tbody tr").each(function(){
         //alert($(this).find("td").eq(1).children().val()+' '+index)
-        if(index > 0 && index < 13){    
+        if(index > 0 && index < 13){
             totalbudget += parseFloat($(this).find("td").eq(1).children().val());
             totalexpenditure += parseFloat($(this).find("td").eq(2).children().val());
         }
@@ -87,13 +87,13 @@ function projectfundbudget(is_submited){
     var projectcode = $("#project_code").val();
     var finance_account = $("#finance_account").val();
     Dajaxice.teacher.fundBudget(fundBudget_callback,
-                                    {   
+                                    {
                                         'form': $('#project_fundbudget_form').serialize(true),
                                         'pid':pid,
                                         'max_budget':max_budget,
                                         'projectcode':projectcode,
                                         'finance_account':finance_account,
-                                        'is_submited':is_submited,
+                                        'is_submited':is_submited
                                 });
 }
 

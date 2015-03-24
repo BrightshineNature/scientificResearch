@@ -117,8 +117,9 @@ class ProFundSummaryForm(ModelForm):
 	class Meta:
 		model = ProjectFundSummary
 		exclude = ('content_id','project_id','finance_comment','equcosts_budget','equcosts_expenditure','finance_account',)
-        widgets = {"finance_account": forms.TextInput(attrs={"class":'form-control', "placeholder": "财务账号", }),
-                  }
+                widgets = {"finance_account": forms.TextInput(attrs={"class":'form-control', "placeholder": "财务账号", }),
+                           "remarkment":forms.Textarea(attrs={"rows":"30","class":"fill-form"}),
+                }
 
 class ProgressForm(ModelForm):
     class Meta:
@@ -132,6 +133,9 @@ class ProFundBudgetForm(ModelForm):
 	class Meta:
 		model = ProjectFundBudget
 		exclude = ('content_id','project_id','finance_comment','equcosts_budget',)
+                widgets ={
+                        "remarkment":forms.Textarea(attrs={"rows":"30","class":"fill-form"}),
+                }
 
 class ProjectCreationForm(forms.Form):
     SPECIAL_CHOICE = tuple((special.id, special.name) for special in Special.objects.all())
@@ -149,7 +153,7 @@ class ProjectChangeForm(forms.Form):
     def __init__(self, *args,**kwargs):
         special=kwargs.get("special",None)
         if special != None :
-            del kwargs['special']            
+            del kwargs['special']
         super(ProjectChangeForm, self).__init__(*args, **kwargs)
         SPECIAL_CHOICE = [(sp.id, sp.name) for sp in Special.objects.filter(application_status = True)]
         if special != None :
