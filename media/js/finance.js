@@ -4,6 +4,13 @@ $("#budgetjudge").click(function(){
     userstatus="budget";
     var pid=$("#budgetForm").attr("pid");
     var value=$("#review_select").val();
+
+
+    // alert("FFF");
+    // print();
+    // alert("CAO");
+
+    // return ;
     if(value!="-1"){
         Dajaxice.common.LookThroughResult(look_through_call_back,{
             "judgeid":pid,
@@ -35,6 +42,15 @@ $("#finaljudge").click(function(){
     }
 });
 function look_through_call_back(data){
+
+
+    // window.location.href="/finance/concludingProject"  ; 
+    // alert("FF");
+
+    // return;
+
+    alert("提交成功，可以进行打印");
+
     if(userstatus=="budget"){
         window.location.href="/finance";
     }

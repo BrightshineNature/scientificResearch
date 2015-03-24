@@ -75,10 +75,10 @@
             </td>
             {% endifnotequal%}
             {% ifequal usercontext.status "budget"%}
-            <td>{{item.projectfundbudget.total_budget}}</td>
+            <td>{{item.projectfundbudget.total_budget}}  (元)</td>
             {% endifequal%}
             {% ifequal usercontext.status "final"%}
-            <td>{{item.projectfundsummary.total_budget}}</td>
+            <td>{{item.projectfundsummary.total_budget}} (元)</td>
             <td>{{item.projectfundsummary.total_expenditure}}</td>
             <td>{{item.remain}}</td>
             {% endifequal%}

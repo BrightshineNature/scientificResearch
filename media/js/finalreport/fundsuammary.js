@@ -109,3 +109,29 @@ function fundBudget_callback(data){
     else 
         alert(data.message);
 }
+
+
+
+
+
+
+// print
+
+
+$(document).on("click", "#print_button", function(){
+
+    var print_body = $("#print_body").html();
+    var body = $("body").html();
+    var bodycss = $("body").css("background-image");
+
+
+    $("body").css("background-image","none");
+    $("body").html(print_body);
+    print();
+    // $("body").html(body);
+    // $("body").css("background-image",bodycss);
+    window.location.reload();
+    // window.location.reload();
+
+
+})
