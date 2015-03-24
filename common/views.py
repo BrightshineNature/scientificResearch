@@ -426,11 +426,10 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
 
 
     if projfundsummary.finance_staff:finance_staff=projfundsummary.finance_staff
-    else:finance_staff="未审核"
+    else:finance_staff="未填写"
     if projfundsummary.finance_checktime:finance_checktime=projfundsummary.finance_checktime
-    else:finance_checktime="未审核"
+    else:finance_checktime="未填写"
 
-    
     final_form = FinalReportForm(instance=final)
 
     page = request.GET.get('page')
@@ -459,8 +458,8 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
         'pro':project,
         'page':page,
         'page2':page2,
-        'finance_staff':'未审核',
-        'finance_checktime':'未审核'
+        'finance_staff':finance_staff,
+        'finance_checktime':finance_staff,
     }
     return context
 
@@ -469,9 +468,9 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     project = ProjectSingle.objects.get(project_id = pid)
     
     if fundbudget.finance_staff:finance_staff=fundbudget.finance_staff
-    else:finance_staff="未审核"
+    else:finance_staff="未填写"
     if fundbudget.finance_checktime:finance_checktime=fundbudget.finance_checktime
-    else:finance_checktime="未审核"
+    else:finance_checktime="未填写"
     
     print request.method
     if request.method == "POST":
