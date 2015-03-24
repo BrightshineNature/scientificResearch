@@ -91,8 +91,8 @@
 
 
 {%ifequal userauth.user "teacher"%}
-<p>审核人:{{fundbudget_form.finance_staff}}</p>
-<p>审核时间:{{fundbudget_form.finance_checktime}}</p>
+<p>审核人:{{finance_staff}}</p>
+<p>审核时间:{{finance_checktime}}</p>
 <button type="button" class="btn btn-primary" id= "print_button"> 打印
 {%endifequal%}  
 <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/fundsuammary.js"></script>
