@@ -49,7 +49,7 @@ function look_through_call_back(data){
 
     // return;
 
-    alert("提交成功，可以进行打印");
+    
 
     if(userstatus=="budget"){
         window.location.href="/finance";
