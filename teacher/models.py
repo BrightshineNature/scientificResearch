@@ -221,6 +221,9 @@ class ProjectFundSummary(models.Model):
     total_remark = models.CharField(max_length=100, blank=True, null=True,
    										verbose_name="合计说明")
     finance_account = models.CharField(max_length = 20,blank = False,null = True, verbose_name="财务账号")
+
+    finance_staff =models.CharField(max_length=20,blank=False,null=True,verbose_name="财务审核人")
+    finance_checktime=models.CharField(max_length=50,blank=False,null=True,verbose_name="审核时间")
     class Meta:
    	 verbose_name = "经费决算表"
    	 verbose_name_plural = "经费决算表"
@@ -295,7 +298,8 @@ class ProjectFundBudget(models.Model):
     finance_comment = models.CharField(max_length=100, blank=True, null=True,default="",
                                            verbose_name="财务评审意见")
    
-   
+    finance_staff =models.CharField(max_length=20,blank=False,null=True,verbose_name="财务审核人")
+    finance_checktime=models.CharField(max_length=50,blank=False,null=True,verbose_name="审核时间")
     class Meta:
         verbose_name = "经费预算表"
         verbose_name_plural = "经费预算表"

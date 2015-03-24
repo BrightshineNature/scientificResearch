@@ -2,31 +2,31 @@
 <div class="alert alert-success" role="alert">
 
 
-    <!-- <strong>填报注意：</strong>经费单位是<STRONG>元</STRONG>，每项经费必须填报<strong>说明</strong>内容，如果没有就填写“无”，不能空缺，否则不能保存。
- -->
+  <!-- <strong>填报注意：</strong>经费单位是<STRONG>元</STRONG>，每项经费必须填报<strong>说明</strong>内容，如果没有就填写“无”，不能空缺，否则不能保存。
+    -->
 
 
 
-<strong>决算审核注意事项</strong> <br/>
-1、  填写金额单位为元；<br/>
-2、  决算支出请按照财务分类账务如实填写；<br/>
-3、  各项支出说明不得空缺，无支出金额的填写“无”，有支出金额的必须填写支出内容，且须在支出说明页中详细填写“各项目支出的主要用途，若支出与预算不一致，请详细说明原因”；<br/>
-4、  上报后须经财务审核，如被退回请按审核意见进行修改再次上报，直至审核通过后，方可在线打印。<br/>
-5、  在线打印后，请按照审核后的预算表内容填至结题中，务必保持内容一致。<br/>
-
-
-
+  <strong>决算审核注意事项</strong> <br/>
+  1、  填写金额单位为元；<br/>
+  2、  决算支出请按照财务分类账务如实填写；<br/>
+  3、  各项支出说明不得空缺，无支出金额的填写“无”，有支出金额的必须填写支出内容，且须在支出说明页中详细填写“各项目支出的主要用途，若支出与预算不一致，请详细说明原因”；<br/>
+  4、  上报后须经财务审核，如被退回请按审核意见进行修改再次上报，直至审核通过后，方可在线打印。<br/>
+  5、  在线打印后，请按照审核后的预算表内容填至结题中，务必保持内容一致。<br/>
 </div>
 
+
+
+
 <div class="hero-unit">
-	<form class="form" id="project_fundsuammary_form" method="POST" action="">
-		{% include "widgets/finalreport/final_fundsummary_table.html"  %}
-        {% if is_submited %}
-   		<button type="button" class="btn btn-primary" onclick="projectfundsummary()">保存经费决算表</button>
-                {% if not userauth.is_adminstaff and not userauth.is_schooler %}
-                <a class="btn btn-primary" href="#achivement" data-toggle="tab" id="fundsummary_next">下一步</a>
-                {% endif %}
-        {% endif %}
-	</form>
+  <form class="form" id="project_fundsuammary_form" method="POST" action="">
+    {% include "widgets/finalreport/final_fundsummary_table.html"  %}
+    {% if is_submited %}
+    <button type="button" class="btn btn-primary" onclick="projectfundsummary()">保存经费决算表</button>
+    {% if not userauth.is_adminstaff and not userauth.is_schooler %}
+    <a class="btn btn-primary" href="#achivement" data-toggle="tab" id="fundsummary_next">下一步</a>
+    {% endif %}
+    {% endif %}
+  </form>
 </div>
 <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/fundsuammary.js"></script>

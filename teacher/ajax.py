@@ -146,7 +146,7 @@ def staticsChange(request,statics_type):
     return simplejson.dumps(ret)
 
 @dajaxice_register
-def fundSummary(request, form, pid):
+def fundSummary(request, form, pid,finance_account):
     profundsummary = ProjectFundSummary.objects.get(project_id = pid) 
     profundsummaryform = ProFundSummaryForm(deserialize_form(form),instance = profundsummary)
     project = ProjectSingle.objects.get(project_id = pid)
@@ -161,7 +161,9 @@ def fundSummary(request, form, pid):
             if laborcosts_budget <= total_budget * 0.3:
                 if total_budget <= project.project_budget_max:
                     profundsummaryform.save()
-                    #copyFundsummaryToBudget(pid)    
+                    #copyFundsummaryToBudget(pid)
+                    project.finance_account=finance_account
+                    project.save()
                     message = u"保存成功"
                     flag = True
                 else:
@@ -177,7 +179,7 @@ def fundSummary(request, form, pid):
     return simplejson.dumps(ret)
 
 @dajaxice_register
-def fundBudget(request, form, pid,max_budget,projectcode,finance_account,is_submited = False):
+def fundBudget(request, form, pid,max_budget,projectcode,is_submited = False):
     profundbudget = ProjectFundBudget.objects.get(project_id = pid)
     profundbudgetform = ProFundBudgetForm(deserialize_form(form),instance = profundbudget)
     project = ProjectSingle.objects.get(project_id = pid )
@@ -198,7 +200,7 @@ def fundBudget(request, form, pid,max_budget,projectcode,finance_account,is_subm
     if identity in accessList:
         project.project_budget_max = max_budget
     project.project_code = projectcode
-    project.finance_account = finance_account
+    #project.finance_account = finance_account
     project.save()
     if profundbudgetform.is_valid():
         total_budget = float(profundbudgetform.cleaned_data["total_budget"])

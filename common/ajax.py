@@ -276,11 +276,15 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
                 loginfo(project.project_budget_max)
         if userstatus=="budget":
             finance_budget=ProjectFundBudget.objects.get(project_id=project)
-            finance_budget.comment=form.get("reason")
+            finance_budget.finance_comment=form.get("reason")
+            finance_budget.finance_staff=form.get("finance_staff")
+            finance_budget.finance_checktime=form.get("finance_checktime")
             finance_budget.save()
         if userstatus=="final":
             finance_summary=ProjectFundSummary.objects.get(project_id=project)
             finance_summary.finance_comment=form.get("reason")
+            finance_summary.finance_staff=form.get("finance_staff")
+            finance_summary.finance_checktime=form.get("finance_checktime")
             finance_summary.save()
     else:
         print form.getlist('application')

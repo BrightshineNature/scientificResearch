@@ -4,10 +4,12 @@ function projectfundsummary(){
     var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val());
     var max_budget = parseFloat($('#max_budget').val()); 
     var projectcode = $("#project_code").val();
+    var finance_account = $("#summary_finance_account").val();
     Dajaxice.teacher.fundSummary(fundSummary_callback,
                                     {
                                         'form': $('#project_fundsuammary_form').serialize(true),
-                                        'pid':pid
+                                        'pid':pid,
+                                        'finance_account':finance_account
                                 });
 }
 
@@ -85,14 +87,14 @@ function projectfundbudget(is_submited){
     var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val());
     var max_budget = parseFloat($('#max_budget').val());
     var projectcode = $("#project_code").val();
-    var finance_account = $("#finance_account").val();
+    //var finance_account = $("#finance_account").val();
     Dajaxice.teacher.fundBudget(fundBudget_callback,
                                     {
                                         'form': $('#project_fundbudget_form').serialize(true),
                                         'pid':pid,
                                         'max_budget':max_budget,
                                         'projectcode':projectcode,
-                                        'finance_account':finance_account,
+                                        //'finance_account':finance_account,
                                         'is_submited':is_submited
                                 });
 }
