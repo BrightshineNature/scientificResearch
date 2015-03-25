@@ -78,9 +78,39 @@
             <div role="tabpanel" class="tab-pane" id="budgetremarkment">
               <p><strong>对各支出主要用途，测算方法，测算依据进行详细分析说明</strong></p>
               {{fundbudget_form.remarkment}}
+                
+
+
+
+                <table class="table" 
+    style="width:821px;position:relative;top:-5px;border:1px solid;border-color:rgb(169, 169, 169);">
+
+
+
+              <tr style="height:100px;">
+
+
+                <th style="border:1px solid;border-color:rgb(169, 169, 169);"> 
+                    财务处(签章):
+                </th>             
+
+              </tr>
+
+            </table>
+
+
+
+
+
+
+
+
             </div>
           </div>
         </div>
+
+
+
 
         {% if is_submited %}
             <button type="button" class="btn btn-primary" onclick="projectfundbudget(false)">保存经费预算表</button>
