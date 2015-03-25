@@ -19,25 +19,22 @@
       <table id="mainTable" name="fundsummarytable" class="table table-striped" value={{pid}}>
         <thead>
           <tr>
+            <td><strong>项目编号：</strong></td>
+            <td><input type="text" readonly="readonly" id = "summary_project_code" value="{{pro.project_code}}"></input></td>
             <td><strong>项目负责人</strong></td>
             <td><input type="text" readonly="readonly" id="teacher" value="{{project.teacher.userid.first_name}}"></input></td>
           </tr>
           <tr>
-            <td><strong>项目名称</strong></td><td><input type="text" readonly="readonly" id="project_title" value="{{project.title}}"></input></td>
+            <td><strong>项目名称</strong></td>
+            <td colspan="3"><input type="text" readonly="readonly" id="project_title" value="{{project.title}}"></input></td>
           </tr>
           <tr>
             <td><STRONG>以拨入经费（元）</STRONG></td>
             <td><input type="text" id = "summary_max_budget" readonly="readonly" value="{{project.project_budget_max}}"></input></td>
-          </tr>
-          <tr>
             <td><strong>财务账号：</strong></td>
             <td><input type="text" id = "summary_finance_account" value="{{project.finance_account}}"></input></td>
           </tr>
-          <tr>
-            <td><strong>项目编号：</strong></td>
-            <td><input type="text" readonly="readonly" id = "summary_project_code" value="{{pro.project_code}}"></input></td>
-          </tr>
-          <tr><th>科目</th><th>预算经费（元）</th><th>经费支出（元）</th><th>说明</th></tr></thead>
+          <tr><th>科目</th><th>预算经费（元）</th><th>经费支出（元）</th><th>说明(须填写支出内容)</th></tr></thead>
 	<tbody>
 		<tr><td><strong>1.设备费</strong></td><td>{{profundsummaryform.equcosts_budget}}</td><td>{{profundsummaryform.equcosts_expenditure}}</td><td>{{profundsummaryform.equcosts_remark}}</td></tr>
 		<tr><td>&nbsp;&nbsp;&nbsp;(1)设备购置费</td><td>{{profundsummaryform.equacquisition_budget}}</td><td>{{profundsummaryform.equacquisition_expenditure}}</td><td>{{profundsummaryform.equacquisition_remark}}</td></tr>
