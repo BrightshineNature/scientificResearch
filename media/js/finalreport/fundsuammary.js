@@ -129,7 +129,13 @@ $(document).on("click", "#print_button", function(){
 
 
     $("body").css("background-image","none");
-    $("body").html($("#print_body").html());
+
+    var print_body = $("#print_body").html();
+    // print_body += $("#print_body").next().html();
+    // print_body += $("#print_body").next().html();
+    
+
+    $("body").html(print_body);
     print();
     
     // $("body").css("background-image",bodycss);

@@ -459,7 +459,7 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
         'page':page,
         'page2':page2,
         'finance_staff':finance_staff,
-        'finance_checktime':finance_staff,
+        'finance_checktime':finance_checktime,
     }
     return context
 
