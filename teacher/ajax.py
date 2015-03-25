@@ -151,7 +151,8 @@ def fundSummary(request, form, pid,finance_account):
     profundsummaryform = ProFundSummaryForm(deserialize_form(form),instance = profundsummary)
     project = ProjectSingle.objects.get(project_id = pid)
     flag = False
-    if profundsummaryform.is_valid():
+    if profundsummaryform.is_valid() and finance_account:
+        print "hello"
         total_budget = float(profundsummaryform.cleaned_data["total_budget"])
         total_expenditure =  float(profundsummaryform.cleaned_data["total_expenditure"])
         if total_budget < 0 or total_expenditure < 0:
