@@ -5,7 +5,8 @@ $("[name='not_pass_reason']").hide();
 $("#not_pass_article").hide();
 $("#budget").hide();
 $("[name='judgeresult']").css("color","gray");
-$("[name='judgeresult']").change(function(){
+$("[name='judgeresult']").change(function()
+{
     if($(this).val()=="-1")
     {
         $(this).css("color","gray");
@@ -70,6 +71,33 @@ $("#status_submit").click(function(){
         "searchForm":$("#schedule_form").serialize(true)
     });
 });
+
+
+
+
+
+$('#review_modal').on('show.bs.modal', function (e) {
+
+
+    $("#budget").show(500);
+    $("[name='not_pass_reason']").hide(500);
+    $("#not_pass_article").hide(500);
+
+    $("[name='reason']").val("");
+
+    
+
+
+    $("[name='judgeresult']").css("color","gray");
+    var x = document.getElementById("id_judgeresult");
+    for(var i = 0; i < x.options.length; ++ i)
+    x.options[i].selected = false;
+
+
+    x.options[0].selected = true;
+
+  // do something...
+})
 $("[name='commit']").click(function(){
     var value=$(this).closest(".modal").find("#id_judgeresult").val();
     var lookThroughForm=$(this).closest(".modal").find("#lookThroughForm").serialize(true);
