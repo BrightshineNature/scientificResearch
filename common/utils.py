@@ -192,7 +192,7 @@ def get_qset(userauth):
 def statusRollBack(project,userrole,userstatus,form):
     if userrole=="school":
         if userstatus=="application":
-            if project.project_status.status==PROJECT_STATUS_APPLICATION_REVIEW_OVER:
+            if project.project_status.status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
                 set_status(project,PROJECT_STATUS_STOP)
             elif project.project_special.review_status==False and project.project_status.status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
                 set_status(project,PROJECT_STATUS_STOP)

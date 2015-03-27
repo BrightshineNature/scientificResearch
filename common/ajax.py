@@ -260,14 +260,19 @@ def getStatus(request):
     })
 @dajaxice_register
 def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look_through_form,searchForm):
+    print "LookThroughResult**************"
     project=ProjectSingle.objects.get(pk=judgeid)
     form=deserialize_form(look_through_form)
     if form["judgeresult"]=="1":
         project.comment=''
         project.save()
+
+        print "UIUI*((" * 10
         if userstatus=="application" and userrole=="school" and not project.project_special.review_status:
             set_status(project,PROJECT_STATUS_APPROVAL)
+
         else:
+            print "status_confirm*)(*)(*()*()*()*()(*(&*^*%"
             status_confirm(project,-1)
         if userstatus=="application":
             if form.get("max_budget"):
@@ -287,6 +292,7 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
             finance_summary.finance_checktime=form.get("finance_checktime")
             finance_summary.save()
     else:
+        print "GOOGD" *10
         print form.getlist('application')
         identity = request.session.get("auth_role","")
         if identity == SCHOOL_USER:
@@ -306,6 +312,7 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
         loginfo(comment)
         project.comment=comment
         project.save()
+        print "STATUSROLLBACK :::(((" 
         statusRollBack(project,userrole,userstatus,form)
     context=schedule_form_data(request,{
         "role":userrole,

@@ -98,7 +98,7 @@ $('#review_modal').on('show.bs.modal', function (e) {
 
   // do something...
 })
-$("[name='commit']").click(function(){
+$("[name='commit']").click(function(){    
     var value=$(this).closest(".modal").find("#id_judgeresult").val();
     var lookThroughForm=$(this).closest(".modal").find("#lookThroughForm").serialize(true);
     userrole=$(".tab-content").attr("userrole");
