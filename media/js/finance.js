@@ -34,6 +34,7 @@ $("#finaljudge").click(function(){
             "judgeid":pid,
              "page":-1,
             "page2":-1,
+          
             "search":0,
             "searchForm":"","userrole":"finance",
             "userstatus":"final",
