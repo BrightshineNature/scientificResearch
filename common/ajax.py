@@ -260,21 +260,18 @@ def getStatus(request):
     })
 @dajaxice_register
 def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look_through_form,searchForm):
-    print "LookThroughResult**************"
     project=ProjectSingle.objects.get(pk=judgeid)
     form=deserialize_form(look_through_form)
-    if not (form.get("finance_staff") and form.get("finance_checktime")):
-        return simplejson.dumps({"message":"请填写申请人和申请时间"})
+    if userrole == FINANCE_USER and (not (form.get("finance_staff") and form.get("finance_checktime"))):
+        return simplejson.dumps({"message":"请填写审核人和审核时间"})
+    loginfo(form["judgeresult"])
     if form["judgeresult"]=="1":
         project.comment=''
         project.save()
-
-        print "UIUI*((" * 10
+        loginfo("text")
         if userstatus=="application" and userrole=="school" and not project.project_special.review_status:
             set_status(project,PROJECT_STATUS_APPROVAL)
-
         else:
-            print "status_confirm*)(*)(*()*()*()*()(*(&*^*%"
             status_confirm(project,-1)
         if userstatus=="application":
             if form.get("max_budget"):

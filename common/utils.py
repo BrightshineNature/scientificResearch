@@ -284,6 +284,7 @@ def set_status(project,status):
     project.save()
 def status_confirm(project, confirm):
     if confirm==-1:
+        loginfo("$"*50)
         set_status(project,project.project_status.status+1)
         return True
     if project.project_status.status==PROJECT_STATUS_APPLY:
