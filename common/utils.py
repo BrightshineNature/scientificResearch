@@ -283,6 +283,7 @@ def set_status(project,status):
         project.conclude_year=str(time.strftime('%Y',time.localtime(time.time())))
     project.save()
 def status_confirm(project, confirm):
+    project.submit_date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
     if confirm==-1:
         loginfo("$"*50)
         set_status(project,project.project_status.status+1)
