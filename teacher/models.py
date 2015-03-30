@@ -132,7 +132,7 @@ class ProjectFundSummary(models.Model):
    							   verbose_name="经费决算表唯一ID")
     project_id = models.OneToOneField(ProjectSingle)
 
-    remarkment = models.CharField(max_length=1500,blank=False,null=True,
+    remarkment = models.CharField(max_length=1500,blank=True,null=True,
                                                                                 verbose_name="经费决算说明")
     finance_comment = models.CharField(max_length=100, blank=True, null=True,default="",
    										verbose_name="财务评审意见")
@@ -236,7 +236,7 @@ class ProjectFundBudget(models.Model):
                                   verbose_name="经费预算表唯一ID")
     project_id = models.OneToOneField(ProjectSingle)
 
-    remarkment = models.CharField(max_length=1500,blank=False,null=True,
+    remarkment = models.CharField(max_length=1500,blank=True,null=True,
                                            verbose_name="经费预算说明")
    
     equcosts_budget = models.FloatField(blank=False, null=True,default="0",
