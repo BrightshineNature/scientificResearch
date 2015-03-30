@@ -214,8 +214,8 @@ def fundBudget(request, form, pid,max_budget,projectcode,is_submited = False):
                     profundbudgetform.save()
                     copyBudgetToFundsummary(pid)
                     message = u"保存成功"
-                    flag = True
                     if is_submited:
+                        flag = True
                         status_confirm(project,TASK_BUDGET_CONFIRM)
                 else:
                     message = u"经费预算表总结额应低于项目最大预算金额,请仔细核实"

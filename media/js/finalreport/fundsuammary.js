@@ -32,7 +32,7 @@ $('#fundsummary_next').click(function(){
 });
 var totalbudget = 0.0;
 var totalexpenditure = 0.0;
-$("table[name='budgettable']").find("input").bind('change',function(){
+$("table[name='budgettable'] tbody").find("input").bind('change',function(){
     totalbudget = 0;
     totalexpenditure = 0;
     index = 0;
