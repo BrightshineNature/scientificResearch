@@ -262,6 +262,8 @@ def getStatus(request):
 def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look_through_form,searchForm):
     project=ProjectSingle.objects.get(pk=judgeid)
     form=deserialize_form(look_through_form)
+    if not (form.get("finance_staff") and form.get("finance_checktime")):
+        return simplejson.dumps({"message":"请填写申请人和申请时间"})
     if form["judgeresult"]=="1":
         project.comment=''
         project.save()
@@ -316,7 +318,7 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
         table_html=render_to_string("widgets/project_info.html",context)
     else:
         table_html=render_to_string("widgets/research_concluding_table.html",context)
-    return simplejson.dumps({"table_html":table_html}) 
+    return simplejson.dumps({"table_html":table_html,"message":""}) 
 from common.utils import set_status
 @dajaxice_register
 def StatusChange(request,judgeid,status,page2,searchForm):

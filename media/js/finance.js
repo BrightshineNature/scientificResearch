@@ -48,13 +48,16 @@ function look_through_call_back(data){
     // alert("FF");
 
     // return;
+    if(data["message"]==""){
 
-    
-
-    if(userstatus=="budget"){
+      if(userstatus=="budget"){
         window.location.href="/finance";
+      }
+      if(userstatus=="final"){
+        window.location.href="/finance/concludingProject"; 
+      }
     }
-    if(userstatus=="final"){
-        window.location.href="/finance/concludingProject"  ; 
+    else{
+      alert(data["message"]);
     }
 }
