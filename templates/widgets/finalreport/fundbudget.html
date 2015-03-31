@@ -32,6 +32,8 @@
       </ul>
       <!-- Tab panes -->
       <div class="tab-content">
+
+
         <div role="tabpanel" class="tab-pane active" id="budget-detail">
           <table id="mainTable" name = "budgettable"  value={{pid}} class="table table-striped" value={{finalreportid}}>
             <thead>
@@ -77,7 +79,20 @@
             </tbody>
             <tfoot><tr><td><strong>合计</strong></td><td>{{fundbudget_form.total_budget}}</td><td>{{fundbudget_form.total_remark}}</td></tr></tfoot>
           </table>
+
+
+
+
+          <p>审核人:{{finance_staff}}</p>
+          <p>审核时间:{{finance_checktime}}</p>
+          <button type="button" class="btn btn-primary" 
+
+          id= "budget_detail_print_button"> 打印 </button>
+
+
         </div>
+
+
         <div role="tabpanel" class="tab-pane" id="budgetremarkment">
           <p><strong>对各支出主要用途，测算方法，测算依据进行详细分析说明,如依据前页所填设备费、材料费等逐项填写</strong></p>
           {{fundbudget_form.remarkment}}
@@ -90,9 +105,36 @@
 
             </tr>
           </table>
+
+
+          <p>审核人:{{finance_staff}}</p>
+          <p>审核时间:{{finance_checktime}}</p>
+          <button type="button" class="btn btn-primary" 
+
+
+          id= "budgetremarkment_print_button"> 打印 </button>
+
+
         </div>
+
+
+
+
       </div>
     </div>
+
+
+{#<p>审核人:{{finance_staff}}</p>#}
+{#<p>审核时间:{{finance_checktime}}</p>  #}
+
+{#{%ifequal userauth.user "teacher"%}#}
+
+{#<button type="button" class="btn btn-primary" id= "print_button"> 打印 </button>  #}
+
+{#{%endifequal%}#}
+
+<br/>
+<br/>
 
     {% if is_submited %}
     <button type="button" class="btn btn-primary" onclick="projectfundbudget(false)">保存经费预算表</button>
@@ -102,13 +144,12 @@
     {% endif %}
   </form>
 
-  <p>审核人:{{finance_staff}}</p>
-  <p>审核时间:{{finance_checktime}}</p>
+  
 
 </div>
 
 
-{%ifequal userauth.user "teacher"%}
-<button type="button" class="btn btn-primary" id= "print_button"> 打印
-  {%endifequal%}
-  <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/fundsuammary.js"></script>
+
+
+
+<script type='text/javascript' src="{{STATIC_URL}}js/finalreport/fundsuammary.js"></script>
