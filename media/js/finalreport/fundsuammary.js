@@ -117,25 +117,65 @@ function fundBudget_callback(data){
 
 
 
-// print
+// 经费预算表 print
 
 
-$(document).on("click", "#print_button", function(){
+$(document).on("click", "#budget_detail_print_button", function(){   
 
     
-
-    body = $("body").html();
-    var bodycss = $("body").css("background-image");
-
-
     $("body").css("background-image","none");
+    var print_body = $("#budget-detail").clone(true)
 
-    var print_body = $("#print_body").html();
-    // print_body += $("#print_body").next().html();
-    // print_body += $("#print_body").next().html();
+    $(print_body).find("table").addClass("table-bordered");
+
+    // $(print_body).find("table").attr("border", '2');
     
 
+
+    // $.each($(print_body).find("tr"), function(){
+    //     // alert("FF");
+
+    //     $(this).attr("border-width", '10px');
+    //     $(this).attr("border-style", 'solid');
+    //     $(this).attr("border-color", 'black');
+    // });
+
+    // $.each($(print_body).find("td"), function(){
+
+    //     $(this).attr("border-width", '10px');
+    //     $(this).attr("border-style", 'solid');
+    //     $(this).attr("border-color", 'black');
+        
+    // });
+
+
+
+
+
+
+
+
+    $(print_body).find("button").remove();
+
+
+
+
+
+
+    $(print_body).prepend(function(){
+        return "<h4>经费预算表</h4>"
+    })
+
+    var input_list = $(print_body).find("input");
+
+    for(var i = 0; i < input_list.length; ++ i)
+    {
+        var pa = $(input_list[i]).parent();
+        $(pa).text($(input_list[i]).val());
+        $(input_list[i]).remove();        
+    }
     $("body").html(print_body);
+    // return ;
     print();
     
     // $("body").css("background-image",bodycss);
@@ -143,7 +183,97 @@ $(document).on("click", "#print_button", function(){
 
     // $("body").html(body);
     window.location.reload();
-    // window.location.reload();
+
 
 
 });
+$(document).on("click", "#budgetremarkment_print_button", function(){
+
+    
+
+    
+    $("body").css("background-image","none");
+    var print_body = $("#budgetremarkment").clone(true)
+    $(print_body).find("button").remove();
+    $($(print_body).find("p")[0]).html("<h4>经费预算说明</h4>(对各支出主要用途，测算方法，测算依据进行详细分析说明,如依据前页所填设备费、材料费等逐项填写)");
+
+    
+    $("body").html(print_body);
+    // return ;
+    print();
+    
+    // $("body").css("background-image",bodycss);
+    // alert(body);
+
+    // $("body").html(body);
+    window.location.reload();
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+// 决算表 print
+
+$(document).on("click", "#fundsummary_print_button", function() {
+
+    $("body").css("background-image","none");
+    var print_body = $("#fundsummary").clone(true)
+
+    $(print_body).find("table").addClass("table-bordered");
+
+    $(print_body).find("button").remove();
+
+    $(print_body).prepend(function(){
+        return "<h4>经费决算表</h4>"
+    })
+
+    var input_list = $(print_body).find("input");
+
+    for(var i = 0; i < input_list.length; ++ i)
+    {
+        var pa = $(input_list[i]).parent();
+        $(pa).text($(input_list[i]).val());
+        $(input_list[i]).remove();        
+    }
+    $("body").html(print_body);
+    
+    // return ;
+    print();
+    
+    window.location.reload();
+
+})
+
+
+
+$(document).on("click", "#fundsummary_remarkment_print_button", function() {
+
+    $("body").css("background-image","none");
+    var print_body = $("#fundsummary_remarkment").clone(true)
+    $(print_body).find("button").remove();
+    $($(print_body).find("p")[0]).html("<h4>经费决算说明</h4>(对各支出主要用途，测算方法，测算依据进行详细分析说明,如依据前页所填设备费、材料费等逐项填写)");
+
+    
+    $("body").html(print_body);
+    // return ;
+    print();
+    
+    // $("body").css("background-image",bodycss);
+    // alert(body);
+
+    // $("body").html(body);
+    window.location.reload();
+
+    
+})

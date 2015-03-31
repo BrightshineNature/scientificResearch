@@ -408,6 +408,17 @@ def get_search_data(request,schedule_form):
             pro_list=get_project_list(request).all()
         return pro_list
 
+def summaryViewWork(request,pid,is_submited,redirect=False):
+    projfundsummary = ProjectFundSummary.objects.get( project_id = pid )
+    profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
+    context = {
+        'projfundsummary':projfundsummary,
+        'profundsummaryform':profundsummaryform,
+        'pid':pid,
+        'redirect':redirect,
+        'is_submited':is_submited,
+    }
+    return context
 
 def finalReportViewWork(request,pid,is_submited,redirect=False):
     final = FinalSubmit.objects.get( project_id = pid)

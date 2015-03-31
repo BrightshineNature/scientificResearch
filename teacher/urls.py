@@ -26,6 +26,10 @@ urlpatterns = patterns('',
         teacher_views.finalReportView,
 	),
     url(
+        r'^final/summary/(?P<pid>.{36})$',
+        teacher_views.summaryView,
+        ),
+    url(
         r'commitment',
         teacher_views.commitmentView,
     ),
