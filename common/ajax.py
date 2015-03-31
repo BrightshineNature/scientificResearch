@@ -268,7 +268,6 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
     if form["judgeresult"]=="1":
         project.comment=''
         project.save()
-        loginfo("text")
         if userstatus=="application" and userrole=="school" and not project.project_special.review_status:
             set_status(project,PROJECT_STATUS_APPROVAL)
         else:
@@ -291,8 +290,6 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
             finance_summary.finance_checktime=form.get("finance_checktime")
             finance_summary.save()
     else:
-        print "GOOGD" *10
-        print form.getlist('application')
         identity = request.session.get("auth_role","")
         if identity == SCHOOL_USER:
             school = SchoolProfile.objects.get(userid = request.user)

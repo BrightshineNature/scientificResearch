@@ -189,90 +189,20 @@ def get_qset(userauth):
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     return (pending,default,search)
 
-def statusRollBack(project,userrole,userstatus,form):
-    if userrole=="school":
-        if userstatus=="application":
-            if project.project_status.status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
-                set_status(project,PROJECT_STATUS_STOP)
-            elif project.project_special.review_status==False and project.project_status.status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
-                set_status(project,PROJECT_STATUS_STOP)
-            else:
-                form_list=form.getlist("application")
-                if len(form_list)==2:
-                    set_status(project,PROJECT_STATUS_APPLY)
-                    project.file_application=False
-                    project.save()
-                elif len(form_list)==1:
-                    loginfo(form_list[0])
-                    if form_list[0]==u"网上申请不合格":
-                        set_status(project,PROJECT_STATUS_APPLY)
-                    elif form_list[0]==u"申报书不合格":
-                        set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
-                        project.file_application=False
-                        project.save()
-                    else:
-                        return False
-                else:
-                    return False
-        elif userstatus=="research_concluding":
-            if project.project_status.status==PROJECT_STATUS_TASK_COMMIT_OVER:
-                set_status(project,PROJECT_STATUS_TASK_BUDGET_OVER)
-                project.file_task=False
-                project.save()
-            elif project.project_status.status==PROJECT_STATUS_PROGRESS_COMMIT_OVER:
-                set_status(project,PROJECT_STATUS_TASK_SCHOOL_OVER)
-                project.file_interimachecklist=False
-                project.save()
-            elif project.project_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
-                form_list=form.getlist("final")
-                if len(form_list)==2:
-                    set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
-                    project.file_summary=False
-                    project.save()
-                elif len(form_list)==1:
-                    if form_list[0]==u"网上提交不合格":
-                        set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
-                    elif form_list[0]==u"结题书不合格":
-                        set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
-                        project.file_summary=False;
-                        project.save()
-                    else:
-                        return False
-                else:
-                    return False
-            else :
-                return False
-        else:
-            return False
-    elif userrole=="college":
-        form_list=form.getlist("application")
-        print form_list
-        if len(form_list)==2:
-            set_status(project,PROJECT_STATUS_APPLY)
-            project.file_application=False
-            project.save()
-        elif len(form_list)==1:
-            print form_list[0]
-            if form_list[0]==u"网上申请不合格":
-                set_status(project,PROJECT_STATUS_APPLY)
-            elif form_list[0]==u"申报书不合格":
-                set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
-                project.file_application=False
-                project.save()
-            else:
-                return False 
-        else:
-            return False
-    elif userrole=="finance":
-        if userstatus=="budget":
-            set_status(project,PROJECT_STATUS_APPROVAL)
-        elif userstatus=="final":
-            set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
-        else:
-            return False
+def statusRollBack(request,project,error_id):
+    if project.project_special.review_status:
+        project_status_dict =  PROGRESS_REVIEW_DICT
     else:
-        return False
-    project.save()
+        project_status_dict =  PROGRESS_NOT_REVIEW_DICT
+    next_status = project_status_dict[project.project_status.status][NEXT_STATUS]
+    next_status = project_status_dict[next_status][ROLLBACK_STATUS]
+    if next_status != None:
+        if error_id & 1:
+            file_type = PROGRESS_FILE_DICT.get(next_status,None) if PROGRESS_FILE_DICT.get(next_status,None) !=None else PROGRESS_FILE_DICT.get(project_status_dict[next_status][NEXT_STATUS],None)
+            setattr(project,file_type,False)
+        if error_id <2:
+            next_status = project_status_dict[next_status][NEXT_STATUS]
+        set_status(project,next_status)
     return True
 
 def set_status(project,status):
@@ -282,136 +212,15 @@ def set_status(project,status):
     elif project.project_status.status==PROJECT_STATUS_OVER:
         project.conclude_year=str(time.strftime('%Y',time.localtime(time.time())))
     project.save()
-def status_confirm(project, confirm):
-    project.submit_date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
-    if confirm==-1:
-        loginfo("$"*50)
-        set_status(project,project.project_status.status+1)
-        return True
-    if project.project_status.status==PROJECT_STATUS_APPLY:
-        if confirm==APPLICATION_WEB_CONFIRM:
-            if project.file_application==True:
-                if project.project_special.review_status:
-                    set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
-                else:
-                    set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
-            else:
-                set_status(project,PROJECT_STATUS_APPLICATION_WEB_OVER)
-        elif confirm==APPLICATION_SUBMIT_CONFIRM:
-            pass
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_APPLICATION_WEB_OVER:
-        if confirm==APPLICATION_SUBMIT_CONFIRM:
-            if project.project_special.review_status:
-                set_status(project,PROJECT_STATUS_APPLICATION_COMMIT_OVER)
-            else:
-                set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_APPLICATION_COMMIT_OVER:
-        if confirm==APPLICATION_COLLEGE_COMFIRM:
-            set_status(project,PROJECT_STATUS_APPLICATION_COLLEGE_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_APPLICATION_COLLEGE_OVER:
-        if confirm==APPLICATION_SCHOOL_CONFIRM:
-            set_status(project,PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_APPLICATION_SCHOOL_OVER:
-        if confirm==APPLICATION_EXPERT_SUBJECT_CONFIRM:
-            set_status(project,PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
-        if confirm==APPROVAL_CONFIRM:
-            set_status(project,PROJECT_STATUS_APPROVAL)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_APPROVAL:
-        if confirm==TASK_BUDGET_CONFIRM:
-            if project.file_task==True:
-                set_status(project,PROJECT_STATUS_TASK_COMMIT_OVER)
-            else:
-                set_status(project,PROJECT_STATUS_TASK_BUDGET_OVER)
-        elif confirm==TASK_SUBMIT_CONFIRM:
-            pass
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_TASK_BUDGET_OVER:
-        if confirm==TASK_SUBMIT_CONFIRM:
-            set_status(project,PROJECT_STATUS_TASK_COMMIT_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_TASK_COMMIT_OVER:
-        if confirm==TASK_SCHOOL_CONFIRM:
-            set_status(project,PROJECT_STATUS_SCHOOL_OVER)
-        else:
-            return False
-
-    elif project.project_status.status==PROJECT_STATUS_TASK_SCHOOL_OVER:
-        if confirm==TASK_FINANCE_CONFIRM:
-            set_status(project,PROJECT_STATUS_TASK_FINANCE_OVER)
-        else:
-            return False
-
-    elif project.project_status.status==PROJECT_STATUS_TASK_FINANCE_OVER:
-        if confirm==PROGRESS_WEB_CONFIRM:
-            if project.file_interimchecklist==True:
-                set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
-            else:
-                set_status(project,PROJECT_STATUS_PROGRESS_WEB_OVER)
-        else:
-            return False
-
-    elif project.project_status.status==PROJECT_STATUS_PROGRESS_WEB_OVER:
-        if confirm==PROGRESS_SUBMIT_CONFIRM:
-            set_status(project,PROJECT_STATUS_PROGRESS_COMMIT_OVER)
-        else:
-            return False
-
-    elif project.project_status.status==PROJECT_STATUS_PROGRESS_COMMIT_OVER:
-        if confirm==PROGRESS_SCHOOL_CONFIRM:
-            set_status(project,PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_PROGRESS_SCHOOL_OVER:
-        if confirm==FINAL_WEB_CONFIRM:
-            if project.file_summary==True:
-                set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
-            else:
-                set_status(project,PROJECT_STATUS_FINAL_WEB_OVER)
-        elif confirm==FINAL_SUBMIT_CONFIRM:
-            pass
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_WEB_OVER:
-        if confirm==FINAL_SUBMIT_CONFIRM:
-                set_status(project,PROJECT_STATUS_FINAL_COMMIT_OVER)
-        else :
-            return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_COMMIT_OVER:
-        if confirm==FINAL_SCHOOL_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_SCHOOL_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_SCHOOL_OVER:
-        if confirm==FINAL_FINANCE_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_FINANCE_OVER)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_FINANCE_OVER:
-        if confirm==FINAL_EXPERT_SUBJECT_CONFIRM:
-            set_status(project,PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
-        else:
-            return False
-    elif project.project_status.status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
-        if confirm==PROJECT_OVER_CONFIRM:
-            set_status(project,PROJECT_STATUS_OVER)
-        else:
-            return False
+def status_confirm(request,project):
+    identity = request.session.get("auth_role","")
+    if project.project_special.review_status:
+        status_dict =  PROGRESS_REVIEW_DICT[project.project_status.status]
     else:
-        return False
-    return True
-
+        status_dict =  PROGRESS_NOT_REVIEW_DICT[project.project_status.status]
+    if project.project_status.status in NEXT_PROGRESS_PERMISSION_DICT[identity]
+        project.submit_date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
+        set_status(project,status_dict[NEXT_STATUS])
+        if PROGRESS_FILE_DICT.get(project.project_status.status,None) !=None and getattr(project,PROGRESS_FILE_DICT[project.project_status.status]):
+            status_confirm(request,project)
+    return
