@@ -58,17 +58,33 @@
 	<tfoot><tr><td><strong>合计</strong></td><td>{{profundsummaryform.total_budget}}</td><td>{{profundsummaryform.total_expenditure}}</td><td>{{profundsummaryform.total_remark}}</td></tr></tfoot>
   </table>
 
+
+
+
+
+
+        <p>审核人:{{finance_staff}}</p>
+        <p>审核时间:{{finance_checktime}}</p>
+
+        <button type="button" class="btn btn-primary" id= "fundsummary_print_button"> 打印 </button>
+
+
+
+
+
     </div>
+
+
+
+
+
+
     <div role="tabpanel" class="tab-pane" id="fundsummary_remarkment">
       <p><strong>对各支出主要用途，测算方法，测算依据进行详细分析说明,如依据前页所填设备费、材料费等逐项填写</strong></p>
 
 
 
       {{profundsummaryform.remarkment}}
-
-
-
-
    <table 
     style="width:821px;position:relative;top:-5px;border:1px solid;border-color:rgb(169, 169, 169);margin-top:0px;">
     <tr style="height:100px;">
@@ -89,13 +105,18 @@
 
 
 
+  <p>审核人:{{finance_staff}}</p>
+  <p>审核时间:{{finance_checktime}}</p>
+  <button type="button" class="btn btn-primary" id= "fundsummary_remarkment_print_button"> 打印 </button>
+
+
+
+
     </div>
   </div>
 
 
 
-<p>审核人:{{finance_staff}}</p>
-<p>审核时间:{{finance_checktime}}</p>
 
 
 </div>

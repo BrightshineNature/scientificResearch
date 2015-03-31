@@ -21,6 +21,9 @@
 <div class="hero-unit">
   <form class="form" id="project_fundsuammary_form" method="POST" action="">
     {% include "widgets/finalreport/final_fundsummary_table.html"  %}
+
+
+
     {% if is_submited %}
     <button type="button" class="btn btn-primary" onclick="projectfundsummary()">保存经费决算表</button>
     {% if not userauth.is_adminstaff and not userauth.is_schooler %}
@@ -31,9 +34,6 @@
 </div>
 
 
-{%ifequal userauth.user "teacher"%}
-<br/>
-<button type="button" class="btn btn-primary" id= "print_button"> 打印 </button>
-{%endifequal%}  
+
 
 <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/fundsuammary.js"></script>
