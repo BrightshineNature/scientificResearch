@@ -20,7 +20,7 @@ $("[name='judgeresult']").change(function()
         $("[name='not_pass_reason']").show(500);
         if(projectstatus==applicationstatus_s||projectstatus==applicationstatus_c||projectstatus==finalstatus){
         $("#not_pass_article").show(500);
-        }   
+        }
         $("#budget").hide(500);
     }
     else
@@ -82,7 +82,7 @@ $('#review_modal').on('show.bs.modal', function (e) {
     $("#budget").show(500);
     $("[name='not_pass_reason']").hide(500);
     $("#not_pass_article").hide(500);
-
+  
     $("[name='reason']").val("");
 
     
@@ -98,7 +98,7 @@ $('#review_modal').on('show.bs.modal', function (e) {
 
   // do something...
 })
-$("[name='commit']").click(function(){    
+$("[name='commit']").click(function(){
     var value=$(this).closest(".modal").find("#id_judgeresult").val();
     var lookThroughForm=$(this).closest(".modal").find("#lookThroughForm").serialize(true);
     userrole=$(".tab-content").attr("userrole");

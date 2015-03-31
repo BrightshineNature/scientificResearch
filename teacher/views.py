@@ -13,7 +13,7 @@ from backend.logging import loginfo
 from const import *
 from django.db.models import Q
 
-from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage,get_project_list, progressReportViewWork
+from common.views import scheduleManage,finalReportViewWork,appManage,fundBudgetViewWork, fileUploadManage,get_project_list, progressReportViewWork,summaryViewWork
 
 from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
 from common.forms import ProjectInfoForm, BasisContentForm, BaseConditionForm
@@ -143,6 +143,19 @@ def finalReportView(request,pid,is_submited):
     if context['redirect']:
         return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/final.html",context)
+
+
+@csrf.csrf_protect
+@login_required
+@authority_required(TEACHER_USER)
+@check_submit_status()
+def summaryView(request,pid,is_submited):
+    context = summaryViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
+    loginfo(p=is_submited,label="is_submited")
+    if context['redirect']:
+        return HttpResponseRedirect('/teacher/finalinfo')
+    return render(request,"teacher/fundsummary.html",context)
+
 
 @csrf.csrf_protect
 @login_required

@@ -256,7 +256,7 @@ def getStatus(request):
     return simplejson.dumps({
         "application_c":PROJECT_STATUS_APPLICATION_COMMIT_OVER,
         "application_s":PROJECT_STATUS_APPLICATION_COLLEGE_OVER,
-        "final":PROJECT_STATUS_FINAL_FINANCE_OVER,
+        "final":PROJECT_STATUS_FINAL_COMMIT_OVER,
     })
 @dajaxice_register
 def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look_through_form,searchForm):
@@ -269,22 +269,20 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
         project.comment=''
         project.save()
         loginfo("text")
-        if userstatus=="application" and userrole=="school" and not project.project_special.review_status:
-            set_status(project,PROJECT_STATUS_APPROVAL)
-        else:
-            status_confirm(project,-1)
+        status_confirm(project,-1)#request,project
         if userstatus=="application":
             if form.get("max_budget"):
                 project.project_budget_max=int(form.get("max_budget"))
                 project.save()
                 loginfo(project.project_budget_max)
-        if userstatus=="budget":
+        identity = request.session.get("auth_role","")
+        if userstatus=="budget" and identity == FINANCE_USER:
             finance_budget=ProjectFundBudget.objects.get(project_id=project)
             finance_budget.finance_comment=form.get("reason")
             finance_budget.finance_staff=form.get("finance_staff")
             finance_budget.finance_checktime=form.get("finance_checktime")
             finance_budget.save()
-        if userstatus=="final":
+        if userstatus=="final" and identity == FINANCE_USER:
             finance_summary=ProjectFundSummary.objects.get(project_id=project)
             finance_summary.finance_comment=form.get("reason")
             finance_summary.finance_staff=form.get("finance_staff")
@@ -311,8 +309,24 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
         loginfo(comment)
         project.comment=comment
         project.save()
-        print "STATUSROLLBACK :::(((" 
-        statusRollBack(project,userrole,userstatus,form)
+
+        choices_application=form.getlist('application')
+        choices_final=form.getlist('final')
+        print choices_application
+
+        print "000000000000000000000000000000000000000000000000000000"
+        if len(choices_application)==2 or len(choices_final)==2:
+            #statusRollBack(project,userrole,userstatus,form)#11,request,project
+            print "11"
+        elif u"网上申请不合格" in choices_application or u"网上提交不合格" in choices_final:
+            #statusRollBack(project,userrole,userstatus,form)#10,request,project
+            print "10"
+        else:
+            print "01"
+            #statusRollBack(project,userrole,userstatus,form)#01,request,project
+        print "111111111111111111111111111111111111111111111111111111"
+        #print "STATUSROLLBACK :::(((" 
+        #statusRollBack(project,userrole,userstatus,form)
     context=schedule_form_data(request,{
         "role":userrole,
         "status":userstatus
