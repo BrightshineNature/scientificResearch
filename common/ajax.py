@@ -275,17 +275,31 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
                 project.save()
                 loginfo(project.project_budget_max)
         identity = request.session.get("auth_role","")
+        import time,string
+        currentYear=time.strftime("%Y")
         if userstatus=="budget" and identity == FINANCE_USER:
             finance_budget=ProjectFundBudget.objects.get(project_id=project)
             finance_budget.finance_comment=form.get("reason")
             finance_budget.finance_staff=form.get("finance_staff")
             finance_budget.finance_checktime=form.get("finance_checktime")
+            lastest=ProjectFundBudget.objects.filter(Q(serial_number__startswith=currentYear)).order_by('serial_number')
+            if lastest:
+                finance_budget.serial_number=str(string.atoi(lastest[len(lastest)-1].serial_number)+1)
+            else:
+                finance_budget.serial_number=currentYear+"0000"
+            print "qqqqqqqqqqqqqqqqqqqqqqqqqq"+finance_budget.serial_number+"qqqqqqqqqqqqqqqqqqqqqqqqqqq"
             finance_budget.save()
         if userstatus=="final" and identity == FINANCE_USER:
             finance_summary=ProjectFundSummary.objects.get(project_id=project)
             finance_summary.finance_comment=form.get("reason")
             finance_summary.finance_staff=form.get("finance_staff")
             finance_summary.finance_checktime=form.get("finance_checktime")
+            lastest=ProjectFundSummary.objects.filter(Q(serial_number__startswith=currentYear)).order_by('serial_number')
+            if lastest:
+                finance_summary.serial_number=str(string.atoi(lastest[len(lastest)-1].serial_number)+1)
+            else:
+                finance_summary.serial_number=currentYear+"0000"
+            print "qqqqqqqq"+finance_summary.serial_number+"qqqqqqqqqqqqqqqqqqqqqqq"
             finance_summary.save()
     else:
         identity = request.session.get("auth_role","")
