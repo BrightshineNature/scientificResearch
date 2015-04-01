@@ -25,9 +25,9 @@
 
 
     {% if is_submited %}
-    <button type="button" class="btn btn-primary" onclick="projectfundsummary()">保存经费决算表</button>
+    <button type="button" class="btn btn-primary" onclick="projectfundsummary(false)">保存经费决算表</button>
     {% if not userauth.is_adminstaff and not userauth.is_schooler %}
-    <a class="btn btn-primary" href="#achivement" data-toggle="tab" id="fundsummary_next">下一步</a>
+    <a class="btn btn-primary" data-toggle="tab" id="fundsummary_next" onclick="projectfundsummary(true)">提交</a>
     {% endif %}
     {% endif %}
   </form>

@@ -268,7 +268,7 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
     if form["judgeresult"]=="1":
         project.comment=''
         project.save()
-        status_confirm(project,-1)#request,project
+        status_confirm(request,project)#request,project
         if userstatus=="application":
             if form.get("max_budget"):
                 project.project_budget_max=int(form.get("max_budget"))
@@ -309,21 +309,15 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
 
         choices_application=form.getlist('application')
         choices_final=form.getlist('final')
-        print choices_application
-
-        print "000000000000000000000000000000000000000000000000000000"
-        if len(choices_application)==2 or len(choices_final)==2:
-            #statusRollBack(project,userrole,userstatus,form)#11,request,project
+        if identity == FINANCE_USER or len(choices_application)==2 or len(choices_final)==2:
+            statusRollBack(request,project,3)
             print "11"
         elif u"网上申请不合格" in choices_application or u"网上提交不合格" in choices_final:
-            #statusRollBack(project,userrole,userstatus,form)#10,request,project
+            statusRollBack(request,project,2)#10,request,project
             print "10"
         else:
             print "01"
-            #statusRollBack(project,userrole,userstatus,form)#01,request,project
-        print "111111111111111111111111111111111111111111111111111111"
-        #print "STATUSROLLBACK :::(((" 
-        #statusRollBack(project,userrole,userstatus,form)
+            statusRollBack(request,project,1)#01,request,project
     context=schedule_form_data(request,{
         "role":userrole,
         "status":userstatus
@@ -595,12 +589,9 @@ def checkValid(request, pid):
         print "SBSB ^^^^"
         context['status'] = 0
         error = u"您的‘ 立项依据与研究内容‘页面下有未填写字段"
-
-    
     if context['status']:
         loginfo("mdoify success")
-        status_confirm(project, APPLICATION_WEB_CONFIRM)
-
+        status_confirm(request,project)
     context['error'] = error
     return simplejson.dumps(context)
 @dajaxice_register

@@ -71,6 +71,12 @@ class ProjectSingle(models.Model):
 
     def __unicode__(self):
         return self.title
+    def get_next_status(self):
+        if self.project_special.review_status:
+            pendding_dict = PROGRESS_REVIEW_DICT
+        else:
+            pendding_dict = PROGRESS_NOT_REVIEW_DICT
+        return pendding_dict[self.project_status.status][PENDDING_STATUS]
 
 class ReviewBackView(models.Model):
     userid = models.ForeignKey(User,verbose_name="权限对应ID")

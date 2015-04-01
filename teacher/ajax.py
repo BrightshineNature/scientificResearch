@@ -146,7 +146,7 @@ def staticsChange(request,statics_type):
     return simplejson.dumps(ret)
 
 @dajaxice_register
-def fundSummary(request, form, pid,finance_account):
+def fundSummary(request, form, pid,finance_account,is_submited):
     profundsummary = ProjectFundSummary.objects.get(project_id = pid) 
     profundsummaryform = ProFundSummaryForm(deserialize_form(form),instance = profundsummary)
     project = ProjectSingle.objects.get(project_id = pid)
@@ -166,7 +166,9 @@ def fundSummary(request, form, pid,finance_account):
                     project.finance_account=finance_account
                     project.save()
                     message = u"保存成功"
-                    flag = True
+                    if is_submited:
+                        flag = True
+                        status_confirm(request,project)
                 else:
                     message = u"经费决算表总结额应低于项目最大预算金额,请仔细核实"
             else:
@@ -216,7 +218,7 @@ def fundBudget(request, form, pid,max_budget,projectcode,is_submited = False):
                     message = u"保存成功"
                     if is_submited:
                         flag = True
-                        status_confirm(project,TASK_BUDGET_CONFIRM)
+                        status_confirm(request,project)
                 else:
                     message = u"经费预算表总结额应低于项目最大预算金额,请仔细核实"
             else:
@@ -277,7 +279,7 @@ def finalReportFinish(request,pid):
     loginfo(p=fundsummary.total_budget,label="fundbudget")
     if finalsubmit.project_summary:
         if fundsummary.total_budget != '0':
-            status_confirm(project,FINAL_WEB_CONFIRM)
+            status_confirm(request,project)
             status = '1'
             message = u"项目状态变为结题书网上提交"
         else:
@@ -317,7 +319,7 @@ def submitProgress(request, pid):
     current_year = datetime.datetime.today().year
     if not ProgressReport.objects.filter(Q(project_id = pid) & Q(year = current_year)).count():
         return simplejson.dumps({"message": "empty report"})
-    status_confirm(project, PROGRESS_WEB_CONFIRM)
+    status_confirm(request,project)
     return simplejson.dumps({"message": "ok", "is_redirect": is_redirect, "pid": pid})
 
 @dajaxice_register

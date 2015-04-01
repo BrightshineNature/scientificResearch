@@ -1,4 +1,4 @@
-function projectfundsummary(){
+function projectfundsummary(is_submited){
     var pid = $("#mainTable").attr("value");
     var total_budget = parseFloat($('#id_total_budget').val());
     var laborcosts_budget = parseFloat($('#id_laborcosts_budget').val());
@@ -9,27 +9,18 @@ function projectfundsummary(){
                                     {
                                         'form': $('#project_fundsuammary_form').serialize(true),
                                         'pid':pid,
-                                        'finance_account':finance_account
+                                        'finance_account':finance_account,
+                                        'is_submited':is_submited
                                 });
 }
 
 function fundSummary_callback(data){
     alert(data.message);
     if (data.flag) {
-        $('#li_auditing').removeClass('active');
-        $('#auditing').removeClass('active in');
-        $('#li_achivement').addClass('active');        
-        $('#achivement').addClass('active in');
-    };
 
+    };
 }
 
-$('#fundsummary_next').click(function(){
-    $('#li_auditing').removeClass('active');        
-    $('#auditing').removeClass('active in');
-    $('#li_achivement').addClass('active');        
-    $('#achivement').addClass('active in');
-});
 var totalbudget = 0.0;
 var totalexpenditure = 0.0;
 $("table[name='budgettable'] tbody").find("input").bind('change',function(){

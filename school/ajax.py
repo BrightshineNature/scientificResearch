@@ -271,7 +271,7 @@ def getScore(request, pid):
     message = ""
     project = ProjectSingle.objects.get(project_id = pid)
     is_first_round = True
-    if project.project_status.status == PROJECT_STATUS_FINAL_REVIEW_OVER:
+    if project.project_status.status == PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
         is_first_round = False
 
     scoreTableType = getScoreTable(project)

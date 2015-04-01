@@ -108,7 +108,7 @@ def get_status_choice():
     status_choice=[
         (PROJECT_STATUS_TASK_SCHOOL_OVER,u"任务书审核阶段"),
         (PROJECT_STATUS_PROGRESS_SCHOOL_OVER,u"进展报告审核阶段"),
-        (PROJECT_STATUS_FINAL_REVIEW_OVER,u"结题书审核阶段"),
+        (PROJECT_STATUS_FINAL_EXPERT_SUBJECT,u"结题书审核阶段"),
         (PROJECT_STATUS_OVER,u"结题")
     ]
     return status_choice
@@ -156,7 +156,7 @@ def create_Q(start,end):
     return Q(project_status__status__gte=start,project_status__status__lte=end)
 
 def get_qset(userauth):
-    if userauth['role']=="school" :
+    if userauth['role']=="school":
         if userauth['status']=="application":
             pending=create_QE(PROJECT_STATUS_APPLICATION_COLLEGE_OVER)|create_QE(PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
             default=create_QE(PROJECT_STATUS_APPLICATION_SCHOOL_OVER)
@@ -180,11 +180,11 @@ def get_qset(userauth):
         search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_STOP)
     else:
         if userauth['status']=="budget":
-            pending=create_QE(PROJECT_STATUS_TASK_SCHOOL_OVER)
+            pending=create_QE(PROJECT_STATUS_TASK_BUDGET_OVER)
             default=create_QE(PROJECT_STATUS_TASK_FINANCE_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
         else:
-            pending=create_QE(PROJECT_STATUS_FINAL_SCHOOL_OVER)
+            pending=create_QE(PROJECT_STATUS_FINAL_AUDITE_OVER)
             default=create_QE(PROJECT_STATUS_FINAL_FINANCE_OVER)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     return (pending,default,search)
@@ -199,9 +199,13 @@ def statusRollBack(request,project,error_id):
     if next_status != None:
         if error_id & 1:
             file_type = PROGRESS_FILE_DICT.get(next_status,None) if PROGRESS_FILE_DICT.get(next_status,None) !=None else PROGRESS_FILE_DICT.get(project_status_dict[next_status][NEXT_STATUS],None)
-            setattr(project,file_type,False)
+            if file_type != None:
+                setattr(project,file_type,False)
         if error_id <2:
             next_status = project_status_dict[next_status][NEXT_STATUS]
+        loginfo('$'*50)
+        loginfo(error_id)
+        loginfo(next_status)
         set_status(project,next_status)
     return True
 
@@ -218,7 +222,7 @@ def status_confirm(request,project):
         status_dict =  PROGRESS_REVIEW_DICT[project.project_status.status]
     else:
         status_dict =  PROGRESS_NOT_REVIEW_DICT[project.project_status.status]
-    if project.project_status.status in NEXT_PROGRESS_PERMISSION_DICT[identity]
+    if status_dict[NEXT_STATUS] in NEXT_PROGRESS_PERMISSION_DICT[identity]:
         project.submit_date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
         set_status(project,status_dict[NEXT_STATUS])
         if PROGRESS_FILE_DICT.get(project.project_status.status,None) !=None and getattr(project,PROGRESS_FILE_DICT[project.project_status.status]):

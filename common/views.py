@@ -202,25 +202,27 @@ def handleFileUpload(request, pid,  entrance):
     if entrance == 'file_application':
         project.file_application = True
         project.submit_date=timenow
-        status_confirm(project, APPLICATION_SUBMIT_CONFIRM)
+        if project.project_status.status == PROJECT_STATUS_APPLICATION_WEB_OVER:
+           status_confirm(request,project)
     elif entrance == 'file_task':
         project.file_task = True
         project.submit_date=timenow
-        status_confirm(project, TASK_SUBMIT_CONFIRM)
+        if project.project_status.status == PROJECT_STATUS_TASK_FINANCE_OVER:
+           status_confirm(request,project)
     elif entrance == 'file_interimchecklist':
         project.file_interimchecklist = True
         project.submit_date=timenow
-        status_confirm(project, PROGRESS_SUBMIT_CONFIRM)
+        if project.project_status.status == PROJECT_STATUS_PROGRESS_WEB_OVER:
+           status_confirm(request,project)
     elif entrance == 'file_summary':
         project.file_summary = True
         project.submit_date=timenow
-        status_confirm(project, FINAL_SUBMIT_CONFIRM)
+        if project.project_status.status == PROJECT_STATUS_FINAL_WEB_OVER:
+           status_confirm(request,project)
     project.save()
     return 1
 
-
 def fileUploadManage(request, pid, is_submited):
-
     print "fileUploadManage**********"
     error = 0
     is_upload_file = 0
@@ -411,10 +413,12 @@ def get_search_data(request,schedule_form):
 def summaryViewWork(request,pid,is_submited,redirect=False):
     projfundsummary = ProjectFundSummary.objects.get( project_id = pid )
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
+    project = ProjectSingle.objects.get( project_id = pid)
     context = {
         'projfundsummary':projfundsummary,
         'profundsummaryform':profundsummaryform,
         'pid':pid,
+        'project':project,
         'redirect':redirect,
         'is_submited':is_submited,
     }
@@ -477,19 +481,17 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
 def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     fundbudget = ProjectFundBudget.objects.get(project_id = pid)
     project = ProjectSingle.objects.get(project_id = pid)
-    
     if fundbudget.finance_staff:finance_staff=fundbudget.finance_staff
     else:finance_staff="未填写"
     if fundbudget.finance_checktime:finance_checktime=fundbudget.finance_checktime
     else:finance_checktime="未填写"
-    
     print request.method
     if request.method == "POST":
         fundbudget_form = ProFundBudgetForm(request.POST, instance=fundbudget)
         if fundbudget_form.is_valid():
             fundbudget_form.save()
-            redirect = True
-            status_confirm(project,TASK_BUDGET_CONFIRM)
+            # redirect = True
+            status_confirm(request,project)
             loginfo(p=project.project_status,label="status")
         else:
             logger.info("ProFundBudgetForm Valid Failed"+"**"*10)

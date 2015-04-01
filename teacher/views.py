@@ -24,7 +24,6 @@ from adminStaff.models import ProjectSingle
 from forms import ProjectCreationForm,ProjectChangeForm
 from common.utils import createNewProject
 from common.views import get_project_list
-from const import PROJECT_STATUS_APPLICATION_REVIEW_OVER
 
 import datetime
 
@@ -151,9 +150,6 @@ def finalReportView(request,pid,is_submited):
 @check_submit_status()
 def summaryView(request,pid,is_submited):
     context = summaryViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
-    loginfo(p=is_submited,label="is_submited")
-    if context['redirect']:
-        return HttpResponseRedirect('/teacher/finalinfo')
     return render(request,"teacher/fundsummary.html",context)
 
 

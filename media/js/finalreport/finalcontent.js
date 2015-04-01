@@ -7,10 +7,7 @@ $('#finalsubmitform_btn').click(function(){
 function final_content_callback(data){
     if(data.go_next)
     {
-        $('#li_content').removeClass('active');        
-        $('#content').removeClass('active in');
-        $('#li_auditing').addClass('active');        
-        $('#auditing').addClass('active in');
+        finalcontent_next();
     }
     else
     {
@@ -21,7 +18,6 @@ function final_content_callback(data){
 function finalcontent_next(){
     $('#li_content').removeClass('active');        
     $('#content').removeClass('active in');
-    $('#li_auditing').addClass('active');        
-    $('#auditing').addClass('active in');
-
+    $('#li_achivement').addClass('active');
+    $('#achivement').addClass('active in');
 }

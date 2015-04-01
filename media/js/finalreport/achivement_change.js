@@ -49,15 +49,14 @@ $("#achivement_save_change").click(function(){
 });
 
 function add_or_update_achivement_callback(data){
-
     $("#achivement_change_table").html(data.table);
     alert(data.message);
 }
 
 $('#achivement_next').click(function(){
-    $('#li_achivement').removeClass('active');        
+    $('#li_achivement').removeClass('active'); 
     $('#achivement').removeClass('active in');
-    $('#li_datastatics').addClass('active');        
+    $('#li_datastatics').addClass('active'); 
     $('#datastatics').addClass('active in');
 });
 

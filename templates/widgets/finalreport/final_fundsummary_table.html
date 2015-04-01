@@ -1,10 +1,10 @@
 <!--
-<div id = "input_account">
-  <STRONG>项目最大预算（元）:</STRONG><input type="text" id = "summary_max_budget" readonly="readonly" value="{{project.project_budget_max}}" disabled></input>
-  <strong style="margin-left:50px;">财务账号：</strong><input type="text" id = "summary_finance_account" readonly="readonly" value="{{project.finance_account}}" disabled></input>
-  <strong style="margin-left:50px;">项目编号：</strong><input type="text" readonly="readonly"   id = "summary_project_code" value="{{pro.project_code}}" disabled></input>
-</div>
--->
+    <div id = "input_account">
+      <STRONG>项目最大预算（元）:</STRONG><input type="text" id = "summary_max_budget" readonly="readonly" value="{{project.project_budget_max}}" disabled></input>
+      <strong style="margin-left:50px;">财务账号：</strong><input type="text" id = "summary_finance_account" readonly="readonly" value="{{project.finance_account}}" disabled></input>
+      <strong style="margin-left:50px;">项目编号：</strong><input type="text" readonly="readonly"   id = "summary_project_code" value="{{pro.project_code}}" disabled></input>
+    </div>
+    -->
 <div role="tabpanel"  id = "print_body">
 
   <!-- Nav tabs -->
@@ -20,7 +20,7 @@
         <thead>
           <tr>
             <td><strong>项目编号：</strong></td>
-            <td><input type="text" readonly="readonly" id = "summary_project_code" value="{{pro.project_code}}"></input></td>
+            <td><input type="text" readonly="readonly" id = "summary_project_code" value="{{project.project_code}}"></input></td>
             <td><strong>项目负责人</strong></td>
             <td><input type="text" readonly="readonly" id="teacher" value="{{project.teacher.userid.first_name}}"></input></td>
           </tr>
@@ -36,88 +36,56 @@
           </tr>
           <tr><th>科目</th><th>预算经费（元）</th><th>经费支出（元）</th><th>说明(须填写支出内容)</th></tr></thead>
 	<tbody>
-		<tr>
-                  <td><strong>1.设备费</strong></td>
-                  <td>{{profundsummaryform.equcosts_budget}}</td>
-                  <td>{{profundsummaryform.equcosts_expenditure}}</td>
-                  <td>{{profundsummaryform.equcosts_remark}}</td>
-                </tr>
-		<tr><td>&nbsp;&nbsp;&nbsp;(1)设备购置费</td><td>{{profundsummaryform.equacquisition_budget}}</td><td>{{profundsummaryform.equacquisition_expenditure}}</td><td>{{profundsummaryform.equacquisition_remark}}</td></tr>
-		<tr><td>&nbsp;&nbsp;&nbsp;(2)试制改造费</td><td>{{profundsummaryform.equtrial_budget}}</td><td>{{profundsummaryform.equtrial_expenditure}}</td><td>{{profundsummaryform.equtrial_remark}}</td></tr>
-		<tr><td>&nbsp;&nbsp;&nbsp;(3)设备改造与租凭费</td><td>{{profundsummaryform.equrent_budget}}</td><td>{{profundsummaryform.equrent_expenditure}}</td><td>{{profundsummaryform.equrent_remark}}</td></tr>
-		<tr><td><strong>2.材料费</strong></td><td>{{profundsummaryform.material_budget}}</td><td>{{profundsummaryform.material_expenditure}}</td><td>{{profundsummaryform.material_remark}}</td></tr>
-		<tr><td><strong>3.测试化验加工费</strong></td><td>{{profundsummaryform.testcosts_budget}}</td><td>{{profundsummaryform.testcosts_expenditure}}</td><td>{{profundsummaryform.testcosts_remark}}</td></tr>
-		<tr><td><strong>4.燃料动力费</strong></td><td>{{profundsummaryform.fuelpower_budget}}</td><td>{{profundsummaryform.fuelpower_expenditure}}</td><td>{{profundsummaryform.fuelpower_remark}}</td></tr>
-		<tr><td><strong>5.差旅费</strong></td><td>{{profundsummaryform.travel_budget}}</td><td>{{profundsummaryform.travel_expenditure}}</td><td>{{profundsummaryform.travel_remark}}</td></tr>
-		<tr><td><strong>6.会议费</strong></td><td>{{profundsummaryform.conference_budget}}</td><td>{{profundsummaryform.conference_expenditure}}</td><td>{{profundsummaryform.conference_remark}}</td></tr>
-		<tr><td><strong>7.国际合作与交流费</strong></td><td>{{profundsummaryform.cooperation_budget}}</td><td>{{profundsummaryform.cooperation_expenditure}}</td><td>{{profundsummaryform.cooperation_remark}}</td></tr>
-		<tr><td><strong>8.出版/文献费</strong></td><td>{{profundsummaryform.publish_budget}}</td><td>{{profundsummaryform.publish_expenditure}}</td><td>{{profundsummaryform.publish_remark}}</td></tr>
-		<tr><td><strong>9.劳务费</strong></td><td>{{profundsummaryform.laborcosts_budget}}</td><td>{{profundsummaryform.laborcosts_expenditure}}</td><td>{{profundsummaryform.laborcosts_remark}}</td></tr>
-		<tr><td><strong>10.专家咨询费</strong></td><td>{{profundsummaryform.expertadvice_budget}}</td><td>{{profundsummaryform.expertadvice_expenditure}}</td><td>{{profundsummaryform.expertadvice_remark}}</td></tr>
+	  <tr>
+            <td><strong>1.设备费</strong></td>
+            <td>{{profundsummaryform.equcosts_budget}}</td>
+            <td>{{profundsummaryform.equcosts_expenditure}}</td>
+            <td>{{profundsummaryform.equcosts_remark}}</td>
+          </tr>
+	  <tr><td>&nbsp;&nbsp;&nbsp;(1)设备购置费</td><td>{{profundsummaryform.equacquisition_budget}}</td><td>{{profundsummaryform.equacquisition_expenditure}}</td><td>{{profundsummaryform.equacquisition_remark}}</td></tr>
+	  <tr><td>&nbsp;&nbsp;&nbsp;(2)试制改造费</td><td>{{profundsummaryform.equtrial_budget}}</td><td>{{profundsummaryform.equtrial_expenditure}}</td><td>{{profundsummaryform.equtrial_remark}}</td></tr>
+	  <tr><td>&nbsp;&nbsp;&nbsp;(3)设备改造与租凭费</td><td>{{profundsummaryform.equrent_budget}}</td><td>{{profundsummaryform.equrent_expenditure}}</td><td>{{profundsummaryform.equrent_remark}}</td></tr>
+	  <tr><td><strong>2.材料费</strong></td><td>{{profundsummaryform.material_budget}}</td><td>{{profundsummaryform.material_expenditure}}</td><td>{{profundsummaryform.material_remark}}</td></tr>
+	  <tr><td><strong>3.测试化验加工费</strong></td><td>{{profundsummaryform.testcosts_budget}}</td><td>{{profundsummaryform.testcosts_expenditure}}</td><td>{{profundsummaryform.testcosts_remark}}</td></tr>
+	  <tr><td><strong>4.燃料动力费</strong></td><td>{{profundsummaryform.fuelpower_budget}}</td><td>{{profundsummaryform.fuelpower_expenditure}}</td><td>{{profundsummaryform.fuelpower_remark}}</td></tr>
+	  <tr><td><strong>5.差旅费</strong></td><td>{{profundsummaryform.travel_budget}}</td><td>{{profundsummaryform.travel_expenditure}}</td><td>{{profundsummaryform.travel_remark}}</td></tr>
+	  <tr><td><strong>6.会议费</strong></td><td>{{profundsummaryform.conference_budget}}</td><td>{{profundsummaryform.conference_expenditure}}</td><td>{{profundsummaryform.conference_remark}}</td></tr>
+	  <tr><td><strong>7.国际合作与交流费</strong></td><td>{{profundsummaryform.cooperation_budget}}</td><td>{{profundsummaryform.cooperation_expenditure}}</td><td>{{profundsummaryform.cooperation_remark}}</td></tr>
+	  <tr><td><strong>8.出版/文献费</strong></td><td>{{profundsummaryform.publish_budget}}</td><td>{{profundsummaryform.publish_expenditure}}</td><td>{{profundsummaryform.publish_remark}}</td></tr>
+	  <tr><td><strong>9.劳务费</strong></td><td>{{profundsummaryform.laborcosts_budget}}</td><td>{{profundsummaryform.laborcosts_expenditure}}</td><td>{{profundsummaryform.laborcosts_remark}}</td></tr>
+	  <tr><td><strong>10.专家咨询费</strong></td><td>{{profundsummaryform.expertadvice_budget}}</td><td>{{profundsummaryform.expertadvice_expenditure}}</td><td>{{profundsummaryform.expertadvice_remark}}</td></tr>
 	</tbody>
 	<tfoot><tr><td><strong>合计</strong></td><td>{{profundsummaryform.total_budget}}</td><td>{{profundsummaryform.total_expenditure}}</td><td>{{profundsummaryform.total_remark}}</td></tr></tfoot>
-  </table>
+      </table>
 
-
-
-
-
-
-        <p>审核人:{{finance_staff}}</p>
-        <p>审核时间:{{finance_checktime}}</p>
-
-        <button type="button" class="btn btn-primary" id= "fundsummary_print_button"> 打印 </button>
-
-
-
-
-
+      <p>审核人:{{finance_staff}}</p>
+      <p>审核时间:{{finance_checktime}}</p>
+      <button type="button" class="btn btn-primary" id= "fundsummary_print_button"> 打印 </button>
     </div>
-
-
-
-
-
 
     <div role="tabpanel" class="tab-pane" id="fundsummary_remarkment">
       <p><strong>对各支出主要用途，测算方法，测算依据进行详细分析说明,如依据前页所填设备费、材料费等逐项填写</strong></p>
-
-
-
       {{profundsummaryform.remarkment}}
-   <table 
-    style="width:821px;position:relative;top:-5px;border:1px solid;border-color:rgb(169, 169, 169);margin-top:0px;">
-    <tr style="height:100px;">
-      <th style="border:1px solid;border-color:rgb(169, 169, 169);"> 
-          项目负责人(签章):
-      </th>
+      <table 
+         style="width:821px;position:relative;top:-5px;border:1px solid;border-color:rgb(169, 169, 169);margin-top:0px;">
+        <tr style="height:100px;">
+          <th style="border:1px solid;border-color:rgb(169, 169, 169);"> 
+            项目负责人(签章):
+          </th>
 
-      <th style="border:1px solid;border-color:rgb(169, 169, 169);"> 
-          财务部门(签章):
-      </th>
+          <th style="border:1px solid;border-color:rgb(169, 169, 169);"> 
+            财务部门(签章):
+          </th>
 
-      <th style="border:1px solid;border-color:rgb(169, 169, 169);"> 
-          审计部门(签章):
-      </th>
-    </tr>
-
-  </table>
-
-
-
-  <p>审核人:{{finance_staff}}</p>
-  <p>审核时间:{{finance_checktime}}</p>
-  <button type="button" class="btn btn-primary" id= "fundsummary_remarkment_print_button"> 打印 </button>
-
-
-
-
+          <th style="border:1px solid;border-color:rgb(169, 169, 169);"> 
+            审计部门(签章):
+          </th>
+        </tr>
+      </table>
+      <p>审核人:{{finance_staff}}</p>
+      <p>审核时间:{{finance_checktime}}</p>
+      <button type="button" class="btn btn-primary" id= "fundsummary_remarkment_print_button"> 打印 </button>
     </div>
   </div>
-
-
-
-
-
 </div>
 
