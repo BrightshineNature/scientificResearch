@@ -1,7 +1,11 @@
 <table class="table table-hover" >
     <thead>
         <tr>
-            <th>项目编号</th>
+            {% if userauth.is_finance%}
+               <th>财务流水号</th>
+            {% else %}
+              <th>项目编号</th>
+            {% endif%}
             <th>项目名称</th>
             <th>项目负责人</th>
             <th>学院</th>
@@ -10,7 +14,7 @@
             <th>专题类型</th>
             <th>项目状态</th>
             {%ifnotequal usercontext.role "finance"%}
-            <th>附件</th>
+             <th>附件</th>
             {%endifnotequal%}
             {% ifequal usercontext.status "budget"%}
             <th>立项金额</th>
@@ -28,7 +32,15 @@
         {% if item_list%}
         {% for item in item_list%}
         <tr iid={{item.project_id}} status={{item.project_status.status}}>
-            <td>{{item.project_code}}</td>
+          {% if userauth.is_finance%}
+          {% ifequal usercontext.status "budget"%}
+              <td>{{item.projectfundbudget.serial_number}}</td>
+          {% else %}
+             <td>{{item.projectfundsummary.serial_number}}</td>
+          {% endifequal%}  
+          {%else%}
+          <td>{{item.project_code}}</td>
+          {%endif%}
             {% if usercontext.role == 'school' %}
             <td><a href="/school/final/{{item.project_id}}?page={{page}}&page2={{page2}}" data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
             {% endif %}
