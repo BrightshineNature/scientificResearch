@@ -130,6 +130,7 @@ class ProjectStatistics(models.Model):
 class ProjectFundSummary(models.Model):
     content_id = models.CharField(max_length=50,primary_key=True, default=lambda: str(uuid.uuid4()),
    							   verbose_name="经费决算表唯一ID")
+    serial_number = models.CharField(max_length=20,blank=True,verbose_name="经费决算表流水号")
     project_id = models.OneToOneField(ProjectSingle)
 
     remarkment = models.CharField(max_length=1500,blank=True,null=True,
@@ -235,7 +236,7 @@ class ProjectFundBudget(models.Model):
                                   primary_key=True, default=lambda: str(uuid.uuid4()),
                                   verbose_name="经费预算表唯一ID")
     project_id = models.OneToOneField(ProjectSingle)
-
+    serial_number = models.CharField(max_length=20,blank=True,verbose_name="经费决算表流水号")
     remarkment = models.CharField(max_length=1500,blank=True,null=True,
                                            verbose_name="经费预算说明")
    
