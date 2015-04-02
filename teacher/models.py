@@ -133,7 +133,7 @@ class ProjectFundSummary(models.Model):
     serial_number = models.CharField(max_length=20,blank=True,verbose_name="经费决算表流水号")
     project_id = models.OneToOneField(ProjectSingle)
 
-    remarkment = models.CharField(max_length=1500,blank=True,null=True,
+    remarkment = models.CharField(max_length=1500,blank=False,null=True,
                                                                                 verbose_name="经费决算说明")
     finance_comment = models.CharField(max_length=100, blank=True, null=True,default="",
    										verbose_name="财务评审意见")
@@ -237,7 +237,7 @@ class ProjectFundBudget(models.Model):
                                   verbose_name="经费预算表唯一ID")
     project_id = models.OneToOneField(ProjectSingle)
     serial_number = models.CharField(max_length=20,blank=True,verbose_name="经费决算表流水号")
-    remarkment = models.CharField(max_length=1500,blank=True,null=True,
+    remarkment = models.CharField(max_length=1500,blank=False,null=True,
                                            verbose_name="经费预算说明")
    
     equcosts_budget = models.FloatField(blank=False, null=True,default="0",
