@@ -126,6 +126,11 @@
         <span class="label label-danger">结题书</span>
         {%endif%}
       </td>
+      {% ifequal usercontext.role "adminStaff"%}
+          <td>
+            <button data-toggle="modal" data-target="#status_modal" class="btn btn-primary btn-sm" name="changestatus">修改状态</button>
+          </td>
+      {% endifequal%}
      </tr>
     {% endfor%}
     {% endif%}
