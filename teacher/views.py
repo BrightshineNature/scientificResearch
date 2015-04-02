@@ -214,5 +214,6 @@ def fundBudgetView(request,pid,is_submited):
     if context['redirect']:
 	return HttpResponseRedirect('/teacher/finalinfo')
     context['role'] = 'teacher'
+    loginfo(is_submited[SUBMIT_STATUS_TASK])
     return render(request,"teacher/fundbudget.html",context)
 
