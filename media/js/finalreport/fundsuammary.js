@@ -8,16 +8,29 @@ function projectfundsummary(is_submited){
     Dajaxice.teacher.fundSummary(fundSummary_callback,
                                     {
                                         'form': $('#project_fundsuammary_form').serialize(true),
+                                        "remarkmentform":$('#project_fundsuammaryremarkment_form').serialize(true),
                                         'pid':pid,
                                         'finance_account':finance_account,
                                         'is_submited':is_submited
                                 });
 }
 
+function projectfundsummaryremarkment(){
+  var pid = $("#mainTable").attr("value");
+  Dajaxice.teacher.fundSummaryRemarkment(fundSummaryRemarkment_callback,{
+    'form':$('#project_fundsuammaryremarkment_form').serialize(true),
+    'pid':pid,
+  })
+}
+
+function fundSummaryRemarkment_callback(data){
+  alert(data.message);
+}
+
 function fundSummary_callback(data){
     alert(data.message);
     if (data.flag) {
-
+      location.href = "/teacher/finalinfo";
     };
 }
 
@@ -82,12 +95,25 @@ function projectfundbudget(is_submited){
     Dajaxice.teacher.fundBudget(fundBudget_callback,
                                     {
                                         'form': $('#project_fundbudget_form').serialize(true),
+                                        'remarkmentform':$('#project_fundbudgetremarkment_form').serialize(true),
                                         'pid':pid,
                                         'max_budget':max_budget,
                                         'projectcode':projectcode,
                                         //'finance_account':finance_account,
                                         'is_submited':is_submited
                                 });
+}
+
+function projectfundbudgetremarkment(){
+  var pid = $("#mainTable").attr("value");
+  Dajaxice.teacher.fundBudgetRemarkment(fundBudgetRemarkment_callback,{
+    'form':$('#project_fundbudgetremarkment_form').serialize(true),
+    'pid':pid,
+  })
+}
+
+function fundBudgetRemarkment_callback(data){
+  alert(data.message);
 }
 
 function fundBudget_callback(data){
@@ -97,7 +123,7 @@ function fundBudget_callback(data){
         $("#summary_finance_account").val(data.finance_account);
         alert(data.message);
         var pid = $("#mainTable").attr("value");
-        location.href = "/teacher/file_upload/"+pid;
+        location.href = "/teacher/finalinfo";
     }
     else 
         alert(data.message);

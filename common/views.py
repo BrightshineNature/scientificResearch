@@ -412,9 +412,11 @@ def get_search_data(request,schedule_form):
 def summaryViewWork(request,pid,is_submited,redirect=False):
     projfundsummary = ProjectFundSummary.objects.get( project_id = pid )
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
+    profundsummaryremarkmentform = ProFundSummaryRemarkmentForm(instance=projfundsummary)
     project = ProjectSingle.objects.get( project_id = pid)
     context = {
         'projfundsummary':projfundsummary,
+        'profundsummaryremarkmentform':profundsummaryremarkmentform,
         'profundsummaryform':profundsummaryform,
         'pid':pid,
         'project':project,
@@ -483,7 +485,9 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     print request.method
     if request.method == "POST":
         fundbudget_form = ProFundBudgetForm(request.POST, instance=fundbudget)
-        if fundbudget_form.is_valid():
+        fundbudgetremarkment_form = ProFundBudgetRemarkmentForm(request.POST,instance=fundbudget)
+        if fundbudget_form.is_valid() and fundbudgetremarkment_form.is_valid():
+            fundbudgetremarkment_form.save()
             fundbudget_form.save()
             # redirect = True
             status_confirm(request,project)
@@ -491,12 +495,15 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
         else:
             logger.info("ProFundBudgetForm Valid Failed"+"**"*10)
             logger.info(fundbudget_form.errors)
+            logger.info(fundbudgetremarkment_form.errors)
     else:
         fundbudget_form = ProFundBudgetForm(instance=fundbudget)
+        fundbudgetremarkment_form=ProFundBudgetRemarkmentForm(instance=fundbudget)
 
     context = {
         'redirect':redirect,
         'fundbudget_form':fundbudget_form,
+        'fundbudgetremarkment_form':fundbudgetremarkment_form,
         'pid':pid,
         'is_submited':is_submited,
         'projectbudget':project.project_budget_max,

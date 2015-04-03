@@ -116,11 +116,18 @@ class ProjectDatastaticsForm(forms.Form):
 class ProFundSummaryForm(ModelForm):
 	class Meta:
 		model = ProjectFundSummary
-		exclude = ('content_id','project_id','finance_comment','equcosts_budget','equcosts_expenditure','finance_account','finance_staff','finance_checktime','serial_number',)
+		exclude = ('content_id','project_id','finance_comment','equcosts_budget','equcosts_expenditure','finance_account','finance_staff','finance_checktime','serial_number',"remarkment")
                 widgets = {"finance_account": forms.TextInput(attrs={"class":'form-control', "placeholder": "财务账号", }),
-                           "remarkment":forms.Textarea(attrs={"rows":"40",'cols':'100'}),
+                           #"remarkment":forms.Textarea(attrs={"rows":"40",'cols':'100'}),
                            "finance_staff":forms.TextInput(attrs={"readonly":"readonly"}),
                            "finance_checktime":forms.TextInput(attrs={"readonly":"readonly"}),
+                }
+class ProFundSummaryRemarkmentForm(ModelForm):
+        class Meta:
+                model = ProjectFundSummary
+                fields = ["remarkment"]
+                widgets ={
+                        "remarkment":forms.Textarea(attrs={"rows":"40","cols":"100"}),
                 }
 
 class ProgressForm(ModelForm):
@@ -134,11 +141,19 @@ class ProgressForm(ModelForm):
 class ProFundBudgetForm(ModelForm):
 	class Meta:
 		model = ProjectFundBudget
-		exclude = ('content_id','project_id','finance_comment','equcosts_budget','finance_staff','finance_checktime','serial_number')
+		exclude = ('content_id','project_id','finance_comment','equcosts_budget','finance_staff','finance_checktime','serial_number',"remarkment")
                 widgets ={
-                        "remarkment":forms.Textarea(attrs={"rows":"40","cols":"100"}),
+                        #"remarkment":forms.Textarea(attrs={"rows":"40","cols":"100"}),
                         "finance_staff":forms.TextInput(attrs={"readonly":"readonly"}),
                         "finance_checktime":forms.TextInput(attrs={"readonly":"readonly"}),
+                }
+
+class ProFundBudgetRemarkmentForm(ModelForm):
+        class Meta:
+                model = ProjectFundBudget
+                fields = ["remarkment"]
+                widgets ={
+                        "remarkment":forms.Textarea(attrs={"rows":"40","cols":"100"}),
                 }
 
 class ProjectCreationForm(forms.Form):
