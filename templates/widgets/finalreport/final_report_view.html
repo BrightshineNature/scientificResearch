@@ -4,44 +4,46 @@
     <li id="li_budget" class="active" ><a href="#budget"  data-toggle="tab">经费预算表</a></li>
     <li id="li_auditing"><a href="#progress"  data-toggle="tab">进展报告摘要</a></li>
     <li id="li_auditing"><a href="#auditing" data-toggle="tab">经费决算表</a></li>
-    {% endif %}
-
-    <li id="li_content" {% if not userauth.is_adminstaff and not userauth.is_schooler %}class="active" {% endif %}><a href="#content" data-toggle="tab">结题报告摘要</a></li>
+    <li id="li_content"><a href="#content" data-toggle="tab">结题报告摘要</a></li>
     <li id="li_achivement"><a href="#achivement" data-toggle="tab" >研究成果目录</a></li>
     <li id="li_datastatics"><a href="#datastatics" data-toggle="tab">数据统计表</a></li>
-    {% if userauth.is_adminstaff or userauth.is_schooler %}
     <li id="li_file_upload"><a href="#file_upload" data-toggle="tab">文件上传</a></li>
-    {% endif %}
-    
-    {% if userauth.is_experter %}
-    <li><a href="#file_download_page" data-toggle="tab" >文件下载</a></li>
-    <li {% if error %}class="active" {% endif %}><a href="#score_board" data-toggle="tab">项目评价</a></li>
-    {% endif %}
-    {% if userauth.is_teacher%}
+    {% if userauth.is_adminstaff%}
+       <li><a href="/{{userauth.user}}?page={{page}}&page2={{page2}}">返回上一级</a></li>
+    {% else %}
+    <li><a  href="/{{userauth.user}}/researchconcluding?page={{page}}&page2={{page2}}">返回上一级</a></li>
+    {% endif%}
     {% elif userauth.is_finance%}
+       <li id="li_budget" class="active" ><a href="#budget"  data-toggle="tab">经费预算表</a></li>
+       <li id="li_auditing"><a href="#auditing" data-toggle="tab">经费决算表</a></li>
        {% if usercontext.status == 'budget' %}
        <li><a  href="/finance?page={{page}}&page2={{page2}}">返回上一级</a></li>
        {% else %}
        <li><a href="/finance/concludingProject?page={{page}}&page2={{page2}}">返回上一级</a></li>
        {% endif %}
-    {% elif userauth.is_adminstaff%}
-       <li><a href="/{{userauth.user}}?page={{page}}&page2={{page2}}">返回上一级</a></li>
-    {% elif userauth.is_experter %}
+    {% elif userauth.is_experter%}
+       <li id="li_content" class="active"><a href="#content" data-toggle="tab">结题报告摘要</a></li>
+       <li id="li_achivement"><a href="#achivement" data-toggle="tab" >研究成果目录</a></li>
+       <li id="li_datastatics"><a href="#datastatics" data-toggle="tab">数据统计表</a></li>
+       <li id="li_file_upload"><a href="#file_upload" data-toggle="tab">文件上传</a></li>
+       <li><a href="#file_download_page" data-toggle="tab" >文件下载</a></li>
+       <li {% if error %}class="active" {% endif %}><a href="#score_board" data-toggle="tab">项目评价</a></li>
        <li><a href="/{{userauth.user}}?page={{page}}&page2={{page2}}&is_first_round=0">返回上一级</a></li>
-    {% else %}
-    <li><a  href="/{{userauth.user}}/researchconcluding?page={{page}}&page2={{page2}}">返回上一级</a></li>
-    {% endif%}
-
+    {%else%}
+       <li id="li_content" class="active"><a href="#content" data-toggle="tab">结题报告摘要</a></li>
+       <li id="li_achivement"><a href="#achivement" data-toggle="tab" >研究成果目录</a></li>
+       <li id="li_datastatics"><a href="#datastatics" data-toggle="tab">数据统计表</a></li>
+    {% endif %}
     <li class="pull-right">
       项目编号：{{pro.project_code}} 项目负责人：{{pro.teacher.teacherinfosetting.name}}
     </li>
   </ul>
     <hr>
     <div class="tab-content">
-        <div class="tab-pane fade {% if not userauth.is_adminstaff and not userauth.is_schooler %} active in {% endif %}" id="content">
+        <div class="tab-pane fade {% if not userauth.is_adminstaff and not userauth.is_schooler and not userauth.is_finance %} active in {% endif %}" id="content">
             {% include "widgets/finalreport/finalreport_content.html"%}
         </div>
-        {% if userauth.is_adminstaff or userauth.is_schooler %}
+        {% if userauth.is_adminstaff or userauth.is_schooler or userauth.is_finance %}
         <div class="tab-pane fade" id="progress">
             {% include "widgets/progress_report_view.html"%}
         </div>
@@ -70,9 +72,6 @@
         <div class="tab-pane fade {% if error %} active in {% endif %}" id="score_board">
             {% include "widgets/score_board.html" %}
         </div>
-
-
-
     </div>
 </div>
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/common/content.css" >

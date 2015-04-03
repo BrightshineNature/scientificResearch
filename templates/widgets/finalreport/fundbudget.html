@@ -39,7 +39,7 @@
             <thead>
               <tr>
                 <td><strong>流水号</strong></td>
-                <td colspan="2">{{fundbudget_form.serial_number}}</td>
+                <td colspan="2">{{fundbudget.serial_number}}</td>
               </tr>
               <tr>
                 <td><strong>项目编号</strong></td>
@@ -89,7 +89,7 @@
 
           <p>审核人:{{finance_staff}}</p>
           <p>审核时间:{{finance_checktime}}</p>
-          <button type="button" class="btn btn-primary" 
+          <button type="button" class="btn btn-primary"
 
           id= "budget_detail_print_button"> 打印 </button>
 
@@ -109,21 +109,10 @@
 
             </tr>
           </table>
-
-
-          <p>审核人:{{finance_staff}}</p>
-          <p>审核时间:{{finance_checktime}}</p>
-          <button type="button" class="btn btn-primary" 
-
-
-          id= "budgetremarkment_print_button"> 打印 </button>
-
-
+          <p>审核人:{{fundbudget.finance_staff}}</p>
+          <p>审核时间:{{fundbudget.finance_checktime}}</p>
+          <button type="button" class="btn btn-primary" id= "budgetremarkment_print_button"> 打印 </button>
         </div>
-
-
-
-
       </div>
     </div>
 
@@ -148,7 +137,7 @@
     {% endif %}
   </form>
 
-  
+
 
 </div>
 

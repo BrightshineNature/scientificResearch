@@ -357,7 +357,6 @@ def get_project_list(request):
     else:
         pro_list = ProjectSingle.objects.all()
     return pro_list
-    
 def get_search_data(request,schedule_form):
     if schedule_form.is_valid():
         application_status=schedule_form.cleaned_data['application_status']
@@ -438,12 +437,10 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     profundbudgetform = ProFundBudgetForm( instance =projfundbudget ) 
     reports = ProgressReport.objects.filter(project_id = pid).order_by("-year")
     progress_form = ProgressForm()
-
-
-    if projfundsummary.finance_staff:finance_staff=projfundsummary.finance_staff
-    else:finance_staff="未填写"
-    if projfundsummary.finance_checktime:finance_checktime=projfundsummary.finance_checktime
-    else:finance_checktime="未填写"
+    if projfundsummary.finance_staff:
+        projfundsummary.finance_staff = "未填写" 
+    if projfundsummary.finance_checktime:
+        projfundsummary.finance_checktime="未填写"
 
     final_form = FinalReportForm(instance=final)
 
@@ -473,18 +470,16 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
         'pro':project,
         'page':page,
         'page2':page2,
-        'finance_staff':finance_staff,
-        'finance_checktime':finance_checktime,
     }
     return context
 
 def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     fundbudget = ProjectFundBudget.objects.get(project_id = pid)
     project = ProjectSingle.objects.get(project_id = pid)
-    if fundbudget.finance_staff:finance_staff=fundbudget.finance_staff
-    else:finance_staff="未填写"
-    if fundbudget.finance_checktime:finance_checktime=fundbudget.finance_checktime
-    else:finance_checktime="未填写"
+    # if fundbudget.finance_staff:finance_staff=fundbudget.finance_staff
+    # else:finance_staff="未填写"
+    # if fundbudget.finance_checktime:finance_checktime=fundbudget.finance_checktime
+    # else:finance_checktime="未填写"
     print request.method
     if request.method == "POST":
         fundbudget_form = ProFundBudgetForm(request.POST, instance=fundbudget)
@@ -506,8 +501,7 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
         'is_submited':is_submited,
         'projectbudget':project.project_budget_max,
         'project':project,
-        'finance_staff':finance_staff,
-        'finance_checktime':finance_checktime
+        'fundbudget':fundbudget,
     }
     return context
 
