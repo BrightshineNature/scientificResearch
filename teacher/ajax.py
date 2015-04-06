@@ -146,18 +146,19 @@ def staticsChange(request,statics_type):
     return simplejson.dumps(ret)
 
 @dajaxice_register
-def fundSummary(request, form, pid,finance_account,is_submited):
+def fundSummary(request, form,remarkmentform,pid,finance_account,is_submited):
     profundsummary = ProjectFundSummary.objects.get(project_id = pid) 
     profundsummaryform = ProFundSummaryForm(deserialize_form(form),instance = profundsummary)
+    profundsummaryremarkmentform=ProFundSummaryRemarkmentForm(deserialize_form(remarkmentform),instance = profundsummary )
     project = ProjectSingle.objects.get(project_id = pid)
     flag = False
     if profundsummaryform.is_valid() and finance_account:
-        print "hello"
+        print "hell1o"
         total_budget = float(profundsummaryform.cleaned_data["total_budget"])
         total_expenditure =  float(profundsummaryform.cleaned_data["total_expenditure"])
         if total_budget < 0 or total_expenditure < 0:
             message = u"数据未填写完整或数据格式不对，保存失败"
-        else:  
+        else:
             laborcosts_budget = float(profundsummaryform.cleaned_data["laborcosts_budget"])
             if laborcosts_budget <= total_budget * 0.3:
                 if total_budget <= project.project_budget_max:
@@ -165,10 +166,16 @@ def fundSummary(request, form, pid,finance_account,is_submited):
                     #copyFundsummaryToBudget(pid)
                     project.finance_account=finance_account
                     project.save()
-                    message = u"保存成功"
                     if is_submited:
-                        flag = True
-                        status_confirm(request,project)
+                        if profundsummaryremarkmentform.is_valid():
+                            profundsummaryremarkmentform.save()
+                            message=u"保存成功"
+                            flag = True
+                            status_confirm(request,project)
+                        else:
+                            message=u"决算说明为必填项"
+                    else:
+                        message=u"保存成功"
                 else:
                     message = u"经费决算表总结额应低于项目最大预算金额,请仔细核实"
             else:
@@ -178,13 +185,27 @@ def fundSummary(request, form, pid,finance_account,is_submited):
         message = u"数据未填写完整或数据格式不对，保存失败"
 
     # table = refresh_fundsummary_table(request,profundsummaryform,pid)
+    print message
     ret = {'message':message,'flag':flag}
     return simplejson.dumps(ret)
 
 @dajaxice_register
-def fundBudget(request, form, pid,max_budget,projectcode,is_submited = False):
+def fundSummaryRemarkment(request,form,pid):
+    profundsummary = ProjectFundSummary.objects.get(project_id = pid)
+    profundsummaryremarkmentform = ProFundSummaryRemarkmentForm(deserialize_form(form),instance = profundsummary)
+    if profundsummaryremarkmentform.is_valid():
+        profundsummaryremarkmentform.save()
+        message=u"保存成功"
+    else:
+        message=u"决算说明为必填项"
+    ret ={'message':message}
+    return simplejson.dumps(ret)
+
+@dajaxice_register
+def fundBudget(request, form, remarkmentform,pid,max_budget,projectcode,is_submited = False):
     profundbudget = ProjectFundBudget.objects.get(project_id = pid)
     profundbudgetform = ProFundBudgetForm(deserialize_form(form),instance = profundbudget)
+    profundbudgetremarkmentform = ProFundBudgetRemarkmentForm(deserialize_form(remarkmentform),instance = profundbudget)
     project = ProjectSingle.objects.get(project_id = pid )
     flag = False
     identity = request.session.get('auth_role', "")
@@ -215,10 +236,16 @@ def fundBudget(request, form, pid,max_budget,projectcode,is_submited = False):
                 if total_budget <= project.project_budget_max:
                     profundbudgetform.save()
                     copyBudgetToFundsummary(pid)
-                    message = u"保存成功"
                     if is_submited:
-                        flag = True
-                        status_confirm(request,project)
+                        if profundbudgetremarkmentform.is_valid():
+                            profundbudgetremarkmentform.save()
+                            flag = True
+                            message=u"保存成功"
+                            status_confirm(request,project)
+                        else:
+                            message="预算说明为必填项"
+                    else:
+                        message=u"保存成功"
                 else:
                     message = u"经费预算表总结额应低于项目最大预算金额,请仔细核实"
             else:
@@ -228,6 +255,20 @@ def fundBudget(request, form, pid,max_budget,projectcode,is_submited = False):
         message = u"数据未填写完整或数据格式不对，保存失败"
     # table = refresh_fundsummary_table(request,profundsummaryform,pid)
     ret = {'message':message,'flag':flag,'project_code':project.project_code,'project_budget_max':project.project_budget_max,}
+    return simplejson.dumps(ret)
+
+@dajaxice_register
+def fundBudgetRemarkment(request,form,pid):
+    profundbudget = ProjectFundBudget.objects.get(project_id = pid)
+    profundbudgetremarkmentform = ProFundBudgetRemarkmentForm(deserialize_form(form),instance = profundbudget)
+    identity = request.session.get('auth_role', "")
+    accessList = [ADMINSTAFF_USER,SCHOOL_USER,FINANCE_USER]
+    if profundbudgetremarkmentform.is_valid():
+        profundbudgetremarkmentform.save()
+        message=u"保存成功"
+    else:
+        message=u"预算说明为必填项"
+    ret = {'message':message}
     return simplejson.dumps(ret)
 
 def check_input(inputStr):

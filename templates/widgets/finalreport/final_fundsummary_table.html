@@ -15,14 +15,15 @@
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="fundsummary">
+      <div role="tabpanel" class="tab-pane active" id="fundsummary">
+        <form class="form" id="project_fundsuammary_form" method="POST" action="">
+      {% csrf_token %}
       <table id="mainTable" name="fundsummarytable" class="table table-striped" value={{pid}}>
         <thead>
           <tr>
             <td><strong>流水号</strong></td>
-            <td>{{projfundsummary.serial_number}}</td>
+            <td colspan="3">{{projfundsummary.serial_number}}</td>
           </tr>
-          
           <tr>
             <td><strong>项目编号：</strong></td>
             <td><input type="text" readonly="readonly" id = "summary_project_code" value="{{project.project_code}}"></input></td>
@@ -65,12 +66,18 @@
 
       <p>审核人:{{finance_staff}}</p>
       <p>审核时间:{{finance_checktime}}</p>
+      {% if is_submited %}
+      <button type="button" class="btn btn-primary" onclick="projectfundsummary(false)">保存</button>
+      {% endif %}
       <button type="button" class="btn btn-primary" id= "fundsummary_print_button"> 打印 </button>
+      </form>
     </div>
 
     <div role="tabpanel" class="tab-pane" id="fundsummary_remarkment">
-      <p><strong>对各支出主要用途，测算方法，测算依据进行详细分析说明,如依据前页所填设备费、材料费等逐项填写</strong></p>
-      {{profundsummaryform.remarkment}}
+      <form class="form" id="project_fundsuammaryremarkment_form" method="POST" action="">
+        {% csrf_token %}
+      <p><strong>详细填写各项目支出的主要用途，若支出与预算不一致，请详细说明原因(1500以内)</strong></p>
+      {{profundsummaryremarkmentform.remarkment}}
       <table 
          style="width:821px;position:relative;top:-5px;border:1px solid;border-color:rgb(169, 169, 169);margin-top:0px;">
         <tr style="height:100px;">
@@ -89,7 +96,14 @@
       </table>
       <p>审核人:{{projfundsummary.finance_staff}}</p>
       <p>审核时间:{{projfundsummary.finance_checktime}}</p>
+      {% if is_submited %}
+      <button type="button" class="btn btn-primary" onclick="projectfundsummaryremarkment()">保存</button>
+      {% if not userauth.is_adminstaff and not userauth.is_schooler %}
+      <a class="btn btn-primary" data-toggle="tab" id="fundsummary_next" onclick="projectfundsummary(true)">提交</a>
+      {% endif %}
+      {% endif %}
       <button type="button" class="btn btn-primary" id= "fundsummary_remarkment_print_button"> 打印 </button>
+      </form>
     </div>
   </div>
 </div>

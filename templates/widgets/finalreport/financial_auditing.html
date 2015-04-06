@@ -19,18 +19,7 @@
 
 
 <div class="hero-unit">
-  <form class="form" id="project_fundsuammary_form" method="POST" action="">
     {% include "widgets/finalreport/final_fundsummary_table.html"  %}
-
-
-
-    {% if is_submited %}
-    <button type="button" class="btn btn-primary" onclick="projectfundsummary(false)">保存经费决算表</button>
-    {% if not userauth.is_adminstaff and not userauth.is_schooler %}
-    <a class="btn btn-primary" data-toggle="tab" id="fundsummary_next" onclick="projectfundsummary(true)">提交</a>
-    {% endif %}
-    {% endif %}
-  </form>
 </div>
 
 
