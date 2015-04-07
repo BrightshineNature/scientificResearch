@@ -436,7 +436,9 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     projachivementform  = ProjectAchivementForm()
     projdatastaticsform = ProjectDatastaticsForm()
     profundsummaryform = ProFundSummaryForm(instance=projfundsummary)
-    profundbudgetform = ProFundBudgetForm( instance =projfundbudget ) 
+    profundsummaryremarkmentform = ProFundSummaryRemarkmentForm(instance=projfundsummary)
+    profundbudgetform = ProFundBudgetForm( instance =projfundbudget )
+    profundbudgetremarkmentform = ProFundBudgetRemarkmentForm(instance = projfundbudget)
     reports = ProgressReport.objects.filter(project_id = pid).order_by("-year")
     progress_form = ProgressForm()
     if projfundsummary.finance_staff:
@@ -464,6 +466,8 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
         'projfundsummary':projfundsummary,
         'profundsummaryform':profundsummaryform,
         'fundbudget_form':profundbudgetform,
+        'fundbudgetremarkment_form':profundbudgetremarkmentform,
+        'profundsummaryremarkmentform':profundsummaryremarkmentform,
         'is_submited':is_submited,
         'projectbudget':project.project_budget_max,
         'project':project,
