@@ -93,7 +93,7 @@ class check_submit_status(object):
         loginfo(pro.project_status.status)
         is_submited[SUBMIT_STATUS_TASK] = pro.project_special.task_status and (pro.project_status.status == PROJECT_STATUS_TASK_FINANCE_OVER or pro.project_status.status == PROJECT_STATUS_APPROVAL)
         is_submited[SUBMIT_STATUS_PROGRESS] = pro.project_special.progress_status and (pro.project_status.status < PROJECT_STATUS_PROGRESS_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_TASK_SCHOOL_OVER)
-        is_submited[SUBMIT_STATUS_FINAL] = pro.project_special.final_status and ((pro.project_status.status < PROJECT_STATUS_FINAL_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_FINAL_FINANCE_OVER) or (pro.project_status.status == PROJECT_STATUS_PROGRESS_COMMIT_OVER))
+        is_submited[SUBMIT_STATUS_FINAL] = pro.project_special.final_status and ((pro.project_status.status < PROJECT_STATUS_FINAL_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_FINAL_FINANCE_OVER) or (pro.project_status.status == PROJECT_STATUS_PROGRESS_SCHOOL_OVER))
         is_submited[SUBMIT_STATUS_REVIEW] = True
         return is_submited
     def __call__(self, method):
