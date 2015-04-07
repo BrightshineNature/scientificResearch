@@ -90,10 +90,11 @@ class check_submit_status(object):
     def get_submit_status(self,pro):
         is_submited={}
         is_submited[SUBMIT_STATUS_APPLICATION] = pro.project_special.application_status and (pro.project_status.status < PROJECT_STATUS_APPLICATION_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_APPLY)
-        loginfo(pro.project_status.status)
-        is_submited[SUBMIT_STATUS_TASK] = pro.project_special.task_status and (pro.project_status.status == PROJECT_STATUS_TASK_FINANCE_OVER or pro.project_status.status == PROJECT_STATUS_APPROVAL)
+        is_submited[SUBMIT_STATUS_BUDGET] = pro.project_special.task_status and pro.project_status.status == PROJECT_STATUS_APPROVAL
+        is_submited[SUBMIT_STATUS_TASK] = pro.project_special.task_status and pro.project_status.status == PROJECT_STATUS_TASK_FINANCE_OVER
         is_submited[SUBMIT_STATUS_PROGRESS] = pro.project_special.progress_status and (pro.project_status.status < PROJECT_STATUS_PROGRESS_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_TASK_SCHOOL_OVER)
-        is_submited[SUBMIT_STATUS_FINAL] = pro.project_special.final_status and ((pro.project_status.status < PROJECT_STATUS_FINAL_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_FINAL_FINANCE_OVER) or (pro.project_status.status == PROJECT_STATUS_PROGRESS_SCHOOL_OVER))
+        is_submited[SUBMIT_STATUS_AUDITE] = pro.project_special.final_status and pro.project_status.status == PROJECT_STATUS_PROGRESS_SCHOOL_OVER
+        is_submited[SUBMIT_STATUS_FINAL] = pro.project_special.final_status and (pro.project_status.status < PROJECT_STATUS_FINAL_COMMIT_OVER and pro.project_status.status >= PROJECT_STATUS_FINAL_FINANCE_OVER)
         is_submited[SUBMIT_STATUS_REVIEW] = True
         return is_submited
     def __call__(self, method):
@@ -107,6 +108,8 @@ class check_submit_status(object):
                      SUBMIT_STATUS_PROGRESS:True,
                      SUBMIT_STATUS_FINAL:True,
                      SUBMIT_STATUS_REVIEW:True,
+                     SUBMIT_STATUS_BUDGET:True,
+                     SUBMIT_STATUS_AUDITE:True,
                     }
             elif identity == FINANCE_USER and check_auth(user=request.user, authority=FINANCE_USER):
                 is_submited={SUBMIT_STATUS_APPLICATION:True,
@@ -114,6 +117,8 @@ class check_submit_status(object):
                      SUBMIT_STATUS_PROGRESS:True,
                      SUBMIT_STATUS_FINAL:True,
                      SUBMIT_STATUS_REVIEW:True,
+                     SUBMIT_STATUS_BUDGET:True,
+                     SUBMIT_STATUS_AUDITE:True,
                     }
             elif identity == SCHOOL_USER and check_auth(user=request.user, authority=SCHOOL_USER):
                 is_submited={SUBMIT_STATUS_APPLICATION:True,
@@ -121,6 +126,8 @@ class check_submit_status(object):
                      SUBMIT_STATUS_PROGRESS:True,
                      SUBMIT_STATUS_FINAL:True,
                      SUBMIT_STATUS_REVIEW:True,
+                     SUBMIT_STATUS_BUDGET:False,
+                     SUBMIT_STATUS_AUDITE:False,
                     }
             elif identity == COLLEGE_USER and check_auth(user=request.user, authority=COLLEGE_USER):
                 is_submited={SUBMIT_STATUS_APPLICATION:True,
@@ -128,6 +135,8 @@ class check_submit_status(object):
                      SUBMIT_STATUS_PROGRESS:True,
                      SUBMIT_STATUS_FINAL:True,
                      SUBMIT_STATUS_REVIEW:True,
+                     SUBMIT_STATUS_BUDGET:False,
+                     SUBMIT_STATUS_AUDITE:False,
                     }
             elif identity == EXPERT_USER and check_auth(user=request.user, authority=EXPERT_USER):
                 is_submited={SUBMIT_STATUS_APPLICATION:True,
@@ -135,6 +144,8 @@ class check_submit_status(object):
                      SUBMIT_STATUS_PROGRESS:True,
                      SUBMIT_STATUS_FINAL:True,
                      SUBMIT_STATUS_REVIEW:True,
+                     SUBMIT_STATUS_BUDGET:False,
+                     SUBMIT_STATUS_AUDITE:False,
                     }
             elif identity == TEACHER_USER and check_auth(user=request.user, authority=TEACHER_USER):
                 pro = ProjectSingle.objects.get(project_id = kwargs["pid"])

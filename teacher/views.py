@@ -149,7 +149,7 @@ def finalReportView(request,pid,is_submited):
 @authority_required(TEACHER_USER)
 @check_submit_status()
 def summaryView(request,pid,is_submited):
-    context = summaryViewWork(request,pid,is_submited[SUBMIT_STATUS_FINAL])
+    context = summaryViewWork(request,pid,is_submited[SUBMIT_STATUS_AUDITE])
     return render(request,"teacher/fundsummary.html",context)
 
 
@@ -210,7 +210,7 @@ def financialView(request):
 @authority_required(TEACHER_USER)
 @check_submit_status()
 def fundBudgetView(request,pid,is_submited):
-    context = fundBudgetViewWork(request,pid,is_submited[SUBMIT_STATUS_TASK])
+    context = fundBudgetViewWork(request,pid,is_submited[SUBMIT_STATUS_BUDGET])
     if context['redirect']:
 	return HttpResponseRedirect('/teacher/finalinfo')
     context['role'] = 'teacher'
