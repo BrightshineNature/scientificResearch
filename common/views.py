@@ -441,9 +441,13 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
     profundbudgetremarkmentform = ProFundBudgetRemarkmentForm(instance = projfundbudget)
     reports = ProgressReport.objects.filter(project_id = pid).order_by("-year")
     progress_form = ProgressForm()
-    if projfundsummary.finance_staff:
-        projfundsummary.finance_staff = "未填写" 
-    if projfundsummary.finance_checktime:
+    if not projfundbudget.finance_staff:
+        projfundbudget.finance_staff = u"未填写"
+    if not projfundbudget.finance_checktime:
+        projfundbudget.finance_checktime = u"未填写"
+    if not projfundsummary.finance_staff:
+        projfundsummary.finance_staff = u"未填写" 
+    if not projfundsummary.finance_checktime:
         projfundsummary.finance_checktime="未填写"
 
     final_form = FinalReportForm(instance=final)
@@ -476,6 +480,7 @@ def finalReportViewWork(request,pid,is_submited,redirect=False):
         'pro':project,
         'page':page,
         'page2':page2,
+        'fundbudget':projfundbudget,
     }
     return context
 

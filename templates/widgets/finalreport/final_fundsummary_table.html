@@ -64,8 +64,8 @@
 	<tfoot><tr><td><strong>合计</strong></td><td>{{profundsummaryform.total_budget}}</td><td>{{profundsummaryform.total_expenditure}}</td><td>{{profundsummaryform.total_remark}}</td></tr></tfoot>
       </table>
 
-      <p>审核人:{{finance_staff}}</p>
-      <p>审核时间:{{finance_checktime}}</p>
+      <p>审核人:{{projfundsummary.finance_staff}}</p>
+      <p>审核时间:{{projfundsummary.finance_checktime}}</p>
       {% if is_submited %}
       <button type="button" class="btn btn-primary" onclick="projectfundsummary(false)">保存</button>
       {% endif %}
