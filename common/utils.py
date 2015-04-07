@@ -155,6 +155,11 @@ def create_QE(status):
 def create_Q(start,end):
     return Q(project_status__status__gte=start,project_status__status__lte=end)
 
+def get_next_status_val(status_dict,status):
+    for key,value in status_dict.items():
+        if value[NEXT_STATUS] == status:
+            return key
+    
 def get_qset(userauth):
     if userauth['role']=="school":
         if userauth['status']=="application":
