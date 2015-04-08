@@ -323,7 +323,7 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
 
         choices_application=form.getlist('application')
         choices_final=form.getlist('final')
-        if identity == FINANCE_USER or len(choices_application)==2 or len(choices_final)==2:
+        if identity == FINANCE_USER or len(choices_application)!=1 or len(choices_final)!=1 :
             statusRollBack(request,project,3)
             print "11"
         elif u"网上申请不合格" in choices_application or u"网上提交不合格" in choices_final:

@@ -201,6 +201,8 @@ def statusRollBack(request,project,error_id):
         project_status_dict =  PROGRESS_NOT_REVIEW_DICT
     next_status = project_status_dict[project.project_status.status][NEXT_STATUS]
     next_status = project_status_dict[next_status][ROLLBACK_STATUS]
+    loginfo("xxxxxxxxx")
+    loginfo(error_id)
     if next_status != None:
         if error_id & 1:
             file_type = PROGRESS_FILE_DICT.get(next_status,None) if PROGRESS_FILE_DICT.get(next_status,None) !=None else PROGRESS_FILE_DICT.get(project_status_dict[next_status][NEXT_STATUS],None)
