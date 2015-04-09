@@ -340,7 +340,7 @@ def get_project_list(request):
         specials = getSpecial(request)
         try:
             qset = reduce(lambda x,y:x|y,[Q(project_special = _special) for _special in specials])
-            pro_list = ProjectSingle.objects.filter(qset)
+            pro_list = ProjectSingle.objects.filter(qset).order_by("project_code")
         except:
             pro_list = ProjectSingle.objects.none()
     elif identity == COLLEGE_USER:
