@@ -153,7 +153,6 @@ def fundSummary(request, form,remarkmentform,pid,finance_account,is_submited):
     project = ProjectSingle.objects.get(project_id = pid)
     flag = False
     if profundsummaryform.is_valid() and finance_account:
-        print "hell1o"
         total_budget = float(profundsummaryform.cleaned_data["total_budget"])
         total_expenditure =  float(profundsummaryform.cleaned_data["total_expenditure"])
         if total_budget < 0 or total_expenditure < 0:
@@ -209,7 +208,6 @@ def fundBudget(request, form, remarkmentform,pid,max_budget,projectcode,is_submi
     flag = False
     identity = request.session.get('auth_role', "")
     accessList = [ADMINSTAFF_USER,SCHOOL_USER,FINANCE_USER]
-    print is_submited
     if not check_input(max_budget) or not check_input(projectcode):
         message = ""
         if not check_input(max_budget):
@@ -349,7 +347,6 @@ def saveProgress(request, pid, report_content):
 def refreshProgressHistory(request, pid):
     reports = ProgressReport.objects.filter(project_id = pid).order_by("-year")
     is_teacher = (request.session.get('auth_role') == TEACHER_USER) 
-    print is_teacher
     return render_to_string("widgets/progress_history_table.html", {"reports": reports, "is_teacher": is_teacher, })
 
 @dajaxice_register

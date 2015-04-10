@@ -164,8 +164,6 @@ AcceptedExtension = [
     'doc', 'docx', 'DOC', 'DOCX',
 ]
 def handleFileUpload(request, pid,  entrance):
-    print "HA&" * 10
-    print entrance
     f = request.FILES[entrance]
     ftype = getType(f.name)
     ftype = FileList[entrance]
@@ -188,7 +186,6 @@ def handleFileUpload(request, pid,  entrance):
             path = i.file_obj.path
             i.delete()
             default_storage.delete(path)
-    # print "enter ********* save"
     project = ProjectSingle.objects.get(project_id = pid)
     obj = UploadFile()
     obj.name = f.name
@@ -223,7 +220,6 @@ def handleFileUpload(request, pid,  entrance):
     return 1
 
 def fileUploadManage(request, pid, is_submited):
-    print "fileUploadManage**********"
     error = 0
     is_upload_file = 0
     if request.method == 'POST':
@@ -259,9 +255,6 @@ def fileUploadManage(request, pid, is_submited):
         'is_can_submited':is_submited, 
 
     }
-
-    print '*#$' * 10
-    print is_submited
     return context
 
 def scheduleManage(request, userauth):
@@ -491,7 +484,6 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     # else:finance_staff="未填写"
     # if fundbudget.finance_checktime:finance_checktime=fundbudget.finance_checktime
     # else:finance_checktime="未填写"
-    print request.method
     if request.method == "POST":
         fundbudget_form = ProFundBudgetForm(request.POST, instance=fundbudget)
         fundbudgetremarkment_form = ProFundBudgetRemarkmentForm(request.POST,instance=fundbudget)
