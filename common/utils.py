@@ -133,7 +133,7 @@ def get_query_status(status):
         return (PROJECT_STATUS_APPROVAL,status)
     elif status==PROJECT_STATUS_PROGRESS_SCHOOL_OVER:
         return (PROJECT_STATUS_TASK_SCHOOL_OVER,status)
-    elif status==PROJECT_STATUS_FINAL_REVIEW_OVER:
+    elif status==PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
         return (PROJECT_STATUS_PROGRESS_SCHOOL_OVER,status)
     else:
         return (status,status)
