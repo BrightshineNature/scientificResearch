@@ -185,7 +185,6 @@ def fundSummary(request, form,remarkmentform,pid,finance_account,is_submited):
         message = u"数据未填写完整或数据格式不对，保存失败"
 
     # table = refresh_fundsummary_table(request,profundsummaryform,pid)
-    print message
     ret = {'message':message,'flag':flag}
     return simplejson.dumps(ret)
 
