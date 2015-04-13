@@ -287,7 +287,6 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
                 finance_budget.serial_number=str(string.atoi(lastest[len(lastest)-1].serial_number)+1)
             else:
                 finance_budget.serial_number=currentYear+"0000"
-            print "qqqqqqqqqqqqqqqqqqqqqqqqqq"+finance_budget.serial_number+"qqqqqqqqqqqqqqqqqqqqqqqqqqq"
             finance_budget.save()
         if userstatus=="final" and identity == FINANCE_USER:
             finance_summary=ProjectFundSummary.objects.get(project_id=project)

@@ -86,6 +86,11 @@ def getParam(pro_list, userauth,flag,page,page2):
         pass_apply_project_group=pro_list.filter(default_q)
     else:
         pass_apply_project_group=pro_list.filter(search_q)
+    if userauth['role']==FINANCE_USER:
+        if userauth['status']=="budget":
+            pass
+        else:
+            pass
     pass_apply_project_group=addURL(pass_apply_project_group)
     not_pass_apply_project_group=addURL(not_pass_apply_project_group)
     param={}

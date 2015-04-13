@@ -184,13 +184,14 @@ def get_qset(userauth):
         default=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_STOP)
         search=create_Q(PROJECT_STATUS_APPLY,PROJECT_STATUS_STOP)
     else:
+        currentYear=time.strftime("%Y")
         if userauth['status']=="budget":
             pending=create_QE(PROJECT_STATUS_TASK_BUDGET_OVER)
-            default=create_QE(PROJECT_STATUS_TASK_FINANCE_OVER)
+            default=Q(projectfundbudget__serial_number__startswith=currentYear)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
         else:
             pending=create_QE(PROJECT_STATUS_FINAL_AUDITE_OVER)
-            default=create_QE(PROJECT_STATUS_FINAL_FINANCE_OVER)
+            default=Q(projectfundsummary__serial_number__startswith=currentYear)
             search=create_Q(PROJECT_STATUS_APPROVAL,PROJECT_STATUS_OVER)
     return (pending,default,search)
 
@@ -201,8 +202,6 @@ def statusRollBack(request,project,error_id):
         project_status_dict =  PROGRESS_NOT_REVIEW_DICT
     next_status = project_status_dict[project.project_status.status][NEXT_STATUS]
     next_status = project_status_dict[next_status][ROLLBACK_STATUS]
-    loginfo("xxxxxxxxx")
-    loginfo(error_id)
     if next_status != None:
         if error_id & 1:
             file_type = PROGRESS_FILE_DICT.get(next_status,None) if PROGRESS_FILE_DICT.get(next_status,None) !=None else PROGRESS_FILE_DICT.get(project_status_dict[next_status][NEXT_STATUS],None)
