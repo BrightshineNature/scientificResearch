@@ -68,7 +68,16 @@ def xls_info_fundbudget_gen():
     worksheet.write_merge(1, 1, 5, 5, '专题类型')
     worksheet.write_merge(1, 1, 6, 6, '项目状态')
     worksheet.write_merge(1, 1, 7, 7, '支出总和')
-
+    worksheet.write(1,8,"设备费预算")
+    worksheet.write(1,9,"材料费预算")
+    worksheet.write(1,10,"测试化验加工预算费预算")
+    worksheet.write(1,11,"燃料动力费预算")
+    worksheet.write(1,12,"差旅费预算")
+    worksheet.write(1,13,"会议费预算")
+    worksheet.write(1,14,"国际合作与交流费预算")
+    worksheet.write(1,15,"出版费预算")
+    worksheet.write(1,16,"劳务费预算")
+    worksheet.write(1,17,"专家咨询费预算")
     return worksheet, workbook
 
 def xls_info_fundbudget(request,proj_set):
@@ -78,18 +87,29 @@ def xls_info_fundbudget(request,proj_set):
     xls_obj, workbook = xls_info_fundbudget_gen()
 
     _number= 1
+    
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         row = 1 + _number
         xls_obj.write(row, 0, unicode(proj_obj.project_code)) 
-        xls_obj.write(row, 1, unicode(proj_obj.title)) 
-        xls_obj.write(row, 2, unicode(manager.name)) 
-        xls_obj.write(row, 3, unicode(proj_obj.teacher.college)) 
+        xls_obj.write(row, 1, unicode(proj_obj.title))
+        xls_obj.write(row, 2, unicode(manager.name))
+        xls_obj.write(row, 3, unicode(proj_obj.teacher.college))
         xls_obj.write(row, 4, unicode(proj_obj.approval_year))
-        xls_obj.write(row, 5, unicode(proj_obj.project_special))  
-        xls_obj.write(row, 6, unicode(proj_obj.project_status)) 
+        xls_obj.write(row, 5, unicode(proj_obj.project_special))
+        xls_obj.write(row, 6, unicode(proj_obj.project_status))
         xls_obj.write(row, 7, unicode(proj_obj.projectfundbudget.total_budget))
+        xls_obj.write(row,8,unicode(int(proj_obj.projectfundbudget.equacquisition_budget)+int(proj_obj.projectfundbudget.equtrial_budget)+int(proj_obj.projectfundbudget.equrent_budget)))
+        xls_obj.write(row,9,unicode(proj_obj.projectfundbudget.material_budget))
+        xls_obj.write(row,10,unicode(proj_obj.projectfundbudget.testcosts_budget))
+        xls_obj.write(row,11,unicode(proj_obj.projectfundbudget.fuelpower_budget))
+        xls_obj.write(row,12,unicode(proj_obj.projectfundbudget.travel_budget))
+        xls_obj.write(row,13,unicode(proj_obj.projectfundbudget.conference_budget))
+        xls_obj.write(row,14,unicode(proj_obj.projectfundbudget.cooperation_budget))
+        xls_obj.write(row,15,unicode(proj_obj.projectfundbudget.publish_budget))
+        xls_obj.write(row,16,unicode(proj_obj.projectfundbudget.laborcosts_budget))
+        xls_obj.write(row,17,unicode(proj_obj.projectfundbudget.expertadvice_budget))
 
         _number+= 1
     # write xls file
@@ -118,6 +138,16 @@ def xls_info_fundsummay_gen():
     worksheet.write_merge(1, 1, 7, 7, '预算金额')
     worksheet.write_merge(1, 1, 8, 8, '决算金额')
     worksheet.write_merge(1, 1, 9, 9, '结余金额')
+    worksheet.write(1,10,"设备费支出")
+    worksheet.write(1,11,"材料费支出")
+    worksheet.write(1,12,"测试化验加工预算费支出")
+    worksheet.write(1,13,"燃料动力费支出")
+    worksheet.write(1,14,"差旅费支出")
+    worksheet.write(1,15,"会议费支出")
+    worksheet.write(1,16,"国际合作与交流费支出")
+    worksheet.write(1,17,"出版费支出")
+    worksheet.write(1,18,"劳务费支出")
+    worksheet.write(1,19,"专家咨询费支出")
 
     return worksheet, workbook
 
@@ -133,16 +163,26 @@ def xls_info_fundsummay(request,proj_set):
         manager = teacher.teacherinfosetting
         loginfo(p=manager,label="manager")
         row = 1 + _number
-        xls_obj.write(row, 0, unicode(proj_obj.project_code)) 
-        xls_obj.write(row, 1, unicode(proj_obj.title)) 
-        xls_obj.write(row, 2, unicode(manager.name)) 
-        xls_obj.write(row, 3, unicode(proj_obj.teacher.college)) 
+        xls_obj.write(row, 0, unicode(proj_obj.project_code))
+        xls_obj.write(row, 1, unicode(proj_obj.title))
+        xls_obj.write(row, 2, unicode(manager.name))
+        xls_obj.write(row, 3, unicode(proj_obj.teacher.college))
         xls_obj.write(row, 4, unicode(proj_obj.approval_year))
-        xls_obj.write(row, 5, unicode(proj_obj.project_special))  
-        xls_obj.write(row, 6, unicode(proj_obj.project_status)) 
+        xls_obj.write(row, 5, unicode(proj_obj.project_special))
+        xls_obj.write(row, 6, unicode(proj_obj.project_status))
         xls_obj.write(row, 7, unicode(proj_obj.projectfundsummary.total_budget))
         xls_obj.write(row, 8, unicode(proj_obj.projectfundsummary.total_expenditure))
         xls_obj.write(row, 9, unicode(int(proj_obj.projectfundsummary.total_budget)-int(proj_obj.projectfundsummary.total_expenditure)))
+        xls_obj.write(row, 10, unicode(int(proj_obj.projectfundsummary.equacquisition_expenditure)+int(proj_obj.projectfundsummary.equtrial_expenditure)+int(proj_obj.projectfundsummary.equrent_expenditure)))
+        xls_obj.write(row,11,unicode(proj_obj.projectfundsummary.material_expenditure))
+        xls_obj.write(row,12,unicode(proj_obj.projectfundsummary.testcosts_expenditure))
+        xls_obj.write(row,13,unicode(proj_obj.projectfundsummary.fuelpower_expenditure))
+        xls_obj.write(row,14,unicode(proj_obj.projectfundsummary.travel_expenditure))
+        xls_obj.write(row,15,unicode(proj_obj.projectfundsummary. conference_expenditure))
+        xls_obj.write(row,16,unicode(proj_obj.projectfundsummary.cooperation_expenditure))
+        xls_obj.write(row,17,unicode(proj_obj.projectfundsummary.publish_expenditure))
+        xls_obj.write(row,18,unicode(proj_obj.projectfundsummary.laborcosts_expenditure))
+        xls_obj.write(row,19,unicode(proj_obj.projectfundsummary.expertadvice_expenditure))
         _number+= 1
     # write xls file
     save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学项目决金额总和表"))
