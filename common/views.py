@@ -88,9 +88,9 @@ def getParam(pro_list, userauth,flag,page,page2):
         pass_apply_project_group=pro_list.filter(search_q)
     if userauth['role']==FINANCE_USER:
         if userauth['status']=="budget":
-            pass
+            pass_apply_project_group = pass_apply_project_group.order_by('projectfundbudget__serial_number')
         else:
-            pass
+            pass_apply_project_group = pass_apply_project_group.order_by('projectfundsummary__serial_number')
     pass_apply_project_group=addURL(pass_apply_project_group)
     not_pass_apply_project_group=addURL(not_pass_apply_project_group)
     param={}
@@ -126,7 +126,6 @@ def appManage(request, pid, is_submited):
     project_info_data = { 
         'project_name': p.title,
         'science_type': p.science_type.category if p.science_type else '-1',
-
         'trade_code': p.trade_code.category if p.trade_code else '-1',
         'subject': p.subject.category if p.subject else '-1',
         'start_time': p.start_time,
