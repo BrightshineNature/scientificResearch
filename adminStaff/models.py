@@ -76,7 +76,11 @@ class ProjectSingle(models.Model):
             pendding_dict = PROGRESS_REVIEW_DICT
         else:
             pendding_dict = PROGRESS_NOT_REVIEW_DICT
-        return pendding_dict[self.project_status.status][PENDDING_STATUS]
+        try:
+            ret = pendding_dict[self.project_status.status][PENDDING_STATUS]
+        except:
+            ret = u""
+        return ret
     def get_next_status_val(self):
         if self.project_special.review_status:
             pendding_dict = PROGRESS_REVIEW_DICT
