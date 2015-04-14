@@ -534,7 +534,7 @@ def xls_info_collection(request,proj_set):
             xls_obj.write(row, 18, unicode(manager.get_position_display())) 
             xls_obj.write(row, 19, unicode(manager.get_base_type_display()))
             xls_obj.write(row, 20, unicode(manager.base_name))
-            if proj_obj.project_status.status == PROJECT_STATUS_OVER:
+            if proj_obj.project_status.status >= PROJECT_STATUS_FINAL_SCHOOL_OVER:
                 xls_obj.write(row, 25, unicode(proj_obj.finalsubmit.project_summary))
             else:
                 try:
