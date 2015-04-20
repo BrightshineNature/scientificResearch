@@ -4,7 +4,7 @@ from django import forms
 from const import *
 from django.db.models import Q
 from backend.logging import loginfo
-from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice,get_conclude_year_choices,get_all_status_choice
+from common.utils import get_application_year_choice,get_approval_year_choice,get_status_choice,get_application_status_choice,get_conclude_year_choices,get_all_status_choice,get_finance_serial_year_choices
 from common.models import ProjectMember, BasisContent, BaseCondition
 from users.models import Special,College,CollegeProfile
 
@@ -49,6 +49,15 @@ class ScheduleBaseForm(forms.Form):
             }),)
     college_choices =tuple ([('-1', '学院')]+ [(item.id,item.name)for item in College.objects.all()])
     college = forms.ChoiceField(choices = college_choices,required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control',
+            }),)
+    serial_year_choices = get_finance_serial_year_choices()
+    budget_serial_year = forms.ChoiceField(choices = serial_year_choices,required=False,
+        widget=forms.Select(attrs={
+            'class':'form-control',
+            }),)
+    audite_serial_year = forms.ChoiceField(choices = serial_year_choices,required=False,
         widget=forms.Select(attrs={
             'class':'form-control',
             }),)

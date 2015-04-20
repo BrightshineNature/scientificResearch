@@ -6,7 +6,7 @@ import os,sys, re
 import datetime
 from backend.logging import loginfo
 from users.models import TeacherProfile
-from teacher.models import TeacherInfoSetting,ProgressReport
+from teacher.models import TeacherInfoSetting,ProgressReport,ProjectAchivement
 from adminStaff.models import ProjectSingle,Re_Project_Expert
 from common.models import ProjectMember,BasisContent
 from common.utils import getScoreTable
@@ -58,16 +58,14 @@ def xls_info_fundbudget_gen():
     worksheet.write_merge(0, 0, 0, 10, '项目预算支出总和表',style)
 
     # generate body
-    worksheet.write_merge(1, 1, 0, 0, '项目编号')
-    worksheet.col(1).width = len('项目编号') * 400
-    worksheet.write_merge(1, 1, 1, 1, '项目名称')
-    worksheet.col(0).width = len('项目名称') * 800
-    worksheet.write_merge(1, 1, 2, 2, '项目负责人')
-    worksheet.write_merge(1, 1, 3, 3, '学院')
-    worksheet.write_merge(1, 1, 4, 4, '立项年度')
-    worksheet.write_merge(1, 1, 5, 5, '专题类型')
-    worksheet.write_merge(1, 1, 6, 6, '项目状态')
-    worksheet.write_merge(1, 1, 7, 7, '支出总和')
+    worksheet.write_merge(1, 1, 0, 0 ,'流水号')
+    worksheet.write_merge(1, 1, 1, 1 ,'项目编号')
+    worksheet.write_merge(1, 1, 2, 2 ,'项目名称')
+    worksheet.write_merge(1, 1, 3, 3 ,'项目负责人')
+    worksheet.write_merge(1, 1, 4, 4 ,'学院')
+    worksheet.write_merge(1, 1, 5, 5 ,'立项年度')
+    worksheet.write_merge(1, 1, 6, 6 ,'专题类型')
+    worksheet.write_merge(1, 1, 7, 7 ,'支出总和')
     worksheet.write(1,8,"设备费预算")
     worksheet.write(1,9,"材料费预算")
     worksheet.write(1,10,"测试化验加工预算费预算")
@@ -78,6 +76,9 @@ def xls_info_fundbudget_gen():
     worksheet.write(1,15,"出版费预算")
     worksheet.write(1,16,"劳务费预算")
     worksheet.write(1,17,"专家咨询费预算")
+
+    worksheet.col(1).width = len('项目编号') * 400
+    worksheet.col(2).width = len('项目名称') * 800
     return worksheet, workbook
 
 def xls_info_fundbudget(request,proj_set):
@@ -86,19 +87,20 @@ def xls_info_fundbudget(request,proj_set):
 
     xls_obj, workbook = xls_info_fundbudget_gen()
 
+    proj_set = proj_set.order_by("projectfundbudget__serial_number")
     _number= 1
     
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         row = 1 + _number
-        xls_obj.write(row, 0, unicode(proj_obj.project_code)) 
-        xls_obj.write(row, 1, unicode(proj_obj.title))
-        xls_obj.write(row, 2, unicode(manager.name))
-        xls_obj.write(row, 3, unicode(proj_obj.teacher.college))
-        xls_obj.write(row, 4, unicode(proj_obj.approval_year))
-        xls_obj.write(row, 5, unicode(proj_obj.project_special))
-        xls_obj.write(row, 6, unicode(proj_obj.project_status))
+        xls_obj.write(row, 0, unicode(proj_obj.projectfundbudget.serial_number))
+        xls_obj.write(row, 1, unicode(proj_obj.project_code)) 
+        xls_obj.write(row, 2, unicode(proj_obj.title))
+        xls_obj.write(row, 3, unicode(manager.name))
+        xls_obj.write(row, 4, unicode(proj_obj.teacher.college))
+        xls_obj.write(row, 5, unicode(proj_obj.approval_year))
+        xls_obj.write(row, 6, unicode(proj_obj.project_special))
         xls_obj.write(row, 7, unicode(proj_obj.projectfundbudget.total_budget))
         xls_obj.write(row,8,unicode(int(proj_obj.projectfundbudget.equacquisition_budget)+int(proj_obj.projectfundbudget.equtrial_budget)+int(proj_obj.projectfundbudget.equrent_budget)))
         xls_obj.write(row,9,unicode(proj_obj.projectfundbudget.material_budget))
@@ -126,15 +128,13 @@ def xls_info_fundsummay_gen():
     worksheet.write_merge(0, 0, 0, 10, '项目决算金额总和表',style)
 
     # generate body
-    worksheet.write_merge(1, 1, 0, 0, '项目编号')
-    worksheet.col(1).width = len('项目编号') * 400
-    worksheet.write_merge(1, 1, 1, 1, '项目名称')
-    worksheet.col(0).width = len('项目名称') * 800
-    worksheet.write_merge(1, 1, 2, 2, '项目负责人')
-    worksheet.write_merge(1, 1, 3, 3, '学院')
-    worksheet.write_merge(1, 1, 4, 4, '立项年度')
-    worksheet.write_merge(1, 1, 5, 5, '专题类型')
-    worksheet.write_merge(1, 1, 6, 6, '项目状态')
+    worksheet.write_merge(1, 1, 0, 0, '流水号')
+    worksheet.write_merge(1, 1, 1, 1, '项目编号')
+    worksheet.write_merge(1, 1, 2, 2, '项目名称')
+    worksheet.write_merge(1, 1, 3, 3, '项目负责人')
+    worksheet.write_merge(1, 1, 4, 4, '学院')
+    worksheet.write_merge(1, 1, 5, 5, '立项年度')
+    worksheet.write_merge(1, 1, 6, 6, '专题类型')
     worksheet.write_merge(1, 1, 7, 7, '预算金额')
     worksheet.write_merge(1, 1, 8, 8, '决算金额')
     worksheet.write_merge(1, 1, 9, 9, '结余金额')
@@ -149,6 +149,9 @@ def xls_info_fundsummay_gen():
     worksheet.write(1,18,"劳务费支出")
     worksheet.write(1,19,"专家咨询费支出")
 
+    worksheet.col(1).width = len('项目编号') * 400
+    worksheet.col(2).width = len('项目名称') * 800
+    
     return worksheet, workbook
 
 def xls_info_fundsummay(request,proj_set):
@@ -156,20 +159,20 @@ def xls_info_fundsummay(request,proj_set):
     """
 
     xls_obj, workbook = xls_info_fundsummay_gen()
-
+    proj_set = proj_set.order_by("projectfundsummary__serial_number")
     _number= 1
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         loginfo(p=manager,label="manager")
         row = 1 + _number
-        xls_obj.write(row, 0, unicode(proj_obj.project_code))
-        xls_obj.write(row, 1, unicode(proj_obj.title))
-        xls_obj.write(row, 2, unicode(manager.name))
-        xls_obj.write(row, 3, unicode(proj_obj.teacher.college))
-        xls_obj.write(row, 4, unicode(proj_obj.approval_year))
-        xls_obj.write(row, 5, unicode(proj_obj.project_special))
-        xls_obj.write(row, 6, unicode(proj_obj.project_status))
+        xls_obj.write(row, 0, unicode(proj_obj.projectfundsummary.serial_number))
+        xls_obj.write(row, 1, unicode(proj_obj.project_code))
+        xls_obj.write(row, 2, unicode(proj_obj.title))
+        xls_obj.write(row, 3, unicode(manager.name))
+        xls_obj.write(row, 4, unicode(proj_obj.teacher.college))
+        xls_obj.write(row, 5, unicode(proj_obj.approval_year))
+        xls_obj.write(row, 6, unicode(proj_obj.project_special))
         xls_obj.write(row, 7, unicode(proj_obj.projectfundsummary.total_budget))
         xls_obj.write(row, 8, unicode(proj_obj.projectfundsummary.total_expenditure))
         xls_obj.write(row, 9, unicode(int(proj_obj.projectfundsummary.total_budget)-int(proj_obj.projectfundsummary.total_expenditure)))
@@ -603,6 +606,47 @@ def xls_info_summary(request,proj_set):
     workbook.save(save_path)
     return save_path
 
+
+def xls_info_conclusionresult_gen():
+    workbook = xlwt.Workbook(encoding='utf-8')
+    worksheet = workbook.add_sheet('sheet1')
+    style = cell_style(horizontal=True,vertical=True)
+    # generate header
+    # generate body
+    worksheet.write_merge(1, 1, 0, 0, '序号')
+    worksheet.write_merge(1, 1, 1, 1, '项目编号')
+    worksheet.write_merge(1, 1, 2, 2, '成果类型')
+    worksheet.write_merge(1, 1, 3, 3, '成果或论文名称')
+    worksheet.write_merge(1, 1, 4, 4, '主要完成者')
+    worksheet.write_merge(1, 1, 5, 5, '成果说明')
+    worksheet.write_merge(1, 1, 6, 6, '标注情况')
+    
+    return worksheet, workbook
+def xls_info_conclusionresult(request,proj_set):
+    """
+    """
+
+    xls_obj, workbook = xls_info_conclusionresult_gen()
+    achivement_set = ProjectAchivement.objects.filter(project_id__in =proj_set).order_by("project_id__project_code")
+    _number=1
+    for achivement_obj in achivement_set:
+        try:
+            row = _number + 1
+            xls_obj.write(row, 0, unicode(_number))
+            xls_obj.write(row, 1, unicode(achivement_obj.project_id.project_code))
+            xls_obj.write(row, 2, unicode(achivement_obj.achivementtype))
+            xls_obj.write(row, 3, unicode(achivement_obj.achivementtitle))
+            xls_obj.write(row, 4, unicode(achivement_obj.mainmember))
+            xls_obj.write(row, 5, unicode(achivement_obj.introduction))
+            xls_obj.write(row, 6, unicode(achivement_obj.remarks))
+        except:
+            pass
+        _number =_number+1
+    # write xls file
+    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费结题成果统计表"))
+    workbook.save(save_path)
+    return save_path
+    
 def cell_style(horizontal,vertical):
     """
     为CELL添加水平居中和垂直居中

@@ -104,6 +104,18 @@ def get_conclude_year_choices():
     year_has=list(set([item.conclude_year for item in project_group]))
     year=year+[(y,y) for y in year_has]
     return tuple(year)
+def get_finance_serial_year_choices():
+    project_group=ProjectSingle.objects.filter(project_status__status__gte = PROJECT_STATUS_APPROVAL)
+    year = [('-1',u"财务流水号年度")]
+    year_has=[]
+    for item in project_group:
+        year_has.append(item.approval_year)
+    year_has=list(set(year_has))
+    for y in year_has:
+        loginfo(y)
+        year.append((y,y))
+    return tuple(year)
+    
 def get_status_choice():
     status_choice=[
         (PROJECT_STATUS_TASK_SCHOOL_OVER,u"任务书审核阶段"),
