@@ -1,0 +1,7 @@
+#seal_layer{
+    position:absolute;
+    width:150px;
+    height:150px;
+    z-index:1;
+    top:-100px;
+}
