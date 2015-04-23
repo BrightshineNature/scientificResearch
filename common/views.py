@@ -427,6 +427,7 @@ def summaryViewWork(request,pid,is_submited,redirect=False):
         'project':project,
         'redirect':redirect,
         'is_submited':is_submited,
+        'showseal':project.project_status.status>=PROJECT_STATUS_FINAL_FINANCE_OVER,
     }
     return context
 
@@ -512,7 +513,6 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
     else:
         fundbudget_form = ProFundBudgetForm(instance=fundbudget)
         fundbudgetremarkment_form=ProFundBudgetRemarkmentForm(instance=fundbudget)
-
     context = {
         'redirect':redirect,
         'fundbudget_form':fundbudget_form,
@@ -522,6 +522,7 @@ def fundBudgetViewWork(request,pid,is_submited,redirect=False):
         'projectbudget':project.project_budget_max,
         'project':project,
         'fundbudget':fundbudget,
+        'showseal':project.project_status.status>=PROJECT_STATUS_TASK_FINANCE_OVER,
     }
     return context
 
