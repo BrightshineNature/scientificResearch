@@ -239,11 +239,10 @@ def status_confirm(request,project):
     loginfo('$'*50)
     if project.project_special.review_status:
         status_dict =  PROGRESS_REVIEW_DICT[project.project_status.status]
-        loginfo(status_dict)
     else:
         status_dict =  PROGRESS_NOT_REVIEW_DICT[project.project_status.status]
 
-    loginfo(project.project_status.status)
+    loginfo(NEXT_PROGRESS_PERMISSION_DICT[identity])
     if status_dict[NEXT_STATUS] in NEXT_PROGRESS_PERMISSION_DICT[identity]:
         project.submit_date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
         set_status(project,status_dict[NEXT_STATUS])

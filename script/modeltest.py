@@ -3,8 +3,9 @@ from django.db.models import Q
 import datetime
 from adminStaff.models import ProjectSingle
 
-pro_list = ProjectSingle.objects.filter(projectfundsummary__serial_number__startswith="2015").order_by("projectfundsummary__serial_number")
+pro_list = ProjectSingle.objects.order_by('approval_year').values('approval_year').distinct()
+print len(pro_list)
 for pro in pro_list:
-    print pro.projectfundsummary.serial_number
+    print pro['approval_year']
 
 pass
