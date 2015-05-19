@@ -78,7 +78,7 @@
         {% csrf_token %}
       <p><strong>详细填写各项目支出的主要用途，若支出与预算不一致，请详细说明原因(1500以内)</strong></p>
       {{profundsummaryremarkmentform.remarkment}}
-      <table 
+      <table
          style="width:821px;position:relative;top:-5px;border:1px solid;border-color:rgb(169, 169, 169);margin-top:0px;">
         <tr style="height:100px;">
           <th style="border:1px solid;border-color:rgb(169, 169, 169);"> 
@@ -87,6 +87,9 @@
 
           <th style="border:1px solid;border-color:rgb(169, 169, 169);"> 
             财务部门(签章):
+            {% if showseal %}
+            <img src="{{STATIC_URL}}images/001.png" id="seal_layer" style="position:absolute;width:200px;height:200px;z-index:1;top:-100px;">
+            {% endif %}
           </th>
 
           <th style="border:1px solid;border-color:rgb(169, 169, 169);"> 
