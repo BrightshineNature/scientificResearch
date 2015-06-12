@@ -22,7 +22,7 @@ from teacher.forms import *
 from teacher.models import *
 from common.views import finalReportViewWork, appManage, getSingleProjectURLList
 from common.forms import ScheduleBaseForm
-
+from common.views import fileUploadManage
 @csrf.csrf_protect
 @login_required
 @authority_required(EXPERT_USER)
@@ -66,7 +66,10 @@ def finalReportView(request, is_submited):
     pid = re_obj.project.project_id
     score_table = getScoreTable(re_obj.project).objects.get(re_obj = re_obj)
     context = finalReportViewWork(request, pid, is_submited[SUBMIT_STATUS_FINAL])
-    file_list = getSingleProjectURLList(re_obj.project)[1:]   
+    file_list = getSingleProjectURLList(re_obj.project)[1:]
+
+    context = dict(context, **fileUploadManage(request, pid, is_submited))
+
 
     if request.method == "GET":
         score_form = getScoreForm(re_obj.project)(instance = score_table)
