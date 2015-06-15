@@ -112,7 +112,12 @@
   {% endcomment  %}
   {% if is_submited %}
 
+
+    {%if not userauth.is_experter%}
     <button class="btn btn-primary" id="finalsubmitform_btn"  pid={{pid}} is_submited={{is_submited}} type="button">保存结题报告正文</button>
+    {%endif%}
+    
+
     {% if not userauth.is_adminstaff and not userauth.is_schooler %}
     <a class="btn btn-primary" href="#achivement" data-toggle="tab" id="finalcontent_next" onclick="finalcontent_next();">下一步</a>
     {% endif %}

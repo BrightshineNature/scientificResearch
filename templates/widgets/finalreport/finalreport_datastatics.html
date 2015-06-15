@@ -39,10 +39,13 @@
             </div>
         </div>
     </div>
-    {% if is_submited %}
-	<button class="btn btn-success pull-right" style="margin-right:20px;"pid={{pid}} id="finalreport_finish">提交</button>
-    <button class="btn btn-primary pull-right" style="margin-right:25px;" id="add_new_datastatics" >添加新数据</button>
-    {% endif %}
+    {%if not userauth.is_experter%}
+        {% if is_submited %}
+    	<button class="btn btn-success pull-right" style="margin-right:20px;"pid={{pid}} id="finalreport_finish">提交</button>
+        <button class="btn btn-primary pull-right" style="margin-right:25px;" id="add_new_datastatics" >添加新数据</button>
+        {% endif %}
+
+    {%endif%}
     <br>
     {% include 'widgets/finalreport/final_datastatics_table.html' %}
 <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/datastatics_change.js"></script>

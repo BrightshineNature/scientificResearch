@@ -10,8 +10,12 @@
             <td scope="col">类型</td>
             <td scope="col">大小</td>
             <td scope="col">上传时间</td>
+
+            
             <td scope="col">下载</td>
-            <td scope= "col"> 删除 </td>            
+            {%if not userauth.is_experter%}
+                <td scope= "col"> 删除 </td>
+            {%endif%}
         </tr>
     </thead>
     <tbody>
@@ -23,23 +27,31 @@
             <td>{{item.upload_time|date:"Y-m-d"}}</td>
             <td><span><a href="{{item.file_obj.url}}" class='btn btn-primary'>下载</a></span> </td>
 
+            {%if not userauth.is_experter%}
             <td>
-                
-            {%if item.file_type == "其他" or item.file_type == "基本科研业务费专项项目进展报告" %} 
-                <form method="POST"  action="">
-                    {% csrf_token %}
-                    <input type= "hidden" name= "is_delete_file" value = "1">
-                    <input type= "hidden" name= "fid" value = "{{item.id}}">
-                    <button type="submit" class="btn btn-success"> 删除</button>
-                </form>
+                {%if item.file_type == "其他" or item.file_type == "基本科研业务费专项项目进展报告" %} 
+                    <form method="POST"  action="">
+                        {% csrf_token %}
+                        <input type= "hidden" name= "is_delete_file" value = "1">
+                        <input type= "hidden" name= "fid" value = "{{item.id}}">
+                        <button type="submit" class="btn btn-success"> 删除</button>
+                    </form>
+                {%endif%}
+            
+            </td>
             {%endif%}
-
-             </td>
 
         </tr>
         {%endfor%}
     </tbody>
 </table>
+
+
+{%if not userauth.is_experter%}
+
+
+
+
 
 <br/>
 
@@ -147,7 +159,9 @@
         <!-- <li>添加文件后请<strong>不要刷新页面</strong>，否则不能进行删除文件操作。</li> -->
     </ul>
 </div>
-
+{%endif%}
 
 
 <script type='text/javascript' src= "{{STATIC_URL}}js/common/file_upload.js"> </script>
+
+

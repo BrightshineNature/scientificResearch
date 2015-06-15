@@ -55,10 +55,19 @@
             </div>
         </div>
     </div>
+
+    
     {% if is_submited  %}
     <a class="btn btn-primary pull-right" style="margin-right:20px;" id="achivement_next"  href="#datastatics" data-toggle="tab">下一步</a>
-    <button class="btn btn-primary pull-right"  id="add_new_achivement" style="margin-right:20px;">添加新成果</button>
+
+        {%if not userauth.is_experter%}
+            <button class="btn btn-primary pull-right"  id="add_new_achivement" style="margin-right:20px;">添加新成果</button>
+        {%endif%}
     {% endif %}
+
+
+
+
     <br>
     {% include 'widgets/finalreport/final_achivement_table.html' %}
 <script type='text/javascript' src="{{STATIC_URL}}js/finalreport/achivement_change.js"></script>
