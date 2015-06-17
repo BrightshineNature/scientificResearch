@@ -384,6 +384,27 @@ EXPERT_REVIEW_TABLE_CHOICES =(
     (EXPERT_REVIEW_FRONT,u"前沿学科基础科研业务费"),
     (EXPERT_REVIEW_OUTSTANDING,u"优秀青年人才基础科研业务费"),
 )
+
+
+EXPERT_FINAL_REVIEW_FRONT = "final_front"
+EXPERT_FINAL_REVIEW_TABLE_CHOICES = (
+    (EXPERT_FINAL_REVIEW_FRONT, u"前沿学科基础科研业务费终审表"),
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 EXPERT_NUM = 20
 
 EXCELTYPE_INFO_COLLECTION = "info_collection"

@@ -20,6 +20,7 @@ RegisterClass = (
     ProfessionalTitle,
     NationalTradeCode,
     Subject,
+    ExpertFinalReview,
 )
 
 for temp in RegisterClass:

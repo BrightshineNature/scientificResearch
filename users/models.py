@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from const.models import UserIdentity,ExpertReview
 from const import ADMINSTAFF_USER,SCHOOL_USER,COLLEGE_USER,TEACHER_USER,EXPERT_USER,FINANCE_USER,VISITOR_USER
 
+
+from const.models import ExpertFinalReview
 class AdminStaffProfile(models.Model):
     userid = models.ForeignKey(User, unique=True,
                                verbose_name="权限对应ID")
@@ -87,6 +89,11 @@ class Special(models.Model):
     except:
         default_status = 2
     expert_review = models.ForeignKey(ExpertReview, blank=False, null=False, default=default_status,verbose_name=u"专家评审表")
+
+
+    expert_final_review = models.ForeignKey(ExpertFinalReview, blank=True, null=True,verbose_name=u"专家评审终审表")
+
+    
     name = models.CharField(blank=False,max_length=30)
     review_status = models.BooleanField(blank=True,default=True)
     alloc_status = models.BooleanField(blank=True,default= False)
@@ -100,6 +107,11 @@ class Special(models.Model):
         verbose_name_plural = "专题"
     def __unicode__(self):
         return self.name
+
+
+
+
+
 class College(models.Model):
     college_user = models.ForeignKey(CollegeProfile, blank=True, null=True, verbose_name=u"学院管理员")
     name = models.CharField(blank=False,max_length=30)
