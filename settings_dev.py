@@ -22,5 +22,8 @@ DATABASES = {
     }
 }
 
+
+
+
 # Website settings
 WEB_TITLE = "Province Management Dev"
