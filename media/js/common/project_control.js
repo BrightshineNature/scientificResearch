@@ -66,3 +66,27 @@ function releaseexcel_callback(data){
   location.href = data.path;
   $('#excelprogress').modal('hide');
 }
+
+
+
+
+$("select[name='expert_final_review']").each(function(){
+  $(this).change(function(){
+    text_div = $(this).parents(".active");
+    Dajaxice.school.ChangeExpertFinalReview(ExpertFinalReview_callback,{'form':$(text_div).find("#expert_final_review_form").serialize(true),'special_id':$(text_div).attr('id')});
+  })
+})
+function ExpertFinalReview_callback(data){
+    $(text_div).find("#expert_final_review_success").hide();
+    $(text_div).find("#expert_final_review_fail").hide();
+    $(text_div).find("#expert_final_review_fail_1").hide();
+
+  if (data.status == "1"){
+    $(text_div).find("#expert_final_review_success").show(500);    
+  }else if(data.status == "0"){
+    $(text_div).find("#expert_final_review_fail").show(500);
+
+  }else{
+    $(text_div).find("#expert_final_review_fail_1").show(500);
+  }
+}

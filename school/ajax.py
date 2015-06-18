@@ -23,6 +23,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.sites.models import get_current_site,Site
+
+from school.forms import ExpertFinalReviewForm
 @dajaxice_register
 def getUnallocProjectPagination(request, page, college_id, special_id, path):
     message = ""
@@ -253,6 +255,34 @@ def ChangeExpertReview(request,form,special_id):
             else:
                 return simplejson.dumps({'status':'2'})
     return simplejson.dumps({'status':'0'})
+
+
+
+@dajaxice_register
+def ChangeExpertFinalReview(request,form,special_id):
+    special = getSpecial(request).get(id = special_id)
+    if special:
+        loginfo(special)
+        expert_final_review_form = ExpertFinalReviewForm(deserialize_form(form),instance=special)
+        if expert_final_review_form.is_valid():
+            expert_final_review_form.save()
+            return simplejson.dumps({'status':'1'})
+
+            # qset1=Q(project_status__status__gte = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT,project_status__status__lte = PROJECT_STATUS_APPROVAL)
+            # qset2=Q(project_status__status__gte = PROJECT_STATUS_FINAL_EXPERT_SUBJECT,project_status__status__lt = PROJECT_STATUS_OVER)
+            # prolist = ProjectSingle.objects.filter(Q(project_special=special) & (qset1 | qset2))
+            # loginfo(prolist)
+            # if prolist.count()==0:
+            #     expert_final_review_form.save()
+            #     loginfo("success")
+                
+            #     return simplejson.dumps({'status':'1'})
+            # else:
+            #     return simplejson.dumps({'status':'2'})
+    return simplejson.dumps({'status':'0'})
+
+
+
 @dajaxice_register
 def ChangeControlStatus(request,special_id,type_id,type_name):
     special = getSpecial(request).get(id = special_id)

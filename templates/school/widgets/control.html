@@ -40,6 +40,7 @@
 
 <fieldset>
   <legend>专题项目配置选项</legend>
+
   <form id="expert_review_form" class= "form-inline" role="form" method="POST" action="." >
     {% csrf_token%}
     <div class="alert alert-success" style="display:none" id="expert_review_success" >
@@ -58,7 +59,35 @@
       <span >专家评分表</span> {{expert_review_form.expert_review}} 
     </div>
   </form>
-  <br>
+
+<br/>
+  <form id="expert_final_review_form" class= "form-inline" role="form" method="POST" action="." >
+    {% csrf_token%}
+    <div class="alert alert-success" style="display:none" id="expert_final_review_success" >
+      <a class="close" id="alert_close1">×</a>
+      专家评分终审表修改成功
+    </div>
+    <div class="alert alert-danger" style="display:none" id="expert_final_review_fail" >
+      <a class="close" id="alert_close1">×</a>
+      专家评分终审表修失败
+    </div>
+    <div class="alert alert-danger" style="display:none" id="expert_final_review_fail_1" >
+      <a class="close" id="alert_close1">×</a>
+      专家评分终审表修失败,已有项目关联无法修改
+    </div>
+    <div class="form-group">
+      <span >专家评分终审表</span> {{expert_final_review_form.expert_final_review}} 
+    </div>
+  </form>
+
+
+
+
+
+
+
+
+  <br/>
   <input type="button" id="review" name="专家评审流程"  class="btn {%if item.review_status %}btn-warning{%else%}btn-primary{%endif%}" value="{%if item.review_status%}关闭{%else%}打开{%endif%}专家评审流程">
   <span id="review_span" class="label {%if item.review_status%}label-success{%else%}label-danger{%endif%}">专家评审流程为{%if item.review_status%}打开{%else%}关闭{%endif%}状态</span>
 </fieldset>

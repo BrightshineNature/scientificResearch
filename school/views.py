@@ -26,6 +26,8 @@ from users.models import ExpertProfile, SchoolProfile,TeacherProfile
 from common.forms import ScheduleBaseForm,EmailForm
 from django.template.loader import render_to_string
 from django.contrib.sites.models import get_current_site,Site
+
+from school.forms import ExpertFinalReviewForm
 @csrf.csrf_protect
 @login_required
 @check_submit_status()
@@ -168,18 +170,24 @@ def dispatchView(request):
 @authority_required(SCHOOL_USER)
 def controlView(request):
     expert_review_forms=[]
+    expert_final_review_forms = []
     schedule_form=ScheduleBaseForm(request=request)
     specials =  getSpecial(request)
     for special in specials:
         expert_review_form = ExpertReviewForm(instance=special)
         expert_review_forms.append(expert_review_form)
+
+        expert_final_review_forms.append(  ExpertFinalReviewForm(instance = special))
+
         control_types = []
         for t in CONTROL_TYPE_CHOICES:
             t = list(t)
             t.append(getattr(special,t[0]+"_status"))
             control_types.append(t)
         special.control_types = control_types
-    spec_list = zip(specials,expert_review_forms)
+
+    # spec_list = zip(specials,expert_review_forms)
+    spec_list = zip(specials,expert_review_forms, expert_final_review_forms)
     context = {
         'spec_list' :spec_list,
         'alloc_excel':TYPE_ALLOC[0],

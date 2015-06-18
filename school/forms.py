@@ -31,3 +31,9 @@ class ExpertReviewForm(forms.ModelForm):
         model = Special
         fields = ('expert_review',)
         widgets = {"expert_review": forms.Select(attrs={"class":'form-control',})}
+
+class ExpertFinalReviewForm(forms.ModelForm):
+    class Meta:
+        model = Special
+        fields = ('expert_final_review',)
+        widgets = {"expert_final_review": forms.Select(attrs={"class":'form-control',})}
