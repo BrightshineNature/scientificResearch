@@ -7,6 +7,7 @@ from adminStaff.models import BasicScientificResearchScoreTable, HumanitiesSocia
 from adminStaff.models import MajorProjectScoreTable, KeyLaboratoryProjectScoreTable
 from adminStaff.models import ScienceFoundationResearchScoreTable
 from adminStaff.models import FrontAndIntercrossResreachScoreTable
+from adminStaff.models import FrontAndIntercrossResreachFinalScoreTable
 from adminStaff.models import OutstandingYoungResreachScoreTable
 
 class ScienceFoundationResearchScoreForm(ModelForm):
@@ -23,6 +24,14 @@ class FrontAndIntercrossResreachScoreForm(ModelForm):
         exclude = ("re_obj", )
         widgets = {"score": forms.TextInput(attrs={"class": "form-control",}),
                    "level": forms.Select(attrs={"class": "form-control",}),
+                  }
+
+class FrontAndIntercrossResreachFinalScoreForm(ModelForm):
+    class Meta:
+        model = FrontAndIntercrossResreachFinalScoreTable
+        exclude = ("re_obj", )
+        widgets = {"score": forms.TextInput(attrs={"class": "form-control",}),
+                   "level": forms.TextInput(attrs={"class": "form-control",}),
                   }
 
 class OutstandingYoungResreachScoreForm(ModelForm):

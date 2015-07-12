@@ -17,7 +17,7 @@ from adminStaff.models import Re_Project_Expert
 from users.models import ExpertProfile
 from backend.utility import getContext
 from expert import forms
-from common.utils import getScoreTable, getScoreForm
+from common.utils import getScoreTable, getScoreForm,getFinalScoreTable,getFinalScoreForm
 from teacher.forms import *
 from teacher.models import *
 from common.views import finalReportViewWork, appManage, getSingleProjectURLList
@@ -45,7 +45,7 @@ def homeView(request, is_submited=False):
                                                       Q(project__project_special__final_alloc_status = True)))
     for re_obj in re_list_2:
         loginfo(re_obj.project)
-        re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
+        re_obj.score = getFinalScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
     context = {"is_first_round": is_first_round,}
     re_list_1.sort(key = lambda x: x.score)
     re_list_2.sort(key = lambda x: x.score)
@@ -64,15 +64,15 @@ def finalReportView(request, is_submited):
     re_id = request.GET.get("re_id")
     re_obj = Re_Project_Expert.objects.get(id = re_id)
     pid = re_obj.project.project_id
-    score_table = getScoreTable(re_obj.project).objects.get(re_obj = re_obj)
+    score_table ,created= getFinalScoreTable(re_obj.project).objects.get_or_create(re_obj = re_obj)
+
     context = finalReportViewWork(request, pid, is_submited[SUBMIT_STATUS_FINAL])
     file_list = getSingleProjectURLList(re_obj.project)[1:]
 
     context = dict(context, **fileUploadManage(request, pid, is_submited))
 
-
     if request.method == "GET":
-        score_form = getScoreForm(re_obj.project)(instance = score_table)
+        score_form = getFinalScoreForm(re_obj.project)(instance = score_table)
 
         context.update({
             'score_form': score_form,
@@ -82,7 +82,7 @@ def finalReportView(request, is_submited):
         })
         return render(request,"expert/final.html",context)
     else:
-        score_form = getScoreForm(re_obj.project)(request.POST, instance = score_table)
+        score_form = getFinalScoreForm(re_obj.project)(request.POST, instance = score_table)
         if score_form.is_valid():
             score_form.save()
             return HttpResponseRedirect("/expert/redirect/?is_first_round=0")

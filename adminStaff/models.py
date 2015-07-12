@@ -97,6 +97,7 @@ class ReviewBackView(models.Model):
 
     def __unicode__(self):
         return self.title
+
 class Re_Project_Expert(models.Model):
     project = models.ForeignKey(ProjectSingle)
     expert = models.ForeignKey(ExpertProfile)
@@ -185,8 +186,6 @@ class ScienceFoundationResearchScoreTable(models.Model):
     def has_comments():
         return 0
 
-
-
 class FrontAndIntercrossResreachScoreTable(models.Model):
     re_obj = models.ForeignKey(Re_Project_Expert)
     score = models.IntegerField(blank = False, default = 0, verbose_name = u"评分（100分）", validators = [MaxValueValidator(100), MinValueValidator(0)])
@@ -194,6 +193,21 @@ class FrontAndIntercrossResreachScoreTable(models.Model):
     class Meta:
         verbose_name = u"基本科研业务费前沿探索与学科交叉科研专题一般项目评审表"
         verbose_name_plural = u"基本科研业务费前沿探索与学科交叉科研专题一般项目评审表"
+    def get_total_score(self):
+        return self.score
+    def get_comments(self):
+        return str(self.get_level_display())
+    @staticmethod
+    def has_comments():
+        return 1
+
+class FrontAndIntercrossResreachFinalScoreTable(models.Model):
+    re_obj = models.ForeignKey(Re_Project_Expert)
+    score = models.IntegerField(blank = False, default = 0, verbose_name = u"评分（100分）", validators = [MaxValueValidator(100), MinValueValidator(0)])
+    level = models.IntegerField(blank = False, default = 0, verbose_name = u"学科交叉程度(%)",validators = [MaxValueValidator(100), MinValueValidator(0)])
+    class Meta:
+        verbose_name = u"基本科研业务费前沿探索与学科交叉科研专题一般项目终审表"
+        verbose_name_plural = u"基本科研业务费前沿探索与学科交叉科研专题一般项目终审表"
     def get_total_score(self):
         return self.score
     def get_comments(self):
