@@ -37,7 +37,7 @@ def homeView(request, is_submited=False):
                                                       Q(project__project_special__alloc_status = True)))
     for re_obj in re_list_1:
         loginfo(re_obj.project)
-        re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
+        re_obj.score = getScoreTable(re_obj.project).objects.get_or_create(re_obj = re_obj)[0].get_total_score()
     
     re_list_2 = list(Re_Project_Expert.objects.filter(Q(expert = expert) & \
                                                       Q(is_first_round = False) & \
@@ -45,7 +45,7 @@ def homeView(request, is_submited=False):
                                                       Q(project__project_special__final_alloc_status = True)))
     for re_obj in re_list_2:
         loginfo(re_obj.project)
-        re_obj.score = getFinalScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
+        re_obj.score = getFinalScoreTable(re_obj.project).objects.get_or_create(re_obj = re_obj)[0].get_total_score()
     context = {"is_first_round": is_first_round,}
     re_list_1.sort(key = lambda x: x.score)
     re_list_2.sort(key = lambda x: x.score)
