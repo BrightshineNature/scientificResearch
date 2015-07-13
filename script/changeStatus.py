@@ -19,12 +19,13 @@ from common.utility import xls_info_duplicatecheck
 data = xlrd.open_workbook("1.xls")
 table = data.sheet_by_index(0)
 
-for i in range(2,692):
+for i in range(371,692):
     row = table.row_values(i)
+    pro=ProjectSingle.objects.get(project_code = row[14])
     try:
-        pro=ProjectSingle.objects.get(project_code=row[14])
+        pro.trade_code = NationalTradeCode.objects.get(category = NATIONAL_TRADE_CODE_DICTS[row[16]])
+        pro.save()
     except:
-        print row[14]
         print i
     # college=College.objects.get(name= row[3])
     # sendemail('1',row[1],row[1][-6:],row[2],TEACHER_USER,row[0],send_email = True,college=college.id)
@@ -44,20 +45,20 @@ for i in range(2,692):
     # print project
     # project.project_code = unicode(row[14])
     # project.project_budget_max = float(row[23])*10000
-    # if int(int(row[20])) <=2013:
-    #     project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_PROGRESS_SCHOOL_OVER)
-    # else:
-    #     project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_TASK_SCHOOL_OVER)
-    # project.application_year = int(row[20])
-    # project.approval_year = int(row[20])
-    # project.start_time = datetime.datetime.strptime(row[18],"%Y-%m")
-    # project.end_time = datetime.datetime.strptime(row[19],"%Y-%m")
+    # project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_TASK_SCHOOL_OVER)
+    # # if int(int(row[20])) <=2013:
+    # #
+    # # else:
+    # #     project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_TASK_SCHOOL_OVER)
+    # project.application_year = 2014
+    # project.approval_year = 2014
+    # project.start_time = datetime.datetime.strptime(row[19],"%Y-%m")
+    # project.end_time = datetime.datetime.strptime(row[20],"%Y-%m")
     # project.science_type = ScienceActivityType.objects.get(category = SCIENCE_ACTIVITY_TYPE_DICTS[row[15]])
     # # project.trade_code = NationalTradeCode.objects.get(category = NATIONAL_TRADE_CODE_DICTS[row[16]])
-    # project.subject = Subject.objects.get(category = SUBJECT_DICTS[int(row[17])])
+    # project.subject = Subject.objects.get(category = SUBJECT_DICTS[int(row[18])])
     # project.save()
     # sendemail('1',row[1],row[1][-6:],row[2],EXPERT_USER,row[0],send_email = False,college=college.id)
-    t=i
 
 print "hello"
 # projs = ProjectSingle.objects.filter(Q(project_status__gte = PROJECT_STATUS_APPLICATION_REVIEW_START) & Q(project_status__lt = PROJECT_STATUS_APPROVAL))
