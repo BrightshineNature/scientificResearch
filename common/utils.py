@@ -85,7 +85,7 @@ def getProjectReviewStatus(project):
     
     sub = 0
     for re_obj in total:
-        if getScoreTable(project).objects.get(re_obj = re_obj).get_total_score() > 0:
+        if getScoreTable(project).objects.get_or_create(re_obj = re_obj)[0].get_total_score() > 0:
             sub += 1
     return "%d/%d" % (sub, total.count())
 
