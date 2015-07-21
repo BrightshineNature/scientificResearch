@@ -14,7 +14,7 @@ from adminStaff.models import ProjectSingle, Re_Project_Expert
 from backend.utility import getContext
 from users.models import ExpertProfile
 from const import *
-from common.utils import status_confirm, getScoreTable, getScoreForm, getProjectReviewStatus
+from common.utils import status_confirm, getScoreTable, getScoreForm,getFinalScoreTable,getFinalScoreForm, getProjectReviewStatus
 from const.models import ProjectStatus
 from school.forms import ExpertReviewForm
 from common.views import get_project_list,get_search_data
@@ -161,7 +161,9 @@ def allocProjectToExpert(request, project_list, expert_list, path):
                 finally:
                     re_obj = Re_Project_Expert(project = project, expert = expert, is_first_round = is_first_round)
                     re_obj.save()
-                    table = getScoreTable(project)
+                    if is_first_round:table=getScoreTable(project)
+                    else:
+                        table = getFinalScoreTable(project)
                     table(re_obj = re_obj).save()
             if path == FIRST_ROUND_PATH:
                 project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
@@ -205,7 +207,10 @@ def appendAlloc(request, project_id, expert_list, path):
         else:
             re_obj = Re_Project_Expert(project = project, expert = expert, is_first_round = is_first_round)
             re_obj.save()
-            table = getScoreTable(project)
+            if is_first_round:
+                table = getScoreTable(project)
+            else:
+                table = getFinalScoreTable(project)
             table(re_obj = re_obj).save()
             current_site = Site.objects.get_current()
             site_domain =current_site.domain
@@ -232,8 +237,10 @@ def queryAllocedExpert(request, project_id, path):
     message = ""
     is_first_round = (path == FIRST_ROUND_PATH)
     project = ProjectSingle.objects.get(project_id = project_id)
-    expert_list = [(re_obj.expert, getScoreTable(project).objects.get(re_obj = re_obj).get_total_score()) for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round))]
-
+    if is_first_round:
+        expert_list = [(re_obj.expert, getScoreTable(project).objects.get(re_obj = re_obj).get_total_score()) for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round))]
+    else:
+        expert_list = [(re_obj.expert, getFinalScoreTable(project).objects.get(re_obj = re_obj).get_total_score()) for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round))]
     html = render_to_string("school/widgets/project_review_table.html", {"expert_list": expert_list})
     return simplejson.dumps({"html": html, })
 
@@ -304,15 +311,19 @@ def getScore(request, pid):
     if project.project_status.status == PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
         is_first_round = False
 
-    scoreTableType = getScoreTable(project)
+    if is_first_round:coreTableType = getScoreTable(project)
+    else:scoreTableType = getFinalScoreTable(project)
 
     comments_index = scoreTableType.has_comments()
-    scoreFormType = getScoreForm(project)
+    #scoreFormType = getScoreForm(project)
+
+    if is_first_round:scoreFormType=getScoreForm(project)
+    else: scoreFormType=getFinalScoreForm(project)
     scoreList = []
     ave_score = {}
     tem = scoreTableType.objects.all()
     for re_obj in Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round)):
-        table = scoreTableType.objects.get(re_obj = re_obj)
+        table = scoreTableType.objects.get_or_create(re_obj = re_obj)[0]
         score_row = scoreFormType(instance = table)
         if table.get_total_score() == 0: continue
 
@@ -331,6 +342,7 @@ def getScore(request, pid):
             ave_score[item[0]] = 1.0 * item[1] / len(scoreList)
     html = render_to_string("widgets/concluding_data.html", {"scoreList": scoreList, "ave_score": ave_score.values(), "form": scoreFormType, "comments_index": comments_index, })
     return simplejson.dumps({"message": message, "html": html,})
+
 @dajaxice_register
 def ExpertinfoExport(request,special_id,eid,form):
     special = getSpecial(request).get(id = special_id)

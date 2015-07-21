@@ -8,7 +8,7 @@ from django.db.models import Q
 from adminStaff.models import Re_Project_Expert
 from backend.utility import getContext
 from users.models import ExpertProfile
-from common.utils import getScoreTable, getScoreForm
+from common.utils import getScoreTable, getScoreForm,getFinalScoreTable,getFinalScoreForm
 
 @dajaxice_register
 def getPagination(request, special, college, page, is_first_round):
@@ -23,7 +23,10 @@ def getPagination(request, special, college, page, is_first_round):
 
     re_list = list(re_list)
     for re_obj in re_list:
-        re_obj.score = getScoreTable(re_obj.project).objects.get(re_obj = re_obj).get_total_score()
+        if is_first_round:
+            re_obj.score = getScoreTable(re_obj.project).objects.get_or_create(re_obj = re_obj)[0].get_total_score()
+        else:
+            re_obj.score = getFinalScoreTable(re_obj.project).objects.get_or_create(re_obj = re_obj)[0].get_total_score()
     re_list.sort(key = lambda x: x.score)
     if is_first_round:
         context = getContext(re_list, page, "item", 0)

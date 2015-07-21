@@ -196,10 +196,10 @@ class FrontAndIntercrossResreachScoreTable(models.Model):
     def get_total_score(self):
         return self.score
     def get_comments(self):
-        return str(self.get_level_display())
+        return str(self.level)
     @staticmethod
     def has_comments():
-        return 1
+        return 0
 
 class FrontAndIntercrossResreachFinalScoreTable(models.Model):
     re_obj = models.ForeignKey(Re_Project_Expert)
@@ -211,10 +211,10 @@ class FrontAndIntercrossResreachFinalScoreTable(models.Model):
     def get_total_score(self):
         return self.score
     def get_comments(self):
-        return str(self.get_level_display())
+        return str(self.level)
     @staticmethod
     def has_comments():
-        return 1
+        return 0
 
 
 
@@ -229,10 +229,10 @@ class OutstandingYoungResreachScoreTable(models.Model):
     def get_total_score(self):
         return self.score
     def get_comments(self):
-        return str(self.get_level_display())
+        return str(self.level)
     @staticmethod
     def has_comments():
-        return 1
+        return 0
 
 class MajorProjectScoreTable(models.Model):
     re_obj = models.ForeignKey(Re_Project_Expert)
