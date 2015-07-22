@@ -79,14 +79,19 @@ def getScoreForm(project):
 def getProjectReviewStatus(project):
     print project
     if project.project_status.status == PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
-        total = Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = True))
+        is_first_round = True 
     else:
-        total = Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = False))
+        is_first_round = False
+    total = Re_Project_Expert.objects.filter(Q(project = project) & Q(is_first_round = is_first_round))
     
     sub = 0
     for re_obj in total:
-        if getScoreTable(project).objects.get_or_create(re_obj = re_obj)[0].get_total_score() > 0:
-            sub += 1
+        if is_first_round:
+            if getScoreTable(project).objects.get_or_create(re_obj = re_obj)[0].get_total_score() > 0:
+                sub += 1
+        else:
+            if getFinalScoreTable(project).objects.get_or_create(re_obj = re_obj)[0].get_total_score() > 0:
+                sub += 1
     return "%d/%d" % (sub, total.count())
 
 def get_application_year_choice():
