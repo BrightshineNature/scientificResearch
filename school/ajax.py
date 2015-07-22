@@ -143,34 +143,44 @@ def allocProjectToExpert(request, project_list, expert_list, path):
 
     if len(project_list) == 0 or len(expert_list) == 0:
         message = "no project" if len(project_list) == 0 else "no expert"
-    else:
+        return simplejson.dumps({"message": message, })
 
-        if overloadTest(project_list, expert_list, is_first_round) == False:
-            message = "overload"
+    project_temp=ProjectSingle.objects.get(project_id =project_list[0])
+    if is_first_round:
+        if project_temp.project_special.expert_review==None:
+            message = "expert_review_none"
+            return simplejson.dumps({"message": message, })
+    else:
+        if project_temp.project_special.expert_final_review==None:
+            message = "expert_final_review_none"
             return simplejson.dumps({"message": message, })
 
-        expert_list = [ExpertProfile.objects.get(userid__username = user) for user in expert_list]
-        for project_id in project_list:
-            project = ProjectSingle.objects.get(project_id = project_id)
-            for expert in expert_list:
-                try:
-                    re_obj = Re_Project_Expert.objects.get(project = project, expert = expert, is_first_round = is_first_round)
-                    re_obj.delete()
-                except:
-                    pass
-                finally:
-                    re_obj = Re_Project_Expert(project = project, expert = expert, is_first_round = is_first_round)
-                    re_obj.save()
-                    if is_first_round:table=getScoreTable(project)
-                    else:
-                        table = getFinalScoreTable(project)
-                    table(re_obj = re_obj).save()
-            if path == FIRST_ROUND_PATH:
-                project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
-            else:
-                project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
-            project.save()
-        message = "ok"
+    if overloadTest(project_list, expert_list, is_first_round) == False:
+        message = "overload"
+        return simplejson.dumps({"message": message, })
+
+    expert_list = [ExpertProfile.objects.get(userid__username = user) for user in expert_list]
+    for project_id in project_list:
+        project = ProjectSingle.objects.get(project_id = project_id)
+        for expert in expert_list:
+            try:
+                re_obj = Re_Project_Expert.objects.get(project = project, expert = expert, is_first_round = is_first_round)
+                re_obj.delete()
+            except:
+                pass
+            finally:
+                re_obj = Re_Project_Expert(project = project, expert = expert, is_first_round = is_first_round)
+                re_obj.save()
+                if is_first_round:table=getScoreTable(project)
+                else:
+                    table = getFinalScoreTable(project)
+                table(re_obj = re_obj).save()
+        if path == FIRST_ROUND_PATH:
+            project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT)
+        else:
+            project.project_status = ProjectStatus.objects.get(status = PROJECT_STATUS_FINAL_EXPERT_SUBJECT)
+        project.save()
+    message = "ok"
     return simplejson.dumps({"message": message, })
 
 @dajaxice_register
