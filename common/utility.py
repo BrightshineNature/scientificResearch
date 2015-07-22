@@ -439,7 +439,7 @@ def xls_info_basesummary_preview(request,proj_set,specialtype,specialname):
         average_score = 0
         score_list = []
         for re_expert_temp in re_project_expert_list:
-            score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
+            score_table = getScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
             if score_table.get_total_score():
                 if specialtype == 1:
                     score_tmp = score_table.get_total_score() + int(score_table.get_comments())
