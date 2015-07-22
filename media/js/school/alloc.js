@@ -177,6 +177,12 @@ function allocProjectToExpertCallback(data){
     else if(data.message == "overload"){
         alert("本次分配导致某些专家当届审核专题类型超过三种，本次分配已取消，请重新设置分配专家列表！");
     }
+    else if(data.message == "expert_review_none"){
+        alert("请选择初审评分表");
+    }
+    else if(data.message == "expert_final_review_none"){
+        alert("请选择终审评分表");
+    }
     else{
         alert("选中的评审集合为空！");
     }
