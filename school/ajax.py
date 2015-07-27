@@ -368,7 +368,7 @@ def ExpertinfoExport(request,special_id,eid,form):
         if eid==TYPE_ALLOC[0]:
             path = get_xls_path(request,special.expert_review.category,proj_set,special.name)
         elif eid == TYPE_FINAL_ALLOC[0]:
-            path = path = get_xls_path(request,special.expert_final_review.category,proj_set,special.name)
+            path = get_xls_path(request,special.expert_final_review.category,proj_set,special.name)
         ret = {'path':path}
         return simplejson.dumps(ret)
     return simplejson.dumps({'status':'0'})
