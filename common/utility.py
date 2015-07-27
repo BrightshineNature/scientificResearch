@@ -354,52 +354,65 @@ def xls_info_humanity_preview_gen(request):
 
     return worksheet, workbook
 
-def xls_info_final_front_preview_gen(request):
+def xls_info_final_front_preview_gen(request,max_expert_num=EXPERT_NUM):
     workbook = xlwt.Workbook(encoding='utf-8')
     worksheet = workbook.add_sheet("sheet1")
     style =cell_style(horizontal=True,vertical=True)
-    worksheet.write_merge(0,0,0,5+EXPERT_NUM,"%s%s"%(str(datetime.date.today().year), "年大连理工大学基本科研业务费前沿交叉学科基础科研业务费终审结果汇总表"),style)
-    worksheet.write_merge(1, 1, 0, 0, '序号')
-    worksheet.write_merge(1, 1, 1, 1, '项目名称')
-    worksheet.write_merge(1, 1, 2, 2, '申请人')
-    worksheet.col(2).width = len('项目名称') * 400
-    worksheet.write_merge(1, 1, 3, 3, '金额(万)')
-    for i in range(0,EXPERT_NUM):
-        add_col = i 
-        worksheet.write_merge(1,1,4+add_col,4+add_col,'专家'+str(i + 1))
-    worksheet.write_merge(1, 1, 4 + EXPERT_NUM, 4 + EXPERT_NUM, '平均分1')
-    worksheet.write_merge(1, 1, 5 + EXPERT_NUM, 5 + EXPERT_NUM, '平均分2')
+    worksheet.write_merge(0,0,0,5+2*max_expert_num,"%s%s"%(str(datetime.date.today().year), "年大连理工大学基本科研业务费前沿交叉学科基础科研业务费终审结果汇总表"),style)
+    worksheet.write_merge(1, 2, 0, 0, '序号',style)
+    worksheet.write_merge(1, 2, 1, 1, '项目名称',style)
+    worksheet.write_merge(1, 2, 2, 2, '申请人',style)
+    worksheet.col(1).width = len('项目名称') * 800
+    worksheet.write_merge(1, 2, 3, 3, '金额(万)',style)
+    for i in range(0,max_expert_num):
+        add_col = i*2
+        worksheet.write_merge(1,1,4+add_col,5+add_col,'专家'+str(i + 1),style)
+        worksheet.write_merge(2,2,4+add_col,4+add_col,'评分',style)
+        worksheet.write_merge(2,2,5+add_col,5+add_col,'交叉程度(%)',style)
+    worksheet.write_merge(1, 2, 4 + max_expert_num*2, 4 + max_expert_num*2, '平均分',style)
+    worksheet.write_merge(1, 2, 5 + max_expert_num*2, 5 + max_expert_num*2, '平均交叉程度(%)',style)
     return worksheet,workbook
 
 def xls_info_final_front_preview(request,proj_set,specialtype=""):
-    xls_obj,workbook = xls_info_final_front_preview_gen(request)
-    _number= 1
+    max_expert_num=-1;
+    for proj_obj in proj_set:
+        re_project_expert_list = Re_Project_Expert.objects.filter(project_id = proj_obj)
+        max_expert_num=max(len(re_project_expert_list),max_expert_num)
+    xls_obj,workbook = xls_info_final_front_preview_gen(request,max_expert_num)
+    _number= 2
     index = 1
+    style =cell_style(horizontal=True,vertical=True)
     for proj_obj in proj_set:
         teacher = TeacherProfile.objects.get(id = proj_obj.teacher.id)
         manager = teacher.teacherinfosetting
         re_project_expert_list = Re_Project_Expert.objects.filter(project_id = proj_obj)
         row = 1 + _number
-        xls_obj.write(row, 0, unicode(index)) 
-        xls_obj.write(row, 1, unicode(proj_obj.title)) 
-        xls_obj.write(row, 2, unicode(manager.name))
-        xls_obj.write(row, 3, unicode(proj_obj.projectfundsummary.total_budget))
+        xls_obj.write(row, 0, unicode(index),style) 
+        xls_obj.write(row, 1, unicode(proj_obj.title),style) 
+        xls_obj.write(row, 2, unicode(manager.name),style)
+        xls_obj.write(row, 3, unicode(proj_obj.projectfundsummary.total_budget),style)
         i = 0
-        score_list = []
+        score_list1 = []
+        score_list2 = []
         average_score_1 = 0
         average_score_2 = 0
         for re_expert_temp in re_project_expert_list:
             score_table = getFinalScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
             if score_table.get_total_score():
-                xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
-                score_list.append(score_table.get_total_score())
-                i += 1
-        average_score_1 = average(score_list) 
-        if (len(score_list) > 2):
-            delete_max_and_min(score_list)
-            average_score_2 = average(score_list)
-        xls_obj.write(row, 4+EXPERT_NUM,unicode(average_score_1))
-        xls_obj.write(row, 5+EXPERT_NUM,unicode(average_score_2))
+                xls_obj.write(row,4 + i,unicode(score_table.get_total_score()),style)
+                score_list1.append(score_table.get_total_score())
+            if score_table.get_comments():
+                xls_obj.write(row,5+i,unicode(score_table.get_comments()),style)
+                score_list2.append(score_table.get_comments())
+            i += 2
+        average_score_1 = average(score_list1)
+        average_score_2 = average(score_list2)
+
+        # if (len(score_list) > 2):
+        #     delete_max_and_min(score_list)
+        #     average_score_2 = average(score_list)
+        xls_obj.write(row, 4+max_expert_num*2,unicode(average_score_1),style)
+        xls_obj.write(row, 5+max_expert_num*2,unicode(average_score_2),style)
 
         _number+= 1
         index += 1
