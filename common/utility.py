@@ -14,7 +14,7 @@ from settings import TMP_FILES_PATH,MEDIA_URL
 from const import *
 from common.utils import getScoreTable, getScoreForm,getFinalScoreTable,getFinalScoreForm
 
-def get_xls_path(request,exceltype,proj_set,specialname=""):
+def get_xls_path(request,exceltype,proj_set,specialname="",eid=""):
     """
         exceltype = EXCELTYPE_DICT 导出表类型
         proj_set 筛选出导出的项目集
@@ -23,29 +23,30 @@ def get_xls_path(request,exceltype,proj_set,specialname=""):
 
     loginfo(p=proj_set,label="get_xls_path")
     loginfo(p = exceltype,label = "exceltype")
+    print exceltype
     EXCELTYPE_DICT = EXCELTYPE_DICT_OBJECT()
     if exceltype == EXCELTYPE_DICT.INFO_COLLECTION:
-        file_path = xls_info_collection(request,proj_set)
+        file_path = xls_info_collection(request,proj_set,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_BASESUMMARYSCIENCE_PREVIEW:
-        file_path = xls_info_basesummary_preview(request,proj_set,1,specialname)
+        file_path = xls_info_basesummary_preview(request,proj_set,1,specialname,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_FRONT_PREVIEW:
-        file_path = xls_info_basesummary_preview(request,proj_set,2,specialname)
+        file_path = xls_info_basesummary_preview(request,proj_set,2,specialname,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_OUTSTANDING_PREVIEW:
-        file_path = xls_info_basesummary_preview(request,proj_set,3,specialname)
+        file_path = xls_info_basesummary_preview(request,proj_set,3,specialname,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_HUMANITY_PREVIEW:
-        file_path = xls_info_humanity_preview(request,proj_set)
+        file_path = xls_info_humanity_preview(request,proj_set,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_IMPORTANTPROJECT_PREVIEW:
-        file_path = xls_info_importantproject_preivew(request,proj_set)
+        file_path = xls_info_importantproject_preivew(request,proj_set,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_LABORATORY_PREVIEW:
-        file_path = xls_info_laboratory_preview(request,proj_set)
+        file_path = xls_info_laboratory_preview(request,proj_set,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_FUNDSUMMARY:
-        file_path = xls_info_fundsummay(request,proj_set)
+        file_path = xls_info_fundsummay(request,proj_set,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_SUMMARY:
-        file_path = xls_info_summary(request,proj_set)
+        file_path = xls_info_summary(request,proj_set,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_FUNDBUDGET:
-        file_path = xls_info_fundbudget(request,proj_set)
+        file_path = xls_info_fundbudget(request,proj_set,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_TEACHERINFO:
-        file_path = xls_info_teacherinfo(request)
+        file_path = xls_info_teacherinfo(request,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_FINAL_FRONT_PREVIEW:
         #前沿交叉终审表
         file_path = xls_info_final_front_preview(request,proj_set)
@@ -85,7 +86,7 @@ def xls_info_fundbudget_gen():
     worksheet.col(2).width = len('项目名称') * 800
     return worksheet, workbook
 
-def xls_info_fundbudget(request,proj_set):
+def xls_info_fundbudget(request,proj_set,eid):
     """
     """
 
@@ -158,7 +159,7 @@ def xls_info_fundsummay_gen():
     
     return worksheet, workbook
 
-def xls_info_fundsummay(request,proj_set):
+def xls_info_fundsummay(request,proj_set,eid):
     """
     """
 
@@ -220,7 +221,7 @@ def xls_info_laboratory_preview_gen(request):
 
     return worksheet, workbook
 
-def xls_info_laboratory_preview(request,proj_set,specialtype=""):
+def xls_info_laboratory_preview(request,proj_set,specialtype="",eid=""):
     """
     """
 
@@ -244,7 +245,10 @@ def xls_info_laboratory_preview(request,proj_set,specialtype=""):
         average_score_2 = 0
         average_score_3 = 0
         for re_expert_temp in re_project_expert_list:
-            score_table = getScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
+            if eid==TYPE_ALLOC[0]:
+                score_table = getScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
+            if eid == TYPE_FINAL_ALLOC[0]:
+                score_table = getFinalScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
             if score_table.get_total_score():
                 xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
                 score_list.append(score_table.get_total_score())
@@ -262,7 +266,10 @@ def xls_info_laboratory_preview(request,proj_set,specialtype=""):
         index += 1
 
     # write xls file
-    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年度大连理工大学基本科研业务费重点实验室科研专题项目申请评审结果汇总表"))
+    if eid==TYPE_ALLOC[0]:
+        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年度大连理工大学基本科研业务费重点实验室科研专题项目申请初审结果汇总表"))
+    if eid == TYPE_FINAL_ALLOC[0]:
+        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年度大连理工大学基本科研业务费重点实验室科研专题项目申请终审结果汇总表"))
     workbook.save(save_path)
     return save_path
 
@@ -288,7 +295,7 @@ def xls_info_importantproject_preivew_gen(request):
 
     return worksheet, workbook
 
-def xls_info_importantproject_preivew(request,proj_set,specialtype=""):
+def xls_info_importantproject_preivew(request,proj_set,specialtype="",eid=""):
     """
     """
 
@@ -310,7 +317,10 @@ def xls_info_importantproject_preivew(request,proj_set,specialtype=""):
         average_score_2 = 0
         average_score_3 = 0
         for re_expert_temp in re_project_expert_list:
-            score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
+            if eid==TYPE_ALLOC[0]:
+                score_table = getScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
+            if eid == TYPE_FINAL_ALLOC[0]:
+                score_table = getFinalScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
             if score_table.get_total_score():
                 xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
                 score_list.append(score_table.get_total_score())
@@ -328,7 +338,10 @@ def xls_info_importantproject_preivew(request,proj_set,specialtype=""):
         _number+= 1
         index += 1
     # write xls file
-    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费重大项目培育科研专题项目申请评审结果汇总表"))
+    if eid==TYPE_ALLOC[0]:
+        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费重大项目培育科研专题项目申请初审结果汇总表"))
+    if eid == TYPE_FINAL_ALLOC[0]:
+        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费重大项目培育科研专题项目申请终审结果汇总表"))
     workbook.save(save_path)
     return save_path
 
@@ -421,7 +434,7 @@ def xls_info_final_front_preview(request,proj_set,specialtype=""):
     workbook.save(save_path)
     return save_path
 
-def xls_info_humanity_preview(request,proj_set,specialtype=""):
+def xls_info_humanity_preview(request,proj_set,specialtype="",eid=""):
     """
     """
 
@@ -443,7 +456,10 @@ def xls_info_humanity_preview(request,proj_set,specialtype=""):
         average_score_1 = 0
         average_score_2 = 0
         for re_expert_temp in re_project_expert_list:
-            score_table = getScoreTable(re_expert_temp.project).objects.get(re_obj = re_expert_temp)
+            if eid==TYPE_ALLOC[0]:
+                score_table = getScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
+            if eid == TYPE_FINAL_ALLOC[0]:
+                score_table = getFinalScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
             if score_table.get_total_score():
                 xls_obj.write(row,4 + i,unicode(score_table.get_total_score()))
                 score_list.append(score_table.get_total_score())
@@ -458,7 +474,10 @@ def xls_info_humanity_preview(request,proj_set,specialtype=""):
         _number+= 1
         index += 1
     # write xls file
-    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费人文社科科研专题项目申请评审结果汇总表"))
+    if eid==TYPE_ALLOC[0]:
+        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费人文社科科研专题项目申请初审结果汇总表"))
+    if eid == TYPE_FINAL_ALLOC[0]:
+        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费人文社科科研专题项目申请终审结果汇总表"))
     workbook.save(save_path)
     return save_path
 
@@ -490,7 +509,7 @@ def xls_info_basesummary_preview_gen(request,specialtype):
     worksheet.write_merge(1,2,3+EXPERT_NUM*2,3+EXPERT_NUM*2,'平均分')
     return worksheet, workbook
 
-def xls_info_basesummary_preview(request,proj_set,specialtype,specialname):
+def xls_info_basesummary_preview(request,proj_set,specialtype,specialname,eid):
     """
     """
 
@@ -510,7 +529,10 @@ def xls_info_basesummary_preview(request,proj_set,specialtype,specialname):
         average_score = 0
         score_list = []
         for re_expert_temp in re_project_expert_list:
-            score_table = getScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
+            if eid==TYPE_ALLOC[0]:
+                score_table = getScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
+            if eid == TYPE_FINAL_ALLOC[0]:
+                score_table = getFinalScoreTable(re_expert_temp.project).objects.get_or_create(re_obj = re_expert_temp)[0]
             if score_table.get_total_score():
                 if specialtype == 1:
                     score_tmp = score_table.get_total_score() + int(score_table.get_comments())
@@ -526,7 +548,10 @@ def xls_info_basesummary_preview(request,proj_set,specialtype,specialname):
         index += 1
 
     # write xls file
-    save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), u"年大连理工大学"+ specialname +u"专题基本科研业务经费科研专题项目结题验收评审结果汇总表"))
+    if eid==TYPE_ALLOC[0]:
+        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), u"年大连理工大学"+ specialname +u"专题基本科研业务经费科研专题项目结题验收初审结果汇总表"))
+    if eid == TYPE_FINAL_ALLOC[0]:
+        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), u"年大连理工大学"+ specialname +u"专题基本科研业务经费科研专题项目结题验收终审结果汇总表"))
     workbook.save(save_path)
     return save_path
 
@@ -573,7 +598,7 @@ def xls_info_collection_gen():
     worksheet.write_merge(1, 1, 25, 25, '项目本年取得的成效')
     return worksheet, workbook
 
-def xls_info_collection(request,proj_set):
+def xls_info_collection(request,proj_set,eid):
     """
     """
 
@@ -651,7 +676,7 @@ def xls_info_summary_gen():
     worksheet.col(6).width = 6000
     return worksheet, workbook
 
-def xls_info_summary(request,proj_set):
+def xls_info_summary(request,proj_set,eid):
     """
     """
 
@@ -861,7 +886,7 @@ def xls_info_teacherinfo_gen():
 
     return worksheet, workbook
 
-def xls_info_teacherinfo(request):
+def xls_info_teacherinfo(request,eid):
     """
     """
 

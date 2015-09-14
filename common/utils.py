@@ -49,15 +49,36 @@ def getScoreTable(project):
     return OutstandingYoungResreachScoreTable
 
 def getFinalScoreTable(project):
-    print project.project_special
     category = project.project_special.expert_final_review.category
-    if category == EXPERT_FINAL_REVIEW_FRONT:
+    if category == EXPERT_FINAL_REVIEW_BASICSCIENTIFIC:
+        return BasicScientificResearchScoreTable
+    elif category == EXPERT_FINAL_REVIEW_HUMANITIESSOCIAL:
+        return HumanitiesSocialSciencesResearchScoreTable
+    elif category == EXPERT_FINAL_REVIEW_MAJORPROJECT:
+        return MajorProjectScoreTable
+    elif category == EXPERT_FINAL_REVIEW_KEYLABORATORY:
+        return KeyLaboratoryProjectScoreTable
+    elif category == EXPERT_FINAL_REVIEW_FRONT:
         return FrontAndIntercrossResreachFinalScoreTable
+    elif category == EXPERT_FINAL_REVIEW_BASICSCIENTIFICSCIENCE:
+        return ScienceFoundationResearchScoreTable
+    return OutstandingYoungResreachScoreTable
 
 def getFinalScoreForm(project):
     category = project.project_special.expert_final_review.category
-    if category == EXPERT_FINAL_REVIEW_FRONT:
+    if category == EXPERT_FINAL_REVIEW_BASICSCIENTIFIC:
+        return BasicScientificResearchScoreForm
+    elif category == EXPERT_FINAL_REVIEW_HUMANITIESSOCIAL:
+        return HumanitiesSocialSciencesResearchScoreForm
+    elif category == EXPERT_FINAL_REVIEW_MAJORPROJECT:
+        return MajorProjectScoreForm
+    elif category == EXPERT_FINAL_REVIEW_KEYLABORATORY:
+        return KeyLaboratoryProjectScoreForm
+    elif category == EXPERT_FINAL_REVIEW_FRONT:
         return FrontAndIntercrossResreachFinalScoreForm
+    elif category == EXPERT_FINAL_REVIEW_BASICSCIENTIFICSCIENCE:
+        return ScienceFoundationResearchScoreForm
+    return OutstandingYoungResreachScoreForms
 
 def getScoreForm(project):
     category = project.project_special.expert_review.category      
