@@ -50,7 +50,7 @@ def getScoreTable(project):
 
 def getFinalScoreTable(project):
     category = project.project_special.expert_final_review.category
-    loginfo(project.project_special)
+    print project.project_special
     if category == EXPERT_FINAL_REVIEW_FRONT:
         return FrontAndIntercrossResreachFinalScoreTable
 
