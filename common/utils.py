@@ -50,12 +50,12 @@ def getScoreTable(project):
 
 def getFinalScoreTable(project):
     category = project.project_special.expert_final_review.category
+    loginfo(project.project_special)
     if category == EXPERT_FINAL_REVIEW_FRONT:
         return FrontAndIntercrossResreachFinalScoreTable
 
 def getFinalScoreForm(project):
     category = project.project_special.expert_final_review.category
-    print category
     if category == EXPERT_FINAL_REVIEW_FRONT:
         return FrontAndIntercrossResreachFinalScoreForm
 
@@ -76,7 +76,6 @@ def getScoreForm(project):
     return OutstandingYoungResreachScoreForm
 
 def getProjectReviewStatus(project):
-    print project
     if project.project_status.status == PROJECT_STATUS_APPLICATION_EXPERT_SUBJECT:
         is_first_round = True 
     else:
