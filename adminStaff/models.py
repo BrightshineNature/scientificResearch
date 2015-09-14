@@ -229,7 +229,7 @@ class OutstandingYoungResreachScoreTable(models.Model):
     def get_total_score(self):
         return self.score
     def get_comments(self):
-        return str(self.level)
+        return self.level
     @staticmethod
     def has_comments():
         return 0
