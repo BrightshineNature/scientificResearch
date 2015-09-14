@@ -49,8 +49,8 @@ def getScoreTable(project):
     return OutstandingYoungResreachScoreTable
 
 def getFinalScoreTable(project):
-    category = project.project_special.expert_final_review.category
     print project.project_special
+    category = project.project_special.expert_final_review.category
     if category == EXPERT_FINAL_REVIEW_FRONT:
         return FrontAndIntercrossResreachFinalScoreTable
 
