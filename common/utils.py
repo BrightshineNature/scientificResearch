@@ -66,6 +66,7 @@ def getFinalScoreTable(project):
 
 def getFinalScoreForm(project):
     category = project.project_special.expert_final_review.category
+    print category
     if category == EXPERT_FINAL_REVIEW_BASICSCIENTIFIC:
         return BasicScientificResearchScoreForm
     elif category == EXPERT_FINAL_REVIEW_HUMANITIESSOCIAL:
@@ -78,7 +79,7 @@ def getFinalScoreForm(project):
         return FrontAndIntercrossResreachFinalScoreForm
     elif category == EXPERT_FINAL_REVIEW_BASICSCIENTIFICSCIENCE:
         return ScienceFoundationResearchScoreForm
-    return OutstandingYoungResreachScoreForms
+    return OutstandingYoungResreachScoreForm
 
 def getScoreForm(project):
     category = project.project_special.expert_review.category      
