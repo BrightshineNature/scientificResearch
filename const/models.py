@@ -218,8 +218,6 @@ class ExpertFinalReview(models.Model):
     def __unicode__(self):
         return self.get_category_display()
 
-
-
         
 class ProfileIdenty(models.Model):
     """

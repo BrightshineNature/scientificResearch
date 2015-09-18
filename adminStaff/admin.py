@@ -9,8 +9,11 @@ from django.contrib import admin
 from adminStaff.models import *
 
 
+class TableAdmin(admin.ModelAdmin):
+    list_display=("re_obj",);
+    search_fields=("re_obj",);
+
 RegisterClass = (
-    Re_Project_Expert,
     BasicScientificResearchScoreTable,
     HumanitiesSocialSciencesResearchScoreTable,
     MajorProjectScoreTable,
@@ -18,6 +21,14 @@ RegisterClass = (
     FrontAndIntercrossResreachScoreTable,
     ScienceFoundationResearchScoreTable,
     OutstandingYoungResreachScoreTable,
+    FrontAndIntercrossResreachFinalScoreTable
+)
+
+for temp in RegisterClass:
+    admin.site.register(temp,TableAdmin)
+
+RegisterClass=(
+    Re_Project_Expert,
     HomePagePic,
 )
 
