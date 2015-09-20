@@ -27,18 +27,6 @@ def get_xls_path(request,exceltype,proj_set,specialname="",eid=""):
     EXCELTYPE_DICT = EXCELTYPE_DICT_OBJECT()
     if exceltype == EXCELTYPE_DICT.INFO_COLLECTION:
         file_path = xls_info_collection(request,proj_set,eid)
-    elif exceltype == EXCELTYPE_DICT.INFO_BASESUMMARYSCIENCE_PREVIEW:
-        file_path = xls_info_basesummary_preview(request,proj_set,1,specialname,eid)
-    elif exceltype == EXCELTYPE_DICT.INFO_FRONT_PREVIEW:
-        file_path = xls_info_basesummary_preview(request,proj_set,2,specialname,eid)
-    elif exceltype == EXCELTYPE_DICT.INFO_OUTSTANDING_PREVIEW:
-        file_path = xls_info_basesummary_preview(request,proj_set,3,specialname,eid)
-    elif exceltype == EXCELTYPE_DICT.INFO_HUMANITY_PREVIEW:
-        file_path = xls_info_humanity_preview(request,proj_set,eid)
-    elif exceltype == EXCELTYPE_DICT.INFO_IMPORTANTPROJECT_PREVIEW:
-        file_path = xls_info_importantproject_preivew(request,proj_set,eid)
-    elif exceltype == EXCELTYPE_DICT.INFO_LABORATORY_PREVIEW:
-        file_path = xls_info_laboratory_preview(request,proj_set,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_FUNDSUMMARY:
         file_path = xls_info_fundsummay(request,proj_set,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_SUMMARY:
@@ -47,11 +35,37 @@ def get_xls_path(request,exceltype,proj_set,specialname="",eid=""):
         file_path = xls_info_fundbudget(request,proj_set,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_TEACHERINFO:
         file_path = xls_info_teacherinfo(request,eid)
+    #初审表
+    elif exceltype == EXCELTYPE_DICT.INFO_BASESUMMARYSCIENCE_PREVIEW:
+        file_path = xls_info_basesummary_preview(request,proj_set,1,specialname,eid)
+    elif exceltype == EXCELTYPE_DICT.INFO_FRONT_PREVIEW:
+        file_path = xls_info_basesummary_preview(request,proj_set,2,specialname,eid)
+    elif exceltype == EXCELTYPE_DICT.INFO_OUTSTANDING_PREVIEW:
+        file_path = xls_info_basesummary_preview(request,proj_set,3,specialname,eid)
+    elif exceltype == EXCELTYPE_DICT.INFO_HUMANITY_PREVIEW:
+        file_path = xls_info_humanity_preview(request,proj_set,eid,1)
+    elif exceltype == EXCELTYPE_DICT.INFO_IMPORTANTPROJECT_PREVIEW:
+        file_path = xls_info_importantproject_preivew(request,proj_set,eid)
+    elif exceltype == EXCELTYPE_DICT.INFO_LABORATORY_PREVIEW:
+        file_path = xls_info_laboratory_preview(request,proj_set,eid)
+    elif exceltype == EXCELTYPE_DICT.INFO_BASESUMMARY_PREVIEW:
+        file_path = xls_info_humanity_preview(request,proj_set,eid,2)
+    #终审表
+    elif exceltype == EXCELTYPE_DICT.INFO_FINAL_BASESUMMARY_PREVIEW:
+        file_path = xls_info_humanity_preview(request,proj_set,eid,2)
+    elif exceltype == EXCELTYPE_DICT.INFO_FINAL_HUMANITY_PREVIEW:
+        file_path = xls_info_humanity_preview(request,proj_set,eid,1)
+    elif exceltype == EXCELTYPE_DICT.INFO_FINAL_IMPORTANTPROJECT_PREVIEW:
+        file_path = xls_info_importantproject_preivew(request,proj_set,eid)
+    elif exceltype == EXCELTYPE_DICT.INFO_FINAL_LABORATORY_PREVIEW:
+        file_path = xls_info_laboratory_preview(request,proj_set,eid)
+    elif exceltype == EXCELTYPE_DICT.INFO_FINAL_BASESUMMARYSCIENCE_PREVIEW:
+        file_path = xls_info_basesummary_preview(request,proj_set,1,specialname,eid)
     elif exceltype == EXCELTYPE_DICT.INFO_FINAL_FRONT_PREVIEW:
         #前沿交叉终审表
-        file_path = xls_info_final_front_preview(request,proj_set)
-    else:
-        pass
+        file_path = xls_info_final_front_preview(request,proj_set)     
+    else:#EXCELTYPE_DICT.INFO_FINAL_OUTSTANDING_PREVIEW
+        file_path = xls_info_basesummary_preview(request,proj_set,3,specialname,eid)      
     return MEDIA_URL + "tmp" + file_path[len(TMP_FILES_PATH):]
 
 
@@ -346,12 +360,12 @@ def xls_info_importantproject_preivew(request,proj_set,specialtype="",eid=""):
     return save_path
 
 
-def xls_info_humanity_preview_gen(request):
+def xls_info_humanity_preview_gen(request,str1):
     workbook = xlwt.Workbook(encoding='utf-8')
     worksheet = workbook.add_sheet('sheet1')
     style = cell_style(horizontal=True,vertical=True)
     # generate header
-    worksheet.write_merge(0, 0, 0,5 + EXPERT_NUM ,"%s%s" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费人文社科科研专题项目申请评审结果汇总表"),style)
+    worksheet.write_merge(0, 0, 0,5 + EXPERT_NUM ,"%s%s" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费%s项目申请评审结果汇总表"%str1),style)
     # generate body
     worksheet.write_merge(1, 1, 0, 0, '序号')
     worksheet.write_merge(1, 1, 1, 1, '项目名称')
@@ -434,11 +448,13 @@ def xls_info_final_front_preview(request,proj_set,specialtype=""):
     workbook.save(save_path)
     return save_path
 
-def xls_info_humanity_preview(request,proj_set,specialtype="",eid=""):
+def xls_info_humanity_preview(request,proj_set,eid="",stype=1):
     """
     """
-
-    xls_obj, workbook = xls_info_humanity_preview_gen(request)
+    str1=""
+    if stype==1:str1="人文社科科研专题"
+    if stype==2:str1="基本科研"
+    xls_obj, workbook = xls_info_humanity_preview_gen(request,str1)
 
     _number= 1
     index = 1
@@ -475,9 +491,9 @@ def xls_info_humanity_preview(request,proj_set,specialtype="",eid=""):
         index += 1
     # write xls file
     if eid==TYPE_ALLOC[0]:
-        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费人文社科科研专题项目申请初审结果汇总表"))
+        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费%s项目申请初审结果汇总表"%str1))
     if eid == TYPE_FINAL_ALLOC[0]:
-        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费人文社科科研专题项目申请终审结果汇总表"))
+        save_path = os.path.join(TMP_FILES_PATH, "%s%s.xls" % (str(datetime.date.today().year), "年大连理工大学基本科研业务费%s项目申请终审结果汇总表"%str1))
     workbook.save(save_path)
     return save_path
 
