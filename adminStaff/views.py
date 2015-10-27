@@ -94,6 +94,23 @@ def scheduleView(request):
 @csrf.csrf_protect
 @login_required
 @authority_required(ADMINSTAFF_USER)
+def deleteProject(request):
+    try:
+        iid=request.GET['iid']
+        print iid
+        project=ProjectSingle.objects.get(project_id=iid)
+        if project:
+            project.delete()
+            return HttpResponse('Success')
+        else:
+            return HttpResponse('Not exists')
+    except:
+        return HttpResponse('Invalid project_id')
+
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
 def newsRelease(request):
     if request.method == "GET":
         form = NewsForm()

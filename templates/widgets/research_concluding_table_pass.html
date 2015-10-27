@@ -91,7 +91,7 @@
   <tbody>
     {% if item2_list%}
     {% for item in item2_list%}
-    <tr iid={{item.project_id}} status={{item.project_status.status}}>
+    <tr iid="{{item.project_id}}" status="{{item.project_status.status}}">
       <td>{{item.project_code}}</td>
       {% if usercontext.role == 'school' %}
       <td><a href="/school/final/{{item.project_id}}?page={{page}}&page2={{page2}}" data-toggle="tooltip" data-placement="top" title={{item.title}}>{{item.title|truncatechars:10}}</a></td>
@@ -130,12 +130,44 @@
           <td>
             <button data-toggle="modal" data-target="#status_modal" class="btn btn-primary btn-sm" name="changestatus">修改状态</button>
           </td>
+          <td>
+            <button data-toggle="modal" data-target="#delete_modal" class="btn btn-danger btn-sm" name="delete">删除</button>
+          </td>
       {% endifequal%}
      </tr>
     {% endfor%}
     {% endif%}
   </tbody>
 </table>
+<script>
+$(function()
+{
+$('button[name=delete]').click(function()
+{
+var iid=$(this).parent().parent().attr('iid');
+var title=$(this).parent().parent();
+	$.get(
+		'/adminStaff/delete_project',
+		{
+		iid:iid,
+		},
+		function(response)
+		{
+		 if(response=='Fail'||response=='Not exists')
+			{
+				alert('删除失败,原因:'+response);
+			}
+			else
+			{
+				alert('删除成功');
+				window.location='/adminStaff';
+			}
+
+		}
+	);
+});
+});
+</script>
 {% endifequal%}
 <div id="pass_paginator">
   {% include "widgets/paginator2.html"%}
