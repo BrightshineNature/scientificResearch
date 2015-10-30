@@ -113,6 +113,9 @@ class ProjectJudgeForm(forms.Form):
     reason=forms.CharField(required=False,widget=forms.Textarea(attrs={'class':'form-control','row':10}))
     max_budget = forms.IntegerField(max_value=50,required=False,widget=forms.DateInput(attrs={'class':'form-control',"onkeyup":"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" ,'onafterpaste':"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"}))
 
+    skip_choice = ((True,"不需要评审"),(False,"需要评审"))
+    skip_judge = forms.ChoiceField(required=False,widget=forms.RadioSelect(attrs={'name':'skip_choice'}),choices=skip_choice)
+
 from users.models import SchoolProfile
 from adminStaff.models import ProjectSingle
 from adminStaff.utility import getSpecial

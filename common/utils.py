@@ -271,13 +271,16 @@ def set_status(project,status):
     elif project.project_status.status==PROJECT_STATUS_OVER:
         project.conclude_year=str(time.strftime('%Y',time.localtime(time.time())))
     project.save()
+
 def status_confirm(request,project):
     identity = request.session.get("auth_role","")
     loginfo('$'*50)
-    if project.project_special.review_status:
-        status_dict =  PROGRESS_REVIEW_DICT[project.project_status.status]
-    else:
-        status_dict =  PROGRESS_NOT_REVIEW_DICT[project.project_status.status]
+    status_dict =  PROGRESS_REVIEW_DICT[project.project_status.status]
+
+    # if project.project_special.review_status:
+    #     status_dict =  PROGRESS_REVIEW_DICT[project.project_status.status]
+    # else:
+    #     status_dict =  PROGRESS_NOT_REVIEW_DICT[project.project_status.status]
 
     loginfo(NEXT_PROGRESS_PERMISSION_DICT[identity])
     if status_dict[NEXT_STATUS] in NEXT_PROGRESS_PERMISSION_DICT[identity]:

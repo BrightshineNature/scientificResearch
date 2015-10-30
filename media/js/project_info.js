@@ -4,6 +4,7 @@ var glo_project_id;
 $("[name='not_pass_reason']").hide();
 $("#not_pass_article").hide();
 $("#budget").hide();
+$(".skip_choice").hide();
 $("[name='judgeresult']").css("color","gray");
 $("[name='judgeresult']").change(function()
 {
@@ -22,12 +23,19 @@ $("[name='judgeresult']").change(function()
         $("#not_pass_article").show(500);
         }
         $("#budget").hide(500);
+        $(".skip_choice").hide(500);
     }
     else
     {
+        $(".skip_choice").show(500);
+        $("#id_skip_judge_1").attr("checked",true);
         $("#budget").show(500);
         $("[name='not_pass_reason']").hide(500);
         $("#not_pass_article").hide(500);
+    }
+    if($(this).val()=="-1")
+    {
+        $(".skip_choice").hide(500);
     }
 
 });
@@ -101,6 +109,9 @@ $('#review_modal').on('show.bs.modal', function (e) {
 $("[name='commit']").click(function(){
     var value=$(this).closest(".modal").find("#id_judgeresult").val();
     var lookThroughForm=$(this).closest(".modal").find("#lookThroughForm").serialize(true);
+    var skip_judge;
+    if($("#id_skip_judge_1").attr("checked")==true)skip_judge=false;
+    else skip_judge=true;
     userrole=$(".tab-content").attr("userrole");
     userstatus=$(".tab-content").attr("userstatus");
     if(value!=-1){
@@ -112,11 +123,12 @@ $("[name='commit']").click(function(){
             "page2":$("#pass_paginator .disabled").attr("value"),
             "search":search,
             "look_through_form":lookThroughForm,
-            "searchForm":$("#schedule_form").serialize(true)
+            "searchForm":$("#schedule_form").serialize(true),
+            "skip_judge":skip_judge,
         });
     }
-    
 });
+
 function look_through_call_back(data){
     if(userstatus=="application"){
         $("#applicationTable").html(data.table_html);

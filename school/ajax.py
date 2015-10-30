@@ -321,7 +321,7 @@ def getScore(request, pid):
     if project.project_status.status == PROJECT_STATUS_FINAL_EXPERT_SUBJECT:
         is_first_round = False
 
-    if is_first_round:coreTableType = getScoreTable(project)
+    if is_first_round:scoreTableType = getScoreTable(project)
     else:scoreTableType = getFinalScoreTable(project)
 
     comments_index = scoreTableType.has_comments()

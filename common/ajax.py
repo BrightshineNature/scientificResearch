@@ -259,7 +259,7 @@ def getStatus(request):
         "final":PROJECT_STATUS_FINAL_COMMIT_OVER,
     })
 @dajaxice_register
-def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look_through_form,searchForm):
+def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look_through_form,searchForm,skip_judge=False):
     project=ProjectSingle.objects.get(pk=judgeid)
     form=deserialize_form(look_through_form)
     if userrole == FINANCE_USER and (not (form.get("finance_staff") and form.get("finance_checktime"))):
@@ -269,6 +269,7 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
         project.comment=''
         project.save()
         status_confirm(request,project)#request,project
+        if skip_judge:status_confirm(request,project)
         if userstatus=="application":
             if form.get("max_budget"):
                 project.project_budget_max=int(form.get("max_budget"))

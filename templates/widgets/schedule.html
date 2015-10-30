@@ -50,6 +50,10 @@
           <div class="form-group">
             <label for="review_select">审核结果</label>
             {{ProjectJudge_form.judgeresult}}
+            <br/>
+            <div class="skip_choice">
+              {{ProjectJudge_form.skip_judge}}
+            </div>
           </div>
           <div id="not_pass_article">
             <label>不通过方面</label>
@@ -64,6 +68,7 @@
       <div class="modal-footer">
         <a class="btn" data-dismiss="modal">关闭</a>
         <a class="btn btn-primary" data-dismiss="modal" name="commit">确定</a>
+        <!-- <a class="btn btn-warning" data-dismiss="modal" id="commit-straight">跳过评审</a> -->
       </div>
     </div>
   </div>
