@@ -16,7 +16,12 @@
       <td>{{user.userid.first_name}}</td>
       {%block table-td%}{%endblock%}
       {%if user.userid.is_active %}
-      <td><button class="btn btn-success">已经激活</button></td>
+      <td>
+        <button class="btn btn-success">已经激活</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#college-modal">
+            修改信息
+        </button>
+      </td>
       {%else%}
       <td><button class="btn btn-warning">已发送，尚未激活</button> <button class="btn btn-danger">删除</button></td>
       {%endif%}
@@ -28,3 +33,23 @@
 <div id="dispatch_college_paginator" class="dispatch_paginator">
   {%include "widgets/paginator2.html"%}
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="college-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">修改学院秘书信息</h4>
+      </div>
+      <div class="modal-body">
+        .
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
