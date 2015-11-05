@@ -51,9 +51,11 @@
             <label for="review_select">审核结果</label>
             {{ProjectJudge_form.judgeresult}}
             <br/>
+            {% if userauth.is_schooler %}
             <div class="skip_choice">
               {{ProjectJudge_form.skip_judge}}
             </div>
+            {% endif %}
           </div>
           <div id="not_pass_article">
             <label>不通过方面</label>
