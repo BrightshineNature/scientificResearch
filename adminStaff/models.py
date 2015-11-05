@@ -72,21 +72,22 @@ class ProjectSingle(models.Model):
     def __unicode__(self):
         return self.title
     def get_next_status(self):
-        if self.project_special.review_status:
-            pendding_dict = PROGRESS_REVIEW_DICT
-        else:
-            pendding_dict = PROGRESS_NOT_REVIEW_DICT
+        pendding_dict = PROGRESS_REVIEW_DICT
+        #if self.project_special.review_status:
+        #    pendding_dict = PROGRESS_REVIEW_DICT
+        #else:
+        #    pendding_dict = PROGRESS_NOT_REVIEW_DICT
         try:
             ret = pendding_dict[self.project_status.status][PENDDING_STATUS]
         except:
             ret = u""
         return ret
     def get_next_status_val(self):
-        if self.project_special.review_status:
-            pendding_dict = PROGRESS_REVIEW_DICT
-        else:
-            pendding_dict = PROGRESS_NOT_REVIEW_DICT
-        return pendding_dict[self.project_status.status][NEXT_STATUS]
+        #if self.project_special.review_status:
+        #    pendding_dict = PROGRESS_REVIEW_DICT
+        #else:
+        #    pendding_dict = PROGRESS_NOT_REVIEW_DICT
+        return PROGRESS_REVIEW_DICT[self.project_status.status][NEXT_STATUS]
 class ReviewBackView(models.Model):
     userid = models.ForeignKey(User,verbose_name="权限对应ID")
     comment = models.CharField(max_length=400, blank=True,null=True,verbose_name=u"评审意见")
