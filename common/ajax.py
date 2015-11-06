@@ -269,7 +269,8 @@ def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look
         project.comment=''
         project.save()
         status_confirm(request,project)#request,project
-        if skip_judge:status_confirm(request,project)
+        if skip_judge:
+            status_confirm(request,project)
         if userstatus=="application":
             if form.get("max_budget"):
                 project.project_budget_max=int(form.get("max_budget"))
