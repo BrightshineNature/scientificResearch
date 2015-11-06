@@ -288,4 +288,7 @@ def status_confirm(request,project):
         set_status(project,status_dict[NEXT_STATUS])
         if PROGRESS_FILE_DICT.get(project.project_status.status,None) !=None and getattr(project,PROGRESS_FILE_DICT[project.project_status.status]):
             status_confirm(request,project)
+    print project.project_special.name
+    if project.project_special.name==u"引进人才科研专题" and project.project_status.status==PROJECT_STATUS_APPLICATION_COMMIT_OVER:
+        status_confirm(request,project)
     return
