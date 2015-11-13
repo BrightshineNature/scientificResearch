@@ -245,10 +245,11 @@ def get_qset(userauth):
     return (pending,default,search)
 
 def statusRollBack(request,project,error_id):
-    if project.project_special.review_status:
-        project_status_dict =  PROGRESS_REVIEW_DICT
-    else:
-        project_status_dict =  PROGRESS_NOT_REVIEW_DICT
+    project_status_dict =  PROGRESS_REVIEW_DICT
+#    if project.project_special.review_status:
+#        project_status_dict =  PROGRESS_REVIEW_DICT
+#    else:
+#        project_status_dict =  PROGRESS_NOT_REVIEW_DICT
     next_status = project_status_dict[project.project_status.status][NEXT_STATUS]
     next_status = project_status_dict[next_status][ROLLBACK_STATUS]
     if next_status != None:
