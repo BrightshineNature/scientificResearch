@@ -77,7 +77,7 @@
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目申请书_姓名”</strong></p>
 
             <!-- 0 for SUBMIT_STATUS_APPLICATION-->
-            {%if is_can_submited.0%}
+            {%if is_can_submited.7%}
             <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_application" accept="doc,docx" >
             <button type= "submit" class="btn btn-success submit_button"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
             {%endif%}
@@ -92,7 +92,7 @@
 
 
                 <!-- 1 for SUBMIT_STATUS_TASK-->
-                {%if is_can_submited.1%}
+                {%if is_can_submited.8%}
                 <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_task" accept="doc,docx" >
                 <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
                 {%endif%}
@@ -105,7 +105,7 @@
             <p class="tip">上传的文件请命名为<strong>“基本科研业务费专项项目进展报告_姓名”</strong></p>
 
             <!-- 2 for SUBMIT_STATUS_PROGRESS-->
-            {%if is_can_submited.2%}
+            {%if is_can_submited.9%}
             <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_interimchecklist" accept="doc,docx" >
 
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
@@ -123,7 +123,7 @@
 
 
             <!-- 3 for SUBMIT_STATUS_FINAL-->
-            {%if is_can_submited.3%}
+            {%if is_can_submited.10%}
             <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_summary" accept="doc,docx" >
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
             {%endif%}
@@ -138,11 +138,11 @@
             <p class="tip">上传的文件不能命名为<strong>其他四个入口的名称</strong></p>
 
             <!-- 4 for SUBMIT_STATUS_REVIEW-->
-            {%if is_can_submited.4%}
+            <!-- {%if is_can_submited.10%} -->
             <input type="file"  class="file"  size="1" hidefocus enctype="multipart/form-data" name="file_other" accept="doc,docx" >
             <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-upload"></span> <span>上传</span></button>
 
-            {%endif%}
+            <!-- {%endif%} -->
         </form>
     </div>
 
