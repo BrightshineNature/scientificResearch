@@ -8,6 +8,16 @@ from common.utils import get_application_year_choice,get_approval_year_choice,ge
 from common.models import ProjectMember, BasisContent, BaseCondition
 from users.models import Special,College,CollegeProfile
 
+class SearchForm(forms.Form):
+    name = forms.CharField(
+        max_length = 20,
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+            'class':'form-control ',
+            'placeholder':u"输入名字"}), )
+
+
 class AllStatusForm(forms.Form):
     status_choices=PROJECT_STATUS_CHOICES
     allstatus=forms.ChoiceField(choices=status_choices,required=False,widget=forms.Select(attrs={'class':'form-control'}))
@@ -133,17 +143,14 @@ def getTeacherYearGroup(request):
     #     return tuple((-1, "立项年度"), )
     teacher_year_choice=[]
     teacher_year_choice.extend(list(set([ (item.approval_year,item.approval_year) for item in project_group] )))
-    print "JJFJJJ***" * 10
-    print teacher_year_choice    
-
+    
     if not teacher_year_choice:
         tt = (-1, "立项年度")
-
         return (tt,  )
-
     teacher_year_choice[0] = (-1, "立项年度")
     teacher_year_choice=tuple(teacher_year_choice)
     return teacher_year_choice
+    
 def getSpecialTypeGroup(request):
     special_list = getSpecial(request)
     special_choice_list=[]
@@ -154,7 +161,6 @@ def getSpecialTypeGroup(request):
     return special_choice_list
 
 class NoticeForm(forms.Form):
-
     expert_special_select = forms.ChoiceField(required=False,
         widget=forms.Select(attrs={
             'class':'form-control ',
@@ -190,13 +196,7 @@ class NoticeForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request",None)
-
-
-
         super(NoticeForm,self).__init__(*args,**kwargs)
-
-        
-
         special_list = getSpecial(request)
         special_choice_list=[]
         special_choice_list.append((-1,"专题类型"))
@@ -204,20 +204,9 @@ class NoticeForm(forms.Form):
             special_choice_list.append((s.id, s.name))
         special_choice = tuple(special_choice_list)
 
-        print '&*@' * 20
-        print special_choice_list
         self.fields["expert_special_select"].choices = getSpecialTypeGroup(request)
-
         self.fields["teacher_special_select"].choices = getSpecialTypeGroup(request)
         self.fields["teacher_year_select"].choices = getTeacherYearGroup(request)
-
-
-
-
-
-
-        
-
         if request == None:return
         if SchoolProfile.objects.filter(userid=request.user).count()>0:
             college_list_choice=[]
@@ -230,8 +219,6 @@ class NoticeForm(forms.Form):
                 collegename = item.userid.first_name+'('+cname+')'
                 college_list_choice.append((item.id,collegename,))
             college_list_choice=list(set(college_list_choice))
-
-            #college_list_choice.extend(list(set([(item.id,item.userid.first_name) for item in CollegeProfile.objects.all()])))
             project_group=ProjectSingle.objects.filter(project_special__school_user__userid=request.user)
             teacher_year_choice=[]
             teacher_year_choice.extend(list(set([ (item.approval_year,item.approval_year) for item in project_group])))
@@ -246,9 +233,6 @@ class NoticeForm(forms.Form):
             self.fields["teacher_special"].choices=teacher_special_choice
             self.fields["expert_special"].choices=teacher_special_choice
 
-            
-
-            
 class ProjectInfoForm(forms.Form):
     project_name = forms.CharField(
         max_length = 400,
@@ -268,8 +252,6 @@ class ProjectInfoForm(forms.Form):
             'placeholder':u"科技活动类型",
             }),
         )
-
-
 
     trade_code_choices = (("-1", "---------"),) + NATIONAL_TRADE_CODE_CHOICES
     trade_code = forms.ChoiceField(
@@ -355,7 +337,6 @@ class BasisContentForm(forms.ModelForm):
         }
 
 class BaseConditionForm(forms.ModelForm):
-
     class Meta:
         model = BaseCondition
         fields = ('base', 'condition', 'applicant', 'research', 'progress')
@@ -393,8 +374,6 @@ class ProjectMemberForm(forms.ModelForm):
                                             'placeholder': "身份证号码",}),
 
         }
-
-
 
 class EmailForm(forms.Form):
     special =forms. ChoiceField(required=True,widget=forms.Select(attrs={'class':'form-control'}),)

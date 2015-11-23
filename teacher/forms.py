@@ -167,6 +167,12 @@ class ProjectCreationForm(forms.Form):
         SPECIAL_CHOICE = tuple((special.id, special.name) for special in Special.objects.filter(application_status = True))
         self.fields["special"].choices = SPECIAL_CHOICE
 
+class ProjectCreationTeacherForm(ProjectCreationForm):
+    teacher = forms.ChoiceField(required = True, widget = forms.Select(attrs = {"class": "form-control chosen-select",}))
+    def __init__(self, *args, **kwargs):
+        super(ProjectCreationTeacherForm, self).__init__(*args, **kwargs)
+        self.fields["teacher"].choices = tuple((teacher.userid.id, teacher.userid.first_name) for teacher in TeacherProfile.objects.all() )
+
 class ProjectChangeForm(forms.Form):
     project_special=forms.ChoiceField(required=True,choices=(),widget=forms.Select(attrs={"class":"form-control"}))
     def __init__(self, *args,**kwargs):

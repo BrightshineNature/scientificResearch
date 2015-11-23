@@ -37,5 +37,16 @@
     </div>
   </div>
 </form>
+<form class="well form" id="search_form" method="POST" action="">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-2">
+      {{search_form.name}}
+    </div>
+    <div class="col-lg-2">
+       <input type="button" class="btn btn-primary" value="检索"/>
+    </div>
+  </div>
+</form>
 {%block users-table%}
 {%endblock %}

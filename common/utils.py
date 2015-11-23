@@ -259,9 +259,6 @@ def statusRollBack(request,project,error_id):
                 setattr(project,file_type,False)
         if error_id <2:
             next_status = project_status_dict[next_status][NEXT_STATUS]
-        loginfo('$'*50)
-        loginfo(error_id)
-        loginfo(next_status)
         set_status(project,next_status)
     return True
 

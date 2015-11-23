@@ -26,12 +26,14 @@ from dajaxice.utils import deserialize_form
 from adminStaff.models import TemplateNoticeMessage,ProjectSingle,News
 from backend.logging import loginfo
 from common.utility import checkIdcard
+from teacher.forms import ProjectCreationTeacherForm
+from common.forms import SearchForm
 
 from users.models import SchoolProfile,CollegeProfile,Special,College
 from teacher.models import TeacherInfoSetting
 from backend.logging import logger
 from adminStaff.forms import ObjectForm
-
+from common.utils import createNewProject
 def getObject(object):
     if object == "special":
         return Special
@@ -263,17 +265,17 @@ def get_news_list(request, uid):
     except Exception, err:
         logger.info(err)
 @dajaxice_register
-def DispatchDelete(request,username,identity,page):
+def DispatchDelete(request,username,identity,page,search_form):
     user = User.objects.get(username=username)
     loginfo(user)
     if not user.is_active:
         user.delete()
-        table = refresh_user_table(request,identity,page)
+        table = refresh_user_table(request,identity,search_form,page)
         return simplejson.dumps({'status':'1', 'message':u"删除用户成功",'table':table})
     else:
         return simplejson.dumps({'status':'0', 'message':u"用户已激活，不能删除"})
 @dajaxice_register
-def Dispatch(request,form,identity,page):
+def Dispatch(request,form,identity,page,search_form):
     if identity == SCHOOL_USER or identity ==COLLEGE_USER:
         dispatchForm = DispatchForm(deserialize_form(form))
     elif identity == EXPERT_USER :
@@ -312,7 +314,7 @@ def Dispatch(request,form,identity,page):
                 message = u"导入专家成功"
             else:
                 message = u"发送邮件成功"
-            table = refresh_user_table(request,identity,page)
+            table = refresh_user_table(request,identity,search_form,page)
             return simplejson.dumps({'field':dispatchForm.data.keys(), 'status':'1', 'message':message,'table':table})
         else:
             message = u"用户名已存在"
@@ -320,30 +322,37 @@ def Dispatch(request,form,identity,page):
     else:
         return simplejson.dumps({'field':dispatchForm.data.keys(),'error_id':dispatchForm.errors.keys(),'message':u"输入有误"})
 @dajaxice_register
-def DispatchPagination(request,page,identity):
-    html = refresh_user_table(request,identity,page)
+def DispatchPagination(request,page,identity,search_form):
+    html = refresh_user_table(request,identity,search_form,page)
     return simplejson.dumps({'html':html})
 
-def refresh_user_table(request,identity,page=1):
+def refresh_user_table(request,identity,search_form="",page=1):
+    try:
+        form = SearchForm(deserialize_form(search_form))
+        if form.is_valid():
+            name = form.cleaned_data['name']
+    except:
+        name = ""
+
     if identity == SCHOOL_USER:
-        school_users = SchoolProfile.objects.all()
+        school_users = SchoolProfile.objects.filter(Q(userid__first_name__contains = name))
         context=getContext(school_users, page, "item")
         return render_to_string("widgets/dispatch/school_user_table.html",
                                 context)
     elif identity == COLLEGE_USER:
-        college_users = CollegeProfile.objects.all()
+        college_users = CollegeProfile.objects.filter(Q(userid__first_name__contains = name))
         context=getContext(college_users, page, "item2")
         return render_to_string("widgets/dispatch/college_user_table.html",
                                 context)
     elif identity == TEACHER_USER:
          colleges = getCollege(request)
          qset = reduce(lambda x,y:x|y,[Q(college = _college) for _college in colleges])
-         users = TeacherProfile.objects.filter(qset).order_by('college')
+         users = TeacherProfile.objects.filter(qset).filter(Q(userid__first_name__contains = name)).order_by('college')
          context=getContext(users, page, "item")
          return render_to_string("widgets/dispatch/teacher_user_table.html",
                                 context)
     elif identity == EXPERT_USER:
-        users = ExpertProfile.objects.all().order_by('college')
+        users = ExpertProfile.objects.filter(Q(userid__first_name__contains = name)).order_by('college')
         context=getContext(users, page, "item3")
         return render_to_string("widgets/dispatch/expert_user_table.html",
                                 context)
@@ -435,3 +444,20 @@ def FileDeleteConsistence(request, fid):
     else:
         return simplejson.dumps({"is_deleted": False,
                                  "message": "Warning! Only POST accepted!"})
+
+
+@dajaxice_register
+def CreateProject(request, form):
+    createform = ProjectCreationTeacherForm(deserialize_form(form))
+    if createform.is_valid():
+        title = createform.cleaned_data["title"].strip()
+        teacher_id = createform.cleaned_data["teacher"]
+        special = createform.cleaned_data["special"]
+        try:
+            teacher = TeacherProfile.objects.get(userid__id=teacher_id)
+            createNewProject(teacher, title, special)
+            return simplejson.dumps({'status':'1', "message": u"项目创建成功"})
+        except:
+            return simplejson.dumps({'status':'0', "message": u"项目创建失败"})
+    else:
+        return simplejson.dumps({'status':'0', "message": u"项目创建失败"})

@@ -7,7 +7,16 @@ $(function(){
       dispatch_form = $(this).parents("form");
       page = $(dispatch_form).parent().find(".disabled").attr("value");
       dispatch_div = $(dispatch_form).parent().find(".dispatch_paginator");
-      Dajaxice.adminStaff.Dispatch(Dispatch_callback,{'form':$(dispatch_form).serialize(true),'identity':$(this).attr("id"),'page':page});
+      Dajaxice.adminStaff.Dispatch(Dispatch_callback,{'form':$(dispatch_form).serialize(true),'identity':$(this).attr("id"),'page':page,'search_form':$(dispatch_div).parent().find("#search_form").serialize(true)});
+    })
+  })
+  $('#search_form .btn').each(function(){
+    $(this).click(function(){
+      dispatch_form = $(this).parents("form");
+      page = $(dispatch_form).parent().find(".disabled").attr("value");
+      dispatch_div = $(dispatch_form).parent().find(".dispatch_paginator");
+      ids = $(dispatch_div).attr("id").split('_');
+      Dajaxice.adminStaff.DispatchPagination(DispatchPaginationCallback,{'page':page, 'identity':ids[1], 'search_form':$(dispatch_div).parent().find("#search_form").serialize(true)});
     })
   })
 })
@@ -15,13 +24,13 @@ $(document).on("click",".dispatch_paginator .item_page",function(){
       dispatch_div = $(this).parents(".dispatch_paginator");
       page = $(this).attr("arg");
       ids = $(dispatch_div).attr("id").split('_');
-      Dajaxice.adminStaff.DispatchPagination(DispatchPaginationCallback,{'page':page,'identity':ids[1]});
+      Dajaxice.adminStaff.DispatchPagination(DispatchPaginationCallback,{'page':page, 'identity':ids[1], 'search_form':$(dispatch_div).parent().find("#search_form").serialize(true)});
 })
 $(document).on("click","table .btn-danger",function(){
   username=$(this).parent().parent().children(0).html();
   dispatch_div = $(this).parents(".dispatch_paginator");
   page = $(dispatch_div).find(".disabled").attr("value");
-  Dajaxice.adminStaff.DispatchDelete(DispatchDelete_callback,{'username':username,'identity':$(dispatch_div).attr("id").split("_")[1],'page':page});
+  Dajaxice.adminStaff.DispatchDelete(DispatchDelete_callback,{'username':username,'identity':$(dispatch_div).attr("id").split("_")[1],'page':page, 'search_form':$(dispatch_div).parent().find("#search_form").serialize(true)});
 })
 function DispatchDelete_callback(data){
   if (data.status == "1"){

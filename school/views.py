@@ -23,7 +23,7 @@ from adminStaff.models import ProjectSingle, Re_Project_Expert
 from school.forms import FilterForm,ExpertReviewForm
 from adminStaff.forms import DispatchAddCollegeForm
 from users.models import ExpertProfile, SchoolProfile,TeacherProfile
-from common.forms import ScheduleBaseForm,EmailForm
+from common.forms import ScheduleBaseForm,EmailForm, SearchForm
 from django.template.loader import render_to_string
 from django.contrib.sites.models import get_current_site,Site
 
@@ -161,6 +161,7 @@ def dispatchView(request):
         teacher_users = TeacherProfile.objects.none()
     context = {
                "dispatchAddCollege_form":dispatchAddCollege_form,
+               "search_form": SearchForm(),
     }
     context.update(getContext(teacher_users, 1, "item"))
     return render(request, "school/dispatch.html", context)

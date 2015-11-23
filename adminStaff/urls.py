@@ -69,5 +69,9 @@ urlpatterns = patterns('',
         r'delete_project$',
         adminStaff_views.deleteProject,
     ),
+    url(
+        r'createProject$',
+        adminStaff_views.createProject,
+    ),
 )
 urlpatterns += staticfiles_urlpatterns()

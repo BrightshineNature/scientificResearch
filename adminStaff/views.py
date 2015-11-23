@@ -14,8 +14,8 @@ from backend.logging import loginfo
 from backend.utility import getContext
 
 from adminStaff.forms import NewsForm,ObjectForm,TemplateNoticeMessageForm,DispatchForm,DispatchAddCollegeForm
-from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm
-from common.forms import NoticeForm
+from teacher.forms import ProjectBudgetInformationForm,ProjectBudgetAnnualForm, SettingForm, ProjectCreationTeacherForm
+from common.forms import NoticeForm, SearchForm
 
 from common.views import scheduleManage, financialManage,noticeMessageSettingBase,scheduleManage,finalReportViewWork,fundBudgetViewWork,fileUploadManage,researchConcludingManage,getType
 
@@ -141,6 +141,7 @@ def dispatchView(request):
     context = {
                "dispatch_form":dispatch_form,
                "dispatchAddCollege_form":dispatchAddCollege_form,
+               "search_form": SearchForm(),
     }
     context.update(getContext(school_users, 1, "item"))
     context.update(getContext(college_users, 1, "item2"))
@@ -265,3 +266,13 @@ def homepic_import_view(request):
     data = {'files': file_history,
     }
     return render(request, 'adminStaff/home_pic_import.html', data)
+
+@csrf.csrf_protect
+@login_required
+@authority_required(ADMINSTAFF_USER)
+def createProject(request):
+    """
+    project group member change
+    """
+    return render(request, 'adminStaff/create_project.html', {'form': ProjectCreationTeacherForm()})
+    
