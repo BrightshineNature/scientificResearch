@@ -39,6 +39,7 @@ $("[name='judgeresult']").change(function()
     }
 
 });
+
 Dajaxice.common.getStatus(function(data){
     applicationstatus_s=data.application_s;
     applicationstatus_c=data.application_c;
@@ -106,12 +107,24 @@ $('#review_modal').on('show.bs.modal', function (e) {
 
   // do something...
 })
+
+$("#id_skip_judge_1").click(function(){
+    $(this).attr("checked",true);
+    $("#id_skip_judge_0").attr("checked",false);
+});
+
+$("#id_skip_judge_0").click(function(){
+    $(this).attr("checked",true);
+    $("#id_skip_judge_1").attr("checked",false);
+});
+
 $("[name='commit']").click(function(){
     var value=$(this).closest(".modal").find("#id_judgeresult").val();
     var lookThroughForm=$(this).closest(".modal").find("#lookThroughForm").serialize(true);
     var skip_judge;
-    if($("#id_skip_judge_1").attr("checked")==true)skip_judge=false;
-    else skip_judge=true;
+    if($("#id_skip_judge_1").attr("checked")=="checked")skip_judge=false;
+    if($("#id_skip_judge_0").attr("checked")=="checked")skip_judge=true;
+
     userrole=$(".tab-content").attr("userrole");
     userstatus=$(".tab-content").attr("userstatus");
     if(value!=-1){

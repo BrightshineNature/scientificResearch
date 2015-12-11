@@ -260,6 +260,7 @@ def getStatus(request):
     })
 @dajaxice_register
 def LookThroughResult(request,judgeid,userrole,userstatus,page,page2,search,look_through_form,searchForm,skip_judge=False):
+    print skip_judge
     project=ProjectSingle.objects.get(pk=judgeid)
     form=deserialize_form(look_through_form)
     if userrole == FINANCE_USER and (not (form.get("finance_staff") and form.get("finance_checktime"))):
